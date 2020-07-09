@@ -38,4 +38,63 @@ class Cliente_model extends CI_Model
 
         return $row;
     }
+
+
+    public function verificar_campos($dataCruda)
+    {
+        ///par aquitar campos no existentes 
+        foreach ($dataCruda as $nombre_campo => $valor_campo) {
+            # para verificar si la propiedad existe..
+            if (property_exists('Cliente_model', $nombre_campo)) {
+                $this->$nombre_campo = $valor_campo;
+            }
+        }
+
+        if ($this->activo == NULL) {
+            $this->activo = 1;
+        }
+        //este es un objeto tipo cliente model
+        return $this;
+    }
+
+    public function guardar()
+    {
+        //VERIFICAMOS  QUE EL CORREO NO ESTE DUPLICADO
+        $query = $this->db->get_where('clientes', array('correo' => $this->correo));
+        $cliente_correo = $query->row();
+
+        if (isset($cliente_correo)) {
+            # si ya existe el correo 
+            $respuesta = array(
+                'err' => TRUE,
+                'mensaje' => 'este correo electronico ya existe',
+                'cliente' => null
+            );
+
+            return $respuesta;
+        } else {
+
+            ///VAMOS A INSERTAR UN REGISTRO
+            $hecho =  $this->db->insert('clientes', $this);
+
+            if ($hecho) {
+                ///LOGRO GUARDAR
+                $respuesta = array(
+                    'err' => FALSE,
+                    'mensaje' => 'Registro Guardado Exitosamente',
+                    'cliente' => $this->db->insert_id()
+                );
+                return $respuesta;
+            } else {
+                //NO GUARDO
+                $respuesta = array(
+                    'err' => TRUE,
+                    'mensaje' => 'Error al insertar ', $this->db->error_message(),
+                    'error_number' => $this->db->error_number(),
+                    'cliente' => null
+                );
+                return $respuesta;
+            }
+        }
+    }
 }
