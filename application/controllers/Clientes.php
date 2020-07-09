@@ -138,7 +138,44 @@ class Clientes extends REST_Controller
         //corremos las reglas de validacion
         if ($this->form_validation->run('cliente_put')) {
             //TODO BIEN
-            $this->response("todo bien");
+            //VERIFICAMOS  QUE EL CORREO NO ESTE DUPLICADO
+            $query = $this->db->get_where('clientes', array('correo' => $data['correo']));
+            $cliente_correo = $query->row();
+
+            if (isset($cliente_correo)) {
+                # si ya existe el correo
+                $respuesta = array(
+                    'err' => TRUE,
+                    'mensaje' => 'este correo electronico ya existe',
+                    'cliente' => null
+                );
+                $this->response($respuesta, REST_Controller::HTTP_BAD_REQUEST);
+                return;
+            } else {
+                ///VAMOS A INSERTAR UN REGISTRO
+                $hecho =  $this->db->insert('clientes', $data);
+
+                if ($hecho) {
+                    ///LOGRO GUARDAR
+                    $respuesta = array(
+                        'err' => FALSE,
+                        'mensaje' => 'Registro Guardado Exitosamente',
+                        'cliente' => $this->db->insert_id()
+                    );
+                    $this->response($respuesta, REST_Controller::HTTP_OK);
+                    return;
+                } else {
+                    //NO GUARDO
+                    $respuesta = array(
+                        'err' => TRUE,
+                        'mensaje' => 'Error al insertar ', $this->db->error_message(),
+                        'error_number' => $this->db->error_number(),
+                        'cliente' => null
+                    );
+                    $this->response($respuesta, REST_Controller::HTTP_INTERNAL_SERVER_ERROR);
+                    return;
+                }
+            }
         } else {
             //algo mal 
             $respuesta = array(
