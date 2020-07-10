@@ -70,13 +70,10 @@ class Cliente_model extends CI_Model
                 'mensaje' => 'este correo electronico ya existe',
                 'cliente' => null
             );
-
             return $respuesta;
         } else {
-
             ///VAMOS A INSERTAR UN REGISTRO
             $hecho =  $this->db->insert('clientes', $this);
-
             if ($hecho) {
                 ///LOGRO GUARDAR
                 $respuesta = array(
