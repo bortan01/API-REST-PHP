@@ -94,4 +94,50 @@ class Cliente_model extends CI_Model
             }
         }
     }
+
+    public function actualizar()
+    {
+        //VERIFICAMOS  QUE EL CORREO
+        $this->db->where('correo', $this->correo);
+        $this->db->where('id !=', $this->id);
+        $query = $this->db->get('clientes');
+        ///es lo mismo que select * from clientes where correo ="correo@gmail.com" and id != '2'
+
+        $cliente_correo = $query->row();
+
+        if (isset($cliente_correo)) {
+            # si ya existe el correo 
+            $respuesta = array(
+                'err' => TRUE,
+                'mensaje' => 'este correo electronico ya esta registrado por otro usuario',
+                'cliente' => $cliente_correo
+            );
+            return $respuesta;
+        } else {
+            ///VAMOS A ACTUALIZAR UN REGISTRO
+            //LIMPIAMOS EL QUERY PARA VOLVER A HACER CONSULTAS
+            $this->db->reset_query();
+            $this->db->where('id', $this->id);
+            $hecho =  $this->db->update('clientes', $this);
+
+            if ($hecho) {
+                ///LOGRO GUARDAR
+                $respuesta = array(
+                    'err' => FALSE,
+                    'mensaje' => 'Registro Actualizado Exitosamente',
+                    'cliente' => $this->id
+                );
+                return $respuesta;
+            } else {
+                //NO GUARDO
+                $respuesta = array(
+                    'err' => TRUE,
+                    'mensaje' => 'Error al actualizar ', $this->db->error_message(),
+                    'error_number' => $this->db->error_number(),
+                    'cliente' => null
+                );
+                return $respuesta;
+            }
+        }
+    }
 }

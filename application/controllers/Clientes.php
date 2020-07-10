@@ -151,4 +151,43 @@ class Clientes extends REST_Controller
             $this->response($respuesta, REST_Controller::HTTP_BAD_REQUEST);
         }
     }
+
+
+
+    public function cliente_post()
+    {
+
+
+
+        $data = $this->post();
+        $cliente_id = $this->uri->segment(3);
+
+
+        //agregamos el id a la data 
+        $data['id'] = $cliente_id;
+
+        $this->load->library('form_validation');
+        $this->form_validation->set_data($data);
+
+        //corremos las reglas de validacion
+        if ($this->form_validation->run('cliente_post')) {
+            //VERIFICAMOS QUE TODOS LOS PARAMETROS ESTEN BIEN
+            $cliente = $this->Cliente_model->verificar_campos($data);
+            $respuesta =  $cliente->actualizar();
+
+            if ($respuesta['err']) {
+                $this->response($respuesta, REST_Controller::HTTP_BAD_REQUEST);
+            } else {
+                $this->response($respuesta, REST_Controller::HTTP_OK);
+            }
+        } else {
+            //algo mal 
+            $respuesta = array(
+                'err' => TRUE,
+                'mensaje' => 'har errores en el envio de informacion',
+                'errores' => $this->form_validation->get_errores_arreglo()
+            );
+            $this->response($respuesta, REST_Controller::HTTP_BAD_REQUEST);
+        }
+    }
 }
