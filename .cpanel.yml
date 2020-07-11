@@ -2,6 +2,6 @@
 deployment:
   tasks:
     - export DEPLOYPATH=/home/christi5/api.christianmeza.com/
-    - /bin/cp index.php $DEPLOYPATH
+    - /bin/cp /* $DEPLOYPATH
     
 	   
