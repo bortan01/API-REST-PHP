@@ -11,10 +11,6 @@ class Cliente_model extends CI_Model
     public $telefono2;
     public $pais;
     public $direccion;
-
-
-
-
     public function obtenerCliente($id)
     {
         //colocamos las condiciones 
@@ -110,7 +106,7 @@ class Cliente_model extends CI_Model
             $respuesta = array(
                 'err' => TRUE,
                 'mensaje' => 'este correo electronico ya esta registrado por otro usuario',
-                'cliente' => $cliente_correo
+                'cliente' => null
             );
             return $respuesta;
         } else {
@@ -138,6 +134,35 @@ class Cliente_model extends CI_Model
                 );
                 return $respuesta;
             }
+        }
+    }
+
+    public function borrar($id_cliente)
+    {
+        //no vamos a borrarlo en realidad, solo le cambiamos estado (otra manera de actualizar)
+
+        $this->db->set('status', 'inactivo');
+        $this->db->where('id', $id_cliente);
+
+        $hecho =  $this->db->update('clientes');
+
+        if ($hecho) {
+            ///LOGRO BORRAR
+            $respuesta = array(
+                'err'     => FALSE,
+                'mensaje' => 'Registro Eliminado Exitosamente',
+                'cliente' => $id_cliente
+            );
+            return $respuesta;
+        } else {
+            //NO GUARDO
+            $respuesta = array(
+                'err'          => TRUE,
+                'mensaje'      => 'Error al borrar ', $this->db->error_message(),
+                'error_number' => $this->db->error_number(),
+                'cliente'      => null
+            );
+            return $respuesta;
         }
     }
 }

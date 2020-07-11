@@ -156,13 +156,8 @@ class Clientes extends REST_Controller
 
     public function cliente_post()
     {
-
-
-
         $data = $this->post();
         $cliente_id = $this->uri->segment(3);
-
-
         //agregamos el id a la data 
         $data['id'] = $cliente_id;
 
@@ -189,5 +184,13 @@ class Clientes extends REST_Controller
             );
             $this->response($respuesta, REST_Controller::HTTP_BAD_REQUEST);
         }
+    }
+
+    public function cliente_delete()
+    {
+        //este parametro viene por url 
+        $cliente_id = $this->uri->segment(3);
+        $respuesta = $this->Cliente_model->borrar($cliente_id);
+        $this->response($respuesta);
     }
 }
