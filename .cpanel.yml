@@ -3,6 +3,11 @@ deployment:
   tasks:
     - export DEPLOYPATH=/home/christi5/api.christianmeza.com/
     - /bin/cp index.php $DEPLOYPATH
-    - /bin/cp -r application $DEPLOYPATH 
+    - /bin/cp composer.json $DEPLOYPATH
+    - /bin/cp .editorconfig $DEPLOYPATH
+    - /bin/cp contributing.md $DEPLOYPATH
+    - /bin/cp -r application $DEPLOYPATH
+    - /bin/cp -r system $DEPLOYPATH   
+    
     
 	   
