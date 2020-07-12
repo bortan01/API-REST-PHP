@@ -9,18 +9,16 @@ class Clientes extends REST_Controller
         parent::__construct();
         $this->load->database();
         $this->load->model('Cliente_model');
+        $this->load->library('image_lib');
+
+        $this->load->library('upload');
     }
 
     ////
-    public function index_get()
+    public function imagenes_post()
     {
-        $data = array(
-            'nombre' => 'boris',
-            'contacto' => 'abi',
-            'direcion' => 'san verapaz'
-        );
-        echo json_encode($data);
     }
+
     public function insert()
     {
         $data = array(
