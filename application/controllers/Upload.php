@@ -14,7 +14,7 @@ class Upload extends REST_Controller
         $this->load->view('upload_form', array('error' => ' '));
     }
 
-    public function upload_post()
+    public function imagen_post()
     {
         $config['upload_path']          = './uploads/';
         $config['allowed_types']        = 'gif|jpg|png';
@@ -25,13 +25,21 @@ class Upload extends REST_Controller
         $this->load->library('upload', $config);
 
         if (!$this->upload->do_upload('userfile')) {
-            $error = array('error' => $this->upload->display_errors());
 
-            $this->load->view('upload_form', $error);
+            $respuesta = array(
+                'err'     => TRUE,
+                'mensaje' =>  $this->upload->display_errors(),
+                'imagen'  => null
+            );
+            $this->response($respuesta, REST_Controller::HTTP_BAD_REQUEST);
         } else {
-            $data = array('upload_data' => $this->upload->data());
-
-            $this->load->view('upload_success', $data);
+            $imagen = array('upload_data' => $this->upload->data());
+            $respuesta = array(
+                'err'     => FALSE,
+                'mensaje' => "Imagen subida exitosamente",
+                'imagen'  => $imagen
+            );
+            $this->response($respuesta, REST_Controller::HTTP_OK);
         }
     }
 
