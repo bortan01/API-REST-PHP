@@ -116,7 +116,7 @@ class Clientes extends REST_Controller
             unset($cliente->telefono1);
 
             $respuesta = array(
-                'error' => TRUE,
+                'error' => FALSE,
                 'mensaje' => 'todo ok',
                 'cliente' => $cliente
             );
