@@ -66,8 +66,9 @@ define('ENVIRONMENT', isset($_SERVER['CI_ENV']) ? $_SERVER['CI_ENV'] : 'developm
  */
 switch (ENVIRONMENT) {
 	case 'development':
+		//PONER EN -1 PARA MOSTRAR ERRORRES Y 0 PARA OCULTARLOS
 		error_reporting(-1);
-		ini_set('display_errors', 1);
+		ini_set('display_errors', 0);
 		break;
 
 	case 'testing':
@@ -244,8 +245,7 @@ if (is_dir($application_folder)) {
 		'/\\',
 		DIRECTORY_SEPARATOR . DIRECTORY_SEPARATOR
 	);
-}
-else {
+} else {
 	header('HTTP/1.1 503 Service Unavailable.', TRUE, 503);
 	echo 'Your application folder path does not appear to be set correctly. Please open the following file and correct this: ' . SELF;
 	exit(3); // EXIT_CONFIG
@@ -266,15 +266,13 @@ if (!isset($view_folder[0]) && is_dir(APPPATH . 'views' . DIRECTORY_SEPARATOR)) 
 			DIRECTORY_SEPARATOR . DIRECTORY_SEPARATOR
 		);
 	}
-}
-elseif (is_dir(APPPATH . $view_folder . DIRECTORY_SEPARATOR)) {
+} elseif (is_dir(APPPATH . $view_folder . DIRECTORY_SEPARATOR)) {
 	$view_folder = APPPATH . strtr(
 		trim($view_folder, '/\\'),
 		'/\\',
 		DIRECTORY_SEPARATOR . DIRECTORY_SEPARATOR
 	);
-}
-else {
+} else {
 	header('HTTP/1.1 503 Service Unavailable.', TRUE, 503);
 	echo 'Your view folder path does not appear to be set correctly. Please open the following file and correct this: ' . SELF;
 	exit(3); // EXIT_CONFIG

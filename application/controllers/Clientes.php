@@ -184,7 +184,13 @@ class Clientes extends REST_Controller
 
     public function pago_post()
     {
-        $data = $this->post();
+        $data["idTransaccion"] = "001011011";
+        $data["esReal"] = TRUE;
+        $data["esAprobada"] = TRUE;
+        $data["mensaje"] = "ESTE ES EL MENSAJE";
+        $data["codigoAutorizacion"] = "XXX02020";
+        $data["formaPago"] = "PagoNormal";
+        $data["monto"] = "999999.99";
         $hecho = $this->db->insert('hook', $data);
         if ($hecho) {
             $respuesta = array(
