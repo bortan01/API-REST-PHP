@@ -32,7 +32,7 @@ class Hook_model extends CI_Model
         $this->enlacePagoNombreProducto = $data["EnlacePago"]["NombreProducto"];
 
         $this->clienteNombre = $data["Cliente"]["Nombre"];
-        $this->clienteEmail = $data["Cliente"]["Email"];
+        $this->clienteEmail = $data["Cliente"]["EMail"];
         $this->clienteCelular = $data["Cliente"]["additionalProp1"];
         $this->clienteDireccion = $data["Cliente"]["additionalProp2"];
 

@@ -33,4 +33,4 @@ application/config/database.php
 
 
 uploads/
-application/config/database.php
+info/*
