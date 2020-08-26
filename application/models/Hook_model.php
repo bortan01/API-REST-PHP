@@ -16,6 +16,7 @@ class Hook_model extends CI_Model
     public $clienteEmail;
     public $clienteCelular;
     public $clienteDireccion;
+    public $todo;
     public function set_campos($data)
     {
         $this->idTransaccion = $data["IdTransaccion"];
@@ -34,6 +35,8 @@ class Hook_model extends CI_Model
         $this->clienteEmail = $data["cliente"]["Email"];
         $this->clienteCelular = $data["cliente"]["additionalProp1"];
         $this->clienteDireccion = $data["cliente"]["additionalProp2"];
+
+        $this->todo = json_encode($data);
 
 
         if ($this->clienteNombre == null) {
