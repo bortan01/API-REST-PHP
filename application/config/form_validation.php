@@ -21,7 +21,11 @@ $config = array(
 
 	'rama_put' => array(
 		array('field' => 'nombre_rama', 'label' => 'nombre', 'rules' => 'trim|required|min_length[2]|max_length[255]'),
-		array('field' => 'numero_rama', 'label' => 'zip', 'rules' => 'trim|required|Integer')
+		array('field' => 'numero_rama', 'label' => 'numero de rama', 'rules' => 'trim|required|Integer')
+	),
+
+	'pregunta_put' => array(
+		array('field' => 'pregunta', 'label' => 'Pregunta', 'rules' => 'trim|required|min_length[2]|max_length[255]')
 	)
 
 
