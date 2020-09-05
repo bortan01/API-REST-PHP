@@ -11,6 +11,7 @@ class Cliente_model extends CI_Model
     public $telefono2;
     public $pais;
     public $direccion;
+
     public function obtenerCliente($id)
     {
         //colocamos las condiciones 
@@ -30,8 +31,6 @@ class Cliente_model extends CI_Model
             $row->id = intval($row->id);
             $row->activo = intval($row->activo);
         }
-
-
         return $row;
     }
 

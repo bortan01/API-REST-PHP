@@ -68,7 +68,7 @@ switch (ENVIRONMENT) {
 	case 'development':
 		//PONER EN -1 PARA MOSTRAR ERRORRES Y 0 PARA OCULTARLOS
 		error_reporting(-1);
-		ini_set('display_errors', 0);
+		ini_set('display_errors', -1);
 		break;
 
 	case 'testing':

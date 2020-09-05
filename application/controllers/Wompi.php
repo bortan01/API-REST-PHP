@@ -58,4 +58,9 @@ class Wompi extends REST_Controller
             $this->response(json_decode($token), REST_Controller::HTTP_OK);
         }
     }
+
+    public function prueba_post($nombre, $numero)
+    {
+        echo "en prueba ", $nombre . " " . $numero;
+    }
 }
