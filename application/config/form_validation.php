@@ -17,6 +17,11 @@ $config = array(
 		array('field' => 'id', 'label' => 'cliente id', 'rules' => 'trim|required|Integer'),
 		array('field' => 'nombre', 'label' => 'nombre', 'rules' => 'trim|required|min_length[2]|max_length[255]'),
 		array('field' => 'zip', 'label' => 'zip', 'rules' => 'trim|required|min_length[2]|max_length[5]')
+	),
+
+	'rama_put' => array(
+		array('field' => 'nombre_rama', 'label' => 'nombre', 'rules' => 'trim|required|min_length[2]|max_length[255]'),
+		array('field' => 'numero_rama', 'label' => 'zip', 'rules' => 'trim|required|Integer')
 	)
 
 
