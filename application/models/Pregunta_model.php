@@ -9,7 +9,16 @@ public $opcion_respuesta;
 public $id_rama;
 
 
-public function set_datos( $data_cruda){
+	public function get_pregunta(){
+
+
+ 	$query=$this->db->get('pregunta');
+ 	
+ 		return $query->result();
+ 	}
+
+
+    public function set_datos( $data_cruda){
 
  		foreach ($data_cruda as $nombre_campo => $valor_campo) {
 

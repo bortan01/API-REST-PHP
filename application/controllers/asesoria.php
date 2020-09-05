@@ -16,6 +16,36 @@ public function __construct(){
 
 //--------------tabla(preguntas)--para las preguntas
 
+	//************rama get todas**/***************************
+	public function preguntita_get(){
+
+	$pregunta=$this->Pregunta_model->get_pregunta();
+
+	if (isset($pregunta)) {
+		//quitar campos que no quiero
+		//unset($cliente->telefono1);
+		//sunset($cliente->telefono2);
+		$respuesta=array(
+			'err'=>FALSE,
+			'mensaje'=>'Registro Cargado correctamente',
+			'preguntas'=>$pregunta
+
+		);
+		$this->response($respuesta);
+	}else{
+		$respuesta=array(
+			'err'=>TRUE,
+			'mensaje'=>'Error al cargar los datos.',
+			'pregunta'=>null
+
+		);
+		$this->response($respuesta,REST_Controller::HTTP_NOT_FOUND);
+
+	}
+}
+
+	//***********************fin de rama get //**************
+
 	//********************INSERTAR**************************
 	public function preguntita_put(){
 
