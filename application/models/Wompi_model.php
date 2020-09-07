@@ -1,22 +1,11 @@
 <?php
 defined('BASEPATH') or exit('No direct script access allowed');
-require APPPATH . '/libraries/REST_Controller.php';
-class Wompi extends REST_Controller
+class Wompi_model extends CI_Model
 {
-    public function __construct()
+
+    public function obtenerToken()
     {
-        //llamado del constructor del padre 
-        parent::__construct();
-        $this->load->database();
-        $this->load->library('image_lib');
-        $this->load->library('upload');
-    }
-
-    public function obtenerToken_get()
-    {
-        include_once "../../info/credenciales.php";
-
-
+        $this->load->model('Credenciales_model');
         $curl = curl_init();
 
 
@@ -38,10 +27,10 @@ class Wompi extends REST_Controller
             CURLOPT_SSL_VERIFYHOST => false,
             CURLOPT_SSL_VERIFYPEER => false,
             CURLOPT_POSTFIELDS =>
-            "grant_type=" . $grant_type .
-                "&client_id=" . $client_id .
-                "&client_secret=" . $client_secret .
-                "&audience=.$audience",
+            "grant_type=" . $this->Credenciales_model->grant_type .
+                "&client_id=" . $this->Credenciales_model->client_id .
+                "&client_secret=" . $this->Credenciales_model->client_secret .
+                "&audience=" . $this->Credenciales_model->audience,
             CURLOPT_HTTPHEADER => array(
                 "content-type: application/x-www-form-urlencoded"
             ),
@@ -52,15 +41,11 @@ class Wompi extends REST_Controller
 
         curl_close($curl);
 
-        if ($token["error"]) {
-            $this->response(json_decode($token), REST_Controller::HTTP_BAD_REQUEST);
+        if (isset($token["error"])) {
+            //NO HAY TOKEN
+            return FALSE;
         } else {
-            $this->response(json_decode($token), REST_Controller::HTTP_OK);
+            return json_decode($token);
         }
-    }
-
-    public function prueba_post($nombre, $numero)
-    {
-        echo "en prueba ", $nombre . " " . $numero;
     }
 }
