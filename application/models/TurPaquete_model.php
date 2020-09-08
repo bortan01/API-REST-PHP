@@ -35,8 +35,8 @@ class TurPaquete_model extends CI_Model
     {
 
         $this->load->model('Wompi_model');
-        print_r($this->Wompi_model->obtenerToken());
-        die();
+        $this->Wompi_model->crearEnlacePago();
+        
 
 
         $nombreTabla = "tours_paquete";
