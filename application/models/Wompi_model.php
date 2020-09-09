@@ -58,9 +58,9 @@ class Wompi_model extends CI_Model
         $certificate = "C:\wamp\cacert.pem";
         curl_setopt($curl, CURLOPT_CAINFO, $certificate);
         curl_setopt($curl, CURLOPT_CAPATH, $certificate);
-        $ACCESS_TOKEN = $this->obtenerToken()->access_token;
+        //$ACCESS_TOKEN = $this->obtenerToken()->access_token;
 
-        $headers[] = "authorization:Bearer " . $this->obtenerToken()->access_token;
+        //$headers[] = "authorization:Bearer " . $ACCESS_TOKEN;
         $headers[] = "Content-Type:application/json-patch+json";
 
         $fieds = '{
@@ -84,40 +84,49 @@ class Wompi_model extends CI_Model
               "urlWebhook": "https://api.christianmeza.com/index.php/Clientes/pago/",
             }
           }';
-        // $fieds = [
-        //     "identificadorEnlaceComercio"   => $this->Credenciales_model->client_id,
-        //     "monto"                         => "107.7",
-        //     "nombreProducto"                => "PRUEBA DE PRODUCTO"
-        //     "formaPago"                     => array("permitirTarjetaCreditoDebido"=> true,"permitirPagoConPuntoAgricola"=> false),
-        //     "infoProducto"                  => array("descripcionProducto"=> "una vaca","urlImagenProducto"=> "https://admin.christianmeza.com/img/COSTA.jpg"),
-        //     "configuracion"                 => array("urlRedirect"=> "https://pagina.christianmeza.com/","esMontoEditable"=> false, "esCantidadEditable"=>true, "cantidadPorDefecto"=>1, "emailsNotificacion"=>"fjmiranda009@gmail.com", "urlWebhook"=>"https://api.christianmeza.com/index.php/Clientes/pago/"),
-        // ];
-        // $fields_string = http_build_query($fieds);
+        // curl_setopt_array($curl, array(
+        //     CURLOPT_URL            => "https://api.wompi.sv/EnlacePago",
+        //     CURLOPT_RETURNTRANSFER => true,
+        //     CURLOPT_ENCODING       => "",
+        //     CURLOPT_MAXREDIRS      => 10,
+        //     CURLOPT_TIMEOUT        => 30,
+        //     CURLOPT_HTTP_VERSION   => CURL_HTTP_VERSION_1_1,
+        //     CURLOPT_CUSTOMREQUEST  => "POST",
+        //     CURLOPT_SSL_VERIFYHOST => false,
+        //     CURLOPT_SSL_VERIFYPEER => false,
+        //     CURLOPT_POSTFIELDS     => $fieds,
+        //     CURLOPT_HTTPHEADER     => $headers,
+        // ));
 
-        curl_setopt_array($curl, array(
-            CURLOPT_URL            => "https://api.wompi.sv/EnlacePago",
-            CURLOPT_RETURNTRANSFER => true,
-            CURLOPT_ENCODING       => "",
-            CURLOPT_MAXREDIRS      => 10,
-            CURLOPT_TIMEOUT        => 30,
-            CURLOPT_HTTP_VERSION   => CURL_HTTP_VERSION_1_1,
-            CURLOPT_CUSTOMREQUEST  => "POST",
-            CURLOPT_SSL_VERIFYHOST => false,
-            CURLOPT_SSL_VERIFYPEER => false,
-            CURLOPT_POSTFIELDS     => $fieds,
-            CURLOPT_HTTPHEADER     => $headers,
-        ));
+        //$response = curl_exec($curl);
+        //$err = curl_error($curl);
 
-        $response = curl_exec($curl);
-        $err = curl_error($curl);
-
-        curl_close($curl);
-
+        //curl_close($curl);
+        $err = false;
         if ($err) {
-            echo "cURL Error #:" . $err;
+            //ERROR DE cURL
+            return array('err' => "ERROR DE cURL " . $err);
         } else {
-            echo $response;
+          
+            $respons = '{"idEnlace":20222,"urlQrCodeEnlace":"https://wompistorage.blob.core.windows.net/imagenes/b4225b2d-0756-4b99-8883-725ea44b40dd.jpg","urlEnlace":"https://lk.wompi.sv/cVmK","estaProductivo":false}';
+            $decodificada = json_decode($respons, true);
+
+            if ($decodificada == null) {
+                //ERROR INTERNO DE WOMPI
+                return array('err' => "ERROR INTERNO DE WOMPI");
+             
+            } else {
+                if (!isset($decodificada["idEnlace"])) {
+                    //RESPUEESTA DE ERROR DE WOMPI
+                   return array('err' => "ERROR DE PETICION");
+                   
+                } else {
+                    //TENEMOS NUESTRA RESPUETA CORRECTA DE WOMPI
+                    return $decodificada;
+                    
+                }
+            }
         }
-        die();
+   
     }
 }

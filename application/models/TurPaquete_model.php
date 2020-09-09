@@ -17,6 +17,9 @@ class TurPaquete_model extends CI_Model
     public $estado;
     public $tipo;
     public $aprobado;
+    public $idEnlace;
+    public $urlQrCodeEnlace;
+    public $urlEnlace;
 
 
     public function verificar_campos($dataCruda)
@@ -33,36 +36,48 @@ class TurPaquete_model extends CI_Model
 
     public function guardar()
     {
-
-        $this->load->model('Wompi_model');
-        $this->Wompi_model->crearEnlacePago();
-        
-
-
         $nombreTabla = "tours_paquete";
-        ///INTENTAMOS GUARDAR LA IMAGEN
-        $fotoSubida = $this->Imagen_model->guardarImagen();
-        $this->foto = $fotoSubida["path"];
+        ///SUBIMOS LA IMAGEN AL SERVIDOR Y OBTENEMOS SU URL
+        // $fotoSubida = $this->Imagen_model->guardarImagen();
+        // $this->foto = $fotoSubida["path"];
+        $this->load->model('Wompi_model');
+        $this->foto     = "https://admin.christianmeza.com/img/COSTA.jpg";
+        $urlWebHook     = "https://api.christianmeza.com/index.php/Clientes/pago/";
+        //$this->precio,$this->nombreTours,$this->descripcion,$this->foto,$urlWebHook
+        $respuestaWompi = $this->Wompi_model->crearEnlacePago();
 
-        $insert = $this->db->insert($nombreTabla, $this);
-        if ($insert) {
-            ///LOGRO GUARDAR LOS DATOS, TRATAREMOS DE GUARDAR LA GALERIA SI MANDARON FOTOS
-            $identificador = $this->db->insert_id();
+        if (!isset($respuestaWompi["idEnlace"])) {
+            //HAY ERROR DE WOMPI
             $respuesta = array(
-                'err' => FALSE,
-                'mensaje' => 'Registro Guardado Exitosamente',
-                'cliente' => $identificador
+                'err' => TRUE,
+                'mensaje' => $respuestaWompi["err"],
             );
             return $respuesta;
         } else {
-            //NO GUARDO
-            $respuesta = array(
-                'err' => TRUE,
-                'mensaje' => 'Error al insertar ', $this->db->error_message(),
-                'error_number' => $this->db->error_number(),
-                'cliente' => null
-            );
-            return $respuesta;
+            //RECUPERAMOS LA INFORMACION DE WOMPI Y TRATAMOS DE GUARDAR EN LA BD
+            $this->idEnlace        = $respuestaWompi["idEnlace"];
+            $this->urlQrCodeEnlace = $respuestaWompi["urlQrCodeEnlace"];
+            $this->urlEnlace       = $respuestaWompi["urlEnlace"];
+            
+            $insert = $this->db->insert($nombreTabla, $this);
+            if (!$insert) {
+                //NO GUARDO
+                $respuesta = array(
+                    'err' => TRUE,
+                    'mensaje' => 'Error al insertar ', $this->db->error_message(),
+                    'error_number' => $this->db->error_number(),
+                    'cliente' => null
+                );
+                return $respuesta;
+            } else {
+                $identificador = $this->db->insert_id();
+                $respuesta = array(
+                    'err' => FALSE,
+                    'mensaje' => 'Registro Guardado Exitosamente',
+                    'cliente' => $identificador
+                );
+                return $respuesta;
+            }
         }
     }
 }
