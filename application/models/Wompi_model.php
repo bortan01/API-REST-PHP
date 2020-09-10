@@ -2,13 +2,10 @@
 defined('BASEPATH') or exit('No direct script access allowed');
 class Wompi_model extends CI_Model
 {
-
     public function obtenerToken()
     {
         $this->load->model('Credenciales_model');
         $curl = curl_init();
-
-
         //ESTE EES UN CERTIFICADO SSD PARA PERMITIRNOS HACER LA PETICION
         $certificate = "C:\wamp\cacert.pem";
         curl_setopt($curl, CURLOPT_CAINFO, $certificate);
@@ -20,7 +17,6 @@ class Wompi_model extends CI_Model
             "client_id"    => $this->Credenciales_model->client_id,
             "client_secret" => $this->Credenciales_model->client_secret,
             "audience"     => $this->Credenciales_model->audience,
-
         ];
         $fields_string = http_build_query($fieds);
 
@@ -51,65 +47,72 @@ class Wompi_model extends CI_Model
         }
     }
 
-    public function crearEnlacePago()
+    public function crearEnlacePago($monto,$nombreProducto,$descripcion,$imagen,$webHook)
     {
-
+        $this->load->model('Credenciales_model');
+        
         $curl = curl_init();
         $certificate = "C:\wamp\cacert.pem";
         curl_setopt($curl, CURLOPT_CAINFO, $certificate);
         curl_setopt($curl, CURLOPT_CAPATH, $certificate);
-        //$ACCESS_TOKEN = $this->obtenerToken()->access_token;
+        $ACCESS_TOKEN = $this->obtenerToken()->access_token;
 
-        //$headers[] = "authorization:Bearer " . $ACCESS_TOKEN;
+        $headers[] = "authorization:Bearer " . $ACCESS_TOKEN;
         $headers[] = "Content-Type:application/json-patch+json";
 
         $fieds = '{
-            "identificadorEnlaceComercio": "a43e34b1-2dae-478c-852b-9f05865177c9",
-            "monto": 1200,
-            "nombreProducto": "TESLA 3000",
+            "identificadorEnlaceComercio": "'.$this->Credenciales_model->client_id.'",
+            "monto": '.$monto.',
+            "nombreProducto": "'.$nombreProducto.'",
             "formaPago": {
               "permitirTarjetaCreditoDebido": true,
-              "permitirPagoConPuntoAgricola": false
+              "permitirPagoConPuntoAgricola": true
             },
             "infoProducto": {
-              "descripcionProducto": "ES UN TESLA",
-              "urlImagenProducto": "https://admin.christianmeza.com/img/COSTA.jpg"
+              "descripcionProducto": "'.$descripcion.'",
+              "urlImagenProducto": "'.$imagen.'"
             },
             "configuracion": {
-              "urlRedirect": "https://pagina.christianmeza.com/",
-              "esMontoEditable": false,
-              "esCantidadEditable": true,
+              "esMontoEditable": true,
+              "esCantidadEditable": false,
               "cantidadPorDefecto": 1,
+              "urlRedirect": "https://www.facebook.com/martineztours99",
               "emailsNotificacion": "fjmiranda009@gmail.com",
-              "urlWebhook": "https://api.christianmeza.com/index.php/Clientes/pago/",
+              "urlWebhook": "'.$webHook.'",
+              "notificarTransaccionCliente": true
             }
           }';
-        // curl_setopt_array($curl, array(
-        //     CURLOPT_URL            => "https://api.wompi.sv/EnlacePago",
-        //     CURLOPT_RETURNTRANSFER => true,
-        //     CURLOPT_ENCODING       => "",
-        //     CURLOPT_MAXREDIRS      => 10,
-        //     CURLOPT_TIMEOUT        => 30,
-        //     CURLOPT_HTTP_VERSION   => CURL_HTTP_VERSION_1_1,
-        //     CURLOPT_CUSTOMREQUEST  => "POST",
-        //     CURLOPT_SSL_VERIFYHOST => false,
-        //     CURLOPT_SSL_VERIFYPEER => false,
-        //     CURLOPT_POSTFIELDS     => $fieds,
-        //     CURLOPT_HTTPHEADER     => $headers,
-        // ));
+        curl_setopt_array($curl, array(
+            CURLOPT_URL            => "https://api.wompi.sv/EnlacePago",
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_ENCODING       => "",
+            CURLOPT_MAXREDIRS      => 10,
+            CURLOPT_TIMEOUT        => 30,
+            CURLOPT_HTTP_VERSION   => CURL_HTTP_VERSION_1_1,
+            CURLOPT_CUSTOMREQUEST  => "POST",
+            CURLOPT_SSL_VERIFYHOST => false,
+            CURLOPT_SSL_VERIFYPEER => false,
+            CURLOPT_POSTFIELDS     => $fieds,
+            CURLOPT_HTTPHEADER     => $headers,
+        ));
 
-        //$response = curl_exec($curl);
-        //$err = curl_error($curl);
-
-        //curl_close($curl);
-        $err = false;
+        // $response = curl_exec($curl);
+        // $err = curl_error($curl);
+        // curl_close($curl);
+        $response = '{
+                        "idEnlace":20692,
+                        "urlQrCodeEnlace":"https://wompistorage.blob.core.windows.net/imagenes/f7c5e956-5fa4-4cf6-9480-aaaa855b1d7e.jpg",
+                        "urlEnlace":"https://lk.wompi.sv/KrLN",
+                        "estaProductivo":false
+                    }';
+        $err = FALSE;
+      
         if ($err) {
             //ERROR DE cURL
             return array('err' => "ERROR DE cURL " . $err);
         } else {
           
-            $respons = '{"idEnlace":20222,"urlQrCodeEnlace":"https://wompistorage.blob.core.windows.net/imagenes/b4225b2d-0756-4b99-8883-725ea44b40dd.jpg","urlEnlace":"https://lk.wompi.sv/cVmK","estaProductivo":false}';
-            $decodificada = json_decode($respons, true);
+            $decodificada = json_decode($response, true);
 
             if ($decodificada == null) {
                 //ERROR INTERNO DE WOMPI

@@ -41,15 +41,15 @@ class TurPaquete_model extends CI_Model
         // $fotoSubida = $this->Imagen_model->guardarImagen();
         // $this->foto = $fotoSubida["path"];
         $this->load->model('Wompi_model');
-        $this->foto     = "https://admin.christianmeza.com/img/COSTA.jpg";
-        $urlWebHook     = "https://api.christianmeza.com/index.php/Clientes/pago/";
-        //$this->precio,$this->nombreTours,$this->descripcion,$this->foto,$urlWebHook
-        $respuestaWompi = $this->Wompi_model->crearEnlacePago();
+        $this->foto     = "https://www.adslzone.net/app/uploads-adslzone.net/2019/04/borrar-fondo-imagen-930x487.jpg";
+        $urlWebHook     = "https://api.christianmeza.com/index.php/Clientes/pago";
+        
+        $respuestaWompi = $this->Wompi_model->crearEnlacePago($this->precio,$this->nombreTours,$this->descripcion,$this->foto,$urlWebHook);
 
         if (!isset($respuestaWompi["idEnlace"])) {
             //HAY ERROR DE WOMPI
             $respuesta = array(
-                'err' => TRUE,
+                'err'     => TRUE,
                 'mensaje' => $respuestaWompi["err"],
             );
             return $respuesta;
@@ -63,18 +63,19 @@ class TurPaquete_model extends CI_Model
             if (!$insert) {
                 //NO GUARDO
                 $respuesta = array(
-                    'err' => TRUE,
-                    'mensaje' => 'Error al insertar ', $this->db->error_message(),
+                    'err'          => TRUE,
+                    'mensaje'      => 'Error al insertar ', $this->db->error_message(),
                     'error_number' => $this->db->error_number(),
-                    'cliente' => null
+                    'cliente'      => null
                 );
                 return $respuesta;
             } else {
                 $identificador = $this->db->insert_id();
                 $respuesta = array(
-                    'err' => FALSE,
-                    'mensaje' => 'Registro Guardado Exitosamente',
-                    'cliente' => $identificador
+                    'err'          => FALSE,
+                    'mensaje'      => 'Registro Guardado Exitosamente',
+                    'id'           => $identificador,
+                    'turPaquete'   => $this
                 );
                 return $respuesta;
             }

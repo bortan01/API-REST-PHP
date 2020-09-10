@@ -18,7 +18,6 @@ class TurPaquete extends REST_Controller
         $this->load->library("form_validation");
         $this->form_validation->set_data($data);
 
-
         //corremos las reglas de validacion
         if (true) {
             //VERIFICAMOS QUE TODOS LOS PARAMETROS ESTEN BIEN
