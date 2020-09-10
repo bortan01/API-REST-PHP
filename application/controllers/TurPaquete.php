@@ -38,4 +38,9 @@ class TurPaquete extends REST_Controller
             $this->response($respuesta, REST_Controller::HTTP_BAD_REQUEST);
         }
     }
+    
+    public function reserva_hook()
+    {
+    
+    }
 }

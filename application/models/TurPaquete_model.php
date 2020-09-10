@@ -2,6 +2,7 @@
 defined('BASEPATH') or exit('No direct script access allowed');
 class TurPaquete_model extends CI_Model
 {
+    public $id_tours;
     public $nombreTours;
     public $fecha_salida;
     public $lugar_salida;
@@ -17,7 +18,6 @@ class TurPaquete_model extends CI_Model
     public $estado;
     public $tipo;
     public $aprobado;
-    public $idEnlace;
     public $urlQrCodeEnlace;
     public $urlEnlace;
 
@@ -44,7 +44,7 @@ class TurPaquete_model extends CI_Model
         $this->foto     = "https://www.adslzone.net/app/uploads-adslzone.net/2019/04/borrar-fondo-imagen-930x487.jpg";
         $urlWebHook     = "https://api.christianmeza.com/index.php/Clientes/pago";
         
-        $respuestaWompi = $this->Wompi_model->crearEnlacePago($this->precio,$this->nombreTours,$this->descripcion,$this->foto,$urlWebHook);
+        $respuestaWompi = $this->Wompi_model->crearEnlacePagopPrueba($this->precio,$this->nombreTours,$this->descripcion,$this->foto,$urlWebHook);
 
         if (!isset($respuestaWompi["idEnlace"])) {
             //HAY ERROR DE WOMPI
@@ -55,7 +55,7 @@ class TurPaquete_model extends CI_Model
             return $respuesta;
         } else {
             //RECUPERAMOS LA INFORMACION DE WOMPI Y TRATAMOS DE GUARDAR EN LA BD
-            $this->idEnlace        = $respuestaWompi["idEnlace"];
+            $this->id_tours        = $respuestaWompi["idEnlace"];
             $this->urlQrCodeEnlace = $respuestaWompi["urlQrCodeEnlace"];
             $this->urlEnlace       = $respuestaWompi["urlEnlace"];
             
@@ -74,7 +74,6 @@ class TurPaquete_model extends CI_Model
                 $respuesta = array(
                     'err'          => FALSE,
                     'mensaje'      => 'Registro Guardado Exitosamente',
-                    'id'           => $identificador,
                     'turPaquete'   => $this
                 );
                 return $respuesta;

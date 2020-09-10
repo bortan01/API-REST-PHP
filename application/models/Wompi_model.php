@@ -47,10 +47,9 @@ class Wompi_model extends CI_Model
         }
     }
 
-    public function crearEnlacePago($monto,$nombreProducto,$descripcion,$imagen,$webHook)
+    public function crearEnlacePago($monto, $nombreProducto, $descripcion, $imagen, $webHook)
     {
         $this->load->model('Credenciales_model');
-        
         $curl = curl_init();
         $certificate = "C:\wamp\cacert.pem";
         curl_setopt($curl, CURLOPT_CAINFO, $certificate);
@@ -61,16 +60,16 @@ class Wompi_model extends CI_Model
         $headers[] = "Content-Type:application/json-patch+json";
 
         $fieds = '{
-            "identificadorEnlaceComercio": "'.$this->Credenciales_model->client_id.'",
-            "monto": '.$monto.',
-            "nombreProducto": "'.$nombreProducto.'",
+            "identificadorEnlaceComercio": "' . $this->Credenciales_model->client_id . '",
+            "monto": ' . $monto . ',
+            "nombreProducto": "' . $nombreProducto . '",
             "formaPago": {
               "permitirTarjetaCreditoDebido": true,
               "permitirPagoConPuntoAgricola": true
             },
             "infoProducto": {
-              "descripcionProducto": "'.$descripcion.'",
-              "urlImagenProducto": "'.$imagen.'"
+              "descripcionProducto": "' . $descripcion . '",
+              "urlImagenProducto": "' . $imagen . '"
             },
             "configuracion": {
               "esMontoEditable": true,
@@ -78,7 +77,7 @@ class Wompi_model extends CI_Model
               "cantidadPorDefecto": 1,
               "urlRedirect": "https://www.facebook.com/martineztours99",
               "emailsNotificacion": "fjmiranda009@gmail.com",
-              "urlWebhook": "'.$webHook.'",
+              "urlWebhook": "' . $webHook . '",
               "notificarTransaccionCliente": true
             }
           }';
@@ -96,9 +95,33 @@ class Wompi_model extends CI_Model
             CURLOPT_HTTPHEADER     => $headers,
         ));
 
-        // $response = curl_exec($curl);
-        // $err = curl_error($curl);
-        // curl_close($curl);
+        $response = curl_exec($curl);
+        $err = curl_error($curl);
+        curl_close($curl);
+        if ($err) {
+            //ERROR DE cURL
+            return array('err' => "ERROR DE cURL " . $err);
+        } else {
+
+            $decodificada = json_decode($response, true);
+
+            if ($decodificada == null) {
+                //ERROR INTERNO DE WOMPI
+                return array('err' => "ERROR INTERNO DE WOMPI");
+            } else {
+                if (!isset($decodificada["idEnlace"])) {
+                    //RESPUEESTA DE ERROR DE WOMPI
+                    return array('err' => "ERROR DE PETICION");
+                } else {
+                    //TENEMOS NUESTRA RESPUETA CORRECTA DE WOMPI
+                    return $decodificada;
+                }
+            }
+        }
+    }
+
+    public function crearEnlacePagopPrueba($monto, $nombreProducto, $descripcion, $imagen, $webHook)
+    {
         $response = '{
                         "idEnlace":20692,
                         "urlQrCodeEnlace":"https://wompistorage.blob.core.windows.net/imagenes/f7c5e956-5fa4-4cf6-9480-aaaa855b1d7e.jpg",
@@ -106,30 +129,25 @@ class Wompi_model extends CI_Model
                         "estaProductivo":false
                     }';
         $err = FALSE;
-      
+
         if ($err) {
             //ERROR DE cURL
             return array('err' => "ERROR DE cURL " . $err);
         } else {
-          
             $decodificada = json_decode($response, true);
 
             if ($decodificada == null) {
                 //ERROR INTERNO DE WOMPI
                 return array('err' => "ERROR INTERNO DE WOMPI");
-             
             } else {
                 if (!isset($decodificada["idEnlace"])) {
                     //RESPUEESTA DE ERROR DE WOMPI
-                   return array('err' => "ERROR DE PETICION");
-                   
+                    return array('err' => "ERROR DE PETICION");
                 } else {
                     //TENEMOS NUESTRA RESPUETA CORRECTA DE WOMPI
                     return $decodificada;
-                    
                 }
             }
         }
-   
     }
 }
