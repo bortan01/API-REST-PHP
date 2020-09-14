@@ -31,6 +31,9 @@ $config = array(
 	'autos_put' => array(
 		array('field' => 'placa', 'label' => 'Placa', 'rules' => 'trim|required|min_length[2]|max_length[255]')
 	),
+	'marca_put' => array(
+		array('field' => 'marca', 'label' => 'Marca', 'rules' => 'trim|required|min_length[2]|max_length[255]')
+	),
 
 	'insertarSitio' => array(
 		array('field' => 'nombre'	           , 'label' => 'nombre'                 , 'rules' => 'trim|required'),
