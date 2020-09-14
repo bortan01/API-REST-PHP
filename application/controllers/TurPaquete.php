@@ -19,7 +19,7 @@ class TurPaquete extends REST_Controller
         $this->form_validation->set_data($data);
 
         //corremos las reglas de validacion
-        if (true) {
+        if ($this->form_validation->run('insertarTurPaquete')) {
             //VERIFICAMOS QUE TODOS LOS PARAMETROS ESTEN BIEN
             $turPaquete = $this->TurPaquete_model->verificar_campos($data);
             $respuesta = $turPaquete->guardar();
@@ -38,9 +38,21 @@ class TurPaquete extends REST_Controller
             $this->response($respuesta, REST_Controller::HTTP_BAD_REQUEST);
         }
     }
-    
-    public function reserva_hook()
+
+    public function test_post()
     {
-    
+        $this->load->model('Imagen_model');
+        //COMO SUBIR UNA FOTO ENVIAR PARAMETRO foto tipo file
+        //SOLO ACEPTA ARCHIVOS TIPO IMAGEN NO MAYORES A 2MB
+        //$imagen = $this->Imagen_model->guardarImagen();
+        //$this->response($imagen, REST_Controller::HTTP_OK);
+
+        //PARA SUBIR MUCHAS FOTOS Y GUARDARLAS EN LA TABLA GALERIA
+        //PRIMER PARAMETRO   => NOMBRE DE TABLA
+        //SEGUNDO PARAMETRO  => ID FORANEO
+        // $imagenes = $this->Imagen_model->guardarGaleria("tours_paquete", 10);
+        // $this->response($imagenes, REST_Controller::HTTP_OK);
+        
+        
     }
 }

@@ -23,4 +23,19 @@ class Reserva extends REST_Controller
             $this->response($respuesta, REST_Controller::HTTP_OK);
         }
     }
+
+    public function mensaje_post()
+    {
+        $this->load->model('Firebase_model');
+
+        $respuesta = $this->Firebase_model->EnviarNotificacion();
+        
+        if (isset($respuesta['err'])) {
+            $this->response($respuesta, REST_Controller::HTTP_BAD_REQUEST);
+        } else {
+            $this->response($respuesta, REST_Controller::HTTP_OK);
+        }
+    }
+
+    
 }

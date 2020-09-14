@@ -37,12 +37,12 @@ class TurPaquete_model extends CI_Model
     public function guardar()
     {
         $nombreTabla = "tours_paquete";
+        $this->load->model('Wompi_model');
         ///SUBIMOS LA IMAGEN AL SERVIDOR Y OBTENEMOS SU URL
         // $fotoSubida = $this->Imagen_model->guardarImagen();
         // $this->foto = $fotoSubida["path"];
-        $this->load->model('Wompi_model');
         $this->foto     = "https://www.adslzone.net/app/uploads-adslzone.net/2019/04/borrar-fondo-imagen-930x487.jpg";
-        $urlWebHook     = "https://api.christianmeza.com/index.php/Clientes/pago";
+        $urlWebHook     = "https://api.christianmeza.com/index.php/reserva/save";
         
         $respuestaWompi = $this->Wompi_model->crearEnlacePagopPrueba($this->precio,$this->nombreTours,$this->descripcion,$this->foto,$urlWebHook);
 

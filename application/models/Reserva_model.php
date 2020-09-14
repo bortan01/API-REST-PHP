@@ -35,37 +35,22 @@ class Reserva_model extends CI_Model
         $this->monto                = $data["Monto"];
         $this->cantidad             = $data["Cantidad"];
 
-        
-        try {
 
-            $insert = $this->db->insert($nombreTabla, $this);
-
-            if ($insert) {
-
-
-                $respuesta = array(
-                    'err' => FALSE,
-                    'mensaje' => 'Registro Guardado Exitosamente',
-                    'reserva' => $this
-                );
-                return $respuesta;
-            } else {
-                //NO GUARDO
-                $respuesta = array(
-                    'err' => TRUE,
-                    'mensaje' => 'Error al insertar ', $this->db->error_message(),
-                    'error_number' => $this->db->error_number(),
-                    'cliente' => null
-                );
-                return $respuesta;
-            }
-        } catch (Exception $e) {
-            echo "dentro de  cartch";
+        $insert = $this->db->insert($nombreTabla, $this);
+        if (!$insert) {
+            //NO GUARDO
             $respuesta = array(
-
-                'err' => TRUE
-
-
+                'err' => TRUE,
+                'mensaje' => 'Error al insertar ', $this->db->error_message(),
+                'error_number' => $this->db->error_number(),
+                'cliente' => null
+            );
+            return $respuesta;
+        } else {
+            $respuesta = array(
+                'err' => FALSE,
+                'mensaje' => 'Registro Guardado Exitosamente',
+                'reserva' => $this
             );
             return $respuesta;
         }
