@@ -27,6 +27,11 @@ $config = array(
 	'pregunta_put' => array(
 		array('field' => 'pregunta', 'label' => 'Pregunta', 'rules' => 'trim|required|min_length[2]|max_length[255]')
 	),
+
+	'autos_put' => array(
+		array('field' => 'placa', 'label' => 'Placa', 'rules' => 'trim|required|min_length[2]|max_length[255]')
+	),
+
 	'insertarSitio' => array(
 		array('field' => 'nombre'	           , 'label' => 'nombre'                 , 'rules' => 'trim|required'),
 		array('field' => 'longitud'            , 'label' => 'longiitud'              , 'rules' => 'trim|required|min_length[3]|max_length[255]'),
