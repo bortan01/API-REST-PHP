@@ -35,3 +35,4 @@ application/config/database.php
 uploads/
 info/*
 application/models/Credenciales_model.php
+push.json

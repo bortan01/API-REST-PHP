@@ -1,7 +1,43 @@
 <?php
 defined('BASEPATH') or exit('No direct script access allowed');
+require  'C:\wamp64\www\API-REST-PHP\vendor\autoload.php';
+
+use Kreait\Firebase\Factory;
+use Kreait\Firebase\ServiceAccount;
+use Kreait\Firebase\Messaging\Notification;
+use Kreait\Firebase\Messaging\CloudMessage;
+
 class Firebase_model extends CI_Model
 {
+    private $firebase;
+    function __construct()
+    {
+        try {
+            $serviceAccount = ServiceAccount::fromValue('C:\wamp64\www\API-REST-PHP\push.json');
+            $this->firebase = (new Factory)->withServiceAccount($serviceAccount);
+        } catch (PDOException $e) {
+            echo 'Exception -> ';
+            var_dump($e->getMessage());
+        }
+    }
+
+    public function EnviarNotificacionSDK()
+    {
+        $data = [
+            'UID' => 'ABC',
+            'NOMBRE' => 'BORIS',
+            'COMIDA' => 'MARUCHAN',
+            'click_action' => 'FLUTTER_NOTIFICATION_CLICK',
+        ];
+
+        $messaging = $this->firebase->createMessaging();
+        $message = CloudMessage::withTarget("topic", "TODOS_LOS_ANDROID")
+            ->withNotification(Notification::create('TITULO', 'CUERPO DEL MENSAJE'))
+            ->withData($data);
+
+        $respuesta =  $messaging->send($message);
+        return $respuesta;
+    }
     public function EnviarNotificacion()
     {
         $this->load->model('Credenciales_model');
@@ -17,21 +53,21 @@ class Firebase_model extends CI_Model
         ///topics/TODOS_LOS_ANDROID
         $fieds = '{
             "to" : "/topics/TODOS_LOS_ANDROID",
-             "notification" :{
-                 "title" : "Notificacion desde postman",
-                 "body" : "Body desde postman afad a  sdjfla ",
-                 "image" : "https://scontent-mia3-1.xx.fbcdn.net/v/t1.0-9/40803958_635079063559459_4250848395503075328_o.jpg?_nc_cat=101&_nc_sid=09cbfe&_nc_ohc=OnmJM_2ubjUAX9sZI3H&_nc_ht=scontent-mia3-1.xx&oh=a2db1c56e8ecfa6fb8d1e7b7f5bcebfc&oe=5F86908C",
-                 "sound" : "default",
-                 "subtitle" :"Este es el subtitulo",
-                 "color" : "#7CFC00"     
-             },
-             "data":{
-                 "UID" :"ABC",
-                 "NOMBRE" :"BORIS",
-                 "COMIDA" :"DULCES y  CERVEZA",
-                 "click_action" :"FLUTTER_NOTIFICATION_CLICK "
-             }
-         }';
+            "notification" :{
+                "title" : "Notificacion desde postman",
+                "body" : "Body desde postman afad a  sdjfla ",
+                "image" : "https://scontent-mia3-1.xx.fbcdn.net/v/t1.0-9/40803958_635079063559459_4250848395503075328_o.jpg?_nc_cat=101&_nc_sid=09cbfe&_nc_ohc=OnmJM_2ubjUAX9sZI3H&_nc_ht=scontent-mia3-1.xx&oh=a2db1c56e8ecfa6fb8d1e7b7f5bcebfc&oe=5F86908C",
+                "sound" : "default",
+                "subtitle" :"Este es el subtitulo",
+                "color" : "#7CFC00"     
+            },
+            "data":{
+                "UID" :"ABC",
+                "NOMBRE" :"BORIS",
+                "COMIDA" :"DULCES y  CERVEZA",
+                "click_action" :"FLUTTER_NOTIFICATION_CLICK"
+            }
+        }';
         curl_setopt_array($curl, array(
             CURLOPT_URL            => "https://fcm.googleapis.com/fcm/send",
             CURLOPT_RETURNTRANSFER => true,
@@ -67,9 +103,21 @@ class Firebase_model extends CI_Model
             //     } else {
             //         //TENEMOS NUESTRA RESPUETA CORRECTA DE FIREBASE
             //         return $decodificada;
-                    
+
             //     }
             // }
         }
+    }
+
+    public function crearToken($uid, $adicional)
+    {
+
+
+        $auth = $this->firebase->createAuth();
+        $customToken = $auth->createCustomToken($uid, $adicional);
+        $auth->signInWithCustomToken($customToken);
+
+
+        return (string) $customToken;
     }
 }
