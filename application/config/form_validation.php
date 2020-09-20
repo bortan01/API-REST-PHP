@@ -38,7 +38,7 @@ $config = array(
 		array('field' => 'modelo', 'label' => 'Modelo', 'rules' => 'trim|required|min_length[2]|max_length[255]')
 	),
 	'transmision_put' => array(
-		array('field' => 'trasmicion', 'label' => 'Transmision', 'rules' => 'trim|required|min_length[2]|max_length[255]')
+		array('field' => 'transmision', 'label' => 'Transmision', 'rules' => 'trim|required|min_length[2]|max_length[255]')
 	),
 	'mantenimiento_put' => array(
 		array('field' => 'fecha', 'label' => 'Fecha', 'rules' => 'trim|required|min_length[2]|max_length[255]')

@@ -3,12 +3,11 @@ defined('BASEPATH') or exit('No direct script access allowed');
 class Transmision_model extends CI_Model
 {
     public $idtransmicion;
-    public $trasmicion;
-    
+    public $transmision;
 
-    public function get_modelo(){
+    public function get_transmision(){
 
-        $query=$this->db->get('transmicion');
+        $query=$this->db->get('transmisionvehiculo');
 
             return $query->result();
         }
@@ -30,7 +29,7 @@ class Transmision_model extends CI_Model
         public function insert(){
    
             
-           $query=$this->db->get_where('transmicion',array('trasmicion'=>$this->trasmicion) );
+           $query=$this->db->get_where('transmisionvehiculo',array('transmision'=>$this->transmision) );
            $transmisiones=$query->row();
    
                if (isset($transmisiones)) {
@@ -42,7 +41,7 @@ class Transmision_model extends CI_Model
                }
    
                //insertar el registro
-               $hecho=$this->db->insert('transmicion',$this);
+               $hecho=$this->db->insert('transmisionvehiculo',$this);
    
                if ($hecho) {
                    #insertado
