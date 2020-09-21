@@ -13,22 +13,28 @@ class Usuario extends REST_Controller
     public function registroUser_post()
     {
         //  $data = $this->post();
-        $fullname = "test7@gmail.com";
-        $username =  "test7@gmail.co";
-        $email = "test7@gmail.co";
-        $password = "test7@gmail.co";
+        $fullname = "test55@gmail.com";
+        $username =  "test55@gmail.co";
+        $email = "test55@gmail.co";
+        $password = "123456";
         $respuesta = $this->Usuario_model->createAccount($fullname, $username, $email, $password);
         $this->response($respuesta, REST_Controller::HTTP_OK);
     }
-
-
     public function loginUser_post()
     {
         //  $data = $this->post();
-        $username = "test2@gmail.com";
-        $password = "test2@gmail.com";
+        $email = "test44@gmail.co";
+        $password = "123456";
 
-        $respuesta = $this->Usuario_model->loginUser($username, $password);
-        $this->response($respuesta, REST_Controller::HTTP_OK);
+        //$respuesta = $this->Usuario_model->loginUser($email, $password);
+        $this->load->model('Firebase_model');
+        $login = $this->Firebase_model->loginEmailPassword($email, $password);
+        $this->response($login, REST_Controller::HTTP_OK);
+    }
+    public function obtenerUsiario_get()
+    {
+        $uid = "sFn3HUM3FIRjBLVjNnVo9DcJQWf1";
+        $this->load->model('Firebase_model');
+        $this->Firebase_model->obtnerUsuarioUID($uid);
     }
 }

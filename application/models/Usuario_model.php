@@ -13,53 +13,27 @@ class Usuario_model extends CI_Model
     {
         $this->load->model('Firebase_model');
     }
-
-
-    private function getUuid()
-    {
-        return $this->db->select('SELECT uuid() as uuid');
-        // "")->fetch()['uuid'];
-    }
-
-    private function isExists($table, $key, $value)
-    {
-
-        try {
-            $stmt = $this->db->get_where($table, array($key => $value), 1);
-
-
-            $resultado = $stmt->result();
-
-            if (count($resultado) > 0) {
-                return array('status' => 303, 'message' => $value . ' already exists');
-            } else {
-                return array('status' => 200, 'message' => $value);
-            }
-        } catch (Exception $e) {
-            return array('status' => 405, 'message' => $e->getMessage());
-        }
-    }
-
     public function createAccount($fullname, $username, $email, $password)
     {
+        $usuarioFirebase = $this->Firebase_model->crearUsuarioConEmailPassword($email, $password);
+
+        if ($usuarioFirebase["err"]) {
+            return array('status' => 303, 'message' => $usuarioFirebase["mensaje"]);
+        }
 
         if (empty($fullname) || empty($username) || empty($email) || empty($password)) {
             return array('status' => 303, 'message' => 'Empty Fields');
         } else {
-
-
             $emailResp = $this->isExists('users', 'email', $email);
             if ($emailResp['status'] != 200) {
                 return $emailResp;
             }
-
             $usernameResp = $this->isExists('users', 'username', $username);
             if ($usernameResp['status'] != 200) {
                 return $usernameResp;
             }
-
             $nombreTabla    = "users";
-            $this->uuid     = $this->getUuid();
+            $this->uuid     =  $usuarioFirebase["uid"];
             $this->fullname = $fullname;
             $this->username = $username;
             $this->password = $password = password_hash($password, PASSWORD_BCRYPT, ['cost' => 8]);
@@ -74,17 +48,27 @@ class Usuario_model extends CI_Model
             }
         }
     }
+    private function isExists($table, $key, $value)
+    {
+        try {
+            $stmt = $this->db->get_where($table, array($key => $value), 1);
+            $resultado = $stmt->result();
 
+            if (count($resultado) > 0) {
+                return array('status' => 303, 'message' => $value . ' already exists');
+            } else {
+                return array('status' => 200, 'message' => $value);
+            }
+        } catch (Exception $e) {
+            return array('status' => 405, 'message' => $e->getMessage());
+        }
+    }
     public function loginUser($username, $password)
     {
-
         $query = $this->db->get_where("users", array("username" => $username), 1);
         $stmt = $query->result();
 
         if (count($stmt) == 1) {
-
-
-
             $row = $stmt[0];
             if (password_verify($password, $row->password)) {
 
@@ -111,10 +95,8 @@ class Usuario_model extends CI_Model
             return array('status' => 303, 'message' => $username . ' does not exists');
         }
     }
-
     public function createChatRecord($user_1_uuid, $user_2_uuid)
     {
-
         // $chat_uuid_stmt = $this->con->prepare("SELECT chat_uuid FROM chat_record WHERE (user_1_uuid = :user_1_uuid AND user_2_uuid = :user_2_uuid) OR (user_1_uuid = :user_22_uuid AND user_2_uuid = :user_11_uuid) LIMIT 1");
 
         // $chat_uuid_stmt->bindParam(":user_1_uuid", $user_1_uuid, PDO::PARAM_STR);
@@ -149,7 +131,6 @@ class Usuario_model extends CI_Model
         //     return array('status' => 200, 'message' => $ar);
         // }
     }
-
     public function getUsers()
     {
         $query =  $this->db->get('users');
@@ -160,7 +141,6 @@ class Usuario_model extends CI_Model
 
         return array('status' => 200, 'message' => ['users' => $ar]);
     }
-
     public function logout()
     {
 

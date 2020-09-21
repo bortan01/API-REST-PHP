@@ -6,6 +6,9 @@ use Kreait\Firebase\Factory;
 use Kreait\Firebase\ServiceAccount;
 use Kreait\Firebase\Messaging\Notification;
 use Kreait\Firebase\Messaging\CloudMessage;
+use Kreait\Firebase\Exception\AuthException;
+use Kreait\Firebase\Exception\FirebaseException;
+use Kreait\Firebase\Exception\Auth\UserNotFound;
 
 class Firebase_model extends CI_Model
 {
@@ -20,7 +23,55 @@ class Firebase_model extends CI_Model
             var_dump($e->getMessage());
         }
     }
+    public function crearUsuarioConEmailPassword($email, $password)
+    {
+        try {
+            $auth = $this->firebase->createAuth();
+            $user = $auth->createUserWithEmailAndPassword($email, $password);
+            $uid = $user->uid;
+            $campos = ['displayName' => 'El Coco loco'];
+            $auth->updateUser($uid, $campos);
+            //TODO : HACER EL SING OUT
 
+            //PARA ENVIAR CORREO ELECTRONICO DE VERIFICACION
+            //$user = $auth->getUser('some-uid');
+            //$auth->sendEmailVerificationLink($user);
+            return array("err" => FALSE, "uid" => $uid);
+        } catch (AuthException $e) {
+            return array("err" => TRUE, "mensaje" => $e->getMessage());
+        } catch (FirebaseException $e) {
+            return array("err" => TRUE, "mensaje" => $e->getMessage());
+        }
+    }
+    public function obtnerUsuarioUID($uid)
+    {
+        try {
+
+            $auth = $this->firebase->createAuth();
+            $user = $auth->getUser($uid);
+            return array("err" => FALSE, "user" => $user);
+        } catch (AuthException $e) {
+            return array("err" => TRUE, "mensaje" => $e->getMessage());
+        } catch (FirebaseException $e) {
+            return array("err" => TRUE, "mensaje" => $e->getMessage());
+        } catch (UserNotFound $e) {
+            return array("err" => TRUE, "mensaje" => $e->getMessage());
+        }
+    }
+    public function loginEmailPassword($email, $clearTextPassword)
+    {
+        try {
+            $auth = $this->firebase->createAuth();
+            $signInResult = $auth->signInWithEmailAndPassword($email, $clearTextPassword);
+            return array("err" => FALSE, "user" => $signInResult->data());
+        } catch (AuthException $e) {
+            return array("err" => TRUE, "mensaje" => $e->getMessage());
+        } catch (FirebaseException $e) {
+            return array("err" => TRUE, "mensaje" => $e->getMessage());
+        } catch (UserNotFound $e) {
+            return array("err" => TRUE, "mensaje" => $e->getMessage());
+        }
+    }
     public function EnviarNotificacionSDK()
     {
         $data = [
@@ -37,6 +88,14 @@ class Firebase_model extends CI_Model
 
         $respuesta =  $messaging->send($message);
         return $respuesta;
+    }
+
+    public function crearToken($uid, $adicional)
+    {
+        $auth = $this->firebase->createAuth();
+        $customToken = $auth->createCustomToken($uid, $adicional);
+        $auth->signInWithCustomToken($customToken);
+        return (string) $customToken;
     }
     public function EnviarNotificacion()
     {
@@ -107,17 +166,5 @@ class Firebase_model extends CI_Model
             //     }
             // }
         }
-    }
-
-    public function crearToken($uid, $adicional)
-    {
-
-
-        $auth = $this->firebase->createAuth();
-        $customToken = $auth->createCustomToken($uid, $adicional);
-        $auth->signInWithCustomToken($customToken);
-
-
-        return (string) $customToken;
     }
 }
