@@ -1,5 +1,6 @@
 <?php
 defined('BASEPATH') or exit('No direct script access allowed');
+
 class Transmision_model extends CI_Model
 {
     public $idtransmicion;
