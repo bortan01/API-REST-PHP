@@ -63,7 +63,20 @@ class Firebase_model extends CI_Model
         try {
             $auth = $this->firebase->createAuth();
             $signInResult = $auth->signInWithEmailAndPassword($email, $clearTextPassword);
-            return array("err" => FALSE, "user" => $signInResult->data());
+                 
+            $data = $signInResult->data();
+            $uid = $data['localId'];
+            $customToken =   $auth->createCustomToken($uid);
+          
+            $ar = [];
+            $ar['err']       = FALSE;
+            $ar['message']   = 'LOGIN EXITOSO';
+            $ar['user_uuid'] = $uid;
+            $ar['token']     = (string)$customToken;
+       
+          
+
+            return array("err" => FALSE, "message" => $ar);
         } catch (AuthException $e) {
             return array("err" => TRUE, "mensaje" => $e->getMessage());
         } catch (FirebaseException $e) {

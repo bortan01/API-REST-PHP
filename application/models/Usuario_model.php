@@ -5,7 +5,6 @@ class Usuario_model extends CI_Model
     public $uuid;
     public $fullname;
     public $username;
-    public $password;
     public $email;
 
 
@@ -18,34 +17,21 @@ class Usuario_model extends CI_Model
         $usuarioFirebase = $this->Firebase_model->crearUsuarioConEmailPassword($email, $password);
 
         if ($usuarioFirebase["err"]) {
-            return array('status' => 303, 'message' => $usuarioFirebase["mensaje"]);
+            return array("err"=>TRUE, 'status' => 303, 'mensaje' => $usuarioFirebase["mensaje"]);
         }
 
-        if (empty($fullname) || empty($username) || empty($email) || empty($password)) {
-            return array('status' => 303, 'message' => 'Empty Fields');
+        $nombreTabla    = "users";
+        $this->uuid     = $usuarioFirebase["uid"];
+        $this->fullname = $fullname;
+        $this->username = $username;
+        $this->email    = $email;
+
+        $insert = $this->db->insert($nombreTabla, $this);
+
+        if ($insert) {
+            return array('err' => FALSE, 'status' => 200, 'mensaje' => 'Cuenta Creada Exitosamente!');
         } else {
-            $emailResp = $this->isExists('users', 'email', $email);
-            if ($emailResp['status'] != 200) {
-                return $emailResp;
-            }
-            $usernameResp = $this->isExists('users', 'username', $username);
-            if ($usernameResp['status'] != 200) {
-                return $usernameResp;
-            }
-            $nombreTabla    = "users";
-            $this->uuid     =  $usuarioFirebase["uid"];
-            $this->fullname = $fullname;
-            $this->username = $username;
-            $this->password = $password = password_hash($password, PASSWORD_BCRYPT, ['cost' => 8]);
-            $this->email    = $email;
-
-            $insert = $this->db->insert($nombreTabla, $this);
-
-            if ($insert) {
-                return array('status' => 200, 'message' => 'Account creatded Successfully..!');
-            } else {
-                return array('status' => 303, 'message' => $this->db->error_message());
-            }
+            return array('err' => FALSE, 'status' => 303, 'mensaje' => $this->db->error_message());
         }
     }
     private function isExists($table, $key, $value)

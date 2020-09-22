@@ -8,15 +8,15 @@ $config = array(
 	//el tercero son las reglas
 	'cliente_put' => array(
 		array('field' => 'correo', 'label' => 'correo electronico', 'rules' => 'trim|required|valid_email'),
-		array('field' => 'nombre', 'label' => 'nombre', 'rules' => 'trim|required|min_length[2]|max_length[255]'),
-		array('field' => 'zip', 'label' => 'zip', 'rules' => 'trim|required|min_length[2]|max_length[5]')
+		array('field' => 'nombre', 'label' => 'nombre'            , 'rules' => 'trim|required|min_length[2]|max_length[255]'),
+		array('field' => 'zip'   , 'label' => 'zip'               , 'rules' => 'trim|required|min_length[2]|max_length[5]')
 	),
 
 
 	'cliente_post' => array(
-		array('field' => 'id', 'label' => 'cliente id', 'rules' => 'trim|required|Integer'),
-		array('field' => 'nombre', 'label' => 'nombre', 'rules' => 'trim|required|min_length[2]|max_length[255]'),
-		array('field' => 'zip', 'label' => 'zip', 'rules' => 'trim|required|min_length[2]|max_length[5]')
+		array('field' => 'id'    , 'label' => 'cliente id', 'rules' => 'trim|required|Integer'),
+		array('field' => 'nombre', 'label' => 'nombre'    , 'rules' => 'trim|required|min_length[2]|max_length[255]'),
+		array('field' => 'zip'   , 'label' => 'zip'       , 'rules' => 'trim|required|min_length[2]|max_length[5]')
 	),
 
 	'rama_put' => array(
@@ -58,23 +58,30 @@ $config = array(
 	),
 	
 	'insertarTurPaquete' => array(
-		array('field' => 'nombreTours'	    ,'label' => 'Nombre del Viaje'             , 'rules' => 'trim|required'),
-		array('field' => 'fecha_salida'     ,'label' => 'Fecha de Salida'              , 'rules' => 'trim|required'),
-		array('field' => 'lugar_salida'     ,'label' => 'Lugar de salida'              , 'rules' => 'trim|required|min_length[3]|max_length[45]'),
-		array('field' => 'incluye'          ,'label' => 'Incluye'                      , 'rules' => 'trim|required|min_length[3]|max_length[45]'),
-		array('field' => 'no_incluye'       ,'label' => 'No Incluye'                   , 'rules' => 'trim|required|min_length[3]|max_length[45]'),
-		array('field' => 'requisitos'       ,'label' => 'Requisitos'                   , 'rules' => 'trim|required|min_length[3]|max_length[45]'),
-		array('field' => 'promociones'      ,'label' => 'Promociones'                  , 'rules' => 'trim|required|min_length[3]|max_length[45]'),
-		array('field' => 'descripcion'      ,'label' => 'Descripcion'                  , 'rules' => 'trim|required|min_length[3]|max_length[45]'),
-		array('field' => 'nombre_encargado' ,'label' => 'Nombre de Encargado'          , 'rules' => 'trim|required|min_length[3]|max_length[45]'),
-		array('field' => 'estado'           ,'label' => 'Estado'                       , 'rules' => 'trim|required|min_length[3]|max_length[45]'),
-		array('field' => 'tipo'             ,'label' => 'Tipo'                         , 'rules' => 'trim|required|min_length[3]|max_length[45]'),
-		array('field' => 'aprobado'         ,'label' => 'Aprobacion'                   , 'rules' => 'trim|required|min_length[3]|max_length[45]'),
-		array('field' => 'cupos_disponibles','label' => 'Cupos de Paquetes'            , 'rules' => 'trim|required|integer'),
-		array('field' => 'precio'           ,'label' => 'Precio'                       , 'rules' => 'trim|required|numeric'),
+		array('field' => 'nombreTours'	    ,'label' => 'Nombre del Viaje'    , 'rules' => 'trim|required'),
+		array('field' => 'fecha_salida'     ,'label' => 'Fecha de Salida'     , 'rules' => 'trim|required'),
+		array('field' => 'lugar_salida'     ,'label' => 'Lugar de salida'     , 'rules' => 'trim|required|min_length[3]|max_length[45]'),
+		array('field' => 'incluye'          ,'label' => 'Incluye'             , 'rules' => 'trim|required|min_length[3]|max_length[45]'),
+		array('field' => 'no_incluye'       ,'label' => 'No Incluye'          , 'rules' => 'trim|required|min_length[3]|max_length[45]'),
+		array('field' => 'requisitos'       ,'label' => 'Requisitos'          , 'rules' => 'trim|required|min_length[3]|max_length[45]'),
+		array('field' => 'promociones'      ,'label' => 'Promociones'         , 'rules' => 'trim|required|min_length[3]|max_length[45]'),
+		array('field' => 'descripcion'      ,'label' => 'Descripcion'         , 'rules' => 'trim|required|min_length[3]|max_length[45]'),
+		array('field' => 'nombre_encargado' ,'label' => 'Nombre de Encargado' , 'rules' => 'trim|required|min_length[3]|max_length[45]'),
+		array('field' => 'estado'           ,'label' => 'Estado'              , 'rules' => 'trim|required|min_length[3]|max_length[45]'),
+		array('field' => 'tipo'             ,'label' => 'Tipo'                , 'rules' => 'trim|required|min_length[3]|max_length[45]'),
+		array('field' => 'aprobado'         ,'label' => 'Aprobacion'          , 'rules' => 'trim|required|min_length[3]|max_length[45]'),
+		array('field' => 'cupos_disponibles','label' => 'Cupos de Paquetes'   , 'rules' => 'trim|required|integer'),
+		array('field' => 'precio'           ,'label' => 'Precio'              , 'rules' => 'trim|required|numeric'),
 	
 	),
-
-
-
+	'insertarUsuario' => array(
+		array('field' => 'fullname'  ,'label' => 'Nombre Copleto'     , 'rules' => 'trim|required|min_length[3]|max_length[45]'),
+		array('field' => 'username'  ,'label' => 'Nombre de Usuario'  , 'rules' => 'trim|required|min_length[3]|max_length[45]'),
+		array('field' => 'email'     ,'label' => 'Correo Electronico' , 'rules' => 'trim|required|min_length[3]|max_length[45]'),
+		array('field' => 'password'	 ,'label' => 'Password'           , 'rules' => 'trim|required|min_length[3]|max_length[45]')	
+	),
+	'loginUsuario' => array(
+		array('field' => 'username'  ,'label' => 'Correo Electronico' , 'rules' => 'trim|required|min_length[3]|max_length[45]'),
+		array('field' => 'password'	 ,'label' => 'Password'           , 'rules' => 'trim|required|min_length[3]|max_length[45]')	
+	),
 );

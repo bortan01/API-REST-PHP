@@ -9,27 +9,65 @@ class Usuario extends REST_Controller
         $this->load->database();
         $this->load->model('Usuario_model');
     }
-
     public function registroUser_post()
     {
-        //  $data = $this->post();
-        $fullname = "test55@gmail.com";
-        $username =  "test55@gmail.co";
-        $email = "test55@gmail.co";
-        $password = "123456";
-        $respuesta = $this->Usuario_model->createAccount($fullname, $username, $email, $password);
-        $this->response($respuesta, REST_Controller::HTTP_OK);
+        $data = $this->post();
+        $this->load->library('form_validation');
+        $this->form_validation->set_data($data);
+
+        //corremos las reglas de validacion
+        if (!$this->form_validation->run('insertarUsuario')) {
+            //algo mal
+            $respuesta = array(
+                'err' => TRUE,
+                'mensaje' => 'har errores en el envio de informacion',
+                'errores' => $this->form_validation->get_errores_arreglo()
+            );
+            $this->response($respuesta, REST_Controller::HTTP_BAD_REQUEST);
+        } else {
+
+            $fullname = $data["fullname"];
+            $username =  $data["username"];
+            $email    = $data["email"];
+            $password = $data["password"];
+
+            $respuesta = $this->Usuario_model->createAccount($fullname, $username, $email, $password);
+            if ($respuesta['err']) {
+                $this->response($respuesta, REST_Controller::HTTP_BAD_REQUEST);
+            } else {
+                $this->response($respuesta, REST_Controller::HTTP_OK);
+            }
+        }
     }
     public function loginUser_post()
     {
-        //  $data = $this->post();
-        $email = "test44@gmail.co";
-        $password = "123456";
+        $data = $this->post();
+        $this->load->library('form_validation');
+        $this->form_validation->set_data($data);
 
-        //$respuesta = $this->Usuario_model->loginUser($email, $password);
-        $this->load->model('Firebase_model');
-        $login = $this->Firebase_model->loginEmailPassword($email, $password);
-        $this->response($login, REST_Controller::HTTP_OK);
+
+
+        //corremos las reglas de validacion
+        if (!$this->form_validation->run('loginUsuario')) {
+            //algo mal
+            $respuesta = array(
+                'err' => TRUE,
+                'mensaje' => 'har errores en el envio de informacion',
+                'errores' => $this->form_validation->get_errores_arreglo()
+            );
+            $this->response($respuesta, REST_Controller::HTTP_BAD_REQUEST);
+        } else {
+            $email    = $data["username"];
+            $password = $data["password"];
+
+            $this->load->model('Firebase_model');
+            $respuesta = $this->Firebase_model->loginEmailPassword($email, $password);
+            if ($respuesta['err']) {
+                $this->response($respuesta["message"], REST_Controller::HTTP_BAD_REQUEST);
+            } else {
+                $this->response($respuesta["message"], REST_Controller::HTTP_OK);
+            }
+        }
     }
     public function obtenerUsiario_get()
     {
