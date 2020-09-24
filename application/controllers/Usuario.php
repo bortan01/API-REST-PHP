@@ -69,10 +69,29 @@ class Usuario extends REST_Controller
             }
         }
     }
-    public function obtenerUsiario_get()
+    public function obtenerUsuarios_get()
     {
-        $uid = "sFn3HUM3FIRjBLVjNnVo9DcJQWf1";
-        $this->load->model('Firebase_model');
-        $this->Firebase_model->obtnerUsuarioUID($uid);
+
+        $respuesta =  $this->Usuario_model->getUsers();
+        if ($respuesta['err']) {
+            $this->response($respuesta["message"], REST_Controller::HTTP_BAD_REQUEST);
+        } else {
+            $this->response($respuesta, REST_Controller::HTTP_OK);
+        }
+    }
+    public function obtenerChat_post()
+    {
+        $data = $this->post();
+
+        $user1 = $data["user_1"];
+        $user2 = $data["user_2"];
+        $respuesta =  $this->Usuario_model->createChatRecord($user1, $user2);
+        $this->response($respuesta, REST_Controller::HTTP_OK);
+    }
+
+    public function logout_post()
+    {
+        $resp = array('status' => 200, 'message' => 'User Logout Successfully');
+        echo json_encode($resp);
     }
 }

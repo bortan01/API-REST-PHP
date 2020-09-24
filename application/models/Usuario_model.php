@@ -1,4 +1,13 @@
 <?php
+//this->db->select('title, content, date');
+//$this->db->where('name!=', $name);
+//$this->db->or_where('id >', $id);
+//$query = $this->db->get('mytable');
+//$query->result()
+
+//$query = $this->db->get_compiled_select('mytable');
+// echo $query ;
+
 defined('BASEPATH') or exit('No direct script access allowed');
 class Usuario_model extends CI_Model
 {
@@ -17,7 +26,7 @@ class Usuario_model extends CI_Model
         $usuarioFirebase = $this->Firebase_model->crearUsuarioConEmailPassword($email, $password);
 
         if ($usuarioFirebase["err"]) {
-            return array("err"=>TRUE, 'status' => 303, 'mensaje' => $usuarioFirebase["mensaje"]);
+            return array("err" => TRUE, 'status' => 303, 'mensaje' => $usuarioFirebase["mensaje"]);
         }
 
         $nombreTabla    = "users";
@@ -81,51 +90,55 @@ class Usuario_model extends CI_Model
             return array('status' => 303, 'message' => $username . ' does not exists');
         }
     }
-    public function createChatRecord($user_1_uuid, $user_2_uuid)
-    {
-        // $chat_uuid_stmt = $this->con->prepare("SELECT chat_uuid FROM chat_record WHERE (user_1_uuid = :user_1_uuid AND user_2_uuid = :user_2_uuid) OR (user_1_uuid = :user_22_uuid AND user_2_uuid = :user_11_uuid) LIMIT 1");
 
-        // $chat_uuid_stmt->bindParam(":user_1_uuid", $user_1_uuid, PDO::PARAM_STR);
-        // $chat_uuid_stmt->bindParam(":user_2_uuid", $user_2_uuid, PDO::PARAM_STR);
-        // $chat_uuid_stmt->bindParam(":user_22_uuid", $user_2_uuid, PDO::PARAM_STR);
-        // $chat_uuid_stmt->bindParam(":user_11_uuid", $user_1_uuid, PDO::PARAM_STR);
-
-        // $chat_uuid_stmt->execute();
-        // $ar = [];
-
-        // if (empty($user_1_uuid) || empty($user_2_uuid)) {
-        //     return  array('status' => 303, 'message' => 'Invalid details');
-        // }
-
-        // $ar['user_1_uuid'] = $user_1_uuid;
-        // $ar['user_2_uuid'] = $user_2_uuid;
-
-        // if ($chat_uuid_stmt->rowCount() == 1) {
-        //     $ar['chat_uuid'] = $chat_uuid_stmt->fetch(PDO::FETCH_ASSOC)['chat_uuid'];
-        //     return array('status' => 200, 'message' => $ar);
-        // } else {
-        //     $chat_uuid = $this->getUuid();
-        //     $begin_chat_stmt = $this->con->prepare("INSERT INTO `chat_record`(`chat_uuid`, `user_1_uuid`, `user_2_uuid`) VALUES (:chat_uuid, :user_1_uuid, :user_2_uuid)");
-
-        //     $begin_chat_stmt->bindParam(':chat_uuid', $chat_uuid, PDO::PARAM_STR);
-        //     $begin_chat_stmt->bindParam(':user_2_uuid', $user_1_uuid, PDO::PARAM_STR);
-        //     $begin_chat_stmt->bindParam(':user_1_uuid', $user_2_uuid, PDO::PARAM_STR);
-
-        //     $begin_chat_stmt->execute();
-        //     $ar['chat_uuid'] = $chat_uuid;
-
-        //     return array('status' => 200, 'message' => $ar);
-        // }
-    }
     public function getUsers()
     {
-        $query =  $this->db->get('users');
         $ar = [];
-        while ($row = $query->fetch(PDO::FETCH_ASSOC)) {
-            $ar[] = $row;
-        }
 
-        return array('status' => 200, 'message' => ['users' => $ar]);
+        try {
+
+            $this->db->select('uuid, fullname, username');
+            $query = $this->db->get('users');
+
+            foreach ($query->result() as $row) {
+                $ar[] = $row;
+            }
+            return array('err' => FALSE, 'status' => 200, 'message' => ['users' => $ar]);
+        } catch (Exception $e) {
+            return array('err' => TRUE, 'status' => 400, 'message' => $e->getMessage());
+        }
+    }
+
+    public function createChatRecord($user_1_uuid, $user_2_uuid)
+    {
+        $this->db->select('chat_uuid');
+        $where = "(user_1_uuid = '$user_1_uuid' AND user_2_uuid = '$user_2_uuid') OR (user_1_uuid = '$user_2_uuid' AND user_2_uuid = '$user_1_uuid')";
+        $this->db->where($where);
+        $this->db->limit(1);
+        $query = $this->db->get('chat_record');
+        $result  = $query->result();
+
+        $ar = [];
+        $ar['user_1_uuid'] = $user_1_uuid;
+        $ar['user_2_uuid'] = $user_2_uuid;
+
+        if (count($result) == 1) {
+            $ar['chat_uuid'] = $result[0]->chat_uuid;
+            return array('status' => 200, 'message' => $ar);
+        } else {
+            $chat_uuid = date("HisYmd");
+            $data = array(
+                'chat_uuid'   => $chat_uuid,
+                'user_1_uuid' => $user_1_uuid,
+                'user_2_uuid' => $user_2_uuid
+            );
+
+            $this->db->insert('chat_record', $data);
+    
+            $ar['chat_uuid'] = $chat_uuid;
+
+            return array('status' => 200, 'message' => $ar);
+        }
     }
     public function logout()
     {
