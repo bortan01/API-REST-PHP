@@ -32,5 +32,49 @@ public function get_citas(){
  		return $this; //retornamos el objeto de clase
  	}//fin de capitalizar los datos segun el modelo y campos correctos de la base
 
+ 	public function insert(){
+
+ 		//verificar el correo
+		$query=$this->db->get_where('cita',array('start'=>$this->start) );
+		$cita=$query->row();
+
+			if (isset($cita)) {
+			$respuesta=array(
+				'err'=>TRUE,
+				'mensaje'=>'La cita ya esta registrada'
+			);
+			return $respuesta;
+			}
+
+			//insertar el registro
+			$hecho=$this->db->insert('cita',$this);
+
+			if ($hecho) {
+				#insertado
+				$respuesta=array(
+					'err'=>FALSE,
+					'mensaje'=>'Registro insertado correctamente',
+					'cita_id'=>$this->db->insert_id()
+				);
+
+			
+
+			}else{
+				//error
+
+				$respuesta=array(
+					'err'=>TRUE,
+					'mensaje'=>'Error al insertar',
+					'error'=>$this->db->_error_message(),
+					'error_num'=>$this->db->_error_number()
+				);
+			
+			}
+
+
+
+ 		return $respuesta;
+ 	}//fin de insertar la pregunta
+
 
 }
