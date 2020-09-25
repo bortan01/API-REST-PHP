@@ -55,6 +55,9 @@ $config = array(
 	'cotizar_put' => array(
 		array('field' => 'idalquilerVehiculo', 'label' => 'Cotizar', 'rules' => 'trim|required|min_length[1]|max_length[255]')
 	),
+	'aerolinea_put' => array(
+		array('field' => 'nombre_aerolinea', 'label' => 'Aerolinea', 'rules' => 'trim|required|min_length[2]|max_length[255]')
+	),
 
 
 
