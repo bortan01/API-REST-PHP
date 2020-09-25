@@ -11,10 +11,9 @@ class Vehiculo_model extends CI_Model
     public $puertas;
     public $pasajeros;
     public $precio_diario;
-    public $servicios_adicionales;
-    public $seguros;
     public $descripcion;
-
+    public $detalles;
+    
     public function get_vehiculo(){
 
         $query=$this->db->get('vehiculo');
