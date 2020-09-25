@@ -8,7 +8,7 @@ public function __construct(){
 		//constructor del padre
 		parent::__construct();
 		$this->load->database();
-		//$this->load->model('Rama_model');
+		$this->load->model('Cita_model');
 		//$this->load->model('Pregunta_model');
 		//$this->load->helper('utilidades');
 
@@ -16,24 +16,19 @@ public function __construct(){
 
 public function cita_get(){
 
-	$cita=$this->Pregunta_model->get_pregunta();
+	$cita=$this->Cita_model->get_citas();
 
-	if (isset($pregunta)) {
+	if (isset($cita)) {
 		//quitar campos que no quiero
 		//unset($cliente->telefono1);
 		//sunset($cliente->telefono2);
-		$respuesta=array(
-			'err'=>FALSE,
-			'mensaje'=>'Registro Cargado correctamente',
-			'preguntas'=>$pregunta
-
-		);
-		$this->response($respuesta);
+		//$respuesta=array($cita);
+		$this->response($cita);
 	}else{
 		$respuesta=array(
 			'err'=>TRUE,
 			'mensaje'=>'Error al cargar los datos.',
-			'pregunta'=>null
+			'citas'=>null
 
 		);
 		$this->response($respuesta,REST_Controller::HTTP_NOT_FOUND);
