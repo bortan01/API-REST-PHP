@@ -49,6 +49,10 @@ $config = array(
 	'lugar_put' => array(
 		array('field' => 'nombre_lugar', 'label' => 'Lugar', 'rules' => 'trim|required|min_length[2]|max_length[255]')
 	),
+	'servicios_put' => array(
+		array('field' => 'nombre_servicio', 'label' => 'Servicio', 'rules' => 'trim|required|min_length[2]|max_length[255]')
+	),
+
 
 	'insertarSitio' => array(
 		array('field' => 'nombre'	           , 'label' => 'nombre'                 , 'rules' => 'trim|required'),
