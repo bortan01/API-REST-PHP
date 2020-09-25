@@ -61,6 +61,10 @@ $config = array(
 	'alianzas_put' => array(
 		array('field' => 'nombre_alianza', 'label' => 'Alianza', 'rules' => 'trim|required|min_length[2]|max_length[255]')
 	),
+	'clases_put' => array(
+		array('field' => 'nombre_clase', 'label' => 'Clase', 'rules' => 'trim|required|min_length[2]|max_length[255]')
+	),
+
 
 
 
