@@ -19,4 +19,18 @@ public function get_citas(){
  		return $query->result();
  	}
 
+    public function set_datos( $data_cruda){
+
+ 		foreach ($data_cruda as $nombre_campo => $valor_campo) {
+
+ 		if (property_exists('cita_model',$nombre_campo)) {
+ 			$this->$nombre_campo=$valor_campo;
+ 		
+ 		}
+ 			
+ 		}
+ 		return $this; //retornamos el objeto de clase
+ 	}//fin de capitalizar los datos segun el modelo y campos correctos de la base
+
+
 }

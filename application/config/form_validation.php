@@ -87,4 +87,9 @@ $config = array(
 		array('field' => 'username'  ,'label' => 'Correo Electronico' , 'rules' => 'trim|required|min_length[3]|max_length[45]'),
 		array('field' => 'password'	 ,'label' => 'Password'           , 'rules' => 'trim|required|min_length[3]|max_length[45]')	
 	),
+
+	'citas_put' => array(
+		array('field' => 'descripcion'  ,'label' => 'descripcion' , 'rules' => 'trim|required|min_length[4]|max_length[255]')
+	),
+
 );
