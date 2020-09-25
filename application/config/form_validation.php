@@ -52,6 +52,10 @@ $config = array(
 	'servicios_put' => array(
 		array('field' => 'nombre_servicio', 'label' => 'Servicio', 'rules' => 'trim|required|min_length[2]|max_length[255]')
 	),
+	'cotizar_put' => array(
+		array('field' => 'idalquilerVehiculo', 'label' => 'Cotizar', 'rules' => 'trim|required|min_length[1]|max_length[255]')
+	),
+
 
 
 	'insertarSitio' => array(
