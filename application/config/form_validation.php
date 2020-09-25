@@ -46,6 +46,9 @@ $config = array(
 	'renta_put' => array(
 		array('field' => 'nombre', 'label' => 'Nombre', 'rules' => 'trim|required|min_length[2]|max_length[255]')
 	),
+	'lugar_put' => array(
+		array('field' => 'nombre_lugar', 'label' => 'Lugar', 'rules' => 'trim|required|min_length[2]|max_length[255]')
+	),
 
 	'insertarSitio' => array(
 		array('field' => 'nombre'	           , 'label' => 'nombre'                 , 'rules' => 'trim|required'),
