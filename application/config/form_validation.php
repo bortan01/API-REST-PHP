@@ -58,6 +58,9 @@ $config = array(
 	'aerolinea_put' => array(
 		array('field' => 'nombre_aerolinea', 'label' => 'Aerolinea', 'rules' => 'trim|required|min_length[2]|max_length[255]')
 	),
+	'alianzas_put' => array(
+		array('field' => 'nombre_alianza', 'label' => 'Alianza', 'rules' => 'trim|required|min_length[2]|max_length[255]')
+	),
 
 
 
