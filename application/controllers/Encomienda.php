@@ -1,54 +1,57 @@
 <?php
 defined('BASEPATH') or exit('No direct script access allowed');
 require APPPATH . '/libraries/REST_Controller.php';
-class Cita extends REST_Controller
+class Encomienda extends REST_Controller
 {
 
 public function __construct(){
 		//constructor del padre
 		parent::__construct();
 		$this->load->database();
-		$this->load->model('Cita_model');
-		//$this->load->model('Pregunta_model');
-		//$this->load->helper('utilidades');
+		$this->load->model('Encomienda_model');
+		
 
 	}
 
-public function cita_get(){
+	public function encomienda_get(){
 
-	$cita=$this->Cita_model->get_citas();
+	$enco=$this->Encomienda_model->get_encomienda();
 
-	if (isset($cita)) {
+	if (isset($enco)) {
 		//quitar campos que no quiero
 		//unset($cliente->telefono1);
 		//sunset($cliente->telefono2);
-		//$respuesta=array($cita);
-		$this->response($cita);
+		$respuesta=array(
+			'err'=>FALSE,
+			'mensaje'=>'Registro Cargado correctamente',
+			'Encomiendas'=>$enco
+
+		);
+		$this->response($respuesta);
 	}else{
 		$respuesta=array(
 			'err'=>TRUE,
 			'mensaje'=>'Error al cargar los datos.',
-			'citas'=>null
+			'Encomiendas'=>null
 
 		);
 		$this->response($respuesta,REST_Controller::HTTP_NOT_FOUND);
 
 	}
-}
+   }
 
-
-	public function cita_post(){
+   public function encomiendas_put(){
 
 		$data=$this->put();
 		$this->load->library('form_validation');
 		$this->form_validation->set_data ($data);
 
-		if ( $this->form_validation->run('citas_put') ) {
+		if ( $this->form_validation->run('encomienda_put') ) {
 			//todo bien
 			//$this->response('Todo bien');
-		$citas=$this->Cita_model->set_datos($data);
+		$encomienda=$this->Encomienda_model->set_datos($data);
 
-		$respuesta=$citas->insert(); 
+		$respuesta=$encomienda->insert(); 
 
 		if ($respuesta['err']) {
 
@@ -69,5 +72,7 @@ public function cita_get(){
 			$this->response($respuesta, REST_Controller::HTTP_BAD_REQUEST); 
 		}
 	}
+
+
 
 }

@@ -1,28 +1,31 @@
 <?php
 defined('BASEPATH') or exit('No direct script access allowed');
-class Cita_model extends CI_Model
+class Encomienda_model extends CI_Model
 {
-public $id_cita;
-public $descripcion;
-public $motivo;
-public $color;
-public $textColor;
-public $start;
-public $end;
 
-public function get_citas(){
+public $id_encomienda;
+public $id_usuario;
+public $direccion;
+public $costo;
+public $estado;
+public $fecha;
+public $destino_final;
 
 
- 	$query=$this->db->get('cita');
+public function get_encomienda(){
+
+
+ 	$query=$this->db->get('encomienda');
  	
  		return $query->result();
  	}
 
-    public function set_datos( $data_cruda){
+
+  public function set_datos( $data_cruda){
 
  		foreach ($data_cruda as $nombre_campo => $valor_campo) {
 
- 		if (property_exists('cita_model',$nombre_campo)) {
+ 		if (property_exists('Pregunta_model',$nombre_campo)) {
  			$this->$nombre_campo=$valor_campo;
  		
  		}
@@ -33,27 +36,15 @@ public function get_citas(){
 
  	public function insert(){
 
- 		//verificar el correo
-		$query=$this->db->get_where('cita',array('descripcion'=>$this->descripcion) );
-		$cita=$query->row();
-
-			if (isset($cita)) {
-			$respuesta=array(
-				'err'=>TRUE,
-				'mensaje'=>'La cita ya esta registrada'
-			);
-			return $respuesta;
-			}
-
 			//insertar el registro
-			$hecho=$this->db->insert('cita',$this);
+			$hecho=$this->db->insert('encomienda',$this);
 
 			if ($hecho) {
 				#insertado
 				$respuesta=array(
 					'err'=>FALSE,
 					'mensaje'=>'Registro insertado correctamente',
-					'cita_id'=>$this->db->insert_id()
+					'encomienda_id'=>$this->db->insert_id()
 				);
 
 			
@@ -74,6 +65,5 @@ public function get_citas(){
 
  		return $respuesta;
  	}//fin de insertar la pregunta
-
 
 }
