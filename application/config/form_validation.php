@@ -117,5 +117,8 @@ $config = array(
 	'detalleEnvio_put' => array(
 		array('field' => 'lugar'  ,'label' => 'Lugar' , 'rules' => 'trim|required|min_length[4]|max_length[255]')
 	),
+	'cate_put' => array(
+		array('field' => 'nombre'  ,'label' => 'Nombre categoria' , 'rules' => 'trim|required|min_length[4]|max_length[255]')
+	),
 
 );
