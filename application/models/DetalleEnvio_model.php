@@ -31,4 +31,37 @@ public function get_pregunta(){
  		}
  		return $this; //retornamos el objeto de clase
  	}//fin de capitalizar los datos segun el modelo y campos correctos de la base
+
+ 	public function insert(){
+
+ 	
+			//insertar el registro
+			$hecho=$this->db->insert('detalle_envio',$this);
+
+			if ($hecho) {
+				#insertado
+				$respuesta=array(
+					'err'=>FALSE,
+					'mensaje'=>'Registro insertado correctamente',
+					'Detalle_id'=>$this->db->insert_id()
+				);
+
+			
+
+			}else{
+				//error
+
+				$respuesta=array(
+					'err'=>TRUE,
+					'mensaje'=>'Error al insertar',
+					'error'=>$this->db->_error_message(),
+					'error_num'=>$this->db->_error_number()
+				);
+			
+			}
+
+
+
+ 		return $respuesta;
+ 	}
 }
