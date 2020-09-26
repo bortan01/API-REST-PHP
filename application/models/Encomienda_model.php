@@ -25,7 +25,7 @@ public function get_encomienda(){
 
  		foreach ($data_cruda as $nombre_campo => $valor_campo) {
 
- 		if (property_exists('Pregunta_model',$nombre_campo)) {
+ 		if (property_exists('Encomienda_model',$nombre_campo)) {
  			$this->$nombre_campo=$valor_campo;
  		
  		}
