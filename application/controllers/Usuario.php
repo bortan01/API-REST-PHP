@@ -63,7 +63,7 @@ class Usuario extends REST_Controller
             $this->load->model('Firebase_model');
             $respuesta = $this->Firebase_model->loginEmailPassword($email, $password);
             if ($respuesta['err']) {
-                $this->response($respuesta["message"], REST_Controller::HTTP_BAD_REQUEST);
+                $this->response($respuesta["mensaje"], REST_Controller::HTTP_BAD_REQUEST);
             } else {
                 $this->response($respuesta["message"], REST_Controller::HTTP_OK);
             }
@@ -93,5 +93,12 @@ class Usuario extends REST_Controller
     {
         $resp = array('status' => 200, 'message' => 'User Logout Successfully');
         echo json_encode($resp);
+    }
+    public function enviarNotificacion_post()
+    {
+        $this->load->model("Firebase_model");
+        $tokens = ["cg7jHTZxRmuLoLePCmVfR3:APA91bEaEaN0fw_iWrphfXd9uk1JcyIYBk0k3XAqh4ESLOKmzRmFCPx5umvhRKlsy4URu0n13ft_fyPI_cBoqTfxY7WNe9No69bz9ANvrVEjnU_dmrVsaLPGbuhQ3oYfwVPaUISHAChX"];
+        $respuesta =   $this->Firebase_model->EnviarNotificacionSDK();
+        $this->response($respuesta, REST_Controller::HTTP_OK);
     }
 }

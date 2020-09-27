@@ -9,6 +9,7 @@ use Kreait\Firebase\Messaging\CloudMessage;
 use Kreait\Firebase\Exception\AuthException;
 use Kreait\Firebase\Exception\FirebaseException;
 use Kreait\Firebase\Exception\Auth\UserNotFound;
+use Kreait\Firebase\Messaging\MulticastSendReport;
 
 class Firebase_model extends CI_Model
 {
@@ -63,18 +64,18 @@ class Firebase_model extends CI_Model
         try {
             $auth = $this->firebase->createAuth();
             $signInResult = $auth->signInWithEmailAndPassword($email, $clearTextPassword);
-                 
+
             $data = $signInResult->data();
             $uid = $data['localId'];
             $customToken =   $auth->createCustomToken($uid);
-          
+
             $ar = [];
             $ar['err']       = FALSE;
             $ar['message']   = 'LOGIN EXITOSO';
             $ar['user_uuid'] = $uid;
             $ar['token']     = (string)$customToken;
-       
-          
+
+
 
             return array("err" => FALSE, "message" => $ar);
         } catch (AuthException $e) {
@@ -85,22 +86,44 @@ class Firebase_model extends CI_Model
             return array("err" => TRUE, "mensaje" => $e->getMessage());
         }
     }
-    public function EnviarNotificacionSDK()
+    public function EnviarNotificacionSDK($tokens = array(), $titulo  = "AGENCIA MARTINEZ Y TOURS", $body = "MIRA NUESTROS NUEVOS PRODUCTOS", $url  = "https://pagina.christianmeza.com/img/logo.jpg")
     {
         $data = [
-            'UID' => 'ABC',
-            'NOMBRE' => 'BORIS',
-            'COMIDA' => 'MARUCHAN',
+            'ruta' => 'HomeTours',
             'click_action' => 'FLUTTER_NOTIFICATION_CLICK',
         ];
-
         $messaging = $this->firebase->createMessaging();
-        $message = CloudMessage::withTarget("topic", "TODOS_LOS_ANDROID")
-            ->withNotification(Notification::create('TITULO', 'CUERPO DEL MENSAJE'))
+        
+        
+        if (count($tokens) == 0) {
+            $notification = Notification::create($titulo, $body, $url);
+            $message = CloudMessage::withTarget("topic", "TODOS_LOS_USUARIOS")
+            ->withNotification($notification)
             ->withData($data);
+            $respuesta =  $messaging->send($message);
+            return $respuesta;
+        } else {
+            //DEBEN DE SER MENOS DE 500 POR PETICION
+            
+            $notification = ["title" => $titulo, "body" => $body, "image" => $url];
+            $message = CloudMessage::fromArray(['data' => $data, 'notification' => $notification]);
 
-        $respuesta =  $messaging->send($message);
-        return $respuesta;
+
+            $sendReport = $messaging->sendMulticast($message, $tokens);
+
+            $errores_envio = [];
+            if ($sendReport->hasFailures()) {
+                foreach ($sendReport->failures()->getItems() as $failure) {
+                    $errores_envio[] =  $failure->error()->getMessage() . PHP_EOL;
+                }
+            }
+            $respuesta = array(
+                "Envios exitosos" => $sendReport->successes()->count() . PHP_EOL,
+                "Envios Fallidos" => $sendReport->failures()->count() . PHP_EOL,
+                "Errores de Envio" => $errores_envio
+            );
+            return $respuesta;
+        }
     }
 
     public function crearToken($uid, $adicional)
