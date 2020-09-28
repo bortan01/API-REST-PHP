@@ -70,7 +70,7 @@ $config = array(
 	),
 	
 	'datos_put' => array(
-		array('field' => 'id_generales', 'label' => 'Datos', 'rules' => 'trim|required|min_length[1]|max_length[255]')
+		array('field' => 'ciudad_partida', 'label' => 'Partida', 'rules' => 'trim|required|min_length[2]|max_length[255]')
 	),
 
 
