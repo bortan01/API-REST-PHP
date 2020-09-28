@@ -1,6 +1,6 @@
 <?php
 defined('BASEPATH') or exit('No direct script access allowed');
-class TurPaquete_model extends CI_Model
+class Tours_paquete_model extends CI_Model
 {
     public $id_tours;
     public $nombreTours;
@@ -27,7 +27,7 @@ class TurPaquete_model extends CI_Model
         ///par aquitar campos no existentes 
         foreach ($dataCruda as $nombre_campo => $valor_campo) {
             # para verificar si la propiedad existe..
-            if (property_exists('TurPaquete_model', $nombre_campo)) {
+            if (property_exists('Tours_paquete_model', $nombre_campo)) {
                 $this->$nombre_campo = $valor_campo;
             }
         }

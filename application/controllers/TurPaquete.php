@@ -9,7 +9,7 @@ class TurPaquete extends REST_Controller
         parent::__construct();
         $this->load->database();
         $this->load->model('Imagen_model');
-        $this->load->model('TurPaquete_model');
+        $this->load->model('Tours_paquete_model');
     }
 
     public function tur_post()
@@ -21,7 +21,7 @@ class TurPaquete extends REST_Controller
         //corremos las reglas de validacion
         if ($this->form_validation->run('insertarTurPaquete')) {
             //VERIFICAMOS QUE TODOS LOS PARAMETROS ESTEN BIEN
-            $turPaquete = $this->TurPaquete_model->verificar_campos($data);
+            $turPaquete = $this->Tours_paquete_model->verificar_campos($data);
             $respuesta = $turPaquete->guardar();
             if ($respuesta['err']) {
                 $this->response($respuesta, REST_Controller::HTTP_BAD_REQUEST);
