@@ -68,6 +68,10 @@ $config = array(
 	'viajes_put' => array(
 		array('field' => 'nombre_tipoviaje', 'label' => 'Viaje', 'rules' => 'trim|required|min_length[2]|max_length[255]')
 	),
+	
+	'datos_put' => array(
+		array('field' => 'id_generales', 'label' => 'Datos', 'rules' => 'trim|required|min_length[1]|max_length[255]')
+	),
 
 
 
