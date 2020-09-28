@@ -64,6 +64,10 @@ $config = array(
 	'clases_put' => array(
 		array('field' => 'nombre_clase', 'label' => 'Clase', 'rules' => 'trim|required|min_length[2]|max_length[255]')
 	),
+	
+	'viajes_put' => array(
+		array('field' => 'nombre_tipoviaje', 'label' => 'Viaje', 'rules' => 'trim|required|min_length[2]|max_length[255]')
+	),
 
 
 
