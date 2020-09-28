@@ -56,22 +56,29 @@ class SitioTuristico_model extends CI_Model
     public function obtenerSitio()
     {
         $nombreTabla = "sitio_turistico";
-        //se buscaran todos los sitios turisticos
-        $query = $this->db->get($nombreTabla);
-        $sitios = $query->result();
 
-        foreach ($sitios as $fila) {
-            $path = [];
-            $this->db->select("foto_path");
-            $this->db->where("identificador", $fila->id_sitio_turistico);
-            $this->db->where("tipo", $nombreTabla);
-            $query = $this->db->get("galeria");
 
-            foreach ($query->result() as $foto) {
-                $path[] = $foto->foto_path;
+        try {
+
+            //se buscaran todos los sitios turisticos
+            $query = $this->db->get($nombreTabla);
+            $sitios = $query->result();
+
+            foreach ($sitios as $fila) {
+                $path = [];
+                $this->db->select("foto_path");
+                $this->db->where("identificador", $fila->id_sitio_turistico);
+                $this->db->where("tipo", $nombreTabla);
+                $query = $this->db->get("galeria");
+
+                foreach ($query->result() as $foto) {
+                    $path[] = $foto->foto_path;
+                }
+                $fila->path = $path;
             }
-            $fila->path = $path;
+            return $sitios;
+        } catch (Exception $e) {
+            echo $e->getMessage();
         }
-        return $sitios;
     }
 }
