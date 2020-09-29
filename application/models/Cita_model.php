@@ -4,7 +4,7 @@ class Cita_model extends CI_Model
 {
 public $id_cita;
 public $descripcion;
-public $motivo;
+public $title;
 public $color;
 public $textColor;
 public $start;
@@ -34,7 +34,7 @@ public function get_citas(){
  	public function insertCita($motivo,$descripcion,$start,$fecha,$color){
 
 			//insertar el registro
-			$this->motivo =$motivo;
+			$this->title =$motivo;
 			$this->descripcion=$descripcion;
 			$this->start=$fecha.' '.$start;
 			$this->textColor="#FFFFFF";

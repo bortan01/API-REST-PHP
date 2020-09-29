@@ -47,12 +47,12 @@ public function cita_get(){
 			//todo bien
 			//recogo los datos que vienen del formulario
 
-			$motivo=$data["motivo"];
+			$title=$data["motivo"];
 			$descripcion=$data["descripcion"];
 			$start=$data["start"];
 			$fecha=$data["fecha"];
 
-			$respuesta=$this->Cita_model->insertCita($motivo,$descripcion,$start,$fecha);
+			$respuesta=$this->Cita_model->insertCita($title,$descripcion,$start,$fecha);
 		       
 		       if ($respuesta['err']) {
 
