@@ -72,6 +72,9 @@ $config = array(
 	'datos_put' => array(
 		array('field' => 'ciudad_partida', 'label' => 'Partida', 'rules' => 'trim|required|min_length[2]|max_length[255]')
 	),
+	'informacion_put' => array(
+		array('field' => 'condiciones', 'label' => 'Condiciones', 'rules' => 'trim|required|min_length[2]|max_length[255]')
+	),
 
 
 
