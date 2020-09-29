@@ -19,18 +19,18 @@ class Utils_model extends CI_Model
             $query = $this->db->get($nombreTabla);
 
             if ($unico) {
-                $result = $query->custom_row_object(0, $nombreModelo);
+                $result = $query->result();
+                return $result[0];
             } else {
 
-                $result = $query->custom_result_object($nombreModelo);
+                $result = $query->result();
+                return $result;
             }
-
-            return $result;
         } catch (Exception $e) {
             echo $e->getMessage();
         }
     }
-    public function verificar_campos($dataCruda, $nombreTabla)
+    public function verificar_campos(array $dataCruda, string $nombreTabla)
     {
         ///par aquitar campos no existentes
         foreach ($dataCruda as $nombre_campo => $valor_campo) {
@@ -39,9 +39,7 @@ class Utils_model extends CI_Model
                 $this->$nombre_campo = $valor_campo;
             }
         }
-        if ($this->activo == NULL) {
-            $this->activo = 1;
-        }
+
         //este es un objeto tipo cliente model
         return $this;
     }

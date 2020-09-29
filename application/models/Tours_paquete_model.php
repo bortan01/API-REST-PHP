@@ -2,7 +2,7 @@
 defined('BASEPATH') or exit('No direct script access allowed');
 class Tours_paquete_model extends CI_Model
 {
-    public $id_tours;
+    // public $id_tours;
     public $nombreTours;
     public $fecha_salida;
     public $lugar_salida;
