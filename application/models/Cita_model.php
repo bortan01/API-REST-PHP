@@ -31,21 +31,16 @@ public function get_citas(){
  		return $this; //retornamos el objeto de clase
  	}//fin de capitalizar los datos segun el modelo y campos correctos de la base
 
- 	public function insert(){
-
- 		//verificar el correo
-		$query=$this->db->get_where('cita',array('descripcion'=>$this->descripcion) );
-		$cita=$query->row();
-
-			if (isset($cita)) {
-			$respuesta=array(
-				'err'=>TRUE,
-				'mensaje'=>'La cita ya esta registrada'
-			);
-			return $respuesta;
-			}
+ 	public function insertCita($motivo,$descripcion,$start,$fecha,$color){
 
 			//insertar el registro
+			$this->motivo =$motivo;
+			$this->descripcion=$descripcion;
+			$this->start=$fecha.' '.$start;
+			$this->textColor="#FFFFFF";
+			$this->color="#007bff";
+
+
 			$hecho=$this->db->insert('cita',$this);
 
 			if ($hecho) {
@@ -53,7 +48,8 @@ public function get_citas(){
 				$respuesta=array(
 					'err'=>FALSE,
 					'mensaje'=>'Registro insertado correctamente',
-					'cita_id'=>$this->db->insert_id()
+					'cita_id'=>$this->db->insert_id(),
+					'ver'=>$this
 				);
 
 			

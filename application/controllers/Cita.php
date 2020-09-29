@@ -37,26 +37,30 @@ public function cita_get(){
 }
 
 
-	public function cita_post(){
+	public function citas_post(){
 
-		$data=$this->put();
+		$data=$this->post();
 		$this->load->library('form_validation');
 		$this->form_validation->set_data ($data);
 
 		if ( $this->form_validation->run('citas_put') ) {
 			//todo bien
-			//$this->response('Todo bien');
-		$citas=$this->Cita_model->set_datos($data);
+			//recogo los datos que vienen del formulario
 
-		$respuesta=$citas->insert(); 
+			$motivo=$data["motivo"];
+			$descripcion=$data["descripcion"];
+			$start=$data["start"];
+			$fecha=$data["fecha"];
 
-		if ($respuesta['err']) {
+			$respuesta=$this->Cita_model->insertCita($motivo,$descripcion,$start,$fecha);
+		       
+		       if ($respuesta['err']) {
 
-		$this->response($respuesta, REST_Controller::HTTP_BAD_REQUEST); 	
+		         $this->response($respuesta, REST_Controller::HTTP_BAD_REQUEST); 	
 
-		}else{
-		$this->response($respuesta); 	
-		}
+		         }else{
+		           $this->response($respuesta); 	
+		          }
 
 		}else{
 			//algo mal
