@@ -108,7 +108,23 @@ class Itinerario_model extends CI_Model
     {
         $idTour = $data["id_tours"];
         $respuesta = $this->Utils_model->selectTabla("itinerario", array("id_tours" => $idTour));
-        print_r($respuesta);
-        die();
+
+
+        for ($i = 0; $i < count($respuesta); $i++) {
+            if (isset($respuesta[$i]->start) && $respuesta[$i]->start != null) {
+
+                $respuesta[$i]->start = DateTime::createFromFormat('Y-m-d h:m:s', $respuesta[$i]->start);
+                $respuesta[$i]->start = $respuesta[$i]->start->format('d/m/Y H:m:s');
+            }
+            if (isset($respuesta[$i]->end) && $respuesta[$i]->end != null) {
+                $respuesta[$i]->end = DateTime::createFromFormat('Y-m-d h:m:s', $respuesta[$i]->end);
+                $respuesta[$i]->end = $respuesta[$i]->end->format('d/m/Y H:m:s');
+            }
+        }
+
+
+
+
+        return $respuesta;
     }
 }
