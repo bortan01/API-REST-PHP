@@ -78,9 +78,10 @@ $config = array(
 	'opciones_put' => array(
 		array('field' => 'idaerolinea', 'label' => 'Aerolinea', 'rules' => 'trim|required|min_length[1]|max_length[255]')
 	),
-
-
-
+	'cotizacionv_put' => array(
+		array('field' => 'id_cliente', 'label' => 'Cliente', 'rules' => 'trim|required|min_length[1]|max_length[255]'),
+		array('field' => 'id_generales', 'label' => 'Informacion', 'rules' => 'trim|required|min_length[1]|max_length[255]')
+	),
 
 	'insertarSitio' => array(
 		array('field' => 'nombre'	           , 'label' => 'nombre'                 , 'rules' => 'trim|required'),
