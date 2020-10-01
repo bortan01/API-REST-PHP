@@ -47,7 +47,6 @@ class Usuario_model extends CI_Model
             return array('err' => TRUE, 'mensaje' => $this->db->error_message());
         }
     }
-
     public function loginUser($username, $password)
     {
         $query = $this->db->get_where("users", array("username" => $username), 1);
@@ -80,49 +79,26 @@ class Usuario_model extends CI_Model
             return array('status' => 303, 'message' => $username . ' does not exists');
         }
     }
-
-    public function getUser($id)
+    public function getUser(array $data = array())
     {
         $this->load->model("Utils_model");
 
         try {
-
-            $usuarioSEleccionado = $this->Utils_model->selectTabla("usuario", array('id_cliente' => $id), true);
+            $parametros = $this->Usuario_model->verificar_camposEntrada($data);
+            $usuarioSEleccionado = $this->Utils_model->selectTabla("usuario", $parametros);
             ///usuario seleccionado es un array de clases genericas
-
-            if (count($usuarioSEleccionado) != 1) {
+        
+            if (count($usuarioSEleccionado) <1) {
                 $respuesta = array('err' => TRUE, 'usuario' => 'No se encontro el Usuario');
                 return $respuesta;
             } else {
-                $respuesta = array('err' => FALSE, 'usuario' => $usuarioSEleccionado[0]);
+                $respuesta = array('err' => FALSE, 'usuario' => $usuarioSEleccionado);
                 return $respuesta;
             }
         } catch (Exception $e) {
-            return array('err' => TRUE, 'status' => 400, 'message' => $e->getMessage());
+            return array('err' => TRUE, 'status' => 400, 'mensaje' => $e->getMessage());
         }
     }
-
-    public function getUserNivel($nivel)
-    {
-        $this->load->model("Utils_model");
-
-        try {
-
-            $usuarioSEleccionado = $this->Utils_model->selectTabla("usuario", array('nivel' => $nivel, 'activo' => TRUE));
-            ///usuario seleccionado es un array de clases genericas
-
-            if (count($usuarioSEleccionado) < 1) {
-                $respuesta = array('err' => TRUE, 'mensaje' => 'No hay usuarios');
-                return $respuesta;
-            } else {
-                $respuesta = array('err' => FALSE, 'usuarios' => $usuarioSEleccionado);
-                return $respuesta;
-            }
-        } catch (Exception $e) {
-            return array('err' => TRUE, 'status' => 400, 'message' => $e->getMessage());
-        }
-    }
-
     public function createChatRecord($user_1_uuid, $user_2_uuid)
     {
         $this->db->select('chat_uuid');
@@ -181,9 +157,9 @@ class Usuario_model extends CI_Model
         return $this;
     }
 
-    public function verificar_camposActualizar($dataCruda)
+    public function verificar_camposEntrada($dataCruda)
     {
-        $objeto =array();
+        $objeto = array();
         ///par aquitar campos no existentes
         foreach ($dataCruda as $nombre_campo => $valor_campo) {
             # para verificar si la propiedad existe..
@@ -195,7 +171,6 @@ class Usuario_model extends CI_Model
         //este es un objeto tipo cliente model
         return $objeto;
     }
-
     public function editar($campos)
     {
         ///VAMOS A ACTUALIZAR UN REGISTRO
@@ -208,7 +183,32 @@ class Usuario_model extends CI_Model
                 'err'     => FALSE,
                 'mensaje' => 'Registro Actualizado Exitosamente',
                 'usuario' => $campos
-               
+
+            );
+            return $respuesta;
+        } else {
+            //NO GUARDO
+            $respuesta = array(
+                'err' => TRUE,
+                'mensaje' => 'Error al actualizar ', $this->db->error_message(),
+                'error_number' => $this->db->error_number(),
+                'usuario' => null
+            );
+            return $respuesta;
+        }
+    }
+    public function borrar($campos)
+    {
+        ///VAMOS A ACTUALIZAR UN REGISTRO
+        $this->db->where('id_cliente', $campos["id_cliente"]);
+        $hecho = $this->db->update('usuario', $campos);
+        if ($hecho) {
+            ///LOGRO ACTUALIZAR 
+            $respuesta = array(
+                'err'     => FALSE,
+                'mensaje' => 'Registro Eliminado Exitosamente'
+
+
             );
             return $respuesta;
         } else {

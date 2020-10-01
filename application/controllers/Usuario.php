@@ -68,33 +68,14 @@ class Usuario extends REST_Controller
     }
     public function obtenerUsuario_get()
     {
-        if (!isset($_GET["id"])) {
-            $respuesta = array('err' => TRUE, 'mensaje' => 'No ha enviado ningun identificador de usuario');
-
+        $data = $this->get();
+        
+       
+        $respuesta =  $this->Usuario_model->getUser($data);
+        if ($respuesta['err']) {
             $this->response($respuesta, REST_Controller::HTTP_BAD_REQUEST);
         } else {
-            $respuesta =  $this->Usuario_model->getUser($_GET["id"]);
-            if ($respuesta['err']) {
-                $this->response($respuesta, REST_Controller::HTTP_BAD_REQUEST);
-            } else {
-                $this->response($respuesta, REST_Controller::HTTP_OK);
-            }
-        }
-    }
-    public function obtenerUsuariosNivel_get()
-    {
-        if (!isset($_GET["nivel"])) {
-            $respuesta = array('err' => TRUE, 'mensaje' => 'No ha enviado ningun nivel de usuario');
-
-            $this->response($respuesta, REST_Controller::HTTP_BAD_REQUEST);
-        } else {
-
-            $respuesta =  $this->Usuario_model->getUserNivel($_GET["nivel"]);
-            if ($respuesta['err']) {
-                $this->response($respuesta, REST_Controller::HTTP_BAD_REQUEST);
-            } else {
-                $this->response($respuesta, REST_Controller::HTTP_OK);
-            }
+            $this->response($respuesta, REST_Controller::HTTP_OK);
         }
     }
     public function obtenerChat_post()
@@ -106,7 +87,6 @@ class Usuario extends REST_Controller
         $respuesta =  $this->Usuario_model->createChatRecord($user1, $user2);
         $this->response($respuesta, REST_Controller::HTTP_OK);
     }
-
     public function logout_post()
     {
         $resp = array('status' => 200, 'message' => 'User Logout Successfully');
@@ -123,12 +103,12 @@ class Usuario extends REST_Controller
     {
         $data = $this->put();
         if (!isset($data["id_cliente"])) {
-            $respuesta = array('err'=>TRUE, 'mensaje' => 'No se encontro nungun identificador de usuario');
+            $respuesta = array('err' => TRUE, 'mensaje' => 'No se encontro nungun identificador de usuario');
             $this->response($respuesta, REST_Controller::HTTP_BAD_REQUEST);
-        }else{
-            
-            $campos = $this->Usuario_model->verificar_camposActualizar($data);
-                       
+        } else {
+
+            $campos = $this->Usuario_model->verificar_camposEntrada($data);
+
             try {
                 $respuesta = $this->Usuario_model->editar($campos);
                 if ($respuesta['err']) {
@@ -136,13 +116,32 @@ class Usuario extends REST_Controller
                 } else {
                     $this->response($respuesta, REST_Controller::HTTP_OK);
                 }
-                
             } catch (\Throwable $th) {
-                $respuesta = array('err'=>TRUE, 'mensaje' => 'Error interno de servidor');
+                $respuesta = array('err' => TRUE, 'mensaje' => 'Error interno de servidor');
             }
         }
-
-        
-        
     }
+    public function elimination_delete()
+    {
+        $data = $this->delete();
+        if (!isset($data["id_cliente"])) {
+            $respuesta = array('err' => TRUE, 'mensaje' => 'No se encontro nungun identificador de usuario');
+            $this->response($respuesta, REST_Controller::HTTP_BAD_REQUEST);
+        } else {
+
+            $campos = array('id_cliente' => $data["id_cliente"], 'activo' => FALSE);
+
+            try {
+                $respuesta = $this->Usuario_model->borrar($campos);
+                if ($respuesta['err']) {
+                    $this->response($respuesta, REST_Controller::HTTP_BAD_REQUEST);
+                } else {
+                    $this->response($respuesta, REST_Controller::HTTP_OK);
+                }
+            } catch (\Throwable $th) {
+                $respuesta = array('err' => TRUE, 'mensaje' => 'Error interno de servidor');
+            }
+        }
+    }
+    
 }
