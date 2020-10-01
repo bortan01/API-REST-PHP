@@ -145,5 +145,8 @@ $config = array(
 	'cate_put' => array(
 		array('field' => 'nombre'  ,'label' => 'Nombre categoria' , 'rules' => 'trim|required|min_length[4]|max_length[255]')
 	),
+	'formulario_put' => array(
+		array('field' => 'respuesta'  ,'label' => 'Nombre respuesta' , 'rules' => 'trim|required|min_length[2]|max_length[255]')
+	),
 
 );
