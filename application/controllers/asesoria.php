@@ -118,7 +118,8 @@ public function __construct(){
 
 	 $data=$this->post();
 	 //$id_rama=$data["id_rama"];
-	  $verificar=$this->Pregunta_model->verificar_campos($data);
+	  $verificar=$this->Rama_model->verificar_campos($data);
+
 	 $respuesta=$this->Rama_model->eliminar($verificar);
 
 	 	  $this->response($respuesta);
