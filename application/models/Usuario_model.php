@@ -203,7 +203,7 @@ class Usuario_model extends CI_Model
         unset($this->id_cliente);
         $hecho = $this->db->update('usuario', $campos);
         if ($hecho) {
-            ///LOGRO GUARDAR
+            ///LOGRO ACTUALIZAR 
             $respuesta = array(
                 'err'     => FALSE,
                 'mensaje' => 'Registro Actualizado Exitosamente',
