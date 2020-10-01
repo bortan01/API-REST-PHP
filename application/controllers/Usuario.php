@@ -127,10 +127,10 @@ class Usuario extends REST_Controller
             $this->response($respuesta, REST_Controller::HTTP_BAD_REQUEST);
         }else{
             
-            $usuario = $this->Usuario_model->verificar_campos($data);
-            
+            $campos = $this->Usuario_model->verificar_camposActualizar($data);
+                       
             try {
-                $respuesta = $usuario->editar();
+                $respuesta = $this->Usuario_model->editar($campos);
                 if ($respuesta['err']) {
                     $this->response($respuesta, REST_Controller::HTTP_BAD_REQUEST);
                 } else {

@@ -180,36 +180,44 @@ class Usuario_model extends CI_Model
         //este es un objeto tipo cliente model
         return $this;
     }
-    public function editar()
+
+    public function verificar_camposActualizar($dataCruda)
     {
-        $nombreTabla = "usuario";
-
-        try {
-            $update = $this->db->update($nombreTabla, $this, "id_cliente");
-        
-
-            if (!$update) {
-                //NO GUARDO
-                $respuesta = array(
-                    'err'         => TRUE,
-                    'mensaje'     => 'Ningun Registro Fue Modificado',
-                    'itinerario'  => null
-                );
-                return $respuesta;
-            } else {
-
-                $respuesta = array(
-                    'err'          => FALSE,
-                    'mensaje'      => 'Registro Modificado Exitosamente XXXX',
-                    'itinerario'  => $this
-                );
-                return $respuesta;
+        $objeto =array();
+        ///par aquitar campos no existentes
+        foreach ($dataCruda as $nombre_campo => $valor_campo) {
+            # para verificar si la propiedad existe..
+            if (property_exists('Usuario_model', $nombre_campo)) {
+                $objeto[$nombre_campo] = $valor_campo;
             }
-        } catch (\Throwable $th) {
-            $respuesta = array(
-                'err'          => TRUE,
-                'mensaje'      => 'PROBLEMA INTERNO DE SERVIDOR',
+        }
 
+        //este es un objeto tipo cliente model
+        return $objeto;
+    }
+
+    public function editar($campos)
+    {
+        ///VAMOS A ACTUALIZAR UN REGISTRO
+        $this->db->where('id_cliente', $campos["id_cliente"]);
+        unset($this->id_cliente);
+        $hecho = $this->db->update('usuario', $campos);
+        if ($hecho) {
+            ///LOGRO GUARDAR
+            $respuesta = array(
+                'err'     => FALSE,
+                'mensaje' => 'Registro Actualizado Exitosamente',
+                'usuario' => $campos
+               
+            );
+            return $respuesta;
+        } else {
+            //NO GUARDO
+            $respuesta = array(
+                'err' => TRUE,
+                'mensaje' => 'Error al actualizar ', $this->db->error_message(),
+                'error_number' => $this->db->error_number(),
+                'usuario' => null
             );
             return $respuesta;
         }
