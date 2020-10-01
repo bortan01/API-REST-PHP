@@ -11,53 +11,43 @@
 defined('BASEPATH') or exit('No direct script access allowed');
 class Usuario_model extends CI_Model
 {
+    public $id_cliente;
+    public $nombre;
+    public $correo;
+    public $nivel;
+    public $celular;
     public $uuid;
-    public $fullname;
-    public $username;
-    public $email;
+    public $fbToken;
+    public $dui;
+    public $foto;
+    public $foto_documento;
+    public $activo;
 
 
     public function __construct()
     {
         $this->load->model('Firebase_model');
     }
-    public function createAccount($fullname, $username, $email, $password)
+    public function createAccount($correo, $password)
     {
-        $usuarioFirebase = $this->Firebase_model->crearUsuarioConEmailPassword($email, $password);
+        $usuarioFirebase = $this->Firebase_model->crearUsuarioConEmailPassword($correo, $password);
 
         if ($usuarioFirebase["err"]) {
-            return array("err" => TRUE, 'status' => 303, 'mensaje' => $usuarioFirebase["mensaje"]);
+            return array("err" => TRUE, 'mensaje' => $usuarioFirebase["mensaje"]);
         }
 
-        $nombreTabla    = "users";
+        $nombreTabla    = "usuario";
         $this->uuid     = $usuarioFirebase["uid"];
-        $this->fullname = $fullname;
-        $this->username = $username;
-        $this->email    = $email;
-
+        $this->activo   = TRUE;
         $insert = $this->db->insert($nombreTabla, $this);
 
         if ($insert) {
             return array('err' => FALSE, 'status' => 200, 'mensaje' => 'Cuenta Creada Exitosamente!');
         } else {
-            return array('err' => FALSE, 'status' => 303, 'mensaje' => $this->db->error_message());
+            return array('err' => TRUE, 'mensaje' => $this->db->error_message());
         }
     }
-    private function isExists($table, $key, $value)
-    {
-        try {
-            $stmt = $this->db->get_where($table, array($key => $value), 1);
-            $resultado = $stmt->result();
 
-            if (count($resultado) > 0) {
-                return array('status' => 303, 'message' => $value . ' already exists');
-            } else {
-                return array('status' => 200, 'message' => $value);
-            }
-        } catch (Exception $e) {
-            return array('status' => 405, 'message' => $e->getMessage());
-        }
-    }
     public function loginUser($username, $password)
     {
         $query = $this->db->get_where("users", array("username" => $username), 1);
@@ -91,19 +81,43 @@ class Usuario_model extends CI_Model
         }
     }
 
-    public function getUsers()
+    public function getUser($id)
     {
-        $ar = [];
+        $this->load->model("Utils_model");
 
         try {
 
-            $this->db->select('uuid, fullname, username');
-            $query = $this->db->get('users');
+            $usuarioSEleccionado = $this->Utils_model->selectTabla("usuario", array('id_cliente' => $id), true);
+            ///usuario seleccionado es un array de clases genericas
 
-            foreach ($query->result() as $row) {
-                $ar[] = $row;
+            if (count($usuarioSEleccionado) != 1) {
+                $respuesta = array('err' => TRUE, 'usuario' => 'No se encontro el Usuario');
+                return $respuesta;
+            } else {
+                $respuesta = array('err' => FALSE, 'usuario' => $usuarioSEleccionado[0]);
+                return $respuesta;
             }
-            return array('err' => FALSE, 'status' => 200, 'message' => ['users' => $ar]);
+        } catch (Exception $e) {
+            return array('err' => TRUE, 'status' => 400, 'message' => $e->getMessage());
+        }
+    }
+
+    public function getUserNivel($nivel)
+    {
+        $this->load->model("Utils_model");
+
+        try {
+
+            $usuarioSEleccionado = $this->Utils_model->selectTabla("usuario", array('nivel' => $nivel, 'activo' => TRUE));
+            ///usuario seleccionado es un array de clases genericas
+
+            if (count($usuarioSEleccionado) < 1) {
+                $respuesta = array('err' => TRUE, 'mensaje' => 'No hay usuarios');
+                return $respuesta;
+            } else {
+                $respuesta = array('err' => FALSE, 'usuarios' => $usuarioSEleccionado);
+                return $respuesta;
+            }
         } catch (Exception $e) {
             return array('err' => TRUE, 'status' => 400, 'message' => $e->getMessage());
         }
@@ -134,7 +148,7 @@ class Usuario_model extends CI_Model
             );
 
             $this->db->insert('chat_record', $data);
-    
+
             $ar['chat_uuid'] = $chat_uuid;
 
             return array('status' => 200, 'message' => $ar);
@@ -152,5 +166,52 @@ class Usuario_model extends CI_Model
             return array('status' => 200, 'message' => 'User Logout Successfully');
         }
         return array('status' => 303, 'message' => 'Logout Fail');
+    }
+    public function verificar_campos($dataCruda): Usuario_model
+    {
+        ///par aquitar campos no existentes
+        foreach ($dataCruda as $nombre_campo => $valor_campo) {
+            # para verificar si la propiedad existe..
+            if (property_exists('Usuario_model', $nombre_campo)) {
+                $this->$nombre_campo = $valor_campo;
+            }
+        }
+
+        //este es un objeto tipo cliente model
+        return $this;
+    }
+    public function editar()
+    {
+        $nombreTabla = "usuario";
+
+        try {
+            $update = $this->db->update($nombreTabla, $this, "id_cliente");
+        
+
+            if (!$update) {
+                //NO GUARDO
+                $respuesta = array(
+                    'err'         => TRUE,
+                    'mensaje'     => 'Ningun Registro Fue Modificado',
+                    'itinerario'  => null
+                );
+                return $respuesta;
+            } else {
+
+                $respuesta = array(
+                    'err'          => FALSE,
+                    'mensaje'      => 'Registro Modificado Exitosamente XXXX',
+                    'itinerario'  => $this
+                );
+                return $respuesta;
+            }
+        } catch (\Throwable $th) {
+            $respuesta = array(
+                'err'          => TRUE,
+                'mensaje'      => 'PROBLEMA INTERNO DE SERVIDOR',
+
+            );
+            return $respuesta;
+        }
     }
 }

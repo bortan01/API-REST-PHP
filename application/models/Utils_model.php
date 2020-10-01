@@ -17,15 +17,8 @@ class Utils_model extends CI_Model
             }
             //hacemos la consulta
             $query = $this->db->get($nombreTabla);
-
-            if ($unico) {
-                $result = $query->result();
-                return $result[0];
-            } else {
-
-                $result = $query->result();
-                return $result;
-            }
+            $result = $query->result();
+            return $result;
         } catch (Exception $e) {
             echo $e->getMessage();
         }

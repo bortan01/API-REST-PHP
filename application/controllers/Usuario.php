@@ -26,12 +26,11 @@ class Usuario extends REST_Controller
             $this->response($respuesta, REST_Controller::HTTP_BAD_REQUEST);
         } else {
 
-            $fullname = $data["fullname"];
-            $username =  $data["username"];
-            $email    = $data["email"];
-            $password = $data["password"];
 
-            $respuesta = $this->Usuario_model->createAccount($fullname, $username, $email, $password);
+            $correo = $data["correo"];
+            $password = $data["password"];
+            $usuario = $this->Usuario_model->verificar_campos($data);
+            $respuesta = $usuario->createAccount($correo, $password);
             if ($respuesta['err']) {
                 $this->response($respuesta, REST_Controller::HTTP_BAD_REQUEST);
             } else {
@@ -44,8 +43,6 @@ class Usuario extends REST_Controller
         $data = $this->post();
         $this->load->library('form_validation');
         $this->form_validation->set_data($data);
-
-
 
         //corremos las reglas de validacion
         if (!$this->form_validation->run('loginUsuario')) {
@@ -69,14 +66,35 @@ class Usuario extends REST_Controller
             }
         }
     }
-    public function obtenerUsuarios_get()
+    public function obtenerUsuario_get()
     {
+        if (!isset($_GET["id"])) {
+            $respuesta = array('err' => TRUE, 'mensaje' => 'No ha enviado ningun identificador de usuario');
 
-        $respuesta =  $this->Usuario_model->getUsers();
-        if ($respuesta['err']) {
-            $this->response($respuesta["message"], REST_Controller::HTTP_BAD_REQUEST);
+            $this->response($respuesta, REST_Controller::HTTP_BAD_REQUEST);
         } else {
-            $this->response($respuesta, REST_Controller::HTTP_OK);
+            $respuesta =  $this->Usuario_model->getUser($_GET["id"]);
+            if ($respuesta['err']) {
+                $this->response($respuesta, REST_Controller::HTTP_BAD_REQUEST);
+            } else {
+                $this->response($respuesta, REST_Controller::HTTP_OK);
+            }
+        }
+    }
+    public function obtenerUsuariosNivel_get()
+    {
+        if (!isset($_GET["nivel"])) {
+            $respuesta = array('err' => TRUE, 'mensaje' => 'No ha enviado ningun nivel de usuario');
+
+            $this->response($respuesta, REST_Controller::HTTP_BAD_REQUEST);
+        } else {
+
+            $respuesta =  $this->Usuario_model->getUserNivel($_GET["nivel"]);
+            if ($respuesta['err']) {
+                $this->response($respuesta, REST_Controller::HTTP_BAD_REQUEST);
+            } else {
+                $this->response($respuesta, REST_Controller::HTTP_OK);
+            }
         }
     }
     public function obtenerChat_post()
@@ -100,5 +118,31 @@ class Usuario extends REST_Controller
         $tokens = ["cg7jHTZxRmuLoLePCmVfR3:APA91bEaEaN0fw_iWrphfXd9uk1JcyIYBk0k3XAqh4ESLOKmzRmFCPx5umvhRKlsy4URu0n13ft_fyPI_cBoqTfxY7WNe9No69bz9ANvrVEjnU_dmrVsaLPGbuhQ3oYfwVPaUISHAChX"];
         $respuesta =   $this->Firebase_model->EnviarNotificacionSDK();
         $this->response($respuesta, REST_Controller::HTTP_OK);
+    }
+    public function update_put()
+    {
+        $data = $this->put();
+        if (!isset($data["id_cliente"])) {
+            $respuesta = array('err'=>TRUE, 'mensaje' => 'No se encontro nungun identificador de usuario');
+            $this->response($respuesta, REST_Controller::HTTP_BAD_REQUEST);
+        }else{
+            
+            $usuario = $this->Usuario_model->verificar_campos($data);
+            
+            try {
+                $respuesta = $usuario->editar();
+                if ($respuesta['err']) {
+                    $this->response($respuesta, REST_Controller::HTTP_BAD_REQUEST);
+                } else {
+                    $this->response($respuesta, REST_Controller::HTTP_OK);
+                }
+                
+            } catch (\Throwable $th) {
+                $respuesta = array('err'=>TRUE, 'mensaje' => 'Error interno de servidor');
+            }
+        }
+
+        
+        
     }
 }

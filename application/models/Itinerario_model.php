@@ -1,4 +1,7 @@
 <?php
+
+use Monolog\DateTimeImmutable;
+
 defined('BASEPATH') or exit('No direct script access allowed');
 class Itinerario_model extends CI_Model
 {
@@ -60,7 +63,6 @@ class Itinerario_model extends CI_Model
     {
         $nombreTabla = "itinerario";
 
-
         for ($i = 0; $i < count($data); $i++) {
             if (isset($data[$i]["end"])) {
                 $fecha = $data[$i]["end"] = DateTime::createFromFormat('d/m/Y H:m:s', $data[$i]["end"]);
@@ -113,12 +115,11 @@ class Itinerario_model extends CI_Model
         for ($i = 0; $i < count($respuesta); $i++) {
             if (isset($respuesta[$i]->start) && $respuesta[$i]->start != null) {
 
-                $respuesta[$i]->start = DateTime::createFromFormat('Y-m-d h:m:s', $respuesta[$i]->start);
-                $respuesta[$i]->start = $respuesta[$i]->start->format('d/m/Y H:m:s');
+                $respuesta[$i]->start = new DateTime( $respuesta[$i]->start);
+            
             }
             if (isset($respuesta[$i]->end) && $respuesta[$i]->end != null) {
-                $respuesta[$i]->end = DateTime::createFromFormat('Y-m-d h:m:s', $respuesta[$i]->end);
-                $respuesta[$i]->end = $respuesta[$i]->end->format('d/m/Y H:m:s');
+                $respuesta[$i]->end = new DateTime( $respuesta[$i]->end);
             }
         }
 
