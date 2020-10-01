@@ -13,6 +13,28 @@ public function __construct(){
 
 	}
 
+	 public function deleteEncomienda_post(){
+
+	 $data=$this->post();
+	 $verificar=$this->Encomienda_model->set_datos($data);
+     $respuesta=$this->Encomienda_model->eliminar($verificar);
+
+	 	  $this->response($respuesta);
+	 }//fin metodo
+
+
+	public function updateEncomienda_post(){
+
+		$data=$this->post();
+
+		$verificar=$this->Encomienda_model->set_datos($data);
+        $respuesta=$this->Encomienda_model->modificar_encomienda($verificar);
+
+	    $this->response($respuesta);
+
+	}//fin de metodo
+
+
 	public function encomienda_get(){
 
 	$enco=$this->Encomienda_model->get_encomienda();
@@ -40,18 +62,17 @@ public function __construct(){
 	}
    }
 
-   public function encomiendas_put(){
+   public function encomiendas_post(){
 
-		$data=$this->put();
+		$data=$this->post();
 		$this->load->library('form_validation');
 		$this->form_validation->set_data ($data);
 
 		if ( $this->form_validation->run('encomienda_put') ) {
 			//todo bien
-			//$this->response('Todo bien');
-		$encomienda=$this->Encomienda_model->set_datos($data);
-
-		$respuesta=$encomienda->insert(); 
+			//$this->response('Todo bien')
+		$encomiendas=$this->Encomienda_model->set_datos($data);
+        $respuesta=$this->Encomienda_model->insert($encomiendas); 
 
 		if ($respuesta['err']) {
 

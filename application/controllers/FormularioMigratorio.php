@@ -27,8 +27,7 @@ public function __construct(){
 		$data=$this->post();
 
 		$verificar=$this->FormularioMigratorio_model->set_datos($data);
-
-       $respuesta=$this->FormularioMigratorio_model->modificar_formulario($verificar);
+		$respuesta=$this->FormularioMigratorio_model->modificar_formulario($verificar);
 
 	    $this->response($respuesta);
 
