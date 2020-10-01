@@ -12,6 +12,25 @@ public function __construct(){
 	
 		}
 
+ public function deleteCita_post(){
+
+	 $data=$this->post();
+	 $verificar=$this->Cita_model->set_datos($data);
+	 $respuesta=$this->Cita_model->eliminar($verificar);
+	 	  $this->response($respuesta);
+	 }
+
+public function updateCita_post(){
+
+		$data=$this->post();
+
+		$verificar=$this->Cita_model->set_datos($data);
+        $respuesta=$this->Cita_model->modificar_cita($verificar);
+
+	    $this->response($respuesta);
+
+	}//fin de metodo
+
 public function cita_get(){
 
 	$cita=$this->Cita_model->get_citas();

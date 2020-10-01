@@ -12,6 +12,74 @@ public $start;
 public $fecha;
 public $hora;
 
+public function eliminar($datos){
+
+		$query=$this->db->get_where('cita',array('id_cita'=>$datos["id_cita"]) );
+		$cita=$query->row();
+
+			if (!isset($cita)) {
+			$respuesta=array(
+				'err'=>TRUE,
+				'mensaje'=>'La cita no existe'
+			);
+			return $respuesta;
+			}
+
+		$this->db->where('id_cita',$datos["id_cita"]);
+
+ 		$hecho=$this->db->delete('cita');
+
+ 		if ($hecho) {
+				#borrado
+				$respuesta=array(
+					'err'=>FALSE,
+					'mensaje'=>'Registro eliminado correctamente'
+				);
+			}else{
+				//error
+
+				$respuesta=array(
+					'err'=>TRUE,
+					'mensaje'=>'Error al eliminar',
+					'error'=>$this->db->_error_message(),
+					'error_num'=>$this->db->_error_number()
+				);
+			
+			}
+ 		return $respuesta;
+	}//fin metodo
+
+
+public function modificar_cita($datos){
+		$this->db->set($datos);
+ 		$this->db->where('id_cita',$datos["id_cita"]);
+
+ 		$hecho=$this->db->update('cita');
+
+ 		if ($hecho) {
+				#borrado
+				$respuesta=array(
+					'err'=>FALSE,
+					'mensaje'=>'Registro actualizado correctamente',
+					'cita'=>$datos
+				);
+
+			
+
+			}else{
+				//error
+
+				$respuesta=array(
+					'err'=>TRUE,
+					'mensaje'=>'Error al actualizar',
+					'error'=>$this->db->_error_message(),
+					'error_num'=>$this->db->_error_number()
+				);
+			
+			}
+ 		return $respuesta;
+ 	}
+
 
 public function get_citas(){
 
