@@ -31,10 +31,10 @@ public function get_citas(){
  		return $this; //retornamos el objeto de clase
  	}//fin de capitalizar los datos segun el modelo y campos correctos de la base
 
- 	public function insertCita($motivo,$descripcion,$start,$fecha,$color){
+ 	public function insertCita($title,$descripcion,$start,$fecha){
 
 			//insertar el registro
-			$this->title =$motivo;
+			$this->title =$title;
 			$this->descripcion=$descripcion;
 			$this->start=$fecha.' '.$start;
 			$this->textColor="#FFFFFF";

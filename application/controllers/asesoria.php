@@ -47,9 +47,9 @@ public function __construct(){
 	//***********************fin de rama get //**************
 
 	//********************INSERTAR**************************
-	public function preguntita_put(){
+	public function preguntita_post(){
 
-		$data=$this->put();
+		$data=$this->post();
 		$this->load->library('form_validation');
 		$this->form_validation->set_data ($data);
 
@@ -81,12 +81,62 @@ public function __construct(){
 	}
 	//***********************
 
+	//*******para actualizar
+	public function updatePregunta_post(){
+
+		$data=$this->post();
+
+		$verificar=$this->Pregunta_model->verificar_campos($data);
+
+       $respuesta=$this->Pregunta_model->modificar_pregunta($verificar);
+
+	    $this->response($respuesta);
+
+
+	}
+	//**********fin de actualizar
+
+	//********para eliminar
+	 
+	 public function deletePregunta_post(){
+
+	 $data=$this->post();
+	 $verificar=$this->Pregunta_model->verificar_campos($data);
+     $respuesta=$this->Pregunta_model->eliminar($verificar);
+
+	 	  $this->response($respuesta);
+	 }
+
 
 //----------------------fin de las preguntas
 
 
 
 	///------------tabla(rama)------------para las ramas de las preguntas de la asesoria/*******
+
+	 public function deleteRama_post(){
+
+	 $data=$this->post();
+	 //$id_rama=$data["id_rama"];
+	  $verificar=$this->Pregunta_model->verificar_campos($data);
+	 $respuesta=$this->Rama_model->eliminar($verificar);
+
+	 	  $this->response($respuesta);
+	 }//eliminar
+
+	 //*******para actualizar
+	public function updateRama_post(){
+
+		$data=$this->post();
+
+		$verificar=$this->Rama_model->verificar_campos($data);
+
+       $respuesta=$this->Rama_model->modificar_rama($verificar);
+
+	    $this->response($respuesta);
+
+	}
+	//**********fin de actualizar
 	//************rama get**/***************************
 	public function ramita_get(){
 

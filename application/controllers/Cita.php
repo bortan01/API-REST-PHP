@@ -47,7 +47,7 @@ public function cita_get(){
 			//todo bien
 			//recogo los datos que vienen del formulario
 
-			$title=$data["motivo"];
+			$title=$data["title"];
 			$descripcion=$data["descripcion"];
 			$start=$data["start"];
 			$fecha=$data["fecha"];
