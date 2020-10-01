@@ -9,20 +9,21 @@ public $opcion_respuesta;
 public $id_rama;
 
 
-	public function eliminar($id_pregunta){
+	public function eliminar($datos){
 
-		$query=$this->db->get_where('pregunta',array('id_pregunta'=>$id_pregunta) );
-		$pregunta_ya=$query->row();
+		$query=$this->db->get_where('pregunta',array('id_pregunta'=>$datos["id_pregunta"]) );
+		$pregunta=$query->row();
 
-			if (!isset($pregunta_ya)) {
+			if (!isset($pregunta)) {
 			$respuesta=array(
 				'err'=>TRUE,
 				'mensaje'=>'La pregunta no existe'
+
 			);
 			return $respuesta;
 			}
 
-		$this->db->where('id_pregunta',$id_pregunta);
+		$this->db->where('id_pregunta',$datos["id_pregunta"]);
 
  		$hecho=$this->db->delete('pregunta');
 
@@ -44,7 +45,7 @@ public $id_rama;
 			
 			}
  		return $respuesta;
-	}
+	}//fin metodo
 
 
 	public function modificar_pregunta($datos){
