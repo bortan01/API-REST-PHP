@@ -15,7 +15,7 @@ class Wompi_model extends CI_Model
         $fieds = [
             "grant_type"   => $this->Credenciales_model->grant_type,
             "client_id"    => $this->Credenciales_model->client_id,
-            "client_secret"=> $this->Credenciales_model->client_secret,
+            "client_secret" => $this->Credenciales_model->client_secret,
             "audience"     => $this->Credenciales_model->audience,
         ];
         $fields_string = http_build_query($fieds);
@@ -122,8 +122,9 @@ class Wompi_model extends CI_Model
 
     public function crearEnlacePagopPrueba($monto, $nombreProducto, $descripcion, $imagen, $webHook)
     {
+        $idEnlace = rand(10000, 99999);
         $response = '{
-                        "idEnlace":20692,
+                        "idEnlace": ' . $idEnlace . ',
                         "urlQrCodeEnlace":"https://wompistorage.blob.core.windows.net/imagenes/f7c5e956-5fa4-4cf6-9480-aaaa855b1d7e.jpg",
                         "urlEnlace":"https://lk.wompi.sv/KrLN",
                         "estaProductivo":false

@@ -57,7 +57,6 @@ class SitioTuristico_model extends CI_Model
     {
         $nombreTabla = "sitio_turistico";
 
-
         try {
 
             //se buscaran todos los sitios turisticos

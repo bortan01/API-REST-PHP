@@ -38,6 +38,59 @@ class TurPaquete extends REST_Controller
             $this->response($respuesta, REST_Controller::HTTP_BAD_REQUEST);
         }
     }
+    public function update_put()
+    {
+        $data = $this->put();
+        if (!isset($data["id_tours"])) {
+            $respuesta = array('err' => TRUE, 'mensaje' => 'No se encontro nungun identificador de Tour o Paquete');
+            $this->response($respuesta, REST_Controller::HTTP_BAD_REQUEST);
+        } else {
+            try {
+                $respuesta = $this->Tours_paquete_model->editar($data);
+                if ($respuesta['err']) {
+                    $this->response($respuesta, REST_Controller::HTTP_BAD_REQUEST);
+                } else {
+                    $this->response($respuesta, REST_Controller::HTTP_OK);
+                }
+            } catch (\Throwable $th) {
+                $respuesta = array('err' => TRUE, 'mensaje' => 'Error interno de servidor');
+            }
+        }
+    }
+    public function obtenerViaje_get()
+    {
+        $data = $this->get();
+
+
+        $respuesta =  $this->Tours_paquete_model->obtenerViaje($data);
+        if ($respuesta['err']) {
+            $this->response($respuesta, REST_Controller::HTTP_BAD_REQUEST);
+        } else {
+            $this->response($respuesta, REST_Controller::HTTP_OK);
+        }
+    }
+    public function elimination_delete()
+    {
+        $data = $this->delete();
+        if (!isset($data["id_tours"])) {
+            $respuesta = array('err' => TRUE, 'mensaje' => 'No se encontro nungun identificador de paquete');
+            $this->response($respuesta, REST_Controller::HTTP_BAD_REQUEST);
+        } else {
+
+            $campos = array('id_tours' => $data["id_tours"], 'estado' => 'inactivo');
+
+            try {
+                $respuesta = $this->Tours_paquete_model->borrar($campos);
+                if ($respuesta['err']) {
+                    $this->response($respuesta, REST_Controller::HTTP_BAD_REQUEST);
+                } else {
+                    $this->response($respuesta, REST_Controller::HTTP_OK);
+                }
+            } catch (\Throwable $th) {
+                $respuesta = array('err' => TRUE, 'mensaje' => 'Error interno de servidor');
+            }
+        }
+    }
 
     public function test_post()
     {

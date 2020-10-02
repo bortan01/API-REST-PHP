@@ -69,8 +69,8 @@ class Usuario extends REST_Controller
     public function obtenerUsuario_get()
     {
         $data = $this->get();
-        
-       
+
+
         $respuesta =  $this->Usuario_model->getUser($data);
         if ($respuesta['err']) {
             $this->response($respuesta, REST_Controller::HTTP_BAD_REQUEST);
@@ -106,11 +106,8 @@ class Usuario extends REST_Controller
             $respuesta = array('err' => TRUE, 'mensaje' => 'No se encontro nungun identificador de usuario');
             $this->response($respuesta, REST_Controller::HTTP_BAD_REQUEST);
         } else {
-
-            $campos = $this->Usuario_model->verificar_camposEntrada($data);
-
             try {
-                $respuesta = $this->Usuario_model->editar($campos);
+                $respuesta = $this->Usuario_model->editar($data);
                 if ($respuesta['err']) {
                     $this->response($respuesta, REST_Controller::HTTP_BAD_REQUEST);
                 } else {
@@ -143,5 +140,47 @@ class Usuario extends REST_Controller
             }
         }
     }
-    
+
+    public function generarEnlace_post()
+    {
+        $data = $this->post();
+        $this->load->library('form_validation');
+        $this->form_validation->set_data($data);
+
+
+
+        //corremos las reglas de validacion
+        if (!$this->form_validation->run('crearEnlace')) {
+            //algo mal
+            $respuesta = array(
+                'err' => TRUE,
+                'mensaje' => 'har errores en el envio de informacion',
+                'errores' => $this->form_validation->get_errores_arreglo()
+            );
+            $this->response($respuesta, REST_Controller::HTTP_BAD_REQUEST);
+        } else {
+
+            $this->load->model('Imagen_model');
+            $imagen = $this->Imagen_model->guardarImagen();
+
+            if ($imagen["err"]) {
+                $respuesta = array(
+                    "err" => TRUE,
+                    "mensaje" => "har errores en el envio de informacion",
+                    "errores" => array("foto" => "La foto es un campo obligatorio")
+                );
+                $this->response($respuesta, REST_Controller::HTTP_OK);
+            } else {
+                $urlImagen      = $imagen["path"];
+                $monto          = $data["monto"];
+                $nombreProducto = $data["nombreProducto"];
+                $descripcion    = $data["descripcion"];
+                $webHook        = "None";
+
+                $this->load->model('Wompi_model');
+                $respuesta =  $this->Wompi_model->crearEnlacePagopPrueba($monto, $nombreProducto, $descripcion, $urlImagen, $webHook);
+                $this->response($respuesta, REST_Controller::HTTP_OK);
+            }
+        }
+    }
 }

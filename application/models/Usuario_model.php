@@ -47,6 +47,7 @@ class Usuario_model extends CI_Model
             return array('err' => TRUE, 'mensaje' => $this->db->error_message());
         }
     }
+
     public function loginUser($username, $password)
     {
         $query = $this->db->get_where("users", array("username" => $username), 1);
@@ -79,6 +80,7 @@ class Usuario_model extends CI_Model
             return array('status' => 303, 'message' => $username . ' does not exists');
         }
     }
+
     public function getUser(array $data = array())
     {
         $this->load->model("Utils_model");
@@ -99,6 +101,8 @@ class Usuario_model extends CI_Model
             return array('err' => TRUE, 'status' => 400, 'mensaje' => $e->getMessage());
         }
     }
+
+  
     public function createChatRecord($user_1_uuid, $user_2_uuid)
     {
         $this->db->select('chat_uuid');
@@ -171,9 +175,10 @@ class Usuario_model extends CI_Model
         //este es un objeto tipo cliente model
         return $objeto;
     }
-    public function editar($campos)
+    public function editar($data)
     {
         ///VAMOS A ACTUALIZAR UN REGISTRO
+        $campos = $this->Usuario_model->verificar_camposEntrada($data);
         $this->db->where('id_cliente', $campos["id_cliente"]);
         unset($this->id_cliente);
         $hecho = $this->db->update('usuario', $campos);

@@ -32,7 +32,7 @@ class Imagen_model extends CI_Model
             $path =  $URL . $data["file_name"];
             $nombre = $data["file_name"];
             $respuesta = array(
-                'error'   => FALSE,
+                'err'   => FALSE,
                 'mensaje' => "Imagen subida exitosamente",
                 'nombre'  => $nombre,
                 'path'    => $path,

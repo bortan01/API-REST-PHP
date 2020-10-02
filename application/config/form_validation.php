@@ -79,7 +79,7 @@ $config = array(
 		array('field' => 'idaerolinea', 'label' => 'Aerolinea', 'rules' => 'trim|required|min_length[1]|max_length[255]')
 	),
 	'cotizacionv_put' => array(
-		array('field' => 'id_cliente', 'label' => 'Cliente', 'rules' => 'trim|required|min_length[1]|max_length[255]'),
+		array('field' => 'id_cliente'  , 'label' => 'Cliente'    , 'rules' => 'trim|required|min_length[1]|max_length[255]'),
 		array('field' => 'id_generales', 'label' => 'Informacion', 'rules' => 'trim|required|min_length[1]|max_length[255]')
 	),
 
@@ -125,10 +125,10 @@ $config = array(
 		array('field' => 'username'  ,'label' => 'Nombre de Usuario'  , 'rules' => 'trim|required|min_length[3]|max_length[45]'),
 		array('field' => 'email'     ,'label' => 'Correo Electronico' , 'rules' => 'trim|required|min_length[3]|max_length[45]'),
 		array('field' => 'password'	 ,'label' => 'Password'           , 'rules' => 'trim|required|min_length[3]|max_length[45]'),	
-		array('field' => 'nombre'   ,'label' => 'Nombre Copleto'     , 'rules' => 'trim|required|min_length[3]|max_length[45]'),
-		array('field' => 'correo'   ,'label' => 'Correo Electronico' , 'rules' => 'trim|required|min_length[3]|max_length[45]'),
-		array('field' => 'nivel'    ,'label' => 'Nivel de Usiario'   , 'rules' => 'trim|required|min_length[3]|max_length[45]'),
-		array('field' => 'password'	,'label' => 'Password'           , 'rules' => 'trim|required|min_length[3]|max_length[45]')	
+		array('field' => 'nombre'    ,'label' => 'Nombre Copleto'     , 'rules' => 'trim|required|min_length[3]|max_length[45]'),
+		array('field' => 'correo'    ,'label' => 'Correo Electronico' , 'rules' => 'trim|required|min_length[3]|max_length[45]'),
+		array('field' => 'nivel'     ,'label' => 'Nivel de Usiario'   , 'rules' => 'trim|required|min_length[3]|max_length[45]'),
+		array('field' => 'password'	 ,'label' => 'Password'           , 'rules' => 'trim|required|min_length[3]|max_length[45]')	
 	),
 
 	'citas_put' => array(
@@ -136,7 +136,7 @@ $config = array(
 	),
 
 	'encomienda_put' => array(
-		array('field' => 'direccion'  ,'label' => 'direccion' , 'rules' => 'trim|required|min_length[4]|max_length[255]'),
+		array('field' => 'direccion'      ,'label' => 'direccion'       , 'rules' => 'trim|required|min_length[4]|max_length[255]'),
 		array('field' => 'destino_final'  ,'label' => 'direccion final' , 'rules' => 'trim|required|min_length[4]|max_length[255]')
 	),
 	'detalleEnvio_put' => array(
@@ -148,5 +148,11 @@ $config = array(
 	'formulario_put' => array(
 		array('field' => 'respuesta'  ,'label' => 'Nombre respuesta' , 'rules' => 'trim|required|min_length[2]|max_length[255]')
 	),
+	'crearEnlace' => array(
+		array('field' => 'monto'           ,'label' => 'Monto'                , 'rules' => 'trim|required|numeric'),
+		array('field' => 'nombreProducto'  ,'label' => 'Nombre Producto'      , 'rules' => 'trim|required|min_length[5]'),
+		array('field' => 'descripcion'     ,'label' => 'Descripción Producto' , 'rules' => 'trim|required|min_length[10]'),
+		//array('field' => 'foto'            ,'label' => 'Foto'                 , 'rules' => 'trim|required') 
+	)
 
 );
