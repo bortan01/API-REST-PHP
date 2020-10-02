@@ -17,22 +17,22 @@ class CategoriaPro_model extends CI_Model
 
 
     public function set_datos( $data_cruda){
+    	 $objeto =array();
+        ///par aquitar campos no existentes
+        foreach ($data_cruda as $nombre_campo => $valor_campo) {
+            # para verificar si la propiedad existe..
+            if (property_exists('CategoriaPro_model', $nombre_campo)) {
+                $objeto[$nombre_campo] = $valor_campo;
+            }
+        }
 
- 		foreach ($data_cruda as $nombre_campo => $valor_campo) {
-
- 		if (property_exists('CategoriaPro_model',$nombre_campo)) {
- 			$this->$nombre_campo=$valor_campo;
- 		
- 		}
- 			
- 		}
- 		return $this; //retornamos el objeto de clase
+        return $objeto;
  	}//fin de capitalizar los datos segun el modelo y campos correctos de la base 
 
- 		public function insert(){
+ 		public function insert($datos){
 
  		//verificar el correo
-		$query=$this->db->get_where('categoria',array('nombre'=>$this->nombre) );
+		$query=$this->db->get_where('categoria',array('nombre'=>$datos["nombre"]) );
 		$categoria=$query->row();
 
 			if (isset($categoria)) {
@@ -44,7 +44,7 @@ class CategoriaPro_model extends CI_Model
 			}
 
 			//insertar el registro
-			$hecho=$this->db->insert('categoria',$this);
+			$hecho=$this->db->insert('categoria',$datos);
 
 			if ($hecho) {
 				#insertado

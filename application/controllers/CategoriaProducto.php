@@ -14,7 +14,7 @@ public function __construct(){
 
 public function categoria_get(){
 
-	$cate$this->CategoriaPro_model->get_categoria();
+	$cate=$this->CategoriaPro_model->get_categoria();
 
 	if (isset($cate)) {
 		//quitar campos que no quiero
@@ -39,9 +39,9 @@ public function categoria_get(){
 	}
 }
 
-public function categoria_put(){
+public function categoria_post(){
 
-		$data=$this->put();
+		$data=$this->post();
 		$this->load->library('form_validation');
 		$this->form_validation->set_data ($data);
 
@@ -49,8 +49,7 @@ public function categoria_put(){
 			//todo bien
 			//$this->response('Todo bien');
 		$cate=$this->CategoriaPro_model->set_datos($data);
-
-		$respuesta=$cate->insert(); 
+        $respuesta=$this->CategoriaPro_model->insert($cate); 
 
 		if ($respuesta['err']) {
 
