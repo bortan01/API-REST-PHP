@@ -26,7 +26,9 @@ class Modelo_model extends CI_Model
             }
             return $this; 
         }
-   
+
+
+        //INSERTAR
         public function insert(){
    
             
@@ -63,12 +65,52 @@ class Modelo_model extends CI_Model
                        'error'=>$this->db->_error_message(),
                        'error_num'=>$this->db->_error_number()
                    );
-               
                }
-   
-   
-   
             return $respuesta;
         }
-   
+
+        //MODIFICAR
+        public function editar($data)
+    {
+        $nombreTabla = "modelo";
+
+        ///VAMOS A ACTUALIZAR UN REGISTRO
+        $campos = $this->Modelo_model->verificar_camposEntrada($data);
+        $this->db->where('idmodelo', $campos["idmodelo"]);
+
+        $hecho = $this->db->update($nombreTabla, $campos);
+        if ($hecho) {
+            ///LOGRO ACTUALIZAR 
+            $respuesta = array(
+                'err'     => FALSE,
+                'mensaje' => 'Registro Actualizado Exitosamente',
+                'modelo' => $campos
+
+            );
+            return $respuesta;
+        } else {
+            //NO GUARDO
+            $respuesta = array(
+                'err' => TRUE,
+                'mensaje' => 'Error al actualizar ', $this->db->error_message(),
+                'error_number' => $this->db->error_number(),
+                'modelo' => null
+            );
+            return $respuesta;
+        }
+    }
+
+    //VERIFICAR DATOS
+    public function verificar_camposEntrada($dataCruda)
+    {
+        $objeto = array();
+        ///quitar campos no existentes
+        foreach ($dataCruda as $nombre_campo => $valor_campo) {
+            # para verificar si la propiedad existe..
+            if (property_exists('Modelo_model', $nombre_campo)) {
+                $objeto[$nombre_campo] = $valor_campo;
+            }
+        }
+        return $objeto;
+    }
 }

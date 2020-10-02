@@ -66,4 +66,26 @@ public function __construct(){
 			$this->response($respuesta, REST_Controller::HTTP_BAD_REQUEST); 
 		}
 	}
+
+	//MODIFICAR
+	public function actualizarModelo_put(){
+
+		$data = $this->put();
+        if (!isset($data["idmodelo"])) {
+            $respuesta = array('err' => TRUE, 'mensaje' => 'No se encontro nungun identificador de Modelo');
+            $this->response($respuesta, REST_Controller::HTTP_BAD_REQUEST);
+        } else {
+            try {
+                $respuesta = $this->Modelo_model->editar($data);
+                if ($respuesta['err']) {
+                    $this->response($respuesta, REST_Controller::HTTP_BAD_REQUEST);
+                } else {
+                    $this->response($respuesta, REST_Controller::HTTP_OK);
+                }
+            } catch (\Throwable $th) {
+                $respuesta = array('err' => TRUE, 'mensaje' => 'Error interno de servidor');
+            }
+        }
+
+	}
 }
