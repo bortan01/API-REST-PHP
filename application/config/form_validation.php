@@ -148,6 +148,9 @@ $config = array(
 	'formulario_put' => array(
 		array('field' => 'respuesta'  ,'label' => 'Nombre respuesta' , 'rules' => 'trim|required|min_length[2]|max_length[255]')
 	),
+	'producto_put' => array(
+		array('field' => 'nombre'  ,'label' => 'Nombre' , 'rules' => 'trim|required|min_length[4]|max_length[255]')
+	),
 	'crearEnlace' => array(
 		array('field' => 'monto'           ,'label' => 'Monto'                , 'rules' => 'trim|required|numeric'),
 		array('field' => 'nombreProducto'  ,'label' => 'Nombre Producto'      , 'rules' => 'trim|required|min_length[5]'),
