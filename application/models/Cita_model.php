@@ -5,7 +5,7 @@ class Cita_model extends CI_Model
 public $id_cita;
 public $id_cliente;
 public $descripcion;
-public $title;
+public $motivo;
 public $color;
 public $textColor;
 public $start;

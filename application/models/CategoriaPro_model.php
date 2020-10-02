@@ -6,6 +6,73 @@ class CategoriaPro_model extends CI_Model
 	public $id_categoria;
 	public $nombre;
 
+	public function eliminar($datos){
+
+		$query=$this->db->get_where('categoria',array('id_categoria'=>$datos["id_categoria"]) );
+		$cate=$query->row();
+
+			if (!isset($cate)) {
+			$respuesta=array(
+				'err'=>TRUE,
+				'mensaje'=>'La categoria no existe'
+			);
+			return $respuesta;
+			}
+
+		$this->db->where('id_categoria',$datos["id_categoria"]);
+
+ 		$hecho=$this->db->delete('categoria');
+
+ 		if ($hecho) {
+				#borrado
+				$respuesta=array(
+					'err'=>FALSE,
+					'mensaje'=>'Registro eliminado correctamente'
+				);
+			}else{
+				//error
+
+				$respuesta=array(
+					'err'=>TRUE,
+					'mensaje'=>'Error al eliminar',
+					'error'=>$this->db->_error_message(),
+					'error_num'=>$this->db->_error_number()
+				);
+			
+			}
+ 		return $respuesta;
+	}//fin metodo
+
+	public function modificar_categoria($datos){
+		$this->db->set($datos);
+ 		$this->db->where('id_categoria',$datos["id_categoria"]);
+
+ 		$hecho=$this->db->update('categoria');
+
+ 		if ($hecho) {
+				#borrado
+				$respuesta=array(
+					'err'=>FALSE,
+					'mensaje'=>'Registro actualizado correctamente',
+					'Categorias'=>$datos
+				);
+
+			
+
+			}else{
+				//error
+
+				$respuesta=array(
+					'err'=>TRUE,
+					'mensaje'=>'Error al actualizar',
+					'error'=>$this->db->_error_message(),
+					'error_num'=>$this->db->_error_number()
+				);
+			
+			}
+ 		return $respuesta;
+ 	}//fin metodo
+
 	public function get_categoria(){
 
 

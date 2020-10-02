@@ -11,6 +11,26 @@ public function __construct(){
 		$this->load->model('CategoriaPro_model');
 
 	}
+public function deleteCategoria_post(){
+
+	 $data=$this->post();
+	 $verificar=$this->CategoriaPro_model->set_datos($data);
+     $respuesta=$this->CategoriaPro_model->eliminar($verificar);
+
+	 	  $this->response($respuesta);
+	 }
+
+
+public function updateCategoria_post(){
+
+		$data=$this->post();
+
+		$verificar=$this->CategoriaPro_model->set_datos($data);
+		$respuesta=$this->CategoriaPro_model->modificar_categoria($verificar);
+
+	    $this->response($respuesta);
+
+	}//fin de metodo
 
 public function categoria_get(){
 
