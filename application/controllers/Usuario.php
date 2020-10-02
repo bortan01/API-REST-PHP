@@ -102,6 +102,7 @@ class Usuario extends REST_Controller
     public function update_put()
     {
         $data = $this->put();
+        ///VERIFICANDO SI EXISTE EL ID PRINCIPAL DE LA TABLA
         if (!isset($data["id_cliente"])) {
             $respuesta = array('err' => TRUE, 'mensaje' => 'No se encontro nungun identificador de usuario');
             $this->response($respuesta, REST_Controller::HTTP_BAD_REQUEST);

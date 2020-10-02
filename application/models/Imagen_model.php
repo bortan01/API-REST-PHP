@@ -42,7 +42,7 @@ class Imagen_model extends CI_Model
     }
 
     //EN EL BODY DEBE DE RECIBIR UN PARAMETRO LLAMADO fotos[], DE TIPO FILE
-    public function guardarGaleria($tipo, $identificador, $principal = FALSE)
+    public function guardarGaleria($tipo, $identificador, $principal = TRUE)
     {
         $URL = "http://localhost/API-REST-PHP/uploads/";
         if (!isset($_FILES['fotos'])) {
@@ -114,6 +114,48 @@ class Imagen_model extends CI_Model
                 }
             }
             return $informacion_subida;
+        }
+    }
+
+    //DEBE DE ENVIARSE LA URL DE LA IMAGEN A ELIMINAR
+    public function eliminarImagen($urlImagen)
+    {
+        $URL = "http://localhost/API-REST-PHP/uploads/";
+        $RUTA = "C:/wamp64/www/API-REST-PHP/uploads/";
+        $ruta_foto = ($RUTA . substr($urlImagen,  strlen($URL)));
+
+
+        try {
+            if (file_exists($ruta_foto)) {
+                unlink($ruta_foto);
+            }
+        } catch (\Throwable $th) {
+            $th->getMessage();
+        } catch (Exception $e) {
+            $e->getMessage();
+        }
+    }
+    
+    public function eliminarGaleria($tipo, $identificado)
+    {
+        $this->db->where(array("tipo" => $tipo, "identificador" => $identificado));
+        $query = $this->db->get("galeria");
+        $imagenes = $query->result();
+
+        $URL = "http://localhost/API-REST-PHP/uploads/";
+        $RUTA = "C:/wamp64/www/API-REST-PHP/uploads/";
+        foreach ($imagenes as $imagen) {
+            $urlImagen = $imagen->foto_path;
+            $ruta_foto = ($RUTA . substr($urlImagen,  strlen($URL)));
+            try {
+                if (file_exists($ruta_foto)) {
+                    unlink($ruta_foto);
+                }
+            } catch (\Throwable $th) {
+                $th->getMessage();
+            } catch (Exception $e) {
+                $e->getMessage();
+            }
         }
     }
 }
