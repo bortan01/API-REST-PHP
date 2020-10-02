@@ -101,8 +101,7 @@ class Usuario_model extends CI_Model
             return array('err' => TRUE, 'status' => 400, 'mensaje' => $e->getMessage());
         }
     }
-
-  
+ 
     public function createChatRecord($user_1_uuid, $user_2_uuid)
     {
         $this->db->select('chat_uuid');

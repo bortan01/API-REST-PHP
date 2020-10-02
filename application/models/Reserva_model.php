@@ -26,9 +26,18 @@ class Reserva_model extends CI_Model
     public function guardar($data)
     {
         $nombreTabla = "reserva";
+        $this->load->model("Usuario_model");
+        ///ESTO NOS RETORNARA UN ARRAY
+        $usuario = $this->Usuario_model->getUser(array('correo' => $data["Cliente"]["Email"]));
+
+        if (!$usuario['err']) {
+
+            $this->id_usuario = ($usuario["usuario"][0]->id_cliente);
+        } else {
+            $this->id_usuario = NULL;
+        }
         $this->id_reserva           = $data["IdTransaccion"];
         $this->id_tours             = $data["EnlacePago"]["Id"];
-        $this->id_usuario           = 1;
         $this->fecha_reserva        = $data["FechaTransaccion"];;
         $this->formaPagoUtilizada   = $data["FormaPagoUtilizada"];
         $this->resultadoTransaccion = $data["ResultadoTransaccion"];
