@@ -12,7 +12,24 @@ public function __construct(){
 	
 	}
 
-//--------------tabla(preguntas)--para las preguntas
+	 public function deleteEnvios_post(){
+
+	 $data=$this->post();
+	 $verificar=$this->DetalleEnvio_model->set_datos($data);
+     $respuesta=$this->DetalleEnvio_model->eliminar($verificar);
+
+	 	  $this->response($respuesta);
+	 }
+	public function updateEnvios_post(){
+
+		$data=$this->post();
+
+		$verificar=$this->DetalleEnvio_model->set_datos($data);
+		$respuesta=$this->DetalleEnvio_model->modificar_detalle($verificar);
+
+	    $this->response($respuesta);
+
+	}//fin de metodo
 
 	//************rama get todas**/***************************
 	public function detalleEnvio_get(){
@@ -42,9 +59,9 @@ public function __construct(){
 	}
 }
 
-public function detalleEnvios_put(){
+public function detalleEnvios_post(){
 
-		$data=$this->put();
+		$data=$this->post();
 		$this->load->library('form_validation');
 		$this->form_validation->set_data ($data);
 
@@ -52,8 +69,7 @@ public function detalleEnvios_put(){
 			//todo bien
 			//$this->response('Todo bien');
 		$detalle=$this->DetalleEnvio_model->set_datos($data);
-
-		$respuesta=$detalle->insert(); 
+        $respuesta=$this->DetalleEnvio_model->insert($detalle); 
 
 		if ($respuesta['err']) {
 

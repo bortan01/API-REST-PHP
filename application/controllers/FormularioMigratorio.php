@@ -70,8 +70,7 @@ public function formulario_post(){
 			//todo bien
 			//$this->response('Todo bien');
 		$pregunta=$this->FormularioMigratorio_model->set_datos($data);
-
-		$respuesta=$this->FormularioMigratorio_model->insert($pregunta); 
+        $respuesta=$this->FormularioMigratorio_model->insert($pregunta); 
 
 		if ($respuesta['err']) {
 

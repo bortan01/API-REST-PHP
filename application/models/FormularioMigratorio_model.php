@@ -75,7 +75,7 @@ class FormularioMigratorio_model extends CI_Model
 			
 			}
  		return $respuesta;
- 	}
+ 	}//fin metodo
 
 
 	public function get_pregunta(){
