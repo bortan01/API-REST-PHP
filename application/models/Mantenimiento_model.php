@@ -62,12 +62,57 @@ class Mantenimiento_model extends CI_Model
                        'error'=>$this->db->_error_message(),
                        'error_num'=>$this->db->_error_number()
                    );
-               
                }
-   
-   
-   
             return $respuesta;
         }
+
+        //MODIFICAR
+    public function editar($data)
+    {
+        $nombreTabla = "mantenimiento";
+
+        ///VAMOS A ACTUALIZAR UN REGISTRO
+        $campos = $this->Mantenimiento_model->verificar_camposEntrada($data);
+        $this->db->where('id_mantenimiento', $campos["id_mantenimiento"]);
+
+        $hecho = $this->db->update($nombreTabla, $campos);
+        if ($hecho) 
+        {
+            ///LOGRO ACTUALIZAR 
+            $respuesta = array(
+                'err'     => FALSE,
+                'mensaje' => 'Registro Actualizado Exitosamente',
+                'Mantenimiento' => $campos
+
+            );
+            return $respuesta;
+        } 
+        else 
+        {
+            //NO GUARDO
+            $respuesta = array(
+                'err' => TRUE,
+                'mensaje' => 'Error al actualizar ', $this->db->error_message(),
+                'error_number' => $this->db->error_number(),
+                'Mantenimiento' => null
+            );
+            return $respuesta;
+        }
+    }
+
+    //VERIFICAR DATOS
+    public function verificar_camposEntrada($dataCruda)
+    {
+        $objeto = array();
+        ///quitar campos no existentes
+        foreach ($dataCruda as $nombre_campo => $valor_campo) {
+            # para verificar si la propiedad existe..
+            if (property_exists('Mantenimiento_model', $nombre_campo)) {
+                $objeto[$nombre_campo] = $valor_campo;
+            }
+        }
+        return $objeto;
+    } 
+   
    
 }
