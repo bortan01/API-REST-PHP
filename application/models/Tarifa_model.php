@@ -7,6 +7,14 @@ class Tarifa_model extends CI_Model
 	public $tarifa;
 	public $comision;
 
+	public function get_tarifa(){
+
+
+ 	$query=$this->db->get('tarifa');
+ 	
+ 		return $query->result();
+ 	}
+
 	public function set_datos($data_cruda){
     	 $objeto =array();
         ///par aquitar campos no existentes

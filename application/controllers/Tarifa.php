@@ -11,7 +11,32 @@ public function __construct(){
 		$this->load->model('Tarifa_model');
 
 	}
-public function Tarifa_post(){
+public function tarifas_get(){
+
+	$tarifa=$this->Tarifa_model->get_tarifa();
+
+	if (isset($tarifa)) {
+		//quitar campos que no quiero
+		//unset($cliente->telefono1);
+		//sunset($cliente->telefono2);
+		$respuesta=array(
+			'err'=>FALSE,
+			'mensaje'=>'Registro Cargado correctamente',
+			'tarifas'=>$tarifa
+
+		);
+		$this->response($respuesta);
+	}else{
+		$respuesta=array(
+			'err'=>TRUE,
+			'mensaje'=>'Error al cargar los datos.'
+		);
+		$this->response($respuesta,REST_Controller::HTTP_NOT_FOUND);
+
+	}
+}//fin metodo
+
+public function tarifa_post(){
 
 	    $data=$this->post();
 		$this->load->library('form_validation');
