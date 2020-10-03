@@ -34,8 +34,6 @@ public function __construct(){
 
 	}
 }
-
-	
 	//INSERTAR
 	public function modelo_post(){
 

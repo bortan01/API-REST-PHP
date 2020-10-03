@@ -69,7 +69,7 @@ class Modelo_model extends CI_Model
             return $respuesta;
         }
 
-        //MODIFICAR
+    //MODIFICAR
     public function editar($data)
     {
         $nombreTabla = "modelo";
