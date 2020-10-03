@@ -11,6 +11,43 @@ public function __construct(){
 		$this->load->model('Tarifa_model');
 
 	}
+
+
+public function deleteTarifa_post(){
+
+	 $data=$this->post();
+	 $verificar=$this->Tarifa_model->set_datos($data);
+     $respuesta=$this->Tarifa_model->eliminar($verificar);
+
+	 if ($respuesta['err']) {
+
+			$this->response($respuesta, REST_Controller::HTTP_BAD_REQUEST); 
+
+		}else{
+			 $this->response($respuesta);
+
+	 }
+	}//fin metodo
+
+public function updateTarifa_post(){
+
+		$data=$this->post();
+
+		$verificar=$this->Tarifa_model->set_datos($data);
+		$respuesta=$this->Tarifa_model->modificar_tarifa($verificar);
+
+		if ($respuesta['err']) {
+
+			$this->response($respuesta, REST_Controller::HTTP_BAD_REQUEST); 
+
+		}else{
+			 $this->response($respuesta);
+		}
+
+	   
+
+	}//fin de metodo
+
 public function tarifas_get(){
 
 	$tarifa=$this->Tarifa_model->get_tarifa();
