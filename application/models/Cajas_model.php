@@ -8,6 +8,73 @@ public $largo;
 public $alto;
 public $capacidad;
 
+public function eliminar($datos){
+
+		$query=$this->db->get_where('caja',array('id_caja'=>$datos["id_caja"]) );
+		$caja=$query->row();
+
+			if (!isset($caja)) {
+			$respuesta=array(
+				'err'=>TRUE,
+				'mensaje'=>'La caja no existe'
+			);
+			return $respuesta;
+			}
+
+		$this->db->where('id_caja',$datos["id_caja"]);
+
+ 		$hecho=$this->db->delete('caja');
+
+ 		if ($hecho) {
+				#borrado
+				$respuesta=array(
+					'err'=>FALSE,
+					'mensaje'=>'Registro eliminado correctamente'
+				);
+			}else{
+				//error
+
+				$respuesta=array(
+					'err'=>TRUE,
+					'mensaje'=>'Error al eliminar',
+					'error'=>$this->db->_error_message(),
+					'error_num'=>$this->db->_error_number()
+				);
+			
+			}
+ 		return $respuesta;
+	}//fin metodo
+
+public function modificar_caja($datos){
+		$this->db->set($datos);
+ 		$this->db->where('id_caja',$datos["id_caja"]);
+
+ 		$hecho=$this->db->update('caja');
+
+ 		if ($hecho) {
+				#borrado
+				$respuesta=array(
+					'err'=>FALSE,
+					'mensaje'=>'Registro actualizado correctamente',
+					'cajas'=>$datos
+				);
+
+			
+
+			}else{
+				//error
+
+				$respuesta=array(
+					'err'=>TRUE,
+					'mensaje'=>'Error al actualizar',
+					'error'=>$this->db->_error_message(),
+					'error_num'=>$this->db->_error_number()
+				);
+			
+			}
+ 		return $respuesta;
+ 	}//fin metodo
+
 public function get_caja(){
 
 
