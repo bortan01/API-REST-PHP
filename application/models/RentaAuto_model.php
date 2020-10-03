@@ -2,6 +2,7 @@
 defined('BASEPATH') or exit('No direct script access allowed');
 class RentaAuto_model extends CI_Model
 {
+    public $id_rentaCar;
     public $nombre;
     public $lugar;
     public $descripcion;
@@ -14,8 +15,6 @@ class RentaAuto_model extends CI_Model
 
             return $query->result();
         }
-   
-   
        public function set_datos( $data_cruda){
    
             foreach ($data_cruda as $nombre_campo => $valor_campo) {
@@ -52,10 +51,7 @@ class RentaAuto_model extends CI_Model
                        'err'=>FALSE,
                        'mensaje'=>'Registro insertado correctamente',
                        'rentacar_id'=>$this->db->insert_id()
-                   );
-   
-               
-   
+                   );      
                }else{
                    //error
    
@@ -67,10 +63,55 @@ class RentaAuto_model extends CI_Model
                    );
                
                }
-   
-   
-   
             return $respuesta;
         }
+
+    //MODIFICAR
+    public function editar($data)
+    {
+        $nombreTabla = "rentacar";
+
+        ///VAMOS A ACTUALIZAR UN REGISTRO
+        $campos = $this->RentaAuto_model->verificar_camposEntrada($data);
+        $this->db->where('id_rentaCar', $campos["id_rentaCar"]);
+
+        $hecho = $this->db->update($nombreTabla, $campos);
+        if ($hecho) 
+        {
+            ///LOGRO ACTUALIZAR 
+            $respuesta = array(
+                'err'     => FALSE,
+                'mensaje' => 'Registro Actualizado Exitosamente',
+                'Renta Car' => $campos
+
+            );
+            return $respuesta;
+        } 
+        else 
+        {
+            //NO GUARDO
+            $respuesta = array(
+                'err' => TRUE,
+                'mensaje' => 'Error al actualizar ', $this->db->error_message(),
+                'error_number' => $this->db->error_number(),
+                'Renta Car' => null
+            );
+            return $respuesta;
+        }
+    }
+
+    //VERIFICAR DATOS
+    public function verificar_camposEntrada($dataCruda)
+    {
+        $objeto = array();
+        ///quitar campos no existentes
+        foreach ($dataCruda as $nombre_campo => $valor_campo) {
+            # para verificar si la propiedad existe..
+            if (property_exists('RentaAuto_model', $nombre_campo)) {
+                $objeto[$nombre_campo] = $valor_campo;
+            }
+        }
+        return $objeto;
+    } 
    
 }
