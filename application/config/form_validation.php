@@ -151,6 +151,16 @@ $config = array(
 	'producto_put' => array(
 		array('field' => 'nombre'  ,'label' => 'Nombre' , 'rules' => 'trim|required|min_length[4]|max_length[255]')
 	),
+	'detalleEncomienda_put' => array(
+		array('field' => 'cantidad'  ,'label' => 'catidad' , 'rules' => 'required')
+	),
+	'caja_put' => array(
+		array('field' => 'capacidad'  ,'label' => 'capacidad' , 'rules' => 'required')
+	),
+	'tarifa_put' => array(
+		array('field' => 'libras'  ,'label' => 'libras' , 'rules' => 'required')
+	),
+
 	'crearEnlace' => array(
 		array('field' => 'monto'           ,'label' => 'Monto'                , 'rules' => 'trim|required|numeric'),
 		array('field' => 'nombreProducto'  ,'label' => 'Nombre Producto'      , 'rules' => 'trim|required|min_length[5]'),
