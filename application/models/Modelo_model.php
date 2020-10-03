@@ -70,7 +70,7 @@ class Modelo_model extends CI_Model
         }
 
         //MODIFICAR
-        public function editar($data)
+    public function editar($data)
     {
         $nombreTabla = "modelo";
 
@@ -79,7 +79,8 @@ class Modelo_model extends CI_Model
         $this->db->where('idmodelo', $campos["idmodelo"]);
 
         $hecho = $this->db->update($nombreTabla, $campos);
-        if ($hecho) {
+        if ($hecho) 
+        {
             ///LOGRO ACTUALIZAR 
             $respuesta = array(
                 'err'     => FALSE,
@@ -88,7 +89,9 @@ class Modelo_model extends CI_Model
 
             );
             return $respuesta;
-        } else {
+        } 
+        else 
+        {
             //NO GUARDO
             $respuesta = array(
                 'err' => TRUE,

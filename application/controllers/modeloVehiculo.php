@@ -37,9 +37,9 @@ public function __construct(){
 
 	
 	//INSERTAR
-	public function modelo_put(){
+	public function modelo_post(){
 
-		$data=$this->put();
+		$data=$this->post();
 		$this->load->library('form_validation');
 		$this->form_validation->set_data ($data);
 
@@ -72,7 +72,7 @@ public function __construct(){
 
 		$data = $this->put();
         if (!isset($data["idmodelo"])) {
-            $respuesta = array('err' => TRUE, 'mensaje' => 'No se encontro nungun identificador de Modelo');
+            $respuesta = array('err' => TRUE, 'mensaje' => 'No se encontro ningun identificador de Modelo');
             $this->response($respuesta, REST_Controller::HTTP_BAD_REQUEST);
         } else {
             try {

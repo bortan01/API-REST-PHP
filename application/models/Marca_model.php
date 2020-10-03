@@ -69,5 +69,53 @@ class Marca_model extends CI_Model
    
             return $respuesta;
         }
+        //MODIFICAR
+    public function editar($data)
+    {
+        $nombreTabla = "marca_vehiculo";
+
+        ///VAMOS A ACTUALIZAR UN REGISTRO
+        $campos = $this->Marca_model->verificar_camposEntrada($data);
+        $this->db->where('id_marca', $campos["id_marca"]);
+
+        $hecho = $this->db->update($nombreTabla, $campos);
+        if ($hecho) 
+        {
+            ///LOGRO ACTUALIZAR 
+            $respuesta = array(
+                'err'     => FALSE,
+                'mensaje' => 'Registro Actualizado Exitosamente',
+                'marca' => $campos
+
+            );
+            return $respuesta;
+        } 
+        else 
+        {
+            //NO GUARDO
+            $respuesta = array(
+                'err' => TRUE,
+                'mensaje' => 'Error al actualizar ', $this->db->error_message(),
+                'error_number' => $this->db->error_number(),
+                'marca' => null
+            );
+            return $respuesta;
+        }
+    }
+
+    //VERIFICAR DATOS
+    public function verificar_camposEntrada($dataCruda)
+    {
+        $objeto = array();
+        ///quitar campos no existentes
+        foreach ($dataCruda as $nombre_campo => $valor_campo) {
+            # para verificar si la propiedad existe..
+            if (property_exists('Marca_model', $nombre_campo)) {
+                $objeto[$nombre_campo] = $valor_campo;
+            }
+        }
+        return $objeto;
+    }
+
    
 }
