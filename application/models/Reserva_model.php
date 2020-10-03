@@ -11,7 +11,6 @@ class Reserva_model extends CI_Model
     public $monto;
     public $cantidad;
 
-
     public function verificar_campos($dataCruda)
     {
         ///par aquitar campos no existentes 

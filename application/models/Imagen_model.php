@@ -5,7 +5,7 @@ class Imagen_model extends CI_Model
     public $foto_path;
     public $tipo;
     public $identificador;
-    public $principal;
+    public $activo;
 
     ///EN EL BODY DEBE DE RECIBIR UN PARAMETRO LLAMADO foto, DE TIPO FILE
     public function guardarImagen()
@@ -40,9 +40,8 @@ class Imagen_model extends CI_Model
             return $respuesta;
         }
     }
-
     //EN EL BODY DEBE DE RECIBIR UN PARAMETRO LLAMADO fotos[], DE TIPO FILE
-    public function guardarGaleria($tipo, $identificador, $principal = TRUE)
+    public function guardarGaleria($tipo, $identificador, $activo = TRUE)
     {
         $URL = "http://localhost/API-REST-PHP/uploads/";
         if (!isset($_FILES['fotos'])) {
@@ -89,7 +88,7 @@ class Imagen_model extends CI_Model
                         $this->tipo          = $tipo;
                         $this->identificador = $identificador;
                         $this->foto_path     = $path;
-                        $this->principal     = $principal;
+                        $this->activo     = $activo;
                         $this->db->insert('galeria', $this);
 
                         ///INFORMACION DE FOTOS GUARDADAS
@@ -116,7 +115,6 @@ class Imagen_model extends CI_Model
             return $informacion_subida;
         }
     }
-
     //DEBE DE ENVIARSE LA URL DE LA IMAGEN A ELIMINAR
     public function eliminarImagen($urlImagen)
     {
@@ -135,7 +133,6 @@ class Imagen_model extends CI_Model
             $e->getMessage();
         }
     }
-    
     public function eliminarGaleria($tipo, $identificado)
     {
         $this->db->where(array("tipo" => $tipo, "identificador" => $identificado));
@@ -158,4 +155,28 @@ class Imagen_model extends CI_Model
             }
         }
     }
+    public function obtenerImagenUnica($tipo, $identificado)
+    {
+        $this->db->where(array("tipo" => $tipo, "identificador" => $identificado, "activo" => TRUE));
+        $query = $this->db->get("galeria");
+        $imagenes = $query->result();
+
+        $URL = "http://localhost/API-REST-PHP/uploads/";
+        $RUTA = "C:/wamp64/www/API-REST-PHP/uploads/";
+        foreach ($imagenes as $imagen) {
+            $urlImagen = $imagen->foto_path;
+            $ruta_foto = ($RUTA . substr($urlImagen,  strlen($URL)));
+            try {
+                if (file_exists($ruta_foto)) {
+                    return $urlImagen;
+                }
+            } catch (\Throwable $th) {
+                $th->getMessage();
+            } catch (Exception $e) {
+                $e->getMessage();
+            }
+        }
+    }
+    
+   
 }
