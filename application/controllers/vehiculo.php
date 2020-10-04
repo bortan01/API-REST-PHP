@@ -10,7 +10,8 @@ public function __construct(){
 		$this->load->database();
 		$this->load->model('Vehiculo_model');
 	}
-	public function vehiculos_get(){
+	public function vehiculos_get()
+	{
 
 	$carro=$this->Vehiculo_model->get_vehiculo();
 
@@ -34,12 +35,10 @@ public function __construct(){
 
 	}
 }
-
-	
 	//INSERTAR
-	public function vehiculo_put(){
+	public function vehiculo_post(){
 
-		$data=$this->put();
+		$data=$this->post();
 		$this->load->library('form_validation');
 		$this->form_validation->set_data ($data);
 
@@ -65,5 +64,27 @@ public function __construct(){
 			);
 			$this->response($respuesta, REST_Controller::HTTP_BAD_REQUEST); 
 		}
+	}
+
+	//MODIFICAR
+	public function actualizarVehiculo_put(){
+
+		$data = $this->put();
+        if (!isset($data["idvehiculo"])) {
+            $respuesta = array('err' => TRUE, 'mensaje' => 'No se encontro ningun identificador del Vehiculo');
+            $this->response($respuesta, REST_Controller::HTTP_BAD_REQUEST);
+        } else {
+            try {
+                $respuesta = $this->Vehiculo_model->editar($data);
+                if ($respuesta['err']) {
+                    $this->response($respuesta, REST_Controller::HTTP_BAD_REQUEST);
+                } else {
+                    $this->response($respuesta, REST_Controller::HTTP_OK);
+                }
+            } catch (\Throwable $th) {
+                $respuesta = array('err' => TRUE, 'mensaje' => 'Error interno de servidor');
+            }
+        }
+
 	}
 }
