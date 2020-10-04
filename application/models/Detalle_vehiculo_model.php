@@ -1,14 +1,15 @@
 <?php
 defined('BASEPATH') or exit('No direct script access allowed');
-class DetalleVehiculo_model extends CI_Model
+class Detalle_vehiculo_model extends CI_Model
 {
-    public $iddetalleVehiculo;
-    public $idvehiculo;
+    public $id_detalle;
+    public $id_cliente;
+    public $id_vehiculo;
     public $total;
     public $urlQrCodeEnlace;
     public $urlEnlace;
-    public $descripcion;
     public $nombre;
+    public $descripcion;
 
     public function verificar_camposEntrada($dataCruda)
     {
@@ -16,7 +17,7 @@ class DetalleVehiculo_model extends CI_Model
         ///par aquitar campos no existentes
         foreach ($dataCruda as $nombre_campo => $valor_campo) {
             # para verificar si la propiedad existe..
-            if (property_exists('DetalleVehiculo_model', $nombre_campo)) {
+            if (property_exists('Detalle_vehiculo_model', $nombre_campo)) {
                 $objeto[$nombre_campo] = $valor_campo;
             }
         }
@@ -28,9 +29,9 @@ class DetalleVehiculo_model extends CI_Model
     {
         $this->load->model('Wompi_model');
         $this->load->model('Imagen_model');
-        $nombreTabla = "detalleVehiculo";
+        $nombreTabla = "detalle_vehiculo";
         $urlWebHook  = "https://api.christianmeza.com/index.php/reserva/save";
-        $foto        = $this->Imagen_model->obtenerImagenUnica("vehiculo", $detalleVehiculo["idvehiculo"]);
+        $foto        = $this->Imagen_model->obtenerImagenUnica("vehiculo", $detalleVehiculo["id_vehiculo"]);
       
         if (!isset($foto)) {
             $foto = "https://www.pagina.christianmeza.com/img/logo.jpg";
@@ -46,7 +47,7 @@ class DetalleVehiculo_model extends CI_Model
             return $respuesta;
         } else {
             //RECUPERAMOS LA INFORMACION DE WOMPI Y TRATAMOS DE GUARDAR EN LA BD
-            $detalleVehiculo["iddetalleVehiculo"]  = $respuestaWompi["idEnlace"];
+            $detalleVehiculo["id_detalle"]        = $respuestaWompi["idEnlace"];
             $detalleVehiculo["urlQrCodeEnlace"]   = $respuestaWompi["urlQrCodeEnlace"];
             $detalleVehiculo["urlEnlace"]         = $respuestaWompi["urlEnlace"];
 
@@ -75,10 +76,10 @@ class DetalleVehiculo_model extends CI_Model
     public function obtenerDetalle(array $data = array())
     {
         $this->load->model("Utils_model");
-        $nombreTabla = "detalleVehiculo";
+        $nombreTabla = "detalle_vehiculo";
 
         try {
-            $parametros = $this->DetalleVehiculo_model->verificar_camposEntrada($data);
+            $parametros = $this->Detalle_vehiculo_model->verificar_camposEntrada($data);
             $deetalleSeleccionado = $this->Utils_model->selectTabla($nombreTabla, $parametros);
             ///usuario seleccionado es un array de clases genericas
 

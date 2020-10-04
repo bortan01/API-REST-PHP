@@ -168,7 +168,8 @@ $config = array(
 		//array('field' => 'foto'            ,'label' => 'Foto'                 , 'rules' => 'trim|required') 
 	),
 	'insertarDetalleVehiculo' => array(
-		array('field' => 'idvehiculo'  ,'label' => 'Id Vehiculo'  , 'rules' => 'trim|required|integer'),
+		array('field' => 'id_vehiculo' ,'label' => 'Id Vehiculo'  , 'rules' => 'trim|required|integer'),
+		array('field' => 'id_cliente'  ,'label' => 'Id Usuario'   , 'rules' => 'trim|required|integer'),
 		array('field' => 'total'       ,'label' => 'Total'        , 'rules' => 'trim|required|numeric'),
 		array('field' => 'descripcion' ,'label' => 'Descripción'  , 'rules' => 'trim|required'),
 		array('field' => 'nombre'      ,'label' => 'Nombre'       , 'rules' => 'trim|required')

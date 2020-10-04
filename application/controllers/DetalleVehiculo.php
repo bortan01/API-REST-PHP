@@ -9,7 +9,7 @@ class DetalleVehiculo extends REST_Controller
         parent::__construct();
         $this->load->database();
         $this->load->model('Imagen_model');
-        $this->load->model('DetalleVehiculo_model');
+        $this->load->model("Detalle_vehiculo_model");
     }
 
     public function save_post()
@@ -21,8 +21,8 @@ class DetalleVehiculo extends REST_Controller
         //corremos las reglas de validacion
         if ($this->form_validation->run('insertarDetalleVehiculo')) {
             //VERIFICAMOS QUE TODOS LOS PARAMETROS ESTEN BIEN
-            $detalleViculo = $this->DetalleVehiculo_model->verificar_camposEntrada($data);
-            $respuesta     = $this->DetalleVehiculo_model->guardar($detalleViculo);
+            $detalleViculo = $this->Detalle_vehiculo_model->verificar_camposEntrada($data);
+            $respuesta     = $this->Detalle_vehiculo_model->guardar($detalleViculo);
             if ($respuesta['err']) {
                 $this->response($respuesta, REST_Controller::HTTP_BAD_REQUEST);
             } else {
@@ -42,7 +42,7 @@ class DetalleVehiculo extends REST_Controller
     public function obtenerDetalleVehiculo_get()
     {
         $data = $this->get();
-        $respuesta =  $this->DetalleVehiculo_model->obtenerDetalle($data);
+        $respuesta =  $this->Detalle_vehiculo_model->obtenerDetalle($data);
         if ($respuesta['err']) {
             $this->response($respuesta, REST_Controller::HTTP_BAD_REQUEST);
         } else {
