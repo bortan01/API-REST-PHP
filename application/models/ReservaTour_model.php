@@ -1,6 +1,6 @@
 <?php
 defined('BASEPATH') or exit('No direct script access allowed');
-class Reserva_model extends CI_Model
+class ReservaTour_model extends CI_Model
 {
     public $id_reserva;
     public $id_tours;
@@ -16,7 +16,7 @@ class Reserva_model extends CI_Model
         ///par aquitar campos no existentes 
         foreach ($dataCruda as $nombre_campo => $valor_campo) {
             # para verificar si la propiedad existe..
-            if (property_exists('Reserva_model', $nombre_campo)) {
+            if (property_exists('ReservaTour_model', $nombre_campo)) {
                 $this->$nombre_campo = $valor_campo;
             }
         }
@@ -24,7 +24,7 @@ class Reserva_model extends CI_Model
     }
     public function guardar($data)
     {
-        $nombreTabla = "reserva";
+        $nombreTabla = "reservaTour";
         $this->load->model("Usuario_model");
         ///ESTO NOS RETORNARA UN ARRAY
         $usuario = $this->Usuario_model->getUser(array('correo' => $data["Cliente"]["Email"]));
