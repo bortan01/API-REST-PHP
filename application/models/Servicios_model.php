@@ -53,9 +53,6 @@ class Servicios_model extends CI_Model
                        'mensaje'=>'Registro insertado correctamente',
                        'servicio_id'=>$this->db->insert_id()
                    );
-   
-               
-   
                }else{
                    //error
    
@@ -67,10 +64,56 @@ class Servicios_model extends CI_Model
                    );
                
                }
-   
-   
-   
             return $respuesta;
         }
+
+    //MODIFICAR
+    public function editar($data)
+    {
+        $nombreTabla = "servicios_opc";
+
+        ///VAMOS A ACTUALIZAR UN REGISTRO
+        $campos = $this->Servicios_model->verificar_camposEntrada($data);
+        $this->db->where('idservicios_opc', $campos["idservicios_opc"]);
+
+        $hecho = $this->db->update($nombreTabla, $campos);
+        if ($hecho) 
+        {
+            ///LOGRO ACTUALIZAR 
+            $respuesta = array(
+                'err'     => FALSE,
+                'mensaje' => 'Registro Actualizado Exitosamente',
+                'Servicios' => $campos
+
+            );
+            return $respuesta;
+        } 
+        else 
+        {
+            //NO GUARDO
+            $respuesta = array(
+                'err' => TRUE,
+                'mensaje' => 'Error al actualizar ', $this->db->error_message(),
+                'error_number' => $this->db->error_number(),
+                'Servicios' => null
+            );
+            return $respuesta;
+        }
+    }
+
+    //VERIFICAR DATOS
+    public function verificar_camposEntrada($dataCruda)
+    {
+        $objeto = array();
+        ///quitar campos no existentes
+        foreach ($dataCruda as $nombre_campo => $valor_campo) {
+            # para verificar si la propiedad existe..
+            if (property_exists('Servicios_model', $nombre_campo)) {
+                $objeto[$nombre_campo] = $valor_campo;
+            }
+        }
+        return $objeto;
+    }
+   
    
 }
