@@ -3,8 +3,10 @@ defined('BASEPATH') or exit('No direct script access allowed');
 class Servicios_model extends CI_Model
 {
     public $idservicios_opc;
+    public $idvehiculo;
     public $nombre_servicio;
-    
+    public $descripcion;
+    public $precio;
     
     public function get_servicios(){
 

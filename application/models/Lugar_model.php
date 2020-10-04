@@ -3,8 +3,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
 class Lugar_model extends CI_Model
 {
     public $idlugar_recog_dev;
-    public $nombre_lugar;
-    
+    public $nombre_lugar; 
     
     public function get_lugar(){
 
@@ -12,8 +11,7 @@ class Lugar_model extends CI_Model
 
             return $query->result();
         }
-   
-   
+
        public function set_datos( $data_cruda){
    
             foreach ($data_cruda as $nombre_campo => $valor_campo) {

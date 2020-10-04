@@ -8,11 +8,15 @@ class Vehiculo_model extends CI_Model
     public $id_transmicionFK;
     public $placa;
     public $anio;
+    public $color;
     public $puertas;
     public $pasajeros;
     public $precio_diario;
     public $descripcion;
     public $detalles;
+    public $sonido;
+    public $wifi;
+    public $aireAcondicionado;
     
     public function get_vehiculo(){
 
