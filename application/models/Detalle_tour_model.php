@@ -1,10 +1,10 @@
 <?php
 defined('BASEPATH') or exit('No direct script access allowed');
-class Detalle_vehiculo_model extends CI_Model
+class Detalle_tour_model extends CI_Model
 {
     public $id_detalle;
+    public $id_tours;
     public $id_cliente;
-    public $id_vehiculo;
     public $total;
     public $urlQrCodeEnlace;
     public $urlEnlace;
@@ -17,26 +17,25 @@ class Detalle_vehiculo_model extends CI_Model
         ///par aquitar campos no existentes
         foreach ($dataCruda as $nombre_campo => $valor_campo) {
             # para verificar si la propiedad existe..
-            if (property_exists('Detalle_vehiculo_model', $nombre_campo)) {
+            if (property_exists('Detalle_tour_model', $nombre_campo)) {
                 $objeto[$nombre_campo] = $valor_campo;
             }
         }
-
         //este es un objeto tipo cliente model
-        return $objeto;
+            return $objeto;
     }
-    public function guardar($detalleVehiculo)
+    public function guardar($detalleTur)
     {
         $this->load->model('Wompi_model');
         $this->load->model('Imagen_model');
-        $nombreTabla = "detalle_vehiculo";
-        $urlWebHook  = "https://api.christianmeza.com/ReservaVehiculo/save";
-        $foto        = $this->Imagen_model->obtenerImagenUnica("vehiculo", $detalleVehiculo["id_vehiculo"]);
-      
+        $nombreTabla = "detalle_tour";
+        $urlWebHook  = "https://api.christianmeza.com/ReservaTour/save";
+        $foto        = $this->Imagen_model->obtenerImagenUnica("vehiculo", $detalleTur["id_tours"]);
+
         if (!isset($foto)) {
             $foto = "https://www.pagina.christianmeza.com/img/logo.jpg";
-        } 
-        $respuestaWompi = $this->Wompi_model->crearEnlacePagopPrueba($detalleVehiculo["total"],$detalleVehiculo["nombre"], $detalleVehiculo["descripcion"], $foto, $urlWebHook);
+        }
+        $respuestaWompi = $this->Wompi_model->crearEnlacePagopPrueba($detalleTur["total"], $detalleTur["nombre"], $detalleTur["descripcion"], $foto, $urlWebHook);
 
         if (!isset($respuestaWompi["idEnlace"])) {
             //HAY ERROR DE WOMPI
@@ -47,11 +46,11 @@ class Detalle_vehiculo_model extends CI_Model
             return $respuesta;
         } else {
             //RECUPERAMOS LA INFORMACION DE WOMPI Y TRATAMOS DE GUARDAR EN LA BD
-            $detalleVehiculo["id_detalle"]        = $respuestaWompi["idEnlace"];
-            $detalleVehiculo["urlQrCodeEnlace"]   = $respuestaWompi["urlQrCodeEnlace"];
-            $detalleVehiculo["urlEnlace"]         = $respuestaWompi["urlEnlace"];
+            $detalleTur["id_detalle"]        = $respuestaWompi["idEnlace"];
+            $detalleTur["urlQrCodeEnlace"]   = $respuestaWompi["urlQrCodeEnlace"];
+            $detalleTur["urlEnlace"]         = $respuestaWompi["urlEnlace"];
 
-            $insert = $this->db->insert($nombreTabla, $detalleVehiculo);
+            $insert = $this->db->insert($nombreTabla, $detalleTur);
             if (!$insert) {
                 //NO GUARDO
                 $respuesta = array(
@@ -66,17 +65,16 @@ class Detalle_vehiculo_model extends CI_Model
                 $respuesta = array(
                     'err'             => FALSE,
                     'mensaje'         => 'Registro Guardado Exitosamente',
-                    'detalleVehiculo' => $detalleVehiculo
+                    'detalleVehiculo' => $detalleTur
                 );
                 return $respuesta;
             }
         }
-
     }
     public function obtenerDetalle(array $data = array())
     {
         $this->load->model("Utils_model");
-        $nombreTabla = "detalle_vehiculo";
+        $nombreTabla = "detalle_tour";
 
         try {
             $parametros = $this->Detalle_vehiculo_model->verificar_camposEntrada($data);

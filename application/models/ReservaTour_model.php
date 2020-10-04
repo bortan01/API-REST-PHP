@@ -3,40 +3,33 @@ defined('BASEPATH') or exit('No direct script access allowed');
 class ReservaTour_model extends CI_Model
 {
     public $id_reserva;
-    public $id_tours;
-    public $id_usuario;
+    public $id_detalle;
     public $fecha_reserva;
     public $formaPagoUtilizada;
     public $resultadoTransaccion;
     public $monto;
     public $cantidad;
 
-    public function verificar_campos($dataCruda)
+    public function verificar_camposEntrada($dataCruda)
     {
-        ///par aquitar campos no existentes 
+        $objeto = array();
+        ///par aquitar campos no existentes
         foreach ($dataCruda as $nombre_campo => $valor_campo) {
             # para verificar si la propiedad existe..
             if (property_exists('ReservaTour_model', $nombre_campo)) {
-                $this->$nombre_campo = $valor_campo;
+                $objeto[$nombre_campo] = $valor_campo;
             }
         }
-        return $this;
+        return $objeto;
     }
+
+    
     public function guardar($data)
     {
-        $nombreTabla = "reservaTour";
-        $this->load->model("Usuario_model");
-        ///ESTO NOS RETORNARA UN ARRAY
-        $usuario = $this->Usuario_model->getUser(array('correo' => $data["Cliente"]["Email"]));
-
-        if (!$usuario['err']) {
-
-            $this->id_usuario = ($usuario["usuario"][0]->id_cliente);
-        } else {
-            $this->id_usuario = NULL;
-        }
+        $nombreTabla = "reserva_tour";
+            
         $this->id_reserva           = $data["IdTransaccion"];
-        $this->id_tours             = $data["EnlacePago"]["Id"];
+        $this->id_detalle           = $data["EnlacePago"]["Id"];
         $this->fecha_reserva        = $data["FechaTransaccion"];;
         $this->formaPagoUtilizada   = $data["FormaPagoUtilizada"];
         $this->resultadoTransaccion = $data["ResultadoTransaccion"];

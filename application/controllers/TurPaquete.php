@@ -12,7 +12,7 @@ class TurPaquete extends REST_Controller
         $this->load->model('Tours_paquete_model');
     }
 
-    public function tur_post()
+    public function save_post()
     {
         $data = $this->post();
         $this->load->library("form_validation");
@@ -21,8 +21,8 @@ class TurPaquete extends REST_Controller
         //corremos las reglas de validacion
         if ($this->form_validation->run('insertarTurPaquete')) {
             //VERIFICAMOS QUE TODOS LOS PARAMETROS ESTEN BIEN
-            $turPaquete = $this->Tours_paquete_model->verificar_campos($data);
-            $respuesta = $turPaquete->guardar();
+            $turPaquete = $this->Tours_paquete_model->verificar_camposEntrada($data);
+            $respuesta =  $this->Tours_paquete_model->guardar($turPaquete);
             if ($respuesta['err']) {
                 $this->response($respuesta, REST_Controller::HTTP_BAD_REQUEST);
             } else {
@@ -105,7 +105,7 @@ class TurPaquete extends REST_Controller
         //SEGUNDO PARAMETRO  => ID FORANEO
         // $imagenes = $this->Imagen_model->guardarGaleria("tours_paquete", 10);
         // $this->response($imagenes, REST_Controller::HTTP_OK);
-        
-        
+
+
     }
 }
