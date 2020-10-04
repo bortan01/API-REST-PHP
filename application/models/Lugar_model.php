@@ -68,5 +68,53 @@ class Lugar_model extends CI_Model
    
             return $respuesta;
         }
+
+        //MODIFICAR
+    public function editar($data)
+    {
+        $nombreTabla = "lugar_recog_dev";
+
+        ///VAMOS A ACTUALIZAR UN REGISTRO
+        $campos = $this->Lugar_model->verificar_camposEntrada($data);
+        $this->db->where('idlugar_recog_dev', $campos["idlugar_recog_dev"]);
+
+        $hecho = $this->db->update($nombreTabla, $campos);
+        if ($hecho) 
+        {
+            ///LOGRO ACTUALIZAR 
+            $respuesta = array(
+                'err'     => FALSE,
+                'mensaje' => 'Registro Actualizado Exitosamente',
+                'Lugar' => $campos
+
+            );
+            return $respuesta;
+        } 
+        else 
+        {
+            //NO GUARDO
+            $respuesta = array(
+                'err' => TRUE,
+                'mensaje' => 'Error al actualizar ', $this->db->error_message(),
+                'error_number' => $this->db->error_number(),
+                'Lugar' => null
+            );
+            return $respuesta;
+        }
+    }
+
+    //VERIFICAR DATOS
+    public function verificar_camposEntrada($dataCruda)
+    {
+        $objeto = array();
+        ///quitar campos no existentes
+        foreach ($dataCruda as $nombre_campo => $valor_campo) {
+            # para verificar si la propiedad existe..
+            if (property_exists('Lugar_model', $nombre_campo)) {
+                $objeto[$nombre_campo] = $valor_campo;
+            }
+        }
+        return $objeto;
+    }
    
 }

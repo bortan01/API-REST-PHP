@@ -17,15 +17,13 @@ class Vehiculo_model extends CI_Model
     public $sonido;
     public $wifi;
     public $aireAcondicionado;
-    
+
     public function get_vehiculo(){
 
         $query=$this->db->get('vehiculo');
 
             return $query->result();
         }
-   
-   
        public function set_datos( $data_cruda){
    
             foreach ($data_cruda as $nombre_campo => $valor_campo) {
@@ -40,7 +38,6 @@ class Vehiculo_model extends CI_Model
         }
    
         public function insert(){
-   
             
            $query=$this->db->get_where('vehiculo',array('placa'=>$this->placa) );
            $carrito=$query->row();
@@ -63,9 +60,6 @@ class Vehiculo_model extends CI_Model
                        'mensaje'=>'Registro insertado correctamente',
                        'vehiculo_id'=>$this->db->insert_id()
                    );
-   
-               
-   
                }else{
                    //error
    
@@ -76,10 +70,7 @@ class Vehiculo_model extends CI_Model
                        'error_num'=>$this->db->_error_number()
                    );
                
-               }
-   
-   
-   
+               }  
             return $respuesta;
         }
    
