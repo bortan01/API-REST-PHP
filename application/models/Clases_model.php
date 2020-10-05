@@ -6,29 +6,21 @@ class Clases_model extends CI_Model
     public $nombre_clase;
     
     public function get_clases(){
-
         $query=$this->db->get('tipo_clase');
-
             return $query->result();
         }
-   
-   
+
        public function set_datos( $data_cruda){
-   
             foreach ($data_cruda as $nombre_campo => $valor_campo) {
    
             if (property_exists('Clases_model',$nombre_campo)) {
                 $this->$nombre_campo=$valor_campo;
-            
             }
-                
             }
             return $this; 
         }
    
         public function insert(){
-   
-            
            $query=$this->db->get_where('tipo_clase',array('nombre_clase'=>$this->nombre_clase) );
            $clases=$query->row();
    
@@ -63,4 +55,51 @@ class Clases_model extends CI_Model
                }
                 return $respuesta;
         }   
+    //MODIFICAR
+    public function editar($data)
+    {
+        $nombreTabla = "tipo_clase";
+
+        ///VAMOS A ACTUALIZAR UN REGISTRO
+        $campos = $this->Clases_model->verificar_camposEntrada($data);
+        $this->db->where('idclase', $campos["idclase"]);
+
+        $hecho = $this->db->update($nombreTabla, $campos);
+        if ($hecho) 
+        {
+            ///LOGRO ACTUALIZAR 
+            $respuesta = array(
+                'err'     => FALSE,
+                'mensaje' => 'Registro Actualizado Exitosamente',
+                'Tipo de Clase' => $campos
+
+            );
+            return $respuesta;
+        } 
+        else 
+        {
+            //NO GUARDO
+            $respuesta = array(
+                'err' => TRUE,
+                'mensaje' => 'Error al actualizar ', $this->db->error_message(),
+                'error_number' => $this->db->error_number(),
+                'Tipo de Clase' => null
+            );
+            return $respuesta;
+        }
+    }
+
+    //VERIFICAR DATOS
+    public function verificar_camposEntrada($dataCruda)
+    {
+        $objeto = array();
+        ///quitar campos no existentes
+        foreach ($dataCruda as $nombre_campo => $valor_campo) {
+            # para verificar si la propiedad existe..
+            if (property_exists('Clases_model', $nombre_campo)) {
+                $objeto[$nombre_campo] = $valor_campo;
+            }
+        }
+        return $objeto;
+    }
 }
