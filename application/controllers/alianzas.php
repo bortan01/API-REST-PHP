@@ -33,13 +33,11 @@ public function __construct(){
 		$this->response($respuesta,REST_Controller::HTTP_NOT_FOUND);
 
 	}
-}
-
-	
+}	
 	//INSERTAR
-	public function alianzas_put(){
+	public function alianzas_post(){
 
-		$data=$this->put();
+		$data=$this->post();
 		$this->load->library('form_validation');
 		$this->form_validation->set_data ($data);
 
@@ -65,5 +63,27 @@ public function __construct(){
 			);
 			$this->response($respuesta, REST_Controller::HTTP_BAD_REQUEST); 
 		}
+	}
+
+	//MODIFICAR
+	public function actualizarAlianza_put(){
+
+		$data = $this->put();
+        if (!isset($data["idalianza"])) {
+            $respuesta = array('err' => TRUE, 'mensaje' => 'No se encontro ningun identificador de Alianza');
+            $this->response($respuesta, REST_Controller::HTTP_BAD_REQUEST);
+        } else {
+            try {
+                $respuesta = $this->Alianzas_model->editar($data);
+                if ($respuesta['err']) {
+                    $this->response($respuesta, REST_Controller::HTTP_BAD_REQUEST);
+                } else {
+                    $this->response($respuesta, REST_Controller::HTTP_OK);
+                }
+            } catch (\Throwable $th) {
+                $respuesta = array('err' => TRUE, 'mensaje' => 'Error interno de servidor');
+            }
+        }
+
 	}
 }
