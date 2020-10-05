@@ -5,30 +5,25 @@ class Aerolinea_model extends CI_Model
     public $idaerolinea;
     public $nombre_aerolinea;
     
-    
     public function get_aerolinea(){
 
         $query=$this->db->get('aerolinea');
 
             return $query->result();
         }
-   
-   
+
        public function set_datos( $data_cruda){
    
             foreach ($data_cruda as $nombre_campo => $valor_campo) {
    
             if (property_exists('Aerolinea_model',$nombre_campo)) {
-                $this->$nombre_campo=$valor_campo;
-            
+                $this->$nombre_campo=$valor_campo;            
             }
-                
             }
             return $this; 
         }
    
         public function insert(){
-   
             
            $query=$this->db->get_where('aerolinea',array('nombre_aerolinea'=>$this->nombre_aerolinea) );
            $carrito=$query->row();
@@ -51,24 +46,63 @@ class Aerolinea_model extends CI_Model
                        'mensaje'=>'Registro insertado correctamente',
                        'aerolinea_id'=>$this->db->insert_id()
                    );
-   
-               
-   
                }else{
                    //error
-   
                    $respuesta=array(
                        'err'=>TRUE,
                        'mensaje'=>'Error al insertar',
                        'error'=>$this->db->_error_message(),
                        'error_num'=>$this->db->_error_number()
                    );
-               
                }
-   
-   
-   
             return $respuesta;
         }
+    //MODIFICAR
+    public function editar($data)
+    {
+        $nombreTabla = "aerolinea";
+
+        ///VAMOS A ACTUALIZAR UN REGISTRO
+        $campos = $this->Aerolinea_model->verificar_camposEntrada($data);
+        $this->db->where('idaerolinea', $campos["idaerolinea"]);
+
+        $hecho = $this->db->update($nombreTabla, $campos);
+        if ($hecho) 
+        {
+            ///LOGRO ACTUALIZAR 
+            $respuesta = array(
+                'err'     => FALSE,
+                'mensaje' => 'Registro Actualizado Exitosamente',
+                'Aerolinea' => $campos
+
+            );
+            return $respuesta;
+        } 
+        else 
+        {
+            //NO GUARDO
+            $respuesta = array(
+                'err' => TRUE,
+                'mensaje' => 'Error al actualizar ', $this->db->error_message(),
+                'error_number' => $this->db->error_number(),
+                'Aerolinea' => null
+            );
+            return $respuesta;
+        }
+    }
+
+    //VERIFICAR DATOS
+    public function verificar_camposEntrada($dataCruda)
+    {
+        $objeto = array();
+        ///quitar campos no existentes
+        foreach ($dataCruda as $nombre_campo => $valor_campo) {
+            # para verificar si la propiedad existe..
+            if (property_exists('Aerolinea_model', $nombre_campo)) {
+                $objeto[$nombre_campo] = $valor_campo;
+            }
+        }
+        return $objeto;
+    }
    
 }
