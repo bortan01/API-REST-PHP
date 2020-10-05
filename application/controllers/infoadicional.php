@@ -1,7 +1,7 @@
 <?php
 defined('BASEPATH') or exit('No direct script access allowed');
 require APPPATH . '/libraries/REST_Controller.php';
-class infocotizacion extends REST_Controller
+class infoadicional extends REST_Controller
 {
 
 public function __construct(){
@@ -37,9 +37,9 @@ public function __construct(){
 
 	
 	//INSERTAR
-	public function informacion_put(){
+	public function informacion_post(){
 
-		$data=$this->put();
+		$data=$this->post();
 		$this->load->library('form_validation');
 		$this->form_validation->set_data ($data);
 
@@ -65,5 +65,26 @@ public function __construct(){
 			);
 			$this->response($respuesta, REST_Controller::HTTP_BAD_REQUEST); 
 		}
+	}
+	//MODIFICAR
+	public function actualizarInformacion_put(){
+
+		$data = $this->put();
+        if (!isset($data["idinfo_adicional"])) {
+            $respuesta = array('err' => TRUE, 'mensaje' => 'No se encontro ningun identificador de Informacion Adicional');
+            $this->response($respuesta, REST_Controller::HTTP_BAD_REQUEST);
+        } else {
+            try {
+                $respuesta = $this->infoAdicional_model->editar($data);
+                if ($respuesta['err']) {
+                    $this->response($respuesta, REST_Controller::HTTP_BAD_REQUEST);
+                } else {
+                    $this->response($respuesta, REST_Controller::HTTP_OK);
+                }
+            } catch (\Throwable $th) {
+                $respuesta = array('err' => TRUE, 'mensaje' => 'Error interno de servidor');
+            }
+        }
+
 	}
 }
