@@ -53,7 +53,7 @@ $config = array(
 		array('field' => 'nombre_servicio', 'label' => 'Servicio', 'rules' => 'trim|required|min_length[2]|max_length[255]')
 	),
 	'cotizar_put' => array(
-		array('field' => 'idalquilerVehiculo', 'label' => 'Cotizar', 'rules' => 'trim|required|min_length[1]|max_length[255]')
+		array('field' => 'nombreVehiculo', 'label' => 'Vehiculo', 'rules' => 'trim|required|min_length[2]|max_length[255]')
 	),
 	'aerolinea_put' => array(
 		array('field' => 'nombre_aerolinea', 'label' => 'Aerolinea', 'rules' => 'trim|required|min_length[2]|max_length[255]')
