@@ -4,11 +4,9 @@ class Datos_model extends CI_Model
 {
     public $id_generales;
     public $ciudad_partida;
-    public $fecha_partida;
-    public $hora_partida;
+    public $fechaHoraPartida;
     public $ciudad_llegada;
-    public $fecha_llegada;
-    public $hora_llegada;
+    public $fechaHoraLlegada;
     public $adultos;
     public $ninos;
     public $bebes;
@@ -21,23 +19,18 @@ class Datos_model extends CI_Model
             return $query->result();
         }
    
-   
        public function set_datos( $data_cruda){
    
             foreach ($data_cruda as $nombre_campo => $valor_campo) {
    
             if (property_exists('Datos_model',$nombre_campo)) {
                 $this->$nombre_campo=$valor_campo;
-            
             }
-                
             }
             return $this; 
         }
    
         public function insert(){
-   
-            
            $query=$this->db->get_where('datos_generales',array('id_generales'=>$this->id_generales) );
            $datos=$query->row();
    
@@ -72,4 +65,51 @@ class Datos_model extends CI_Model
                }
                 return $respuesta;
         }   
+    //MODIFICAR
+    public function editar($data)
+    {
+        $nombreTabla = "datos_generales";
+
+        ///VAMOS A ACTUALIZAR UN REGISTRO
+        $campos = $this->Datos_model->verificar_camposEntrada($data);
+        $this->db->where('id_generales', $campos["id_generales"]);
+
+        $hecho = $this->db->update($nombreTabla, $campos);
+        if ($hecho) 
+        {
+            ///LOGRO ACTUALIZAR 
+            $respuesta = array(
+                'err'     => FALSE,
+                'mensaje' => 'Registro Actualizado Exitosamente',
+                'Datos Generales' => $campos
+
+            );
+            return $respuesta;
+        } 
+        else 
+        {
+            //NO GUARDO
+            $respuesta = array(
+                'err' => TRUE,
+                'mensaje' => 'Error al actualizar ', $this->db->error_message(),
+                'error_number' => $this->db->error_number(),
+                'Datos Generales' => null
+            );
+            return $respuesta;
+        }
+    }
+
+    //VERIFICAR DATOS
+    public function verificar_camposEntrada($dataCruda)
+    {
+        $objeto = array();
+        ///quitar campos no existentes
+        foreach ($dataCruda as $nombre_campo => $valor_campo) {
+            # para verificar si la propiedad existe..
+            if (property_exists('Datos_model', $nombre_campo)) {
+                $objeto[$nombre_campo] = $valor_campo;
+            }
+        }
+        return $objeto;
+    }
 }
