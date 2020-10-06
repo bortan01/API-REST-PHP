@@ -37,8 +37,8 @@ public function cita_get(){
 
 	if (isset($cita)) {
 		//quitar campos que no quiero
-		//unset($cliente->telefono1);
-		//sunset($cliente->telefono2);
+		unset($cita->motivo);
+		//unset($cliente->telefono2);
 		//$respuesta=array($cita);
 		$this->response($cita);
 	}else{

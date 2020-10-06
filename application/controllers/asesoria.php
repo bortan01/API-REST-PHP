@@ -90,8 +90,14 @@ public function __construct(){
 
        $respuesta=$this->Pregunta_model->modificar_pregunta($verificar);
 
-	    $this->response($respuesta);
+	    if ($respuesta['err']) {
 
+			$this->response($respuesta, REST_Controller::HTTP_BAD_REQUEST); 
+
+		}else{
+			 $this->response($respuesta);
+
+	 }
 
 	}
 	//**********fin de actualizar
@@ -104,8 +110,16 @@ public function __construct(){
 	 $verificar=$this->Pregunta_model->verificar_campos($data);
      $respuesta=$this->Pregunta_model->eliminar($verificar);
 
-	 	  $this->response($respuesta);
+      if ($respuesta['err']) {
+
+			$this->response($respuesta, REST_Controller::HTTP_BAD_REQUEST); 
+
+		}else{
+			 $this->response($respuesta);
+
 	 }
+
+	 }//fin metodo
 
 
 //----------------------fin de las preguntas
@@ -122,7 +136,14 @@ public function __construct(){
 
 	 $respuesta=$this->Rama_model->eliminar($verificar);
 
-	 	  $this->response($respuesta);
+	 	  if ($respuesta['err']) {
+
+			$this->response($respuesta, REST_Controller::HTTP_BAD_REQUEST); 
+
+		}else{
+			 $this->response($respuesta);
+
+	    }
 	 }//eliminar
 
 	 //*******para actualizar
@@ -134,7 +155,14 @@ public function __construct(){
 
        $respuesta=$this->Rama_model->modificar_rama($verificar);
 
-	    $this->response($respuesta);
+	   if ($respuesta['err']) {
+
+			$this->response($respuesta, REST_Controller::HTTP_BAD_REQUEST); 
+
+		}else{
+			 $this->response($respuesta);
+
+	 }
 
 	}
 	//**********fin de actualizar

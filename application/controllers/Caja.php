@@ -17,8 +17,15 @@ public function deleteCaja_post(){
 	 $verificar=$this->Cajas_model->set_datos($data);
      $respuesta=$this->Cajas_model->eliminar($verificar);
 
-	 	  $this->response($respuesta);
-}
+	 	 if ($respuesta['err']) {
+
+			$this->response($respuesta, REST_Controller::HTTP_BAD_REQUEST); 
+
+		}else{
+			 $this->response($respuesta);
+
+	 }
+}//fin metodo
 
 public function updateCaja_post(){
 
@@ -27,7 +34,14 @@ public function updateCaja_post(){
 		$verificar=$this->Cajas_model->set_datos($data);
 		$respuesta=$this->Cajas_model->modificar_caja($verificar);
 
-	    $this->response($respuesta);
+	  if ($respuesta['err']) {
+
+			$this->response($respuesta, REST_Controller::HTTP_BAD_REQUEST); 
+
+		}else{
+			 $this->response($respuesta);
+
+	 }
 
 	}//fin de metodo
 

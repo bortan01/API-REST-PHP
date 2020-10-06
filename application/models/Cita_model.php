@@ -82,11 +82,17 @@ public function modificar_cita($datos){
 
 
 public function get_citas(){
+   // $query=$this->db->get('cita');
+ 	//return $query->result();
+
+ 	$this->db->select('*');
+    $this->db->from('cita');
+ 	$this->db->join('usuario', 'usuario.id_cliente=cita.id_cliente','inner');
+    $query=$this->db->get();
+ 	return $query->result();
 
 
- 	$query=$this->db->get('cita');
- 	
- 		return $query->result();
+
  	}
 
     public function set_datos($data_cruda){

@@ -19,8 +19,15 @@ public function __construct(){
 	 $verificar=$this->FormularioMigratorio_model->set_datos($data);
      $respuesta=$this->FormularioMigratorio_model->eliminar($verificar);
 
-	 	  $this->response($respuesta);
-	 }
+      if ($respuesta['err']) {
+
+			$this->response($respuesta, REST_Controller::HTTP_BAD_REQUEST); 
+
+		}else{
+			 $this->response($respuesta);
+
+	    }
+	 }//fin metodo
 
 	public function updateFormulario_post(){
 
@@ -29,7 +36,14 @@ public function __construct(){
 		$verificar=$this->FormularioMigratorio_model->set_datos($data);
 		$respuesta=$this->FormularioMigratorio_model->modificar_formulario($verificar);
 
-	    $this->response($respuesta);
+	    if ($respuesta['err']) {
+
+			$this->response($respuesta, REST_Controller::HTTP_BAD_REQUEST); 
+
+		}else{
+			 $this->response($respuesta);
+
+	 }
 
 	}//fin de metodo
 
