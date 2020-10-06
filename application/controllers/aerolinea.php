@@ -43,10 +43,10 @@ public function __construct(){
 		$this->load->library('form_validation');
 		$this->form_validation->set_data ($data);
 
-		if ( $this->form_validation->run('aerolinea_put') ) {
+		if ( $this->form_validation->run('aerolinea_put')) {
 		
 		$aerolineas=$this->Aerolinea_model->set_datos($data);
-
+   
 		$respuesta=$aerolineas->insert(); 
 
 		if ($respuesta['err']) {
@@ -86,4 +86,29 @@ public function __construct(){
             }
         }
 	}
+
+	//ELIMINAR
+	public function eliminarAerolinea_delete()
+    {
+        $data = $this->delete();
+        if (!isset($data["idaerolinea"])) {
+            $respuesta = array('err' => TRUE, 'mensaje' => 'No se encontro ningun identificador de Aerolinea');
+            $this->response($respuesta, REST_Controller::HTTP_BAD_REQUEST);
+        } else {
+			$campos = array('idaerolinea' => $data["idaerolinea"], 'activo' => FALSE);
+			//var_dump($campos);
+			//die();
+            try {
+                $respuesta = $this->Aerolinea_model->borrar($campos);
+                if ($respuesta['err']) {
+                    $this->response($respuesta, REST_Controller::HTTP_BAD_REQUEST);
+                } else {
+                    $this->response($respuesta, REST_Controller::HTTP_OK);
+				}
+				
+            } catch (\Throwable $th) {
+                $respuesta = array('err' => TRUE, 'mensaje' => 'Error interno de servidor');
+            }
+        }
+    }
 }

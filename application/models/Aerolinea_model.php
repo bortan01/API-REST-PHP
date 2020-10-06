@@ -4,6 +4,7 @@ class Aerolinea_model extends CI_Model
 {
     public $idaerolinea;
     public $nombre_aerolinea;
+    public $activo = TRUE;
     
     public function get_aerolinea(){
 
@@ -25,7 +26,7 @@ class Aerolinea_model extends CI_Model
    
         public function insert(){
             
-           $query=$this->db->get_where('aerolinea',array('nombre_aerolinea'=>$this->nombre_aerolinea) );
+           $query=$this->db->get_where('aerolinea',array('nombre_aerolinea'=>$this->nombre_aerolinea));
            $carrito=$query->row();
    
                if (isset($carrito)) {
@@ -103,6 +104,31 @@ class Aerolinea_model extends CI_Model
             }
         }
         return $objeto;
+    }
+
+    //ELIMINAR
+    public function borrar($campos)
+    {
+        //ELIMINAR UN REGISTRO
+        $this->db->where('idaerolinea', $campos["idaerolinea"]);
+        $hecho = $this->db->update('aerolinea', $campos);
+        if ($hecho) {
+            //ELIMINANDO REGISTRO
+            $respuesta = array(
+                'err'     => FALSE,
+                'mensaje' => 'Registro Eliminado Exitosamente'
+            );
+            return $respuesta;
+        } else {
+            //NO ELIMINO
+            $respuesta = array(
+                'err' => TRUE,
+                'mensaje' => 'Error al eliminar ', $this->db->error_message(),
+                'error_number' => $this->db->error_number(),
+                'aerolinea' => null
+            );
+            return $respuesta;
+        }
     }
    
 }
