@@ -37,9 +37,9 @@ public function __construct(){
 
 	
 	//INSERTAR
-	public function opciones_put(){
+	public function opciones_post(){
 
-		$data=$this->put();
+		$data=$this->post();
 		$this->load->library('form_validation');
 		$this->form_validation->set_data ($data);
 
@@ -65,5 +65,27 @@ public function __construct(){
 			);
 			$this->response($respuesta, REST_Controller::HTTP_BAD_REQUEST); 
 		}
+	}
+
+	//MODIFICAR
+	public function actualizarOpciones_put(){
+
+		$data = $this->put();
+        if (!isset($data["idopc_avanzadas"])) {
+            $respuesta = array('err' => TRUE, 'mensaje' => 'No se encontro ningun identificador de Opciones');
+            $this->response($respuesta, REST_Controller::HTTP_BAD_REQUEST);
+        } else {
+            try {
+                $respuesta = $this->opcAvanzadas_model->editar($data);
+                if ($respuesta['err']) {
+                    $this->response($respuesta, REST_Controller::HTTP_BAD_REQUEST);
+                } else {
+                    $this->response($respuesta, REST_Controller::HTTP_OK);
+                }
+            } catch (\Throwable $th) {
+                $respuesta = array('err' => TRUE, 'mensaje' => 'Error interno de servidor');
+            }
+        }
+
 	}
 }

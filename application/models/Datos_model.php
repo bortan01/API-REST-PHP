@@ -36,6 +36,7 @@ class Datos_model extends CI_Model
    
                if (isset($datos)) {
                $respuesta=array(
+                   
                    'err'=>TRUE,
                    'mensaje'=>'Datos generales fueron registrados'
                );
