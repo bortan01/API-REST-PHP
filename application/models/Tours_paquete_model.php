@@ -46,7 +46,10 @@ class Tours_paquete_model extends CI_Model
             );
             return $respuesta;
         } else {
+            $this->load->model('Imagen_model');
             $identificador = $this->db->insert_id();
+            $this->Imagen_model->guardarGaleria("tours_paquete", $identificador);
+            
             $respuesta = array(
                 'err'          => FALSE,
                 'mensaje'      => 'Registro Guardado Exitosamente',
