@@ -88,4 +88,25 @@ public function __construct(){
         }
 
 	}
+		//ELIMINAR
+		public function eliminarTipoViaje_delete()
+		{
+			$data = $this->delete();
+			if (!isset($data["idtipo_viaje"])) {
+				$respuesta = array('err' => TRUE, 'mensaje' => 'No se encontro ningun identificador de Tipo de Viaje');
+				$this->response($respuesta, REST_Controller::HTTP_BAD_REQUEST);
+			} else {
+				$campos = array('idtipo_viaje' => $data["idtipo_viaje"], 'activo' => FALSE);
+				try {
+					$respuesta = $this->Viajes_model->borrar($campos);
+					if ($respuesta['err']) {
+						$this->response($respuesta, REST_Controller::HTTP_BAD_REQUEST);
+					} else {
+						$this->response($respuesta, REST_Controller::HTTP_OK);
+					}
+				} catch (\Throwable $th) {
+					$respuesta = array('err' => TRUE, 'mensaje' => 'Error interno de servidor');
+				}
+			}
+		}
 }

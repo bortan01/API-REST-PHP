@@ -5,6 +5,7 @@ class Viajes_model extends CI_Model
   
     public $idtipo_viaje;
     public $nombre_tipoviaje;
+    public $activo = TRUE;
     
     public function get_viajes(){
 
@@ -103,5 +104,30 @@ class Viajes_model extends CI_Model
             }
         }
         return $objeto;
+    }
+
+    //ELIMINAR
+    public function borrar($campos)
+    {
+        //ELIMINAR UN REGISTRO
+        $this->db->where('idtipo_viaje', $campos["idtipo_viaje"]);
+        $hecho = $this->db->update('tipo_viaje', $campos);
+        if ($hecho) {
+            //ELIMINANDO REGISTRO
+            $respuesta = array(
+                'err'     => FALSE,
+                'mensaje' => 'Registro Eliminado Exitosamente'
+            );
+            return $respuesta;
+        } else {
+            //NO ELIMINO
+            $respuesta = array(
+                'err' => TRUE,
+                'mensaje' => 'Error al eliminar ', $this->db->error_message(),
+                'error_number' => $this->db->error_number(),
+                'Tipo de Viaje' => null
+            );
+            return $respuesta;
+        }
     }
 }
