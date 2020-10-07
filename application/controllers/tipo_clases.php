@@ -85,4 +85,27 @@ public function __construct(){
         }
 
 	}
+	
+		//ELIMINAR
+		public function eliminarClase_delete()
+		{
+			$data = $this->delete();
+			if (!isset($data["idclase"])) {
+				$respuesta = array('err' => TRUE, 'mensaje' => 'No se encontro ningun identificador de Clase');
+				$this->response($respuesta, REST_Controller::HTTP_BAD_REQUEST);
+			} else {
+				$campos = array('idclase' => $data["idclase"], 'activo' => FALSE);
+				try {
+					$respuesta = $this->Clases_model->borrar($campos);
+					if ($respuesta['err']) {
+						$this->response($respuesta, REST_Controller::HTTP_BAD_REQUEST);
+					} else {
+						$this->response($respuesta, REST_Controller::HTTP_OK);
+					}
+					
+				} catch (\Throwable $th) {
+					$respuesta = array('err' => TRUE, 'mensaje' => 'Error interno de servidor');
+				}
+			}
+		}
 }

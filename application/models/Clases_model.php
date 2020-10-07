@@ -4,6 +4,7 @@ class Clases_model extends CI_Model
 {
     public $idclase;
     public $nombre_clase;
+    public $activo = TRUE;
     
     public function get_clases(){
         $query=$this->db->get('tipo_clase');
@@ -101,5 +102,30 @@ class Clases_model extends CI_Model
             }
         }
         return $objeto;
+    }
+
+    //ELIMINAR
+    public function borrar($campos)
+    {
+        //ELIMINAR UN REGISTRO
+        $this->db->where('idclase', $campos["idclase"]);
+        $hecho = $this->db->update('tipo_clase', $campos);
+        if ($hecho) {
+            //ELIMINANDO REGISTRO
+            $respuesta = array(
+                'err'     => FALSE,
+                'mensaje' => 'Registro Eliminado Exitosamente'
+            );
+            return $respuesta;
+        } else {
+            //NO ELIMINO
+            $respuesta = array(
+                'err' => TRUE,
+                'mensaje' => 'Error al eliminar ', $this->db->error_message(),
+                'error_number' => $this->db->error_number(),
+                'aerolinea' => null
+            );
+            return $respuesta;
+        }
     }
 }
