@@ -6,6 +6,7 @@ class infoAdicional_model extends CI_Model
     public $condiciones;
     public $anuncios;
     public $otros;
+    public $activo = TRUE;
     
     public function get_informacion(){
 
@@ -110,4 +111,28 @@ class infoAdicional_model extends CI_Model
         return $objeto;
     }
    
+    //ELIMINAR
+    public function borrar($campos)
+    {
+        //ELIMINAR UN REGISTRO
+        $this->db->where('idinfo_adicional', $campos["idinfo_adicional"]);
+        $hecho = $this->db->update('info_adicional', $campos);
+        if ($hecho) {
+            //ELIMINANDO REGISTRO
+            $respuesta = array(
+                'err'     => FALSE,
+                'mensaje' => 'Registro Eliminado Exitosamente'
+            );
+            return $respuesta;
+        } else {
+            //NO ELIMINO
+            $respuesta = array(
+                'err' => TRUE,
+                'mensaje' => 'Error al eliminar ', $this->db->error_message(),
+                'error_number' => $this->db->error_number(),
+                'Info Adicional' => null
+            );
+            return $respuesta;
+        }
+    }
 }
