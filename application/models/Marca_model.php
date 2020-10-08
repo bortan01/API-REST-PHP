@@ -4,6 +4,7 @@ class Marca_model extends CI_Model
 {
     public $id_marca;
     public $marca;
+    public $activo = TRUE;
 
     public function get_marca(){
 
@@ -117,5 +118,29 @@ class Marca_model extends CI_Model
         return $objeto;
     }
 
+    //ELIMINAR
+    public function borrar($campos)
+    {
+        //ELIMINAR UN REGISTRO
+        $this->db->where('id_marca', $campos["id_marca"]);
+        $hecho = $this->db->update('marca_vehiculo', $campos);
+        if ($hecho) {
+            //ELIMINANDO REGISTRO
+            $respuesta = array(
+                'err'     => FALSE,
+                'mensaje' => 'Registro Eliminado Exitosamente'
+            );
+            return $respuesta;
+        } else {
+            //NO ELIMINO
+            $respuesta = array(
+                'err' => TRUE,
+                'mensaje' => 'Error al eliminar ', $this->db->error_message(),
+                'error_number' => $this->db->error_number(),
+                'marca' => null
+            );
+            return $respuesta;
+        }
+    }
    
 }
