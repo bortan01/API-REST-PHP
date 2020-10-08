@@ -168,5 +168,12 @@ $config = array(
 		array('field' => 'tipo_servicio'         ,'label' => 'Tipo de Servicio'      , 'rules' => 'trim|required'),
 		array('field' => 'costos_defecto'        ,'label' => 'Costo por defecto'     , 'rules' => 'trim|required|numeric'),
 		array('field' => 'informacion_contacto'  ,'label' => 'Informacion Contacto'  , 'rules' => 'trim|required')
+	),
+	'insertarServicioDetalle' => array(
+		array('field' => 'id_tours'      ,'label' => 'Id Tours'                  , 'rules' => 'trim|required|integer'),
+		array('field' => 'id_servicios'  ,'label' => 'Id Servicio'               , 'rules' => 'trim|required|integer'),
+		array('field' => 'costo'         ,'label' => 'Costo'                     , 'rules'  =>'trim|required|numeric'),
+
+		
 	)
 );

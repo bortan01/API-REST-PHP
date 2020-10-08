@@ -143,19 +143,6 @@ class Itinerario_model extends CI_Model
             return array('err' => TRUE, 'status' => 400, 'mensaje' => $e->getMessage());
         }
 
-
-
-
-
-
-
-
-
-
-
-
-
-        return $respuesta;
     }
 
     public function verificar_camposEntrada($dataCruda)

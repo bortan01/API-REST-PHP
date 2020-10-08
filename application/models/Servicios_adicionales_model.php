@@ -25,7 +25,7 @@ class Servicios_adicionales_model extends CI_Model
             }
         }
     
-        //este es un objeto tipo cliente model
+       
         return $objeto;
     }
 
