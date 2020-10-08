@@ -5,6 +5,7 @@ class Modelo_model extends CI_Model
     public $idmodelo;
     public $id_marca;
     public $modelo;
+    public $activo = TRUE;
 
     public function get_modelo(){
 
@@ -115,5 +116,30 @@ class Modelo_model extends CI_Model
             }
         }
         return $objeto;
+    }
+
+    //ELIMINAR
+    public function borrar($campos)
+    {
+        //ELIMINAR UN REGISTRO
+        $this->db->where('idmodelo', $campos["idmodelo"]);
+        $hecho = $this->db->update('modelo', $campos);
+        if ($hecho) {
+            //ELIMINANDO REGISTRO
+            $respuesta = array(
+                'err'     => FALSE,
+                'mensaje' => 'Registro Eliminado Exitosamente'
+            );
+            return $respuesta;
+        } else {
+            //NO ELIMINO
+            $respuesta = array(
+                'err' => TRUE,
+                'mensaje' => 'Error al eliminar ', $this->db->error_message(),
+                'error_number' => $this->db->error_number(),
+                'modelo' => null
+            );
+            return $respuesta;
+        }
     }
 }
