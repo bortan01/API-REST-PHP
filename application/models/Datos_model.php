@@ -11,6 +11,7 @@ class Datos_model extends CI_Model
     public $ninos;
     public $bebes;
     public $maletas;
+    public $activo = TRUE;
     
     public function get_generales(){
 
@@ -112,5 +113,30 @@ class Datos_model extends CI_Model
             }
         }
         return $objeto;
+    }
+
+    //ELIMINAR
+    public function borrar($campos)
+    {
+        //ELIMINAR UN REGISTRO
+        $this->db->where('id_generales', $campos["id_generales"]);
+        $hecho = $this->db->update('datos_generales', $campos);
+        if ($hecho) {
+            //ELIMINANDO REGISTRO
+            $respuesta = array(
+                'err'     => FALSE,
+                'mensaje' => 'Registro Eliminado Exitosamente'
+            );
+            return $respuesta;
+        } else {
+            //NO ELIMINO
+            $respuesta = array(
+                'err' => TRUE,
+                'mensaje' => 'Error al eliminar ', $this->db->error_message(),
+                'error_number' => $this->db->error_number(),
+                'Datos Generales' => null
+            );
+            return $respuesta;
+        }
     }
 }

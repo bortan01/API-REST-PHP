@@ -86,6 +86,26 @@ public function __construct(){
                 $respuesta = array('err' => TRUE, 'mensaje' => 'Error interno de servidor');
             }
         }
-
 	}
+		//ELIMINAR
+		public function eliminarDatos_delete()
+		{
+			$data = $this->delete();
+			if (!isset($data["id_generales"])) {
+				$respuesta = array('err' => TRUE, 'mensaje' => 'No se encontro ningun identificador de Datos Generales');
+				$this->response($respuesta, REST_Controller::HTTP_BAD_REQUEST);
+			} else {
+				$campos = array('id_generales' => $data["id_generales"], 'activo' => FALSE);
+				try {
+					$respuesta = $this->Datos_model->borrar($campos);
+					if ($respuesta['err']) {
+						$this->response($respuesta, REST_Controller::HTTP_BAD_REQUEST);
+					} else {
+						$this->response($respuesta, REST_Controller::HTTP_OK);
+					}
+				} catch (\Throwable $th) {
+					$respuesta = array('err' => TRUE, 'mensaje' => 'Error interno de servidor');
+				}
+			}
+		}
 }
