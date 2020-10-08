@@ -86,6 +86,30 @@ public function __construct(){
                 $respuesta = array('err' => TRUE, 'mensaje' => 'Error interno de servidor');
             }
         }
-
 	}
+
+		//ELIMINAR
+		public function eliminarMantenimiento_delete()
+		{
+			$data = $this->delete();
+			if (!isset($data["id_mantenimiento"])) {
+				$respuesta = array('err' => TRUE, 'mensaje' => 'No se encontro ningun identificador del Mantenimiento');
+				$this->response($respuesta, REST_Controller::HTTP_BAD_REQUEST);
+			} else {
+				$campos = array('id_mantenimiento' => $data["id_mantenimiento"], 'activo' => FALSE);
+				//var_dump($campos);
+				//die();
+				try {
+					$respuesta = $this->Mantenimiento_model->borrar($campos);
+					if ($respuesta['err']) {
+						$this->response($respuesta, REST_Controller::HTTP_BAD_REQUEST);
+					} else {
+						$this->response($respuesta, REST_Controller::HTTP_OK);
+					}
+					
+				} catch (\Throwable $th) {
+					$respuesta = array('err' => TRUE, 'mensaje' => 'Error interno de servidor');
+				}
+			}
+		}
 }
