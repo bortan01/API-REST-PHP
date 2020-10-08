@@ -10,6 +10,7 @@ class opcAvanzadas_model extends CI_Model
     public $vuelosin_escala;
     public $misma_aerolinea;
     public $equipaje_extra;
+    public $activo = TRUE;
 
     public function get_opciones(){
         $query=$this->db->get('opc_avanzadas');
@@ -109,5 +110,31 @@ class opcAvanzadas_model extends CI_Model
         }
         return $objeto;
     }
+
+    //ELIMINAR
+    public function borrar($campos)
+    {
+        //ELIMINAR UN REGISTRO
+        $this->db->where('idopc_avanzadas', $campos["idopc_avanzadas"]);
+        $hecho = $this->db->update('opc_avanzadas', $campos);
+        if ($hecho) {
+            //ELIMINANDO REGISTRO
+            $respuesta = array(
+                'err'     => FALSE,
+                'mensaje' => 'Registro Eliminado Exitosamente'
+            );
+            return $respuesta;
+        } else {
+            //NO ELIMINO
+            $respuesta = array(
+                'err' => TRUE,
+                'mensaje' => 'Error al eliminar ', $this->db->error_message(),
+                'error_number' => $this->db->error_number(),
+                'Opciones Avanzadas' => null
+            );
+            return $respuesta;
+        }
+    }
+   
    
 }
