@@ -20,6 +20,7 @@ class Detalle_vehiculo_model extends CI_Model
             if (property_exists('Detalle_vehiculo_model', $nombre_campo)) {
                 $objeto[$nombre_campo] = $valor_campo;
             }
+            return $objeto;
         }
 
         //este es un objeto tipo cliente model
@@ -79,12 +80,12 @@ class Detalle_vehiculo_model extends CI_Model
         $nombreTabla = "detalle_vehiculo";
 
         try {
-            $parametros = $this->Detalle_vehiculo_model->verificar_camposEntrada($data);
+            $parametros = $this->verificar_camposEntrada($data);
             $deetalleSeleccionado = $this->Utils_model->selectTabla($nombreTabla, $parametros);
             ///usuario seleccionado es un array de clases genericas
 
             if (count($deetalleSeleccionado) < 1) {
-                $respuesta = array('err' => TRUE, 'mensaje' => 'No se encontro el Usuario');
+                $respuesta = array('err' => TRUE, 'mensaje' => 'No se encontro el detalle vehiculo');
                 return $respuesta;
             } else {
                 $respuesta = array('err' => FALSE, 'detalleVehiculo' => $deetalleSeleccionado);

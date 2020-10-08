@@ -1,7 +1,5 @@
 <?php
 
-use Monolog\DateTimeImmutable;
-
 defined('BASEPATH') or exit('No direct script access allowed');
 class Itinerario_model extends CI_Model
 {
@@ -108,24 +106,70 @@ class Itinerario_model extends CI_Model
 
     public function obtener(array $data)
     {
-        $idTour = $data["id_tours"];
-        $respuesta = $this->Utils_model->selectTabla("itinerario", array("id_tours" => $idTour));
+        $nombreTabla = "itinerario";
+        try {
+            $parametros = $this->verificar_camposEntrada($data);
+            $this->db->where($parametros);
+            $query = $this->db->get($nombreTabla);
+            $itinerarioSeleccionado = $query->result();
+
+            if (count($itinerarioSeleccionado) < 1) {
+                //PROBLEMA
+                $respuesta = array(
+                    'err'          => TRUE,
+                    'mensaje'      => 'NO HAY RESULTADOS QUE MOSTRAR',
+                    'itinerario'     => null
+                );
+                return $respuesta;
+            } else {
 
 
-        for ($i = 0; $i < count($respuesta); $i++) {
-            if (isset($respuesta[$i]->start) && $respuesta[$i]->start != null) {
+                for ($i = 0; $i < count($itinerarioSeleccionado); $i++) {
+                    if (isset($itinerarioSeleccionado[$i]->start) && $itinerarioSeleccionado[$i]->start != null) {
 
-                $respuesta[$i]->start = new DateTime( $respuesta[$i]->start);
-            
+                        $itinerarioSeleccionado[$i]->start = new DateTime($itinerarioSeleccionado[$i]->start);
+                    }
+                    if (isset($itinerarioSeleccionado[$i]->end) && $itinerarioSeleccionado[$i]->end != null) {
+                        $itinerarioSeleccionado[$i]->end = new DateTime($itinerarioSeleccionado[$i]->end);
+                    }
+                }
+                $respuesta = array(
+                    'err'          => FALSE,
+                    'itinerario'   => $itinerarioSeleccionado
+                );
+                return $respuesta;
             }
-            if (isset($respuesta[$i]->end) && $respuesta[$i]->end != null) {
-                $respuesta[$i]->end = new DateTime( $respuesta[$i]->end);
-            }
+        } catch (Exception $e) {
+            return array('err' => TRUE, 'status' => 400, 'mensaje' => $e->getMessage());
         }
 
 
 
 
+
+
+
+
+
+
+
+
+
         return $respuesta;
+    }
+
+    public function verificar_camposEntrada($dataCruda)
+    {
+        $objeto = array();
+        ///par aquitar campos no existentes
+        foreach ($dataCruda as $nombre_campo => $valor_campo) {
+            # para verificar si la propiedad existe..
+            if (property_exists('Itinerario_model', $nombre_campo)) {
+                $objeto[$nombre_campo] = $valor_campo;
+            }
+        }
+
+        //este es un objeto tipo cliente model
+        return $objeto;
     }
 }
