@@ -86,6 +86,27 @@ public function __construct(){
                 $respuesta = array('err' => TRUE, 'mensaje' => 'Error interno de servidor');
             }
         }
-
 	}
+
+		//ELIMINAR
+		public function eliminarServicios_delete()
+		{
+			$data = $this->delete();
+			if (!isset($data["idservicios_opc"])) {
+				$respuesta = array('err' => TRUE, 'mensaje' => 'No se encontro ningun identificador de Servicios Opcionales');
+				$this->response($respuesta, REST_Controller::HTTP_BAD_REQUEST);
+			} else {
+				$campos = array('idservicios_opc' => $data["idservicios_opc"], 'activo' => FALSE);
+				try {
+					$respuesta = $this->Servicios_model->borrar($campos);
+					if ($respuesta['err']) {
+						$this->response($respuesta, REST_Controller::HTTP_BAD_REQUEST);
+					} else {
+						$this->response($respuesta, REST_Controller::HTTP_OK);
+					}
+				} catch (\Throwable $th) {
+					$respuesta = array('err' => TRUE, 'mensaje' => 'Error interno de servidor');
+				}
+			}
+		}
 }

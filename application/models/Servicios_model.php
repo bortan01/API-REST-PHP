@@ -7,6 +7,7 @@ class Servicios_model extends CI_Model
     public $nombre_servicio;
     public $descripcion;
     public $precio;
+    public $activo = TRUE;
     
     public function get_servicios(){
 
@@ -113,6 +114,31 @@ class Servicios_model extends CI_Model
             }
         }
         return $objeto;
+    }
+
+    //ELIMINAR
+    public function borrar($campos)
+    {
+        //ELIMINAR UN REGISTRO
+        $this->db->where('idservicios_opc', $campos["idservicios_opc"]);
+        $hecho = $this->db->update('servicios_opc', $campos);
+        if ($hecho) {
+            //ELIMINANDO REGISTRO
+            $respuesta = array(
+                'err'     => FALSE,
+                'mensaje' => 'Registro Eliminado Exitosamente'
+            );
+            return $respuesta;
+        } else {
+            //NO ELIMINO
+            $respuesta = array(
+                'err' => TRUE,
+                'mensaje' => 'Error al eliminar ', $this->db->error_message(),
+                'error_number' => $this->db->error_number(),
+                'Servicios Opcionales' => null
+            );
+            return $respuesta;
+        }
     }
    
    
