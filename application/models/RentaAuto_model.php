@@ -8,6 +8,7 @@ class RentaAuto_model extends CI_Model
     public $descripcion;
     public $usuario;
     public $contrasena;
+    public $activo = TRUE;
 
     public function get_rentaAuto(){
 
@@ -113,5 +114,31 @@ class RentaAuto_model extends CI_Model
         }
         return $objeto;
     } 
+
+
+    //ELIMINAR
+    public function borrar($campos)
+    {
+        //ELIMINAR UN REGISTRO
+        $this->db->where('id_rentaCar', $campos["id_rentaCar"]);
+        $hecho = $this->db->update(' rentacar', $campos);
+        if ($hecho) {
+            //ELIMINANDO REGISTRO
+            $respuesta = array(
+                'err'     => FALSE,
+                'mensaje' => 'Registro Eliminado Exitosamente'
+            );
+            return $respuesta;
+        } else {
+            //NO ELIMINO
+            $respuesta = array(
+                'err' => TRUE,
+                'mensaje' => 'Error al eliminar ', $this->db->error_message(),
+                'error_number' => $this->db->error_number(),
+                'renta cars' => null
+            );
+            return $respuesta;
+        }
+    }
    
 }

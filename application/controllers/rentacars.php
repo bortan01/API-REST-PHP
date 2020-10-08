@@ -86,6 +86,28 @@ public function __construct(){
                 $respuesta = array('err' => TRUE, 'mensaje' => 'Error interno de servidor');
             }
         }
-
 	}
+
+		//ELIMINAR
+		public function eliminarRenta_delete()
+		{
+			$data = $this->delete();
+			if (!isset($data["id_rentaCar"])) {
+				$respuesta = array('err' => TRUE, 'mensaje' => 'No se encontro ningun identificador de Renta Car');
+				$this->response($respuesta, REST_Controller::HTTP_BAD_REQUEST);
+			} else {
+				$campos = array('id_rentaCar' => $data["id_rentaCar"], 'activo' => FALSE);
+				try {
+					$respuesta = $this->RentaAuto_model->borrar($campos);
+					if ($respuesta['err']) {
+						$this->response($respuesta, REST_Controller::HTTP_BAD_REQUEST);
+					} else {
+						$this->response($respuesta, REST_Controller::HTTP_OK);
+					}
+					
+				} catch (\Throwable $th) {
+					$respuesta = array('err' => TRUE, 'mensaje' => 'Error interno de servidor');
+				}
+			}
+		}
 }
