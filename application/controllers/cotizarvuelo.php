@@ -88,4 +88,27 @@ public function __construct(){
         }
 
 	}
+
+		//ELIMINAR
+		public function eliminarCotizacion_delete()
+		{
+			$data = $this->delete();
+			if (!isset($data["id_cotizacion"])) {
+				$respuesta = array('err' => TRUE, 'mensaje' => 'No se encontro ningun identificador de Cotizacion');
+				$this->response($respuesta, REST_Controller::HTTP_BAD_REQUEST);
+			} else {
+				$campos = array('id_cotizacion' => $data["id_cotizacion"], 'activo' => FALSE);
+				try {
+					$respuesta = $this->cotizarVuelo_model->borrar($campos);
+					if ($respuesta['err']) {
+						$this->response($respuesta, REST_Controller::HTTP_BAD_REQUEST);
+					} else {
+						$this->response($respuesta, REST_Controller::HTTP_OK);
+					}
+					
+				} catch (\Throwable $th) {
+					$respuesta = array('err' => TRUE, 'mensaje' => 'Error interno de servidor');
+				}
+			}
+		}
 }
