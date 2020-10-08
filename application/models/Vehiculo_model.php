@@ -17,6 +17,7 @@ class Vehiculo_model extends CI_Model
     public $sonido;
     public $wifi;
     public $aireAcondicionado;
+    public $activo = TRUE;
 
     public function get_vehiculo(){
 
@@ -121,4 +122,28 @@ class Vehiculo_model extends CI_Model
         return $objeto;
     }
    
+    //ELIMINAR
+    public function borrar($campos)
+    {
+        //ELIMINAR UN REGISTRO
+        $this->db->where('idvehiculo', $campos["idvehiculo"]);
+        $hecho = $this->db->update('vehiculo', $campos);
+        if ($hecho) {
+            //ELIMINANDO REGISTRO
+            $respuesta = array(
+                'err'     => FALSE,
+                'mensaje' => 'Registro Eliminado Exitosamente'
+            );
+            return $respuesta;
+        } else {
+            //NO ELIMINO
+            $respuesta = array(
+                'err' => TRUE,
+                'mensaje' => 'Error al eliminar ', $this->db->error_message(),
+                'error_number' => $this->db->error_number(),
+                'vehiculo' => null
+            );
+            return $respuesta;
+        }
+    }
 }

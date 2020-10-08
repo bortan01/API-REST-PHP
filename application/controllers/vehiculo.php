@@ -85,6 +85,29 @@ public function __construct(){
                 $respuesta = array('err' => TRUE, 'mensaje' => 'Error interno de servidor');
             }
         }
-
 	}
+
+		//ELIMINAR
+		public function eliminarVehiculo_delete()
+		{
+			$data = $this->delete();
+			if (!isset($data["idvehiculo"])) {
+				$respuesta = array('err' => TRUE, 'mensaje' => 'No se encontro ningun identificador del Vehiculo');
+				$this->response($respuesta, REST_Controller::HTTP_BAD_REQUEST);
+			} else {
+				$campos = array('idvehiculo' => $data["idvehiculo"], 'activo' => FALSE);
+				
+				try {
+					$respuesta = $this->Vehiculo_model->borrar($campos);
+					if ($respuesta['err']) {
+						$this->response($respuesta, REST_Controller::HTTP_BAD_REQUEST);
+					} else {
+						$this->response($respuesta, REST_Controller::HTTP_OK);
+					}
+					
+				} catch (\Throwable $th) {
+					$respuesta = array('err' => TRUE, 'mensaje' => 'Error interno de servidor');
+				}
+			}
+		}
 }
