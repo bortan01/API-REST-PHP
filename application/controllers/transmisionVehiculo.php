@@ -84,6 +84,28 @@ public function __construct(){
                 $respuesta = array('err' => TRUE, 'mensaje' => 'Error interno de servidor');
             }
         }
-
 	}
+
+		//ELIMINAR
+		public function eliminarTransmision_delete()
+		{
+			$data = $this->delete();
+			if (!isset($data["idtransmicion"])) {
+				$respuesta = array('err' => TRUE, 'mensaje' => 'No se encontro ningun identificador de Transmision');
+				$this->response($respuesta, REST_Controller::HTTP_BAD_REQUEST);
+			} else {
+				$campos = array('idtransmicion' => $data["idtransmicion"], 'activo' => FALSE);
+				
+				try {
+					$respuesta = $this->Transmision_model->borrar($campos);
+					if ($respuesta['err']) {
+						$this->response($respuesta, REST_Controller::HTTP_BAD_REQUEST);
+					} else {
+						$this->response($respuesta, REST_Controller::HTTP_OK);
+					}
+				} catch (\Throwable $th) {
+					$respuesta = array('err' => TRUE, 'mensaje' => 'Error interno de servidor');
+				}
+			}
+		}
 }
