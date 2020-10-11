@@ -47,7 +47,9 @@ class Servicios_adicionales_model extends CI_Model
             //ESTA ES POR SI SE VA A SUBIR LA GALAREIA 
             $this->load->model('Imagen_model');
             $identificador = $this->db->insert_id();
-            $this->Imagen_model->guardarGaleria("tours_paquete", $identificador);
+            ///ESTO ES PARA GUARDAR UNA IMAGEN INDIVIDUAL Y UNA GALERIA
+            $this->Imagen_model->guardarGaleria("servicio_adicional", $identificador);
+            $this->Imagen_model->guardarImagen("contacto", $identificador);
             
             $respuesta = array(
                 'err'          => FALSE,

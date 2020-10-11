@@ -8,7 +8,7 @@ class Imagen_model extends CI_Model
     public $activo;
 
     ///EN EL BODY DEBE DE RECIBIR UN PARAMETRO LLAMADO foto, DE TIPO FILE
-    public function guardarImagen()
+    public function guardarImagen($tipo, $identificador, $activo = TRUE)
     {
         $URL = "http://localhost/API-REST-PHP/uploads/";
         $config['upload_path']   = './uploads/';
@@ -31,6 +31,13 @@ class Imagen_model extends CI_Model
             $data = $this->upload->data();
             $path =  $URL . $data["file_name"];
             $nombre = $data["file_name"];
+
+            $this->tipo          = $tipo;
+            $this->identificador = $identificador;
+            $this->foto_path     = $path;
+            $this->activo     = $activo;
+            $this->db->insert('galeria', $this);
+            
             $respuesta = array(
                 'err'   => FALSE,
                 'mensaje' => "Imagen subida exitosamente",

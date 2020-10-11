@@ -16,10 +16,10 @@ class ServiciosAdicionales extends REST_Controller
         $this->load->library("form_validation");
         $this->form_validation->set_data($data);
 
-        //corremos las reglas de validacion
+          //corremos las reglas de validacion
         if ($this->form_validation->run('insertarServicio')) {
             //VERIFICAMOS QUE TODOS LOS PARAMETROS ESTEN BIEN
-          
+
             $respuesta =  $this->Servicios_adicionales_model->guardar($data);
             if ($respuesta['err']) {
                 $this->response($respuesta, REST_Controller::HTTP_BAD_REQUEST);
@@ -87,5 +87,4 @@ class ServiciosAdicionales extends REST_Controller
             }
         }
     }
-    
 }
