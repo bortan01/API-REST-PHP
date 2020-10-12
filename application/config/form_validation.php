@@ -120,7 +120,7 @@ $config = array(
 	),
 
 	'citas_put' => array(
-		array('field' => 'descripcion'  ,'label' => 'descripcion' , 'rules' => 'trim|required|min_length[4]|max_length[255]')
+		array('field' => 'fecha'  ,'label' => 'fecha' , 'rules' => 'trim|required|min_length[4]|max_length[255]')
 	),
 
 	'encomienda_put' => array(

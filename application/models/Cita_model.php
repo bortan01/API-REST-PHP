@@ -5,7 +5,7 @@ class Cita_model extends CI_Model
 public $id_cita;
 public $id_cliente;
 public $descripcion;
-public $motivo;
+public $title;
 public $color;
 public $textColor;
 public $start;
@@ -89,7 +89,19 @@ public function get_citas(){
     $this->db->from('cita');
  	$this->db->join('usuario', 'usuario.id_cliente=cita.id_cliente','inner');
     $query=$this->db->get();
- 	return $query->result();
+    return $query->result();
+
+ 	/*foreach ($query->result() as $row)
+     {
+         $this->id_cita=$row->id_cita;
+         $this->motivo=$row->title;
+         $this->title=$row->nombre;
+         $this->start=$row->start;
+         $this->color=$row->color;
+         $this->textColor=$row->textColor;
+        //echo $row->body;
+            return [$this];
+    }*/
 
 
 
@@ -108,13 +120,20 @@ public function get_citas(){
         return $objeto;
  	}//fin de capitalizar los datos segun el modelo y campos correctos de la base
 
- 	public function insertCita($datos){
+ 	public function insertCita($id_cliente,$descripcion,$motivo,$color,$textColor,$start,$fecha,$hora){
 
 			//insertar el registro
-			
-			//$this->textColor="#FFFFFF";
-			//$this->color="#007bff";
-			$hecho=$this->db->insert('cita',$datos);
+ 			foreach ($descripcion as $row) {
+			$this->id_cliente=$id_cliente;
+			$this->descripcion=$row['$descripcion'];
+			$this->title=$motivo;
+			$this->textColor="#FFFFFF";
+			$this->color="#007bff";
+			$this->start=$start;
+			$this->fecha=$fecha;
+			$this->hora=$hora;
+			$hecho=$this->db->insert('cita',$this);
+		 }
 
 			if ($hecho) {
 				#insertado
@@ -122,7 +141,7 @@ public function get_citas(){
 					'err'=>FALSE,
 					'mensaje'=>'Registro insertado correctamente',
 					'cita_id'=>$this->db->insert_id(),
-					'ver'=>$datos
+					'ver'=>$this
 				);
 			}else{
 				//error

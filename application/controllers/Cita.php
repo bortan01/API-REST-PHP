@@ -37,7 +37,7 @@ public function cita_get(){
 
 	if (isset($cita)) {
 		//quitar campos que no quiero
-		unset($cita->motivo);
+		//unset($cita->motivo);
 		//unset($cliente->telefono2);
 		//$respuesta=array($cita);
 		$this->response($cita);
@@ -63,9 +63,18 @@ public function cita_get(){
 		if ( $this->form_validation->run('citas_put') ) {
 			//todo bien
 			//$this->response('Todo bien');
-		$cita=$this->Cita_model->set_datos($data);
+		//$cita=$this->Cita_model->set_datos($data);
+		$id_cliente=$data["id_cliente"];
+		$descripcion=count($data['asistiran']);
+		$motivo=$data["title"];
+		$color="#007bff";
+		$textColor="#FFFFFF";
+		$start=$data["fecha"].' '.$data["start"];
+		$fecha=$data["fecha"];
+		$hora=$data["start"];
 
-		$respuesta=$this->Cita_model->insertCita($cita); 
+
+		$respuesta=$this->Cita_model->insertCita($id_cliente,$descripcion,$motivo,$color,$textColor,$start,$fecha,$hora); 
 
 		if ($respuesta['err']) {
 
