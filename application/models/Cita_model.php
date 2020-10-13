@@ -121,12 +121,10 @@ public function get_citas(){
  	}//fin de capitalizar los datos segun el modelo y campos correctos de la base
 
  	public function insertCita($id_cliente,$descripcion,$motivo,$color,$textColor,$start,$fecha,$hora){
-
-			//insertar el registro
+		//insertar el registro
  		$cuantos=count($descripcion);
 
-
- 			 
+ 			$this->id_cita=$this->db->insert_id();
  			$this->id_cliente=$id_cliente;
 			$this->title=$motivo;
 			$this->textColor="#FFFFFF";
@@ -134,16 +132,17 @@ public function get_citas(){
 			$this->start=$start;
 			$this->fecha=$fecha;
 			$this->hora=$hora;
-			for ($i=0; $i <$cuantos ; $i++) {
-			$this->descripcion=$descripcion[$i];
-			$hecho=$this->db->insert('cita',$this);
-		    }
-		
- 				
- 			
-			
-		
 
+			$this->load->model('PersonasCitas_model');
+			
+			
+			//for ($i=0; $i <$cuantos ; $i++) {
+			//$this->descripcion=$descripcion[$i];
+			$hecho=$this->db->insert('cita',$this);
+			$cita=$this->db->insert_id();
+			$this->PersonasCitas_model->insertarPersonas($cita,$descripcion,$cuantos);
+			
+		    //}
 			if ($hecho) {
 				#insertado
 				$respuesta=array(
@@ -152,6 +151,7 @@ public function get_citas(){
 					'cita_id'=>$this->db->insert_id(),
 					'ver'=>$this
 				);
+				
 			}else{
 				//error
 
