@@ -65,7 +65,7 @@ public function cita_get(){
 			//$this->response('Todo bien');
 		//$cita=$this->Cita_model->set_datos($data);
 		$id_cliente=$data["id_cliente"];
-		$descripcion=count($data['asistiran']);
+		$descripcion=$data['asistiran'];
 		$motivo=$data["title"];
 		$color="#007bff";
 		$textColor="#FFFFFF";

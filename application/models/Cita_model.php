@@ -123,17 +123,26 @@ public function get_citas(){
  	public function insertCita($id_cliente,$descripcion,$motivo,$color,$textColor,$start,$fecha,$hora){
 
 			//insertar el registro
- 			foreach ($descripcion as $row) {
-			$this->id_cliente=$id_cliente;
-			$this->descripcion=$row['$descripcion'];
+ 		$cuantos=count($descripcion);
+
+
+ 			 
+ 			$this->id_cliente=$id_cliente;
 			$this->title=$motivo;
 			$this->textColor="#FFFFFF";
 			$this->color="#007bff";
 			$this->start=$start;
 			$this->fecha=$fecha;
 			$this->hora=$hora;
+			for ($i=0; $i <$cuantos ; $i++) {
+			$this->descripcion=$descripcion[$i];
 			$hecho=$this->db->insert('cita',$this);
-		 }
+		    }
+		
+ 				
+ 			
+			
+		
 
 			if ($hecho) {
 				#insertado
