@@ -65,16 +65,21 @@ public function cita_get(){
 			//$this->response('Todo bien');
 		//$cita=$this->Cita_model->set_datos($data);
 		$id_cliente=$data["id_cliente"];
-		$descripcion=$data['asistiran'];
-		$motivo=$data["title"];
+		if (isset($data['asistiran'])) {
+			# code...
+			$personas=$data['asistiran'];
+		}else{
+			$personas=NULL;
+		}
+		
+		$motivo=$data["title"].': '.$data["usuario"];
 		$color="#007bff";
 		$textColor="#FFFFFF";
 		$start=$data["fecha"].' '.$data["start"];
 		$fecha=$data["fecha"];
 		$hora=$data["start"];
 
-
-		$respuesta=$this->Cita_model->insertCita($id_cliente,$descripcion,$motivo,$color,$textColor,$start,$fecha,$hora); 
+		$respuesta=$this->Cita_model->insertCita($id_cliente,$personas,$motivo,$color,$textColor,$start,$fecha,$hora); 
 
 		if ($respuesta['err']) {
 

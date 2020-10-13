@@ -4,7 +4,6 @@ class Cita_model extends CI_Model
 {
 public $id_cita;
 public $id_cliente;
-public $descripcion;
 public $title;
 public $color;
 public $textColor;
@@ -120,9 +119,10 @@ public function get_citas(){
         return $objeto;
  	}//fin de capitalizar los datos segun el modelo y campos correctos de la base
 
- 	public function insertCita($id_cliente,$descripcion,$motivo,$color,$textColor,$start,$fecha,$hora){
+ 	public function insertCita($id_cliente,$personas,$motivo,$color,$textColor,$start,$fecha,$hora){
 		//insertar el registro
- 		$cuantos=count($descripcion);
+		
+ 		
 
  			$this->id_cita=$this->db->insert_id();
  			$this->id_cliente=$id_cliente;
@@ -139,9 +139,11 @@ public function get_citas(){
 			//for ($i=0; $i <$cuantos ; $i++) {
 			//$this->descripcion=$descripcion[$i];
 			$hecho=$this->db->insert('cita',$this);
+			if ($personas !=NULL) {
+				# code...
 			$cita=$this->db->insert_id();
-			$this->PersonasCitas_model->insertarPersonas($cita,$descripcion,$cuantos);
-			
+			$this->PersonasCitas_model->insertarPersonas($cita,$personas);
+			}
 		    //}
 			if ($hecho) {
 				#insertado

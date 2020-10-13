@@ -7,14 +7,15 @@ public $id_cita;
 public $nombres_personas;
 //public $cantidad_personas;
 
-public function insertarPersonas($cita,$descripcion,$cuantos){
+public function insertarPersonas($cita,$personas){
 
-
+	$cuantos=count($personas);
+	
 	for ($i=0; $i < $cuantos ; $i++) { 
 		# code...
 		$this->id_cita=$cita;
 		
-	    $this->nombres_personas=$descripcion[$i];
+	    $this->nombres_personas=$personas[$i];
 	    $hecho=$this->db->insert('personas_cita',$this);
 	   }
 
