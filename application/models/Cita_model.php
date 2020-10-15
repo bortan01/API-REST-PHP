@@ -4,6 +4,7 @@ class Cita_model extends CI_Model
 {
 public $id_cita;
 public $id_cliente;
+public $compania;
 public $title;
 public $color;
 public $textColor;
@@ -49,9 +50,20 @@ public function eliminar($datos){
 	}//fin metodo
 
 
-public function modificar_cita($datos){
-		$this->db->set($datos);
- 		$this->db->where('id_cita',$datos["id_cita"]);
+public function modificar_cita($id_cita,$fecha,$compania,$input,$asistiran,$hora){
+		//$this->db->set($datos);
+	    $query=$this->db->get_where('cita',array('hora'=>$hora) );
+		$cita=$query->row();
+
+			if (!isset($cita)) {
+			$respuesta=array(
+				'err'=>TRUE,
+				'mensaje'=>'La hora a modificar ya esta ocupada'
+			);
+			return $respuesta;
+			}
+  
+ 		$this->db->where('id_cita',$id_cita);
 
  		$hecho=$this->db->update('cita');
 
@@ -119,13 +131,14 @@ public function get_citas(){
         return $objeto;
  	}//fin de capitalizar los datos segun el modelo y campos correctos de la base
 
- 	public function insertCita($id_cliente,$personas,$motivo,$color,$textColor,$start,$fecha,$hora){
+ 	public function insertCita($id_cliente,$asitencia,$personas,$motivo,$color,$textColor,$start,$fecha,$hora){
 		//insertar el registro
 		
  		
 
  			$this->id_cita=$this->db->insert_id();
  			$this->id_cliente=$id_cliente;
+ 			$this->compania=$asitencia;
 			$this->title=$motivo;
 			$this->textColor="#FFFFFF";
 			$this->color="#007bff";

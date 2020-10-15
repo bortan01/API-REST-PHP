@@ -7,6 +7,14 @@ public $id_cita;
 public $nombres_personas;
 //public $cantidad_personas;
 
+public function get_personas($id){
+
+	$this->db->where(array('id_cita'=>$id));
+
+ 	$query=$this->db->get('personas_cita');
+ 	return $query->result();
+ }
+
 public function insertarPersonas($cita,$personas){
 
 	$cuantos=count($personas);

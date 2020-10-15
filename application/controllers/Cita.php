@@ -23,9 +23,17 @@ public function __construct(){
 public function updateCita_post(){
 
 		$data=$this->post();
+		//recogere los datos para pode concatenar
+		$id_cita=$data["id_cita"];
+		$fecha=$data["fecha"];
+		$compania=$data["asistencia"];
 
-		$verificar=$this->Cita_model->set_datos($data);
-        $respuesta=$this->Cita_model->modificar_cita($verificar);
+		$input=$data["input"];
+		$asistiran=$data["asistiran"];
+		$hora=$data["start"];
+
+		//$verificar=$this->Cita_model->set_datos($data);
+        $respuesta=$this->Cita_model->modificar_cita($id_cita,$fecha,$compania,$input,$asistiran,$hora);
 
 	    $this->response($respuesta);
 
@@ -65,6 +73,7 @@ public function cita_get(){
 			//$this->response('Todo bien');
 		//$cita=$this->Cita_model->set_datos($data);
 		$id_cliente=$data["id_cliente"];
+		$asistencia=$data["asistencia"];
 		if (isset($data['asistiran'])) {
 			# code...
 			$personas=$data['asistiran'];
@@ -79,9 +88,14 @@ public function cita_get(){
 		$fecha=$data["fecha"];
 		$hora=$data["start"];
 
-		$respuesta=$this->Cita_model->insertCita($id_cliente,$personas,$motivo,$color,$textColor,$start,$fecha,$hora); 
+		$respuesta=$this->Cita_model->insertCita($id_cliente,$asistencia,$personas,$motivo,$color,$textColor,$start,$fecha,$hora); 
 
 		if ($respuesta['err']) {
+
+			$respuesta=array(
+				'err'=>TRUE,
+				'mensaje'=>'Hay errores en el envio de la informacion'
+			);
 
 		$this->response($respuesta, REST_Controller::HTTP_BAD_REQUEST); 	
 
