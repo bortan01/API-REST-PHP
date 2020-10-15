@@ -72,7 +72,7 @@ class Servicios_adicionales_model extends CI_Model
             if (count($servicioSeleccionado)<1) {
                 //PROBLEMA
                 $respuesta = array(
-                    'err'          => TRUE,
+                    'err'          => FALSE,
                     'mensaje'      => 'NO HAY RESULTADOS QUE MOSTRAR',
                     'servicio'     => null
                 );
