@@ -13,6 +13,7 @@ class Servicios_adicionales_model extends CI_Model
     public $asientos_izquierdos;
     public $asientos_fondo;
     public $filas;
+    public $activo;
 
     public function verificar_camposEntrada($dataCruda)
     {
@@ -24,14 +25,15 @@ class Servicios_adicionales_model extends CI_Model
                 $objeto[$nombre_campo] = $valor_campo;
             }
         }
-    
-       
+
+
         return $objeto;
     }
 
     public function guardar(array $data)
     {
         $nombreTabla = "servicios_adicionales";
+        $data["activo"] = TRUE;
         $servicio = $this->verificar_camposEntrada($data);
         $insert = $this->db->insert($nombreTabla, $servicio);
         if (!$insert) {
@@ -50,7 +52,7 @@ class Servicios_adicionales_model extends CI_Model
             ///ESTO ES PARA GUARDAR UNA IMAGEN INDIVIDUAL Y UNA GALERIA
             $this->Imagen_model->guardarGaleria("servicio_adicional", $identificador);
             $this->Imagen_model->guardarImagen("contacto", $identificador);
-            
+
             $respuesta = array(
                 'err'          => FALSE,
                 'mensaje'      => 'Registro Guardado Exitosamente',
@@ -62,14 +64,15 @@ class Servicios_adicionales_model extends CI_Model
 
     public function obtenerServicio(array $data = array())
     {
-       $nombreTabla = "servicios_adicionales";
+        $nombreTabla = "servicios_adicionales";
+        $data["activo"] = TRUE;
         try {
             $parametros = $this->verificar_camposEntrada($data);
             $this->db->where($parametros);
             $query = $this->db->get($nombreTabla);
             $servicioSeleccionado = $query->result();
-                      
-            if (count($servicioSeleccionado)<1) {
+
+            if (count($servicioSeleccionado) < 1) {
                 //PROBLEMA
                 $respuesta = array(
                     'err'          => FALSE,
@@ -78,8 +81,8 @@ class Servicios_adicionales_model extends CI_Model
                 );
                 return $respuesta;
             } else {
-                
-                 $respuesta = array(
+
+                $respuesta = array(
                     'err'          => FALSE,
                     'servicio'   => $servicioSeleccionado
                 );
@@ -96,7 +99,7 @@ class Servicios_adicionales_model extends CI_Model
         ///VAMOS A ACTUALIZAR UN REGISTRO
         $campos = $this->verificar_camposEntrada($data);
         $this->db->where('id_servicios', $campos["id_servicios"]);
-      
+
         $hecho = $this->db->update($nombreTabla, $campos);
         if ($hecho) {
             ///LOGRO ACTUALIZAR 
@@ -122,7 +125,7 @@ class Servicios_adicionales_model extends CI_Model
     {
         $nombreTabla = "servicios_adicionales";
         ///VAMOS A ACTUALIZAR UN REGISTRO
-        $campos["activo"] = FALSE;      
+        $campos["activo"] = FALSE;
         $this->db->where('id_servicios', $campos["id_servicios"]);
         $hecho = $this->db->update($nombreTabla, $campos);
         if ($hecho) {
