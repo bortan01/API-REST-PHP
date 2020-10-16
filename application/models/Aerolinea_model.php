@@ -4,6 +4,8 @@ class Aerolinea_model extends CI_Model
 {
     public $idaerolinea;
     public $nombre_aerolinea;
+    public $sitioWeb;
+    public $telefonoContacto;
     public $activo = TRUE;
     
     public function get_aerolinea(){

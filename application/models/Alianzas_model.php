@@ -4,7 +4,10 @@ class Alianzas_model extends CI_Model
 {
     public $idalianza;
     public $nombre_alianza;
+    public $sitioWeb;
+    public $telefonoContacto;
     public $activo = TRUE;
+
     
     public function get_alianzas(){
 

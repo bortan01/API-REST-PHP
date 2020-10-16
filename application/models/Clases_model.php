@@ -4,7 +4,9 @@ class Clases_model extends CI_Model
 {
     public $idclase;
     public $nombre_clase;
+    public $descripcion;
     public $activo = TRUE;
+  
     
     public function get_clases(){
         $query=$this->db->get('tipo_clase');

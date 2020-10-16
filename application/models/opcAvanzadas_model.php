@@ -5,14 +5,14 @@ class opcAvanzadas_model extends CI_Model
     public $idopc_avanzadas;
     public $idaerolinea;
     public $idclase;
-    public $idalianza;
     public $idtipo_viaje;
     public $vuelosin_escala;
     public $misma_aerolinea;
     public $equipaje_extra;
     public $activo = TRUE;
 
-    public function get_opciones(){
+    public function get_opciones()
+    {
         $query=$this->db->get('opc_avanzadas');
             return $query->result();
         }

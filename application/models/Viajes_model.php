@@ -5,6 +5,7 @@ class Viajes_model extends CI_Model
   
     public $idtipo_viaje;
     public $nombre_tipoviaje;
+    public $descripcion;
     public $activo = TRUE;
     
     public function get_viajes(){
