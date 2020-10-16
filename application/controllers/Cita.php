@@ -28,14 +28,14 @@ public function updateCita_post(){
 		$fecha=$data["fecha"];
 		$compania=$data["asistencia"];
 
-		if (isset($data["asistiran"])) {
+		if (count($data["asistiran"])>=1) {
 			# code...
 			$asistiran=$data["asistiran"];
 		}else{
 			$asistiran=NULL;
 		}
 		
-		if (isset($data["input"])) {
+		if (count($data["input"])>=1) {
 			# code...
 			$input=$data["input"];
 		}else{

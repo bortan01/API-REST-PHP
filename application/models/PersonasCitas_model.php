@@ -5,7 +5,7 @@ class PersonasCitas_model extends CI_Model
 //public $id_persona;
 public $id_cita;
 public $nombres_personas;
-//public $cantidad_personas;
+public $cantidad_personas;
 
 public function get_personas($id){
 
@@ -17,8 +17,10 @@ public function get_personas($id){
 
 public function modificarPersona($id_cita,$input,$asistiran){
 
-
-	
+	//BORRAMOS POR EL TIPO DE PROCEDIMIENTO
+	$this->db->where('id_cita',$id_cita);
+    $this->db->delete('personas_cita');
+    //***************
 
 	if ($input!=NULL) {// SI ES NULL NO ARA NADA PORQ NO TRAE DATOS PARA EVITAR PROCEDIMIENTOS
 		# code...
@@ -26,6 +28,7 @@ public function modificarPersona($id_cita,$input,$asistiran){
 		for ($i=0; $i < $nuevos ; $i++) { 
 		# code...
 		$this->id_cita=$id_cita;
+		$this->cantidad_personas=$nuevos;
 		
 	    $this->nombres_personas=$input[$i];
 	    $hecho=$this->db->insert('personas_cita',$this);
@@ -59,11 +62,9 @@ public function modificarPersona($id_cita,$input,$asistiran){
 		# code...
 
 		$this->id_cita=$id_cita;
+		$this->cantidad_personas=$modificar;
 		$this->nombres_personas=$asistiran[$i];
-
-		$this->db->set($this);
-        $this->db->where('id_cita',$id_cita);
-        $hecho=$this->db->update('personas_cita');
+        $hecho=$this->db->insert('personas_cita',$this);
         
 	   }//for
 
@@ -85,9 +86,7 @@ public function modificarPersona($id_cita,$input,$asistiran){
 	}else {
 		$respuesta=array(
 					'err'=>TRUE,
-					'mensaje'=>'Error al insertar',
-					'error'=>$this->db->_error_message(),
-					'error_num'=>$this->db->_error_number()
+					'mensaje'=>'Error al insertar'
 				);
 	}
 	
