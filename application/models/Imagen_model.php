@@ -37,7 +37,7 @@ class Imagen_model extends CI_Model
             $this->foto_path     = $path;
             $this->activo     = $activo;
             $this->db->insert('galeria', $this);
-            
+
             $respuesta = array(
                 'err'   => FALSE,
                 'mensaje' => "Imagen subida exitosamente",
@@ -123,13 +123,23 @@ class Imagen_model extends CI_Model
         }
     }
     //DEBE DE ENVIARSE LA URL DE LA IMAGEN A ELIMINAR
-    public function eliminarImagen($urlImagen)
+    public function eliminarImagen($id_foto)
     {
         $URL = "http://localhost/API-REST-PHP/uploads/";
         $RUTA = "C:/wamp64/www/API-REST-PHP/uploads/";
+
+        //ELIMINADO DE LA BASE DE DATOS 
+        $this->db->where('id_foto', $id_foto);
+        $this->db->update('galeria', array('activo' => FALSE));
+
+        //ELIMINANDO EL ARCHIVO
+        $this->db->where(array("id_foto" => $id_foto));
+        $query = $this->db->get("galeria");
+        $urlImagen="";
+        foreach ($query->result() as $row) {
+            $urlImagen = $row->foto_path;
+        }
         $ruta_foto = ($RUTA . substr($urlImagen,  strlen($URL)));
-
-
         try {
             if (file_exists($ruta_foto)) {
                 unlink($ruta_foto);
@@ -145,6 +155,9 @@ class Imagen_model extends CI_Model
         $this->db->where(array("tipo" => $tipo, "identificador" => $identificado));
         $query = $this->db->get("galeria");
         $imagenes = $query->result();
+
+        // $this->db->where('id_foto', $id_foto);
+        // $this->db->update('galeria', array('activo' => FALSE));
 
         $URL = "http://localhost/API-REST-PHP/uploads/";
         $RUTA = "C:/wamp64/www/API-REST-PHP/uploads/";
@@ -184,6 +197,10 @@ class Imagen_model extends CI_Model
             }
         }
     }
-    
-   
+    public function obtenerImagen($tipo, $identificado)
+    {
+        $this->db->where(array("tipo" => $tipo, "identificador" => $identificado, "activo" => TRUE));
+        $query = $this->db->get("galeria");
+        return $query->result();
+    }
 }

@@ -11,8 +11,6 @@ public function __construct(){
 		$this->load->model('FormularioMigratorio_model');
 
 	}
-
-
 	 public function deleteFormulario_post(){
 
 	 $data=$this->post();
