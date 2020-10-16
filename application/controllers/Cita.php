@@ -28,14 +28,34 @@ public function updateCita_post(){
 		$fecha=$data["fecha"];
 		$compania=$data["asistencia"];
 
-		$input=$data["input"];
-		$asistiran=$data["asistiran"];
+		if (isset($data["asistiran"])) {
+			# code...
+			$asistiran=$data["asistiran"];
+		}else{
+			$asistiran=NULL;
+		}
+		
+		if (isset($data["input"])) {
+			# code...
+			$input=$data["input"];
+		}else{
+			$input=NULL;
+		}
+		
+		
 		$hora=$data["start"];
 
 		//$verificar=$this->Cita_model->set_datos($data);
         $respuesta=$this->Cita_model->modificar_cita($id_cita,$fecha,$compania,$input,$asistiran,$hora);
 
-	    $this->response($respuesta);
+        if ($respuesta['err']) {
+        	# code...
+        	$this->response($respuesta,REST_Controller::HTTP_BAD_REQUEST);
+        }else{
+        	$this->response($respuesta);
+        }
+
+	    
 
 	}//fin de metodo
 
@@ -62,7 +82,7 @@ public function cita_get(){
 }
 
 
-	public function citas_post(){
+public function citas_post(){
 
 		$data=$this->post();
 		$this->load->library('form_validation');
@@ -114,7 +134,7 @@ public function cita_get(){
 			$this->response($respuesta, REST_Controller::HTTP_BAD_REQUEST); 
 		}
 
-	}
+}
 
 		
 

@@ -52,20 +52,30 @@ public function eliminar($datos){
 
 public function modificar_cita($id_cita,$fecha,$compania,$input,$asistiran,$hora){
 		//$this->db->set($datos);
-	    $query=$this->db->get_where('cita',array('hora'=>$hora) );
-		$cita=$query->row();
+	    $query=$this->db->where(array('fecha'=>$fecha,'hora'=>$hora) );
+	    $query = $this->db->get('cita');
+		$cita=$query->row();//esto equivale a SELECT * FROM `cita` WHERE hora='12:00 AM' AND fecha='2020-10-15' 
 
-			if (!isset($cita)) {
+			if (isset($cita)) {
 			$respuesta=array(
 				'err'=>TRUE,
-				'mensaje'=>'La hora a modificar ya esta ocupada'
+				'mensaje'=>'La hora a modificar ya esta ocupada',
+				'ver'=>$cita
 			);
 			return $respuesta;
 			}
-  
- 		$this->db->where('id_cita',$id_cita);
+		$this->load->model('PersonasCitas_model');//cargo el modelo para actualizar en la otra tabla si es necesario
+		$datos=array(
+			'compania'=>$compania,
+			'start'=>$fecha.' '.$hora,
+			'hora'=>$hora
+		);
 
- 		$hecho=$this->db->update('cita');
+		$this->db->set($datos);
+        $this->db->where('id_cita',$id_cita);
+        $hecho=$this->db->update('cita');
+
+        $this->PersonasCitas_model->modificarPersona($id_cita,$input,$asistiran);
 
  		if ($hecho) {
 				#borrado
@@ -91,47 +101,7 @@ public function modificar_cita($id_cita,$fecha,$compania,$input,$asistiran,$hora
  		return $respuesta;
  	}
 
-
-public function get_citas(){
-   // $query=$this->db->get('cita');
- 	//return $query->result();
-
- 	$this->db->select('*');
-    $this->db->from('cita');
- 	$this->db->join('usuario', 'usuario.id_cliente=cita.id_cliente','inner');
-    $query=$this->db->get();
-    return $query->result();
-
- 	/*foreach ($query->result() as $row)
-     {
-         $this->id_cita=$row->id_cita;
-         $this->motivo=$row->title;
-         $this->title=$row->nombre;
-         $this->start=$row->start;
-         $this->color=$row->color;
-         $this->textColor=$row->textColor;
-        //echo $row->body;
-            return [$this];
-    }*/
-
-
-
- 	}
-
-    public function set_datos($data_cruda){
-    	 $objeto =array();
-        ///par aquitar campos no existentes
-        foreach ($data_cruda as $nombre_campo => $valor_campo) {
-            # para verificar si la propiedad existe..
-            if (property_exists('Cita_model', $nombre_campo)) {
-                $objeto[$nombre_campo] = $valor_campo;
-            }
-        }
-
-        return $objeto;
- 	}//fin de capitalizar los datos segun el modelo y campos correctos de la base
-
- 	public function insertCita($id_cliente,$asitencia,$personas,$motivo,$color,$textColor,$start,$fecha,$hora){
+ public function insertCita($id_cliente,$asitencia,$personas,$motivo,$color,$textColor,$start,$fecha,$hora){
 		//insertar el registro
 		
  		
@@ -183,6 +153,48 @@ public function get_citas(){
 
  		return $respuesta;
  	}//fin de insertar la pregunta
+
+
+public function get_citas(){
+   // $query=$this->db->get('cita');
+ 	//return $query->result();
+
+ 	$this->db->select('*');
+    $this->db->from('cita');
+ 	$this->db->join('usuario', 'usuario.id_cliente=cita.id_cliente','inner');
+    $query=$this->db->get();
+    return $query->result();
+
+ 	/*foreach ($query->result() as $row)
+     {
+         $this->id_cita=$row->id_cita;
+         $this->motivo=$row->title;
+         $this->title=$row->nombre;
+         $this->start=$row->start;
+         $this->color=$row->color;
+         $this->textColor=$row->textColor;
+        //echo $row->body;
+            return [$this];
+    }*/
+
+
+
+ 	}
+
+    public function set_datos($data_cruda){
+    	 $objeto =array();
+        ///par aquitar campos no existentes
+        foreach ($data_cruda as $nombre_campo => $valor_campo) {
+            # para verificar si la propiedad existe..
+            if (property_exists('Cita_model', $nombre_campo)) {
+                $objeto[$nombre_campo] = $valor_campo;
+            }
+        }
+
+        return $objeto;
+ 	}//fin de capitalizar los datos segun el modelo y campos correctos de la base
+
+ 	
 
 
 }
