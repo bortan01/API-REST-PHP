@@ -25,7 +25,7 @@ class Aerolinea_model extends CI_Model
             }
             return $this; 
         }
-   
+
         public function insert(){
             
            $query=$this->db->get_where('aerolinea',array('nombre_aerolinea'=>$this->nombre_aerolinea));

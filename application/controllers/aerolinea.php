@@ -23,10 +23,10 @@ public function __construct(){
 			'aerolineas'=>$aerolineas
 
 		);
-		$this->response($respuesta);
+		$this->response($respuesta, REST_Controller::HTTP_OK);
 	}else{
 		$respuesta=array(
-			'err'=>FALSE,
+			'err'=>TRUE,
 			'mensaje'=>'Error al cargar los datos.',
 			'aerolineas'=>null
 
