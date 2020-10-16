@@ -6,6 +6,7 @@ class Vehiculo_model extends CI_Model
     public $id_rentaCarFK;
     public $id_marcaFK;
     public $id_transmicionFK;
+    public $idcategoria;
     public $placa;
     public $anio;
     public $color;
@@ -18,6 +19,8 @@ class Vehiculo_model extends CI_Model
     public $wifi;
     public $aireAcondicionado;
     public $activo = TRUE;
+    public $kilometraje;
+    public $tipoCombustible;
 
     public function get_vehiculo(){
 

@@ -10,6 +10,7 @@ public function __construct(){
 		$this->load->database();
 		$this->load->model('Aerolinea_model');
 	}
+
 	public function aerolinea_get(){
 
 	$aerolineas=$this->Aerolinea_model->get_aerolinea();
@@ -25,7 +26,7 @@ public function __construct(){
 		$this->response($respuesta);
 	}else{
 		$respuesta=array(
-			'err'=>TRUE,
+			'err'=>FALSE,
 			'mensaje'=>'Error al cargar los datos.',
 			'aerolineas'=>null
 
