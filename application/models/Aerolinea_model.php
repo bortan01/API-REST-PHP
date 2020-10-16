@@ -9,11 +9,19 @@ class Aerolinea_model extends CI_Model
     public $activo = TRUE;
     
     public function get_aerolinea(){
+      $query=$this->db->get('aerolinea');
+        $respu=$query->result();
+        if (count($respu)<1) {
+          $respuesta=array('err'=>FALSE,'mensaje'=>'Error al cargar los datos','aerolinea'=>null);
 
-        $query=$this->db->get('aerolinea');
+          return $respuesta;
+        }else{
+          $respuesta=array('err'=>TRUE,'mensaje'=>'Registro Cargado correctamente',
+            'aerolinea'=>$respu);
 
-            return $query->result();
+          return $respuesta;
         }
+    }
 
        public function set_datos( $data_cruda){
    

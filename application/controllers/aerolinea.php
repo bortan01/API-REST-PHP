@@ -15,25 +15,15 @@ public function __construct(){
 
 	$aerolineas=$this->Aerolinea_model->get_aerolinea();
 
-	if (isset($aerolineas)) {
+	if ($aerolineas['err']) {
 		
-		$respuesta=array(
-			'err'=>FALSE,
-			'mensaje'=>'Registro Cargado correctamente',
-			'aerolineas'=>$aerolineas
-
-		);
-		$this->response($respuesta, REST_Controller::HTTP_OK);
+		$this->response($aerolineas);
 	}else{
-		$respuesta=array(
-			'err'=>TRUE,
-			'mensaje'=>'Error al cargar los datos.',
-			'aerolineas'=>null
-
-		);
-		$this->response($respuesta,REST_Controller::HTTP_NOT_FOUND);
+		
+		$this->response($aerolineas,REST_Controller::HTTP_NOT_FOUND);
 
 	}
+
 }
 
 	
