@@ -22,7 +22,7 @@ public function __construct(){
 			'transmision'=>$transmisiones
 
 		);
-		$this->response($respuesta);
+		$this->response($respuesta,REST_Controller::HTTP_OK);
 	}else{
 		$respuesta=array(
 			'err'=>TRUE,

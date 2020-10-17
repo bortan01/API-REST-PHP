@@ -23,7 +23,7 @@ public function __construct(){
 			'autos'=>$carro
 
 		);
-		$this->response($respuesta);
+		$this->response($respuesta,REST_Controller::HTTP_OK);
 	}else{
 		$respuesta=array(
 			'err'=>TRUE,

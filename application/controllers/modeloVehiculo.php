@@ -22,7 +22,7 @@ public function __construct(){
 			'modelo'=>$modelos
 
 		);
-		$this->response($respuesta);
+		$this->response($respuesta,REST_Controller::HTTP_OK);
 	}else{
 		$respuesta=array(
 			'err'=>TRUE,
