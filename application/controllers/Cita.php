@@ -124,10 +124,10 @@ public function citas_post(){
 
 		if ($respuesta['err']) {
 
-			$respuesta=array(
+			/*$respuesta=array(
 				'err'=>TRUE,
 				'mensaje'=>'Hay errores en el envio de la informacion'
-			);
+			);*/
 
 		$this->response($respuesta, REST_Controller::HTTP_BAD_REQUEST); 	
 

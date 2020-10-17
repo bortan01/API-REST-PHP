@@ -190,7 +190,36 @@ public function modificar_cita($id_cita,$fecha,$compania,$input,$asistiran,$hora
 
  public function insertCita($id_cliente,$asitencia,$personas,$motivo,$color,$textColor,$start,$fecha,$hora){
 		//insertar el registro
+		$horas_validas= array(
+						0 =>'8:00 AM',
+						1 =>'9:00 AM',
+						2 =>'10:00 AM',
+						3 =>'11:00 AM',
+						5 =>'1:00 PM',
+						6 =>'2:00 PM',
+						7 =>'3:00 PM');
+		$el_pollo = array(0 =>'12:00 PM');
+
+		if (in_array($hora,$el_pollo)) {
+			# es la hora del pollo
+			$respuesta=array(
+				'err'=>TRUE,
+				'mensaje'=>'Hora de almuerzo!!'
+			);
+
+			return $respuesta;
+		}else{
+
+		//VAMOS A VERIFICAR QUE LA HORA QUE LLEGUE TENGA LA DIFERENCIA DE 1HR
+         if (in_array($hora,$horas_validas)) {
+			# si esta dentro de las horas validas va ha pasar por el desorden de abajo
 		
+
+	    $query=$this->db->where(array('fecha'=>$fecha,'hora'=>$hora) );
+	    $query = $this->db->get('cita');
+		$cita=$query->row();//si ya esta esa hora con esa fecha
+
+	if (!isset($cita)) {
  		
 
  			$this->id_cita=$this->db->insert_id();
@@ -236,10 +265,27 @@ public function modificar_cita($id_cita,$fecha,$compania,$input,$asistiran,$hora
 			
 			}
 
-
-
  		return $respuesta;
- 	}//fin de insertar la pregunta
+ 	   }else{
+ 	   	$respuesta=array(
+				'err'=>TRUE,
+				'mensaje'=>'La hora ya esta ocupada'
+			);
+
+			return $respuesta;
+
+ 	   }
+    }else{
+    	$respuesta=array(
+				'err'=>TRUE,
+				'mensaje'=>'Hora no valida, Las asesorías duran 1HR!!'
+			);
+
+			return $respuesta;
+
+    }
+  }
+}//fin de insertar la pregunta
 
 
 public function get_citas(){
