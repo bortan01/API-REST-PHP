@@ -52,7 +52,30 @@ public function eliminar($datos){
 
 public function modificar_cita($id_cita,$fecha,$compania,$input,$asistiran,$hora){
 		//$this->db->set($datos);
+		$horas_validas= array(
+						0 =>'8:00 AM',
+						1 =>'9:00 AM',
+						2 =>'10:00 AM',
+						3 =>'11:00 AM',
+						5 =>'1:00 PM',
+						6 =>'2:00 PM',
+						7 =>'3:00 PM');
+		$el_pollo = array(0 =>'12:00 PM');
 
+		if (in_array($hora,$el_pollo)) {
+			# es la hora del pollo
+			$respuesta=array(
+				'err'=>TRUE,
+				'mensaje'=>'Hora de almuerzo!!'
+			);
+
+			return $respuesta;
+		}else{
+
+		//VAMOS A VERIFICAR QUE LA HORA QUE LLEGUE TENGA LA DIFERENCIA DE 1HR
+         if (in_array($hora,$horas_validas)) {
+			# si esta dentro de las horas validas va ha pasar por el desorden de abajo
+		
 
 	    $query=$this->db->where(array('id_cita'=>$id_cita,'hora'=>$hora) );
 	    $query = $this->db->get('cita');
@@ -78,7 +101,8 @@ public function modificar_cita($id_cita,$fecha,$compania,$input,$asistiran,$hora
 				$respuesta=array(
 					'err'=>FALSE,
 					'mensaje'=>'Registro actualizado correctamente',
-					'cita'=>$datos
+					'cita'=>$datos,
+					'ver'=>$validar
 				);
 
 			
@@ -152,8 +176,17 @@ public function modificar_cita($id_cita,$fecha,$compania,$input,$asistiran,$hora
 
 	 }//ese del si no modifica fecha
 
-		
- 	}
+	}else{
+
+		$respuesta=array(
+				'err'=>TRUE,
+				'mensaje'=>'Hora no valida, Las asesorías duran 1HR!!'
+			);
+
+			return $respuesta;
+	}
+  }	//else pollo
+ }//function
 
  public function insertCita($id_cliente,$asitencia,$personas,$motivo,$color,$textColor,$start,$fecha,$hora){
 		//insertar el registro
