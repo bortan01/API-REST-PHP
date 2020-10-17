@@ -8,6 +8,7 @@ class Mantenimiento_model extends CI_Model
     public $lugar;
     public $mantenimiento_realizado;
     public $piezas_cambiadas;
+    public $comentariosIncidentes;
     public $activo = TRUE;
     
     public function get_mantenimiento(){
