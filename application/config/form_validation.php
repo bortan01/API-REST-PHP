@@ -78,34 +78,50 @@ $config = array(
 		array('field' => 'fechaHoraDevolucion', 'label' => 'Vehiculo', 'rules' => 'trim|required|min_length[2]|max_length[255]')
 	),
 	'aerolinea_put' => array(
-		array('field' => 'nombre_aerolinea', 'label' => 'Aerolinea', 'rules' => 'trim|required|min_length[2]|max_length[255]')
+		array('field' => 'nombre_aerolinea', 'label' => 'Aerolinea', 'rules' => 'trim|required|min_length[2]|max_length[255]'),
+		array('field' => 'idalianza', 'label' => 'Alianza', 'rules' => 'trim|required|min_length[1]|max_length[255]')
 	),
 	'alianzas_put' => array(
 		array('field' => 'nombre_alianza', 'label' => 'Alianza', 'rules' => 'trim|required|min_length[2]|max_length[255]')
 	),
 	'clases_put' => array(
-		array('field' => 'nombre_clase', 'label' => 'Clase', 'rules' => 'trim|required|min_length[2]|max_length[255]')
+		array('field' => 'nombre_clase', 'label' => 'Clase', 'rules' => 'trim|required|min_length[2]|max_length[255]'),
+		array('field' => 'descripcion', 'label' => 'Descripción', 'rules' => 'trim|required|min_length[2]|max_length[255]')
 	),
 	'direccion_put' => array(
-		array('field' => 'direccionRecogida', 'label' => 'Recogida', 'rules' => 'trim|required|min_length[2]|max_length[255]')
-	),
+		array('field' => 'idlugar', 'label' => 'Recogida', 'rules' => 'trim|required|min_length[1]|max_length[255]'),
+		array('field' => 'direccionRecogida', 'label' => 'Dirección de Recogida', 'rules' => 'trim|required|min_length[2]|max_length[255]'),
+		array('field' => 'fechaHoraRecogida', 'label' => 'Fecha y Hora de Recogida', 'rules' => 'trim|required|min_length[2]|max_length[255]'),
+		array('field' => 'direccionDevolucion', 'label' => 'Dirección de Devolución', 'rules' => 'trim|required|min_length[2]|max_length[255]'),
+		array('field' => 'fechaHoraDevolucion', 'label' => 'Fecha y Hora de Devolución', 'rules' => 'trim|required|min_length[2]|max_length[255]')
 	
+	),
 	'viajes_put' => array(
-		array('field' => 'nombre_tipoviaje', 'label' => 'Viaje', 'rules' => 'trim|required|min_length[2]|max_length[255]')
+		array('field' => 'nombre_tipoviaje', 'label' => 'Viaje', 'rules' => 'trim|required|min_length[2]|max_length[255]'),
+		array('field' => 'descripcion', 'label' => 'Descripción', 'rules' => 'trim|required|min_length[2]|max_length[255]')
+	
 	),
 	
 	'datos_put' => array(
-		array('field' => 'ciudad_partida', 'label' => 'Partida', 'rules' => 'trim|required|min_length[2]|max_length[255]')
+		array('field' => 'ciudad_partida', 'label' => 'Ciudad de Partida', 'rules' => 'trim|required|min_length[2]|max_length[255]'),
+		array('field' => 'fechaHoraPartida', 'label' => 'Fecha y Hora de Partida', 'rules' => 'trim|required|min_length[2]|max_length[255]'),
+		array('field' => 'ciudad_llegada', 'label' => 'Ciudad de Llegada', 'rules' => 'trim|required|min_length[2]|max_length[255]'),
+		array('field' => 'fechaHoraLlegada', 'label' => 'Fecha y Hora de Llegada', 'rules' => 'trim|required|min_length[2]|max_length[255]'),
+		array('field' => 'maletas', 'label' => 'Cantidad de Maletas', 'rules' => 'trim|required|min_length[2]|max_length[255]')
 	),
 	'informacion_put' => array(
 		array('field' => 'condiciones', 'label' => 'Condiciones', 'rules' => 'trim|required|min_length[2]|max_length[255]')
 	),
 	'opciones_put' => array(
-		array('field' => 'idaerolinea', 'label' => 'Aerolinea', 'rules' => 'trim|required|min_length[1]|max_length[255]')
+		array('field' => 'idaerolinea', 'label' => 'Aerolinea', 'rules' => 'trim|required|min_length[1]|max_length[255]'),
+		array('field' => 'idclase', 'label' => 'Tipo de Clase', 'rules' => 'trim|required|min_length[1]|max_length[255]'),
+		array('field' => 'idtipo_viaje', 'label' => 'Tipo de Viaje', 'rules' => 'trim|required|min_length[1]|max_length[255]')
+	
 	),
 	'cotizacionv_put' => array(
-		array('field' => 'id_cliente'  , 'label' => 'Cliente'    , 'rules' => 'trim|required|min_length[1]|max_length[255]'),
-		array('field' => 'id_generales', 'label' => 'Informacion', 'rules' => 'trim|required|min_length[1]|max_length[255]')
+		array('field' => 'id_generales', 'label' => 'Informacion General', 'rules' => 'trim|required|min_length[1]|max_length[255]'),
+		array('field' => 'opc_avanzadas', 'label' => 'Opciones Avanzadas', 'rules' => 'trim|required|min_length[1]|max_length[255]'),
+		array('field' => 'idinfo_adicional', 'label' => 'Informacion Adicional', 'rules' => 'trim|required|min_length[1]|max_length[255]')
 	),
 
 	'insertarSitio' => array(
