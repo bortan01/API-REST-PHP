@@ -28,25 +28,37 @@ public function updateCita_post(){
 		$fecha=$data["fecha"];
 		$compania=$data["asistencia"];
 
-		if (count($data["asistiran"])>=1) {
+		//como siempre me trae un valor por ser el input que espera un valor
+		if (isset($data["asistiran"])) {
+			# cuando el input este disable true
+
+		    if (array_filter($data["asistiran"])) {
 			# code...
-			$asistiran=$data["asistiran"];
-		}else{
+		    $asistiran=$data["asistiran"];
+		    //$asistiran=NULL;
+			
+		    }else{
+		    //$asistiran=$data["asistiran"];
 			$asistiran=NULL;
-		}
+		   }
+
+		//*******problema input
+		}else{ $asistiran=NULL;}
 		
-		if (count($data["input"])>=1) {
+		
+		if (empty($data["input"])) {
 			# code...
-			$input=$data["input"];
+		     $input=NULL;
 		}else{
-			$input=NULL;
+			
+			 $input=$data["input"];
 		}
 		
-		
+	    $start=$data["fecha"].' '.$data["start"];
 		$hora=$data["start"];
 
 		//$verificar=$this->Cita_model->set_datos($data);
-        $respuesta=$this->Cita_model->modificar_cita($id_cita,$fecha,$compania,$input,$asistiran,$hora);
+        $respuesta=$this->Cita_model->modificar_cita($id_cita,$fecha,$compania,$input,$asistiran,$hora,$start);
 
         if ($respuesta['err']) {
         	# code...

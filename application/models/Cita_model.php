@@ -52,18 +52,66 @@ public function eliminar($datos){
 
 public function modificar_cita($id_cita,$fecha,$compania,$input,$asistiran,$hora){
 		//$this->db->set($datos);
-	    $query=$this->db->where(array('fecha'=>$fecha,'hora'=>$hora) );
-	    $query = $this->db->get('cita');
-		$cita=$query->row();//esto equivale a SELECT * FROM `cita` WHERE hora='12:00 AM' AND fecha='2020-10-15' 
 
-			if (isset($cita)) {
+
+	    $query=$this->db->where(array('id_cita'=>$id_cita,'hora'=>$hora) );
+	    $query = $this->db->get('cita');
+		$cita=$query->row();//No modificara hora
+
+	if (isset($cita)) {
+
+	$this->load->model('PersonasCitas_model');//cargo el modelo para actualizar en la otra tabla si es necesario
+		$datos=array(
+			'compania'=>$compania,
+			'start'=>$fecha.' '.$hora,
+			'hora'=>$hora
+		);
+
+		$this->db->set($datos);
+        $this->db->where('id_cita',$id_cita);
+        $hecho=$this->db->update('cita');
+
+        $this->PersonasCitas_model->modificarPersona($id_cita,$input,$asistiran);
+
+ 		if ($hecho) {
+				#borrado
+				$respuesta=array(
+					'err'=>FALSE,
+					'mensaje'=>'Registro actualizado correctamente',
+					'cita'=>$datos
+				);
+
+			
+
+			}else{
+				//error
+
+				$respuesta=array(
+					'err'=>TRUE,
+					'mensaje'=>'Error al actualizar',
+					'error'=>$this->db->_error_message(),
+					'error_num'=>$this->db->_error_number()
+				);
+			
+			}
+ 		return $respuesta;
+		
+	 }else{
+
+	 	$query=$this->db->where(array('fecha'=>$fecha,'hora'=>$hora) );
+	    $query = $this->db->get('cita');
+		$cita=$query->row();//No modificara hora
+
+		if (isset($cita)) {
+			# code...
 			$respuesta=array(
 				'err'=>TRUE,
-				'mensaje'=>'La hora a modificar ya esta ocupada',
-				'ver'=>$cita
+				'mensaje'=>'La hora ya esta ocupada!!'
 			);
+
 			return $respuesta;
-			}
+		}
+
 		$this->load->model('PersonasCitas_model');//cargo el modelo para actualizar en la otra tabla si es necesario
 		$datos=array(
 			'compania'=>$compania,
@@ -99,6 +147,12 @@ public function modificar_cita($id_cita,$fecha,$compania,$input,$asistiran,$hora
 			
 			}
  		return $respuesta;
+
+
+
+	 }//ese del si no modifica fecha
+
+		
  	}
 
  public function insertCita($id_cliente,$asitencia,$personas,$motivo,$color,$textColor,$start,$fecha,$hora){
