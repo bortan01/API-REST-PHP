@@ -1,25 +1,25 @@
 <?php
 defined('BASEPATH') or exit('No direct script access allowed');
 require APPPATH . '/libraries/REST_Controller.php';
-class alianzas extends REST_Controller
+class categoriasAutos extends REST_Controller
 {
 
 public function __construct(){
 		//constructor del padre
 		parent::__construct();
 		$this->load->database();
-		$this->load->model('Alianzas_model');
+		$this->load->model('Categorias_model');
 	}
-	public function alianzas_get(){
+	public function categorias_get(){
 
-	$alianza=$this->Alianzas_model->get_alianzas();
+	$categoria=$this->Categorias_model->get_categorias();
 
-	if (isset($alianza)) {
+	if (isset($categoria)) {
 		
 		$respuesta=array(
 			'err'=>FALSE,
 			'mensaje'=>'Registro Cargado correctamente',
-			'alianzas'=>$alianza
+			'categorias'=>$categoria
 
 		);
 		$this->response($respuesta,REST_Controller::HTTP_OK);
@@ -27,7 +27,7 @@ public function __construct(){
 		$respuesta=array(
 			'err'=>TRUE,
 			'mensaje'=>'Error al cargar los datos.',
-			'alianzas'=>null
+			'categorias'=>null
 
 		);
 		$this->response($respuesta,REST_Controller::HTTP_NOT_FOUND);
@@ -35,17 +35,17 @@ public function __construct(){
 	}
 }	
 	//INSERTAR
-	public function alianzas_post(){
+	public function categorias_post(){
 
 		$data=$this->post();
 		$this->load->library('form_validation');
 		$this->form_validation->set_data ($data);
 
-		if ( $this->form_validation->run('alianzas_put') ) {
+		if ( $this->form_validation->run('categorias_put') ) {
 		
-		$alianza=$this->Alianzas_model->set_datos($data);
+		$categoria=$this->Categorias_model->set_datos($data);
 
-		$respuesta=$alianza->insert(); 
+		$respuesta=$categoria->insert(); 
 
 		if ($respuesta['err']) {
 
@@ -66,15 +66,15 @@ public function __construct(){
 	}
 
 	//MODIFICAR
-	public function actualizarAlianza_put(){
+	public function actualizarCategorias_put(){
 
 		$data = $this->put();
-        if (!isset($data["idalianza"])) {
-            $respuesta = array('err' => TRUE, 'mensaje' => 'No se encontro ningun identificador de Alianza');
+        if (!isset($data["idcategoria"])) {
+            $respuesta = array('err' => TRUE, 'mensaje' => 'No se encontro ningun identificador de la Categoria');
             $this->response($respuesta, REST_Controller::HTTP_BAD_REQUEST);
         } else {
             try {
-                $respuesta = $this->Alianzas_model->editar($data);
+                $respuesta = $this->Categorias_model->editar($data);
                 if ($respuesta['err']) {
                     $this->response($respuesta, REST_Controller::HTTP_BAD_REQUEST);
                 } else {
@@ -86,16 +86,16 @@ public function __construct(){
         }
 	}
 		//ELIMINAR
-		public function eliminarAlianza_delete()
+		public function eliminarCategoria_delete()
 		{
 			$data = $this->delete();
-			if (!isset($data["idalianza"])) {
-				$respuesta = array('err' => TRUE, 'mensaje' => 'No se encontro ningun identificador de Alianza');
+			if (!isset($data["idcategoria"])) {
+				$respuesta = array('err' => TRUE, 'mensaje' => 'No se encontro ningun identificador de la Categoria');
 				$this->response($respuesta, REST_Controller::HTTP_BAD_REQUEST);
 			} else {
-				$campos = array('idalianza' => $data["idalianza"], 'activo' => FALSE);
+				$campos = array('idcategoria' => $data["idcategoria"], 'activo' => FALSE);
 				try {
-					$respuesta = $this->Alianzas_model->borrar($campos);
+					$respuesta = $this->Categorias_model->borrar($campos);
 					if ($respuesta['err']) {
 						$this->response($respuesta, REST_Controller::HTTP_BAD_REQUEST);
 					} else {

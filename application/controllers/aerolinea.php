@@ -17,15 +17,13 @@ public function __construct(){
 
 	if ($aerolineas['err']) {
 		
-		$this->response($aerolineas);
+		$this->response($aerolineas,REST_Controller::HTTP_OK);
 	}else{
 		
 		$this->response($aerolineas,REST_Controller::HTTP_NOT_FOUND);
 
 	}
-
 }
-
 	
 	//INSERTAR
 	public function aerolinea_post(){

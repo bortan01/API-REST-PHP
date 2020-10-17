@@ -29,6 +29,10 @@ $config = array(
 	'transmision_put' => array(
 		array('field' => 'transmision', 'label' => 'Transmision', 'rules' => 'trim|required|min_length[2]|max_length[255]')
 	),
+	'categorias_put' => array(
+		array('field' => 'nombre', 'label' => 'Nombre de Categoria', 'rules' => 'trim|required|min_length[2]|max_length[255]'),
+		array('field' => 'descripcion', 'label' => 'Descripcion de Categoria', 'rules' => 'trim|required|min_length[2]|max_length[255]')
+	),
 	'mantenimiento_put' => array(
 		array('field' => 'fecha', 'label' => 'Fecha', 'rules' => 'trim|required|min_length[2]|max_length[255]')
 	),
