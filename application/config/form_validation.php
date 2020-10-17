@@ -18,13 +18,26 @@ $config = array(
 	),
 
 	'autos_put' => array(
-		array('field' => 'placa', 'label' => 'Placa', 'rules' => 'trim|required|min_length[2]|max_length[255]')
+		array('field' => 'placa', 'label' => 'Placa', 'rules' => 'trim|required|min_length[2]|max_length[255]'),
+		array('field' => 'anio', 'label' => 'Año', 'rules' => 'trim|required|min_length[2]|max_length[255]'),
+		array('field' => 'color', 'label' => 'Color', 'rules' => 'trim|required|min_length[2]|max_length[255]'),
+		array('field' => 'puertas', 'label' => 'Puertas', 'rules' => 'trim|required|min_length[2]|max_length[255]'),
+		array('field' => 'pasajeros', 'label' => 'Pasajeros', 'rules' => 'trim|required|min_length[2]|max_length[255]'),
+		array('field' => 'precio_diario', 'label' => 'Precio Diario', 'rules' => 'trim|required|min_length[2]|max_length[255]'),
+		array('field' => 'descripcion', 'label' => 'Descripción', 'rules' => 'trim|required|min_length[2]|max_length[255]'),
+		array('field' => 'detalles', 'label' => 'Detalles', 'rules' => 'trim|required|min_length[2]|max_length[255]'),
+		array('field' => 'sonido', 'label' => 'Sonido', 'rules' => 'trim|required|min_length[2]|max_length[255]'),
+		array('field' => 'wifi', 'label' => 'Wifi', 'rules' => 'trim|required|min_length[2]|max_length[255]'),
+		array('field' => 'aireAcondicionado', 'Aire Acondicionado' => 'Placa', 'rules' => 'trim|required|min_length[2]|max_length[255]'),
+		array('field' => 'kilometraje', 'label' => 'Kilometraje', 'rules' => 'trim|required|min_length[2]|max_length[255]'),
+		array('field' => 'tipoCombustible', 'label' => 'Tipo de Combustible', 'rules' => 'trim|required|min_length[2]|max_length[255]'),		
 	),
 	'marca_put' => array(
 		array('field' => 'marca', 'label' => 'Marca', 'rules' => 'trim|required|min_length[2]|max_length[255]')
 	),
 	'modelo_put' => array(
-		array('field' => 'modelo', 'label' => 'Modelo', 'rules' => 'trim|required|min_length[2]|max_length[255]')
+		array('field' => 'modelo', 'label' => 'Modelo', 'rules' => 'trim|required|min_length[2]|max_length[255]'),
+		array('field' => 'id_marca', 'label' => 'Marca', 'rules' => 'trim|required|min_length[1]|max_length[255]')
 	),
 	'transmision_put' => array(
 		array('field' => 'transmision', 'label' => 'Transmision', 'rules' => 'trim|required|min_length[2]|max_length[255]')
@@ -34,19 +47,35 @@ $config = array(
 		array('field' => 'descripcion', 'label' => 'Descripcion de Categoria', 'rules' => 'trim|required|min_length[2]|max_length[255]')
 	),
 	'mantenimiento_put' => array(
-		array('field' => 'fecha', 'label' => 'Fecha', 'rules' => 'trim|required|min_length[2]|max_length[255]')
+		array('field' => 'fecha', 'label' => 'Fecha', 'rules' => 'trim|required|min_length[2]|max_length[255]'),
+		array('field' => 'lugar', 'label' => 'Lugar', 'rules' => 'trim|required|min_length[2]|max_length[255]')
 	),
 	'renta_put' => array(
-		array('field' => 'nombre', 'label' => 'Nombre', 'rules' => 'trim|required|min_length[2]|max_length[255]')
+		array('field' => 'nombre', 'label' => 'Nombre', 'rules' => 'trim|required|min_length[2]|max_length[255]'),
+		array('field' => 'lugar', 'label' => 'Lugar', 'rules' => 'trim|required|min_length[2]|max_length[255]'),
+		array('field' => 'descripcion', 'label' => 'Descripción', 'rules' => 'trim|required|min_length[2]|max_length[255]'),
+		array('field' => 'usuario', 'label' => 'Usuario', 'rules' => 'trim|required|min_length[2]|max_length[255]'),
+		array('field' => 'contrasena', 'label' => 'Contraseña', 'rules' => 'trim|required|min_length[2]|max_length[255]')
+	
 	),
 	'lugar_put' => array(
 		array('field' => 'nombre_lugar', 'label' => 'Lugar', 'rules' => 'trim|required|min_length[2]|max_length[255]')
 	),
 	'servicios_put' => array(
-		array('field' => 'nombre_servicio', 'label' => 'Servicio', 'rules' => 'trim|required|min_length[2]|max_length[255]')
+		array('field' => 'idvehiculo', 'label' => 'Vehiculo', 'rules' => 'trim|required|min_length[1]|max_length[255]'),
+		array('field' => 'nombre_servicio', 'label' => 'Servicio', 'rules' => 'trim|required|min_length[2]|max_length[255]'),
+		array('field' => 'descripcion', 'label' => 'Descripción', 'rules' => 'trim|required|min_length[2]|max_length[255]'),
+		array('field' => 'precio', 'label' => 'Precio', 'rules' => 'trim|required|min_length[2]|max_length[255]')
+	
 	),
 	'cotizar_put' => array(
-		array('field' => 'nombreVehiculo', 'label' => 'Vehiculo', 'rules' => 'trim|required|min_length[2]|max_length[255]')
+		array('field' => 'nombreVehiculo', 'label' => 'Vehiculo', 'rules' => 'trim|required|min_length[2]|max_length[255]'),
+		array('field' => 'anio', 'label' => 'Vehiculo', 'rules' => 'trim|required|min_length[2]|max_length[255]'),
+		array('field' => 'caracteristicas', 'label' => 'Vehiculo', 'rules' => 'trim|required|min_length[2]|max_length[255]'),
+		array('field' => 'direccion_recogida', 'label' => 'Vehiculo', 'rules' => 'trim|required|min_length[2]|max_length[255]'),
+		array('field' => 'fechaHoraRecogida', 'label' => 'Vehiculo', 'rules' => 'trim|required|min_length[2]|max_length[255]'),
+		array('field' => 'direccion_devolucion', 'label' => 'Vehiculo', 'rules' => 'trim|required|min_length[2]|max_length[255]'),
+		array('field' => 'fechaHoraDevolucion', 'label' => 'Vehiculo', 'rules' => 'trim|required|min_length[2]|max_length[255]')
 	),
 	'aerolinea_put' => array(
 		array('field' => 'nombre_aerolinea', 'label' => 'Aerolinea', 'rules' => 'trim|required|min_length[2]|max_length[255]')
