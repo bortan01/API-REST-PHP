@@ -11,14 +11,31 @@ public function __construct(){
 		$this->load->model('Cita_model');
 	
 		}
-
- public function deleteCita_post(){
+public function deleteCita_post(){
 
 	 $data=$this->post();
 	 $verificar=$this->Cita_model->set_datos($data);
 	 $respuesta=$this->Cita_model->eliminar($verificar);
 	 	  $this->response($respuesta);
 	 }
+
+public function moverDias_post(){
+	$data=$this->post();
+		//recogere los datos para pode concatenar
+		$id_cita=$data["id_cita"];
+		$fecha=$data["fecha"];
+		$start=$data["fecha"].' '.$data["start"];
+		$hora=$data["start"];
+		$ya=$this->Cita_model->mover($id_cita,$fecha,$start,$hora);
+
+		 if ($ya['err']) {
+        	# code...
+        	$this->response($ya,REST_Controller::HTTP_BAD_REQUEST);
+        }else{
+        	$this->response($ya);
+        }
+
+}
 
 public function updateCita_post(){
 

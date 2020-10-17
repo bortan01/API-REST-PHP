@@ -49,7 +49,53 @@ public function eliminar($datos){
  		return $respuesta;
 	}//fin metodo
 
+public function mover($id_cita,$fecha,$start,$hora){
 
+	$query=$this->db->where(array('fecha'=>$fecha,'hora'=>$hora) );
+	$query = $this->db->get('cita');
+    $cita=$query->row();//No modificara hora
+
+		if (isset($cita)) {
+			# code...
+			$respuesta=array(
+				'err'=>TRUE,
+				'mensaje'=>'La hora ya esta ocupada!!'
+			);
+
+			return $respuesta;
+		}
+
+		$datos=array(
+			'fecha'=>$fecha,
+			'start'=>$start,
+			'hora'=>$hora
+		);
+
+		$this->db->set($datos);
+        $this->db->where('id_cita',$id_cita);
+        $hecho=$this->db->update('cita');
+
+ 		if ($hecho) {
+				#borrado
+				$respuesta=array(
+					'err'=>FALSE,
+					'mensaje'=>'Cambio correctamente!',
+					'cita'=>$datos
+				);
+			}else{
+				//error
+
+				$respuesta=array(
+					'err'=>TRUE,
+					'mensaje'=>'Error al realizar el cambio!',
+					'error'=>$this->db->_error_message(),
+					'error_num'=>$this->db->_error_number()
+				);
+			
+			}
+ 		return $respuesta;
+
+}
 public function modificar_cita($id_cita,$fecha,$compania,$input,$asistiran,$hora){
 		//$this->db->set($datos);
 		$horas_validas= array(
