@@ -58,7 +58,7 @@ public function __construct(){
 			//$this->response('Todo bien');
 		$pregunta=$this->Pregunta_model->set_datos($data);
 
-		$respuesta=$pregunta->insert(); 
+		$respuesta=$Pregunta_model->insert($preguntas); 
 
 		if ($respuesta['err']) {
 

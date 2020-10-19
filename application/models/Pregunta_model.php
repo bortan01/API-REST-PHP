@@ -116,7 +116,7 @@ public $id_rama;
  		return $this; //retornamos el objeto de clase
  	}//fin de capitalizar los datos segun el modelo y campos correctos de la base
 
- 	public function insert(){
+ 	public function insert($data){
 
  		//verificar el correo
 		$query=$this->db->get_where('pregunta',array('pregunta'=>$this->pregunta) );
@@ -131,7 +131,7 @@ public $id_rama;
 			}
 
 			//insertar el registro
-			$hecho=$this->db->insert('pregunta',$this);
+			$hecho=$this->db->insert('pregunta',$data);
 
 			if ($hecho) {
 				#insertado

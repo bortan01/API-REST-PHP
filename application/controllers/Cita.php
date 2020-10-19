@@ -16,7 +16,7 @@ public function deleteCita_post(){
 	 $data=$this->post();
 	 $verificar=$this->Cita_model->set_datos($data);
 	 $respuesta=$this->Cita_model->eliminar($verificar);
-	 	  $this->response($respuesta);
+	 $this->response($respuesta);
 	 }
 
 public function moverDias_post(){
