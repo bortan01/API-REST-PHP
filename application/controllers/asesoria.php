@@ -23,20 +23,18 @@ public function __construct(){
 
 	if (isset($pregunta)) {
 		//quitar campos que no quiero
-		//unset($cliente->telefono1);
-		//sunset($cliente->telefono2);
-		$respuesta=array(
-			'err'=>FALSE,
-			'mensaje'=>'Registro Cargado correctamente',
-			'preguntas'=>$pregunta
+		//unset($cita->motivo);
+		//unset($cliente->telefono2);
+		$respuesta=array('err'=>FALSE,
+						 'mensaje'=>'Registros cargados correctamente',
+						  'preguntas'=>$pregunta);
 
-		);
 		$this->response($respuesta);
 	}else{
 		$respuesta=array(
 			'err'=>TRUE,
 			'mensaje'=>'Error al cargar los datos.',
-			'pregunta'=>null
+			'citas'=>null
 
 		);
 		$this->response($respuesta,REST_Controller::HTTP_NOT_FOUND);
@@ -168,46 +166,17 @@ public function __construct(){
 	//**********fin de actualizar
 	//************rama get**/***************************
 	public function ramita_get(){
+		$rama=$this->Rama_model->get_rama();
 
-	$ramita_id=$this->uri->segment(3);
-
-	//validar***********
-	if (!isset($ramita_id)) {
-
-		$respuesta=array(
-			'err'=>TRUE,
-			'mensaje'=>'Es necesario el ID de la rama.'
-
-		);
-
-		$this->response($respuesta, REST_Controller::HTTP_BAD_REQUEST );
-		return;
-	}
-
-	$ramita=$this->Rama_model->get_rama($ramita_id);
-
-	if (isset($ramita)) {
-		//quitar campos que no quiero
-		//unset($cliente->telefono1);
-		//sunset($cliente->telefono2);
-		$respuesta=array(
-			'err'=>FALSE,
-			'mensaje'=>'Registro Cargado correctamente',
-			'ramas'=>$ramita
-
-		);
-		$this->response($respuesta);
+	if ($rama['err']) {
+		
+		$this->response($rama,REST_Controller::HTTP_OK);
 	}else{
-		$respuesta=array(
-			'err'=>TRUE,
-			'mensaje'=>'La rama con el id '.$ramita_id.' no existe.',
-			'cliente'=>null
-
-		);
-		$this->response($respuesta,REST_Controller::HTTP_NOT_FOUND);
+		
+		$this->response($rama,REST_Controller::HTTP_NOT_FOUND);
 
 	}
-}
+   }
 
 	//***********************fin de rama get //**************
 

@@ -72,22 +72,19 @@ class Rama_model extends CI_Model
  	}
 
 
-	public function get_rama($id){
+	public function get_rama(){
+		$query=$this->db->get('ramas_preguntas');
+        $respu=$query->result();
+        if (count($respu)<1) {
+          $respuesta=array('err'=>FALSE,'mensaje'=>'Error al cargar los datos');
 
- 	$this->db->where(array('id_rama'=>$id));
+          return $respuesta;
+        }else{
+          $respuesta=array('err'=>TRUE,'mensaje'=>'Registro Cargado correctamente',
+            'ramas'=>$respu);
 
- 	$query=$this->db->get('ramas');
-
- //	select *from clientes where id=id and status='activo'
- 	
- 	$row=$query->custom_row_object(0,'Rama_model');
- 	
- 	if (isset($row)) {
- 		$row->id_rama = intval($row->id_rama);
- 		$row->numero_rama = intval($row->numero_rama);
- 	}
- 	
- 		return $row;
+          return $respuesta;
+        }
  	}//fin de mostrar la ramita
 
  	public function verificar_campos($dataCruda)
