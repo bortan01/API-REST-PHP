@@ -9,8 +9,7 @@ $config = array(
 	
 
 	'rama_put' => array(
-		array('field' => 'nombre_rama', 'label' => 'nombre', 'rules' => 'trim|required|min_length[2]|max_length[255]'),
-		array('field' => 'numero_rama', 'label' => 'numero de rama', 'rules' => 'trim|required|Integer')
+		array('field' => 'categoria_rama', 'label' => 'nombre', 'rules' => 'trim|required|min_length[2]|max_length[255]')
 	),
 
 	'pregunta_put' => array(
