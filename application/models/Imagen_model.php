@@ -135,7 +135,7 @@ class Imagen_model extends CI_Model
         //ELIMINANDO EL ARCHIVO
         $this->db->where(array("id_foto" => $id_foto));
         $query = $this->db->get("galeria");
-        $urlImagen="";
+        $urlImagen = "";
         foreach ($query->result() as $row) {
             $urlImagen = $row->foto_path;
         }
@@ -156,23 +156,8 @@ class Imagen_model extends CI_Model
         $query = $this->db->get("galeria");
         $imagenes = $query->result();
 
-        // $this->db->where('id_foto', $id_foto);
-        // $this->db->update('galeria', array('activo' => FALSE));
-
-        $URL = "http://localhost/API-REST-PHP/uploads/";
-        $RUTA = "C:/wamp64/www/API-REST-PHP/uploads/";
         foreach ($imagenes as $imagen) {
-            $urlImagen = $imagen->foto_path;
-            $ruta_foto = ($RUTA . substr($urlImagen,  strlen($URL)));
-            try {
-                if (file_exists($ruta_foto)) {
-                    unlink($ruta_foto);
-                }
-            } catch (\Throwable $th) {
-                $th->getMessage();
-            } catch (Exception $e) {
-                $e->getMessage();
-            }
+            $this->eliminarImagen($imagen->id_foto);
         }
     }
     public function obtenerImagenUnica($tipo, $identificado)

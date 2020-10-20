@@ -1,18 +1,11 @@
 <?php
 defined('BASEPATH') or exit('No direct script access allowed');
-class Servicios_adicionales_model extends CI_Model
+class Contacto_model extends CI_Model
 {
-    public $id_servicios;
-    public $nombre;
-    public $descripcion_servicio;
-    public $costos_defecto;
-    public $tipo_servicio;
     public $id_contacto;
-    public $asientos_derecho;
-    public $asientos_izquierdos;
-    public $asientos_fondo;
-    public $filas;
-    public $activo;
+    public $nombre;
+    public $telefono;
+    public $correo;
 
     public function verificar_camposEntrada($dataCruda)
     {
@@ -20,7 +13,7 @@ class Servicios_adicionales_model extends CI_Model
         ///par aquitar campos no existentes
         foreach ($dataCruda as $nombre_campo => $valor_campo) {
             # para verificar si la propiedad existe..
-            if (property_exists('Servicios_adicionales_model', $nombre_campo)) {
+            if (property_exists('Contacto_model', $nombre_campo)) {
                 $objeto[$nombre_campo] = $valor_campo;
             }
         }
@@ -28,62 +21,60 @@ class Servicios_adicionales_model extends CI_Model
 
         return $objeto;
     }
-
     public function guardar(array $data)
     {
-        $nombreTabla = "servicios_adicionales";
+        $nombreTabla = "contacto";
         $data["activo"] = TRUE;
-        $servicio = $this->verificar_camposEntrada($data);
-        $insert = $this->db->insert($nombreTabla, $servicio);
+        $contact = $this->verificar_camposEntrada($data);
+        $insert = $this->db->insert($nombreTabla, $contact);
         if (!$insert) {
             //NO GUARDO
             $respuesta = array(
                 'err'          => TRUE,
                 'mensaje'      => 'Error al insertar ', $this->db->error_message(),
                 'error_number' => $this->db->error_number(),
-                'serrvicio'      => null
+                'contacto'      => null
             );
             return $respuesta;
         } else {
             //ESTA ES POR SI SE VA A SUBIR LA GALAREIA 
             $this->load->model('Imagen_model');
             $identificador = $this->db->insert_id();
-            ///ESTO ES PARA GUARDAR UNA IMAGEN INDIVIDUAL Y UNA GALERIA
-            $this->Imagen_model->guardarGaleria("servicios_adicionales", $identificador);
-            //$this->Imagen_model->guardarImagen("contacto", $identificador);
+            ///ESTO ES PARA GUARDAR UNA IMAGEN INDIVIDUAL
+           $this->Imagen_model->guardarImagen("contacto", $identificador);
 
             $respuesta = array(
                 'err'          => FALSE,
                 'mensaje'      => 'Registro Guardado Exitosamente',
-                'servicio'   => $servicio
+                'contacto'     =>   $contact,
+                'id'           =>$identificador
             );
             return $respuesta;
         }
     }
-
-    public function obtenerServicio(array $data = array())
+    public function obtenerContacto(array $data = array())
     {
-        $nombreTabla = "servicios_adicionales";
+        $nombreTabla = "contacto";
         $data["activo"] = TRUE;
         try {
             $parametros = $this->verificar_camposEntrada($data);
             $this->db->where($parametros);
             $query = $this->db->get($nombreTabla);
-            $servicioSeleccionado = $query->result();
+            $contactoSeleccionado = $query->result();
 
-            if (count($servicioSeleccionado) < 1) {
+            if (count($contactoSeleccionado) < 1) {
                 //PROBLEMA
                 $respuesta = array(
                     'err'          => FALSE,
                     'mensaje'      => 'NO HAY RESULTADOS QUE MOSTRAR',
-                    'servicio'     => null
+                    'contactos'     => null
                 );
                 return $respuesta;
             } else {
 
                 $respuesta = array(
                     'err'          => FALSE,
-                    'servicio'   => $servicioSeleccionado
+                    'contactos'   => $contactoSeleccionado
                 );
                 return $respuesta;
             }
@@ -91,13 +82,12 @@ class Servicios_adicionales_model extends CI_Model
             return array('err' => TRUE, 'status' => 400, 'mensaje' => $e->getMessage());
         }
     }
-
     public function editar($data)
     {
-        $nombreTabla = "servicios_adicionales";
+        $nombreTabla = "contacto";
         ///VAMOS A ACTUALIZAR UN REGISTRO
         $campos = $this->verificar_camposEntrada($data);
-        $this->db->where('id_servicios', $campos["id_servicios"]);
+        $this->db->where('id_contacto', $campos["id_contacto"]);
 
         $hecho = $this->db->update($nombreTabla, $campos);
         if ($hecho) {
@@ -122,11 +112,11 @@ class Servicios_adicionales_model extends CI_Model
     }
     public function elimination($campos)
     {
-        $nombreTabla      = "servicios_adicionales";
-        $identificador    = $campos["id_servicios"];
+        $nombreTabla      = "contacto";
+        $identificador    = $campos["id_contacto"];
         $campos["activo"] = FALSE;
         ///VAMOS A ACTUALIZAR UN REGISTRO
-        $this->db->where('id_servicios', $identificador);
+        $this->db->where('id_contacto', $identificador);
         $hecho = $this->db->update($nombreTabla, $campos);
         if ($hecho) {
            $this->load->model('Imagen_model');

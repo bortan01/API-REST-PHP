@@ -219,7 +219,7 @@ $config = array(
 		array('field' => 'descripcion_servicio'  ,'label' => 'Descripcion Servicio'  , 'rules' => 'trim|required|min_length[10]'),
 		array('field' => 'tipo_servicio'         ,'label' => 'Tipo de Servicio'      , 'rules' => 'trim|required'),
 		array('field' => 'costos_defecto'        ,'label' => 'Costo por defecto'     , 'rules' => 'trim|required|numeric'),
-		array('field' => 'informacion_contacto'  ,'label' => 'Informacion Contacto'  , 'rules' => 'trim|required')
+		array('field' => 'id_contacto'           ,'label' => 'Informacion Contacto'  , 'rules' => 'trim|required')
 	),
 	'insertarServicioDetalle' => array(
 		array('field' => 'id_tours'      ,'label' => 'Id Tours'                  , 'rules' => 'trim|required|integer'),
@@ -227,5 +227,8 @@ $config = array(
 		array('field' => 'costo'         ,'label' => 'Costo'                     , 'rules'  =>'trim|required|numeric'),
 
 		
-	)
+	),
+	'insertarContacto' => array(
+		array('field' => 'nombre'        ,'label' => 'Nombre'                    , 'rules' => 'trim|required|min_length[3]')
+		)
 );

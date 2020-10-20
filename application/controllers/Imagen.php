@@ -12,6 +12,9 @@ class Imagen extends REST_Controller
     }
     public function save_post()
     {
+        $tipo = $_POST["tipo"];
+        $identificador = $_POST["identificador"];
+        $this->Imagen_model->guardarImagen($tipo, $identificador);
         $respuesta = array();
         $this->response($respuesta, REST_Controller::HTTP_OK);
     }
@@ -25,7 +28,8 @@ class Imagen extends REST_Controller
     }
     public function show_get()
     {
-        $data = $_GET;
+        sleep(1);
+        $data          = $_GET;
         $tipo          = $data["tipo"];
         $identificador = $data["identificador"];
 
