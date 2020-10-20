@@ -38,8 +38,9 @@ class ServiciosAdicionales extends REST_Controller
     }
     public function obtenerServicio_get()
     {
+        sleep(1);
         $data = $this->get();
-
+     
         $respuesta =  $this->Servicios_adicionales_model->obtenerServicio($data);
         if ($respuesta['err']) {
             $this->response($respuesta, REST_Controller::HTTP_BAD_REQUEST);
@@ -48,7 +49,9 @@ class ServiciosAdicionales extends REST_Controller
         }
     }
     public function update_put()
+    
     {
+       
         $data = $this->put();
         ///VERIFICANDO SI EXISTE EL ID PRINCIPAL DE LA TABLA
         if (!isset($data["id_servicios"])) {
