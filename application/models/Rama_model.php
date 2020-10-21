@@ -4,7 +4,7 @@ class Rama_model extends CI_Model
 {
 	public $id_rama;
 	public $categoria_rama;
-	public $numero_rama;
+	public $num_rama;
 
 	public function eliminar($datos){
 		$query=$this->db->get_where('ramas_preguntas',array('id_rama'=>$datos["id_rama"]) );
@@ -120,7 +120,7 @@ class Rama_model extends CI_Model
  	public function insert(){
 
  		//verificar el correo
-		$query=$this->db->get_where('ramas',array('nombre_rama'=>$this->nombre_rama ) );
+		$query=$this->db->get_where('ramas_preguntas',array('categoria_rama'=>$this->categoria_rama ) );
 		$rama_ya=$query->row();
 
 			if (isset($rama_ya)) {
@@ -132,7 +132,7 @@ class Rama_model extends CI_Model
 			}
 
 			//insertar el registro
-			$hecho=$this->db->insert('ramas',$this);
+			$hecho=$this->db->insert('ramas_preguntas',$this);
 
 			if ($hecho) {
 				#insertado

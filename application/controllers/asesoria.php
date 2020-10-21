@@ -181,7 +181,7 @@ public function __construct(){
 	//***********************fin de rama get //**************
 
 	//********************INSERTAR**************************
-	public function ramita_post(){
+	public function ramitas_post(){
 
 		$data=$this->post();
 		$this->load->library('form_validation');
