@@ -8,7 +8,6 @@ public $pregunta;
 public $opcion;
 public $mas_respuestas;
 public $id_rama;
-public $opcion_respuesta;
 
 
 	public function eliminar($datos){
@@ -116,8 +115,54 @@ public $opcion_respuesta;
  			
  		}
  		return $this; //retornamos el objeto de clase
- 	}//fin de capitalizar los datos segun el modelo y campos correctos de la base
+ 	}//fin de capitalizar los datos segun el modelo y campos correctos de la base	
 
+ 	public function insertarCerrada($pregunta,$id_rama,$opcion,$opcion_respuesta,$cuantos){
+ 		$query=$this->db->get_where('pregunta',array('pregunta'=>$pregunta) );
+		$pregunta_ya=$query->row();
+
+			if (isset($pregunta_ya)) {
+			$respuesta=array(
+				'err'=>TRUE,
+				'mensaje'=>'La pregunta ya esta registrada'
+			);
+			return $respuesta;
+			}
+		$this->pregunta=$pregunta;
+		$this->id_rama=$id_rama;
+		$this->opcion=$opcion;
+
+		$this->load->model('PreguntasCerradas_model');
+
+		
+
+		$hecho=$this->db->insert('pregunta',$this);
+		$id=$this->db->insert_id();
+		$this->PreguntasCerradas_model->insertarCerrada($opcion_respuesta,$cuantos,$id);
+		if ($hecho) {
+				#insertado
+				$respuesta=array(
+					'err'=>FALSE,
+					'mensaje'=>'Registro insertado correctamente',
+					'pregunta_id'=>$this->db->insert_id(),
+					'ver'=>$this
+				);
+				
+			}else{
+				//error
+
+				$respuesta=array(
+					'err'=>TRUE,
+					'mensaje'=>'Error al insertar',
+					'error'=>$this->db->_error_message(),
+					'error_num'=>$this->db->_error_number()
+				);
+			
+			}
+
+ 		return $respuesta;
+
+ 	}
  	public function insert(){
 
  		//verificar el correo
@@ -142,9 +187,6 @@ public $opcion_respuesta;
 					'mensaje'=>'Registro insertado correctamente',
 					'pregunta_id'=>$this->db->insert_id()
 				);
-
-			
-
 			}else{
 				//error
 

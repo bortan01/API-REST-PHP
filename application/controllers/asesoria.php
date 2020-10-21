@@ -45,17 +45,50 @@ public function __construct(){
 	//***********************fin de rama get //**************
 
 	//********************INSERTAR**************************
+	public function cerrada_post(){
+		$data=$this->post();
+		$this->load->library('form_validation');
+	    if ( $this->form_validation->run('pregunta_put') ) {
+		$pregunta=$data['pregunta'];
+		$id_rama=$data['id_rama'];
+		$opcion=$data['opcion'];
+		$opcion_respuesta=$data['opcion_respuesta'];
+		$cuantos=count($data['opcion_respuesta']);
+
+		$respuesta=$this->Pregunta_model->insertarCerrada($pregunta,$id_rama,$opcion,$opcion_respuesta,$cuantos); 
+
+		if ($respuesta['err']) {
+
+			/*$respuesta=array(
+				'err'=>TRUE,
+				'mensaje'=>'Hay errores en el envio de la informacion'
+			);*/
+
+		$this->response($respuesta, REST_Controller::HTTP_BAD_REQUEST); 	
+
+		}else{
+		$this->response($respuesta); 	
+		}
+
+	  }else{
+	  	$respuesta=array(
+				'err'=>TRUE,
+				'mensaje'=>'Hay errores en el envio de la informacion',
+				'errores'=>$this->form_validation->get_errores_arreglo()
+			);
+			$this->response($respuesta, REST_Controller::HTTP_BAD_REQUEST);
+	  }
+
+	}
 	public function preguntita_post(){
 
 		$data=$this->post();
 		$this->load->library('form_validation');
 		$this->form_validation->set_data ($data);
-
 		if ( $this->form_validation->run('pregunta_put') ) {
 			//todo bien
 			//$this->response('Todo bien');
 		$pregunta=$this->Pregunta_model->set_datos($data);
-
 		$respuesta=$pregunta->insert(); 
 
 		if ($respuesta['err']) {
