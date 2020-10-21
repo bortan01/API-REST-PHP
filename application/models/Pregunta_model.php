@@ -5,8 +5,10 @@ class Pregunta_model extends CI_Model
 
 public $id_pregunta;
 public $pregunta;
-public $opcion_respuesta;
+public $opcion;
+public $mas_respuestas;
 public $id_rama;
+public $opcion_respuesta;
 
 
 	public function eliminar($datos){
@@ -116,7 +118,7 @@ public $id_rama;
  		return $this; //retornamos el objeto de clase
  	}//fin de capitalizar los datos segun el modelo y campos correctos de la base
 
- 	public function insert($data){
+ 	public function insert(){
 
  		//verificar el correo
 		$query=$this->db->get_where('pregunta',array('pregunta'=>$this->pregunta) );
@@ -131,7 +133,7 @@ public $id_rama;
 			}
 
 			//insertar el registro
-			$hecho=$this->db->insert('pregunta',$data);
+			$hecho=$this->db->insert('pregunta',$this);
 
 			if ($hecho) {
 				#insertado
