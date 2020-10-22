@@ -73,8 +73,10 @@ class Rama_model extends CI_Model
 
 
 	public function get_rama(){
+
 		$query=$this->db->get('ramas_preguntas');
-        $respu=$query->result();
+         $respu=$query->result();
+		
         if (count($respu)<1) {
           $respuesta=array('err'=>FALSE,'mensaje'=>'Error al cargar los datos');
 
@@ -130,6 +132,17 @@ class Rama_model extends CI_Model
 			);
 			return $respuesta;
 			}
+			//para el num_rama
+			$query=$this->db->get('ramas_preguntas');
+            $respu=$query->result();
+            $cuantos=count($respu);
+
+            if ($cuantos==0) {
+            	# code...
+            	$this->num_rama=1;
+            }else{
+            	$this->num_rama=$cuantos+1;
+            }
 
 			//insertar el registro
 			$hecho=$this->db->insert('ramas_preguntas',$this);
