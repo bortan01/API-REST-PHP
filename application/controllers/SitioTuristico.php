@@ -28,11 +28,11 @@ class SitioTuristico extends REST_Controller
         //corremos las reglas de validacion
         if ($this->form_validation->run('insertarSitio')) {
             //VERIFICAMOS QUE TODOS LOS PARAMETROS ESTEN BIEN
-            $sitio = $this->SitioTuristico_model->verificar_campos($data);
+           
 
             try {
                 //code...
-                $respuesta = $sitio->guardar();
+                $respuesta = $this->SitioTuristico_model->guardar($data);
                 if ($respuesta['err']) {
                     $this->response($respuesta, REST_Controller::HTTP_BAD_REQUEST);
                 } else {
@@ -52,10 +52,11 @@ class SitioTuristico extends REST_Controller
         }
     }
 
-    public function sitio_get($id = 0)
+    public function show_get()
     {
+        $data = $this->get();
         ///si no mandan id por defecto sera 0
-        $sitio = $this->SitioTuristico_model->obtenerSitio($id);
+        $sitio = $this->SitioTuristico_model->obtenerSitio($data);
         $this->response($sitio, REST_Controller::HTTP_OK);
     }
 }

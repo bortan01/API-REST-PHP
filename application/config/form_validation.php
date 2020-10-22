@@ -125,9 +125,9 @@ $config = array(
 
 	'insertarSitio' => array(
 		array('field' => 'nombre'	           , 'label' => 'nombre'                 , 'rules' => 'trim|required'),
-		array('field' => 'longitud'            , 'label' => 'longiitud'              , 'rules' => 'trim|required|min_length[3]|max_length[255]'),
-		array('field' => 'latitud'             , 'label' => 'latitud'                , 'rules' => 'trim|required|min_length[3]|max_length[45]'),
-		array('field' => 'descripcion'         , 'label' => 'descripcion'            , 'rules' => 'trim|required|min_length[3]|max_length[45]'),
+		array('field' => 'longitud'            , 'label' => 'longiitud'              , 'rules' => 'trim|required|min_length[3]'),
+		array('field' => 'latitud'             , 'label' => 'latitud'                , 'rules' => 'trim|required|min_length[3]'),
+		array('field' => 'descripcion'         , 'label' => 'descripcion'            , 'rules' => 'trim|required|min_length[3]'),
 		array('field' => 'informacion_contacto', 'label' => 'informacion de contacto', 'rules' => 'trim|required'),
 		array('field' => 'tipo'                , 'label' => 'El tipo es necesario'   , 'rules' => 'trim|required'),
 	),
