@@ -18,11 +18,11 @@ $config = array(
 
 	'autos_put' => array(
 		array('field' => 'placa', 'label' => 'Placa', 'rules' => 'trim|required|min_length[2]|max_length[255]'),
-		array('field' => 'anio', 'label' => 'Año', 'rules' => 'trim|required|min_length[2]|max_length[255]'),
+		array('field' => 'anio', 'label' => 'Año', 'rules' => 'trim|required|min_length[4]|max_length[255]'),
 		array('field' => 'color', 'label' => 'Color', 'rules' => 'trim|required|min_length[2]|max_length[255]'),
-		array('field' => 'puertas', 'label' => 'Puertas', 'rules' => 'trim|required|min_length[2]|max_length[255]'),
-		array('field' => 'pasajeros', 'label' => 'Pasajeros', 'rules' => 'trim|required|min_length[2]|max_length[255]'),
-		array('field' => 'precio_diario', 'label' => 'Precio Diario', 'rules' => 'trim|required|min_length[2]|max_length[255]'),
+		array('field' => 'puertas', 'label' => 'Puertas', 'rules' => 'trim|required|min_length[1]|max_length[255]'),
+		array('field' => 'pasajeros', 'label' => 'Pasajeros', 'rules' => 'trim|required|min_length[1]|max_length[255]'),
+		array('field' => 'precio_diario', 'label' => 'Precio Diario', 'rules' => 'trim|required|min_length[1]|max_length[255]'),
 		array('field' => 'descripcion', 'label' => 'Descripción', 'rules' => 'trim|required|min_length[2]|max_length[255]'),
 		array('field' => 'detalles', 'label' => 'Detalles', 'rules' => 'trim|required|min_length[2]|max_length[255]'),
 		array('field' => 'sonido', 'label' => 'Sonido', 'rules' => 'trim|required|min_length[2]|max_length[255]'),
