@@ -91,7 +91,7 @@ class Usuario_model extends CI_Model
             ///usuario seleccionado es un array de clases genericas
         
             if (count($usuarioSEleccionado) <1) {
-                $respuesta = array('err' => FALSE, 'usuario' => 'No se encontro el Usuario');
+                $respuesta = array('err' => FALSE, 'usuario' => null,'mensaje'=> "NO SE ENCONTRO NINGUN USUARIO");
                 return $respuesta;
             } else {
                 $respuesta = array('err' => FALSE, 'usuario' => $usuarioSEleccionado);
