@@ -23,8 +23,17 @@ class Vehiculo_model extends CI_Model
     public $tipoCombustible;
 
     public function get_vehiculo(){
+        /*SELECT*FROM vehiculo INNER JOIN marca_vehiculo ON vehiculo.id_marcaFK=marca_vehiculo.id_marca 
+        INNER JOIN transmisionvehiculo ON vehiculo.id_transmicionFK=transmisionvehiculo.idtransmicion 
+        INNEr JOIN modelo ON marca_vehiculo.id_marca=modelo.id_marca */
+        $this->db->select('*');
+        $this->db->from('vehiculo');
+        $this->db->join('marca_vehiculo', 'vehiculo.id_marcaFK=marca_vehiculo.id_marca');
+        $this->db->join('transmisionvehiculo', 'vehiculo.id_transmicionFK=transmisionvehiculo.idtransmicion');
+        $this->db->join('modelo', 'marca_vehiculo.id_marca=modelo.id_marca');
+        $query = $this->db->get();
 
-        $query=$this->db->get('vehiculo');
+        //$query=$this->db->get('vehiculo');
 
             return $query->result();
         }
