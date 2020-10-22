@@ -7,8 +7,8 @@ class SitioTuristico_model extends CI_Model
     public $longitud;
     public $latitud;
     public $descripcion;
-    public $informacion_contacto;
     public $tipo;
+    public $informacion_contacto;
 
 
     public function verificar_campos($dataCruda)
@@ -61,19 +61,26 @@ class SitioTuristico_model extends CI_Model
             //se buscaran todos los sitios turisticos
             $query = $this->db->get($nombreTabla);
             $sitios = $query->result();
+            
+            foreach($sitios as $fila){
+                $this->load->model('Contacto_model');
+               $result = $this->Contacto_model->obtenerContacto(array('id_contacto'=>$fila->informacion_contacto));
+                $fila->informacion_contacto = $result["contactos"][0];
+               
+            } 
+            // foreach ($sitios as $fila) {
+            //     $path = [];
+            //     $this->db->select("foto_path");
+            //     $this->db->where("identificador", $fila->id_sitio_turistico);
+            //     $this->db->where("tipo", $nombreTabla);
+            //     $query = $this->db->get("galeria");
 
-            foreach ($sitios as $fila) {
-                $path = [];
-                $this->db->select("foto_path");
-                $this->db->where("identificador", $fila->id_sitio_turistico);
-                $this->db->where("tipo", $nombreTabla);
-                $query = $this->db->get("galeria");
-
-                foreach ($query->result() as $foto) {
-                    $path[] = $foto->foto_path;
-                }
-                $fila->path = $path;
-            }
+            //     foreach ($query->result() as $foto) {
+            //         $path[] = $foto->foto_path;
+            //     }
+            //     $fila->path = $path;
+            // }
+           
             return $sitios;
         } catch (Exception $e) {
             echo $e->getMessage();

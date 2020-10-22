@@ -22,7 +22,10 @@ class Vehiculo_model extends CI_Model
     public $kilometraje;
     public $tipoCombustible;
 
-    public function get_vehiculo(){
+    public function get_vehiculo(array $data)
+    {
+        $parametros = $this->verificar_camposEntrada($data);
+
         /*SELECT*FROM vehiculo INNER JOIN marca_vehiculo ON vehiculo.id_marcaFK=marca_vehiculo.id_marca 
         INNER JOIN transmisionvehiculo ON vehiculo.id_transmicionFK=transmisionvehiculo.idtransmicion 
         INNEr JOIN modelo ON marca_vehiculo.id_marca=modelo.id_marca */
@@ -31,12 +34,13 @@ class Vehiculo_model extends CI_Model
         $this->db->join('marca_vehiculo', 'vehiculo.id_marcaFK=marca_vehiculo.id_marca');
         $this->db->join('transmisionvehiculo', 'vehiculo.id_transmicionFK=transmisionvehiculo.idtransmicion');
         $this->db->join('modelo', 'marca_vehiculo.id_marca=modelo.id_marca');
+        $this->db->where($parametros);
         $query = $this->db->get();
 
         //$query=$this->db->get('vehiculo');
 
-            return $query->result();
-        }
+        return $query->result();
+    }
        public function set_datos( $data_cruda){
    
             foreach ($data_cruda as $nombre_campo => $valor_campo) {

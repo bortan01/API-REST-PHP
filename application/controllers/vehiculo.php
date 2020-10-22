@@ -12,8 +12,8 @@ public function __construct(){
 	}
 	public function vehiculos_get()
 	{
-
-	$carro=$this->Vehiculo_model->get_vehiculo();
+		$data = $this->get();
+		$carro = $this->Vehiculo_model->get_vehiculo($data);
 
 	if (isset($carro)) {
 		
