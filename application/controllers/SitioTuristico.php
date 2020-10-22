@@ -17,7 +17,7 @@ class SitioTuristico extends REST_Controller
         $this->load->view('upload_form', array('error' => ' '));
     }
 
-    public function sitio_post()
+    public function save_post()
     {
 
         $data = $this->post();

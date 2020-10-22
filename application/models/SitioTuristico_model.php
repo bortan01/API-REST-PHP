@@ -6,7 +6,6 @@ class SitioTuristico_model extends CI_Model
     public $nombre;
     public $longitud;
     public $latitud;
-    public $ubicacion;
     public $descripcion;
     public $informacion_contacto;
     public $tipo;
@@ -38,7 +37,8 @@ class SitioTuristico_model extends CI_Model
             $respuesta = array(
                 'err' => FALSE,
                 'mensaje' => 'Registro Guardado Exitosamente',
-                'cliente' => $identificador
+                'id' => $identificador,
+                'sitio' => $this
             );
             return $respuesta;
         } else {
