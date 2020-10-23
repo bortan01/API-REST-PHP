@@ -99,6 +99,18 @@ public $id_rama;
         return $query->result();
    
  	}
+ 	public function get_cerrada(){
+		$this->db->select('*');
+    $this->db->from('pregunta');
+ 	$this->db->join('ramas_preguntas', 'pregunta.id_rama=ramas_preguntas.id_rama','inner');
+ 	$this->db->join('opciones_respuestas', 'pregunta.id_pregunta=opciones_respuestas.id_pregunta','inner');
+ 	$this->db->where('opcion','cerrada');
+    $query=$this->db->get();
+   
+
+        return $query->result();
+   
+ 	}
 
  	public function verificar_campos($dataCruda)
     {
