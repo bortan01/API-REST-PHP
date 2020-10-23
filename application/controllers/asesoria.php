@@ -160,9 +160,9 @@ public function abierta_get(){
 
 	//********para eliminar
 	 
-	 public function deletePregunta_post(){
+	 public function deletePregunta_delete(){
 
-	 $data=$this->post();
+	 $data=$this->delete();
 	 $verificar=$this->Pregunta_model->verificar_campos($data);
      $respuesta=$this->Pregunta_model->eliminar($verificar);
 
