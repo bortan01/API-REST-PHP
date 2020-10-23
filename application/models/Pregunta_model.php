@@ -94,7 +94,10 @@ public $id_rama;
  	$this->db->join('ramas_preguntas', 'pregunta.id_rama=ramas_preguntas.id_rama','inner');
  	$this->db->where('opcion','abierta');
     $query=$this->db->get();
-    return $query->result();
+   
+
+        return $query->result();
+   
  	}
 
  	public function verificar_campos($dataCruda)
