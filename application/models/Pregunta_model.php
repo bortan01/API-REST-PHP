@@ -88,6 +88,15 @@ public $id_rama;
     return $query->result();
  	}
 
+ 	public function get_abierta(){
+		$this->db->select('*');
+    $this->db->from('pregunta');
+ 	$this->db->join('ramas_preguntas', 'pregunta.id_rama=ramas_preguntas.id_rama','inner');
+ 	$this->db->where('opcion','abierta');
+    $query=$this->db->get();
+    return $query->result();
+ 	}
+
  	public function verificar_campos($dataCruda)
     {
         $objeto =array();

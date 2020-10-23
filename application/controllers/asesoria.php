@@ -42,6 +42,31 @@ public function __construct(){
 	}
 }
 
+public function abierta_get(){
+
+	$pregunta=$this->Pregunta_model->get_abierta();
+
+	if (isset($pregunta)) {
+		//quitar campos que no quiero
+		//unset($cita->motivo);
+		//unset($cliente->telefono2);
+		$respuesta=array('err'=>FALSE,
+						 'mensaje'=>'Registros cargados correctamente',
+						  'preguntas'=>$pregunta);
+
+		$this->response($respuesta);
+	}else{
+		$respuesta=array(
+			'err'=>TRUE,
+			'mensaje'=>'Error al cargar los datos.',
+			'citas'=>null
+
+		);
+		$this->response($respuesta,REST_Controller::HTTP_NOT_FOUND);
+
+	}
+}
+
 	//***********************fin de rama get //**************
 
 	//********************INSERTAR**************************
