@@ -34,6 +34,7 @@ class Vehiculo_model extends CI_Model
         $this->db->join('marca_vehiculo', 'vehiculo.id_marcaFK=marca_vehiculo.id_marca');
         $this->db->join('transmisionvehiculo', 'vehiculo.id_transmicionFK=transmisionvehiculo.idtransmicion');
         $this->db->join('modelo', 'marca_vehiculo.id_marca=modelo.id_marca');
+        $this->db->join('categoria', 'vehiculo.idcategoria=categoria.idcategoria');
         $this->db->where($parametros);
         $query = $this->db->get();
 
