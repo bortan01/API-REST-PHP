@@ -6,6 +6,18 @@ class PreguntasCerradas_model extends CI_Model
   public $opciones_respuestas;
   public $id_pregunta;
 
+  public function get_opciones($id){
+
+  	$this->db->select('*');
+    $this->db->from('opciones_respuestas');
+ 	$this->db->where('id_pregunta',$id);
+    $query=$this->db->get();
+   
+
+        return $query->result();
+
+  }
+
   public function insertarCerrada($data,$cuantos,$id){
 	
 		for ($i=0; $i < $cuantos ; $i++) { 
