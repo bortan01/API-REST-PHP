@@ -30,7 +30,7 @@ class SitioTuristico_model extends CI_Model
 
     public function guardar(array $data)
     {
-        $data["estado"]=TRUE;
+        $data["estado"] = TRUE;
         $campos = $this->verificar_camposEntrada($data);
         $nombreTabla = "sitio_turistico";
         $insert = $this->db->insert($nombreTabla, $campos);
@@ -57,13 +57,12 @@ class SitioTuristico_model extends CI_Model
             return $respuesta;
         }
     }
-
     public function obtenerSitio(array $data)
     {
         $parametros = $this->verificar_camposEntrada($data);
 
         try {
-            $this->db->select('sitio_turistico.nombre,precio_sitio,descripcion, contacto.nombre as contactoN,telefono,correo ');
+            $this->db->select('id_sitio_turistico,id_contacto,sitio_turistico.nombre,precio_sitio,tipo,latitud,longitud,descripcion, contacto.nombre as contactoN,telefono,correo ');
             $this->db->from("sitio_turistico");
             $this->db->join('contacto', 'sitio_turistico.informacion_contacto=contacto.id_contacto');
             $this->db->where($parametros);
@@ -75,24 +74,22 @@ class SitioTuristico_model extends CI_Model
                 $respuesta = array('err' => FALSE, 'sitios' => null, 'mensaje' => "NO SE ENCONTRO NINGUN USUARIO");
                 return $respuesta;
             } else {
+                foreach ($sitios as $fila) {
+                    $url = "http://www.lagraderia.com/wp-content/uploads/2018/12/no-imagen.jpg";
+                    $this->db->select("foto_path");
+                    $this->db->where("identificador", $fila->id_contacto);
+                    $this->db->where("tipo", "contacto");
+                    $query = $this->db->get("galeria");
+                 
+                   foreach ($query->result() as $galeria ) {
+                       $url = $galeria->foto_path;
+                   }
+                   $fila->url = $url;
+                }
+                
                 $respuesta = array('err' => FALSE, 'sitios' => $sitios);
                 return $respuesta;
             }
-            //$sitios = $query->result();
-            // foreach ($sitios as $fila) {
-            //     $path = [];
-            //     $this->db->select("foto_path");
-            //     $this->db->where("identificador", $fila->id_sitio_turistico);
-            //     $this->db->where("tipo", $nombreTabla);
-            //     $query = $this->db->get("galeria");
-
-            //     foreach ($query->result() as $foto) {
-            //         $path[] = $foto->foto_path;
-            //     }
-            //     $fila->path = $path;
-            // }
-
-         
         } catch (Exception $e) {
             echo $e->getMessage();
         }
@@ -110,5 +107,63 @@ class SitioTuristico_model extends CI_Model
 
         //este es un objeto tipo cliente model
         return $objeto;
+    }
+    public function editar($data)
+    {
+        $nombreTabla = "sitio_turistico";
+        ///VAMOS A ACTUALIZAR UN REGISTRO
+        $campos = $this->verificar_camposEntrada($data);
+        $this->db->where('id_sitio_turistico', $campos["id_sitio_turistico"]);
+
+        $hecho = $this->db->update($nombreTabla, $campos);
+        if ($hecho) {
+            ///LOGRO ACTUALIZAR 
+            $respuesta = array(
+                'err'     => FALSE,
+                'mensaje' => 'Registro Actualizado Exitosamente',
+                'sitio' => $campos
+
+            );
+            return $respuesta;
+        } else {
+            //NO GUARDO
+            $respuesta = array(
+                'err' => TRUE,
+                'mensaje' => 'Error al actualizar ', $this->db->error_message(),
+                'error_number' => $this->db->error_number(),
+                'sitio' => null
+            );
+            return $respuesta;
+        }
+    }
+    public function elimination($campos)
+    {
+        $nombreTabla      = "sitio_turistico";
+        $identificador    = $campos["id_sitio_turistico"];
+        $campos["activo"] = FALSE;
+        ///VAMOS A ACTUALIZAR UN REGISTRO
+        $this->db->where('id_sitio_turistico', $identificador);
+        $hecho = $this->db->update($nombreTabla, $campos);
+        if ($hecho) {
+           $this->load->model('Imagen_model');
+           $this->Imagen_model->eliminarGaleria($nombreTabla, $identificador);
+            ///LOGRO ACTUALIZAR 
+            $respuesta = array(
+                'err'     => FALSE,
+                'mensaje' => 'Registro Elimiinado Exitosamente',
+                'sitio' => $campos
+
+            );
+            return $respuesta;
+        } else {
+            //NO GUARDO
+            $respuesta = array(
+                'err' => TRUE,
+                'mensaje' => 'Error al eliminar ', $this->db->error_message(),
+                'error_number' => $this->db->error_number(),
+                'sitio' => null
+            );
+            return $respuesta;
+        }
     }
 }

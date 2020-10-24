@@ -143,7 +143,7 @@ class Servicios_adicionales_model extends CI_Model
             //NO GUARDO
             $respuesta = array(
                 'err' => TRUE,
-                'mensaje' => 'Error al actualizar ', $this->db->error_message(),
+                'mensaje' => 'Error al eliminar ', $this->db->error_message(),
                 'error_number' => $this->db->error_number(),
                 'sitio' => null
             );
