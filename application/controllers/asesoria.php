@@ -119,6 +119,42 @@ public function cerradas_get(){
 }
 
 	//***********************fin de rama get //**************
+public function updateCerrada_post(){
+	    $data=$this->post();
+		$this->load->library('form_validation');
+	    if ( $this->form_validation->run('pregunta_put') ) {
+
+	    $id=$data['id_pregunta'];
+		$pregunta=$data['pregunta'];
+		$id_rama=$data['id_rama'];
+		$opcion_respuesta=$data['opcion_respuesta'];
+		$cuantos=count($data['opcion_respuesta']);
+
+		$respuesta=$this->Pregunta_model->actualizar($id,$pregunta,$id_rama,$opcion_respuesta,$cuantos); 
+
+		if ($respuesta['err']) {
+
+			/*$respuesta=array(
+				'err'=>TRUE,
+				'mensaje'=>'Hay errores en el envio de la informacion'
+			);*/
+
+		$this->response($respuesta, REST_Controller::HTTP_BAD_REQUEST); 	
+
+		}else{
+		$this->response($respuesta); 	
+		}
+
+	  }else{
+	  	$respuesta=array(
+				'err'=>TRUE,
+				'mensaje'=>'Hay errores en el envio de la informacion',
+				'errores'=>$this->form_validation->get_errores_arreglo()
+			);
+			$this->response($respuesta, REST_Controller::HTTP_BAD_REQUEST);
+	  }
+
+}
 
 	//********************INSERTAR**************************
 	public function cerrada_post(){

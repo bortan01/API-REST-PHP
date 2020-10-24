@@ -79,14 +79,13 @@ public $id_rama;
  		return $respuesta;
  	}
 
-
-	public function get_pregunta(){
+public function get_pregunta(){
 		$this->db->select('*');
     $this->db->from('pregunta');
  	$this->db->join('ramas_preguntas', 'pregunta.id_rama=ramas_preguntas.id_rama','inner');
     $query=$this->db->get();
     return $query->result();
- 	}
+ }
 
  	public function get_abierta(){
 		$this->db->select('*');
@@ -138,7 +137,40 @@ public $id_rama;
  			
  		}
  		return $this; //retornamos el objeto de clase
- 	}//fin de capitalizar los datos segun el modelo y campos correctos de la base	
+ 	}//fin de capitalizar los datos segun el modelo y campos correctos de la base
+
+ 	public function actualizar($id,$pregunta,$id_rama,$opcion_respuesta,$cuantos){
+
+	    $data=array('pregunta'=>$pregunta,'id_rama'=>$id_rama);
+
+		$this->load->model('PreguntasCerradas_model');
+
+		$this->db->set($data);
+ 		$this->db->where('id_pregunta',$id);
+        $hecho=$this->db->update('pregunta');
+		$this->PreguntasCerradas_model->actualizarOpciones($opcion_respuesta,$cuantos,$id);
+		if ($hecho) {
+				#insertado
+				$respuesta=array(
+					'err'=>FALSE,
+					'mensaje'=>'Registro actualizado correctamente'
+				);
+				
+			}else{
+				//error
+
+				$respuesta=array(
+					'err'=>TRUE,
+					'mensaje'=>'Error al insertar',
+					'error'=>$this->db->_error_message(),
+					'error_num'=>$this->db->_error_number()
+				);
+			
+			}
+
+ 		return $respuesta;
+
+ 	}	
 
  	public function insertarCerrada($pregunta,$id_rama,$opcion,$opcion_respuesta,$cuantos){
  		$query=$this->db->get_where('pregunta',array('pregunta'=>$pregunta) );

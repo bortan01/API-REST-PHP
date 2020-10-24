@@ -18,6 +18,41 @@ class PreguntasCerradas_model extends CI_Model
 
   }
 
+public function actualizarOpciones($data,$cuantos,$id){
+
+	//BORRAMOS POR EL TIPO DE PROCEDIMIENTO
+	$this->db->where('id_pregunta',$id);
+    $this->db->delete('opciones_respuestas');
+
+	for ($i=0; $i < $cuantos ; $i++) { 
+		
+		$this->opciones_respuestas=$data[$i];
+		
+		$this->db->set($this);
+ 		$this->db->where('id_pregunta',$id);
+        $hecho=$this->db->update('opciones_respuestas');
+
+		}
+
+		 if ($hecho) {
+				#actualizado
+				$respuesta=array(
+					'err'=>FALSE,
+					'mensaje'=>'Registrado'
+				);
+			}else{
+
+				$respuesta=array(
+					'err'=>TRUE,
+					'mensaje'=>'Error'
+				);
+
+			}
+	return $respuesta;
+
+}
+
+
   public function insertarCerrada($data,$cuantos,$id){
 	
 		for ($i=0; $i < $cuantos ; $i++) { 
