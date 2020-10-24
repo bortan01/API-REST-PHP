@@ -26,11 +26,9 @@ public function actualizarOpciones($data,$cuantos,$id){
 
 	for ($i=0; $i < $cuantos ; $i++) { 
 		
+		$this->id_pregunta=$id;
 		$this->opciones_respuestas=$data[$i];
-		
-		$this->db->set($this);
- 		$this->db->where('id_pregunta',$id);
-        $hecho=$this->db->update('opciones_respuestas');
+		$hecho=$this->db->insert('opciones_respuestas',$this);
 
 		}
 

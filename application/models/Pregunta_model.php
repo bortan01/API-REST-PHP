@@ -23,10 +23,13 @@ public $id_rama;
 			);
 			return $respuesta;
 			}
-
+		//SI ES PREGUNTA CERRADA VA A BORRAR SUS OPCIONES RESPUESTAS
+		//PERO SI ES ABIERTA SOLO VA A BORRAR LA ABIERTA	
 		$this->db->where('id_pregunta',$datos["id_pregunta"]);
-
- 		$hecho=$this->db->delete('pregunta');
+        $this->db->delete('opciones_respuestas');
+        //***********************
+		$this->db->where('id_pregunta',$datos["id_pregunta"]);
+        $hecho=$this->db->delete('pregunta');
 
  		if ($hecho) {
 				#borrado
