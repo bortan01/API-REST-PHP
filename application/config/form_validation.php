@@ -50,7 +50,7 @@ $config = array(
 		array('field' => 'lugar', 'label' => 'Lugar', 'rules' => 'trim|required|min_length[2]|max_length[255]')
 	),
 	'renta_put' => array(
-		array('field' => 'nombre', 'label' => 'Nombre', 'rules' => 'trim|required|min_length[2]|max_length[255]'),
+		array('field' => 'rentaCar', 'label' => 'Nombre', 'rules' => 'trim|required|min_length[2]|max_length[255]'),
 		array('field' => 'lugar', 'label' => 'Lugar', 'rules' => 'trim|required|min_length[2]|max_length[255]'),
 		array('field' => 'descripcion', 'label' => 'Descripción', 'rules' => 'trim|required|min_length[2]|max_length[255]'),
 		array('field' => 'usuario', 'label' => 'Usuario', 'rules' => 'trim|required|min_length[2]|max_length[255]'),
