@@ -140,7 +140,7 @@ class SitioTuristico_model extends CI_Model
     {
         $nombreTabla      = "sitio_turistico";
         $identificador    = $campos["id_sitio_turistico"];
-        $campos["activo"] = FALSE;
+        $campos["estado"] = FALSE;
         ///VAMOS A ACTUALIZAR UN REGISTRO
         $this->db->where('id_sitio_turistico', $identificador);
         $hecho = $this->db->update($nombreTabla, $campos);
