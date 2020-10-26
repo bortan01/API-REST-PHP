@@ -61,7 +61,6 @@ $config = array(
 		array('field' => 'nombre_lugar', 'label' => 'Lugar', 'rules' => 'trim|required|min_length[2]|max_length[255]')
 	),
 	'servicios_put' => array(
-		array('field' => 'idvehiculo', 'label' => 'Vehiculo', 'rules' => 'trim|required|min_length[1]|max_length[255]'),
 		array('field' => 'nombre_servicio', 'label' => 'Servicio', 'rules' => 'trim|required|min_length[2]|max_length[255]'),
 		array('field' => 'descripcion', 'label' => 'Descripción', 'rules' => 'trim|required|min_length[2]|max_length[255]'),
 		array('field' => 'precio', 'label' => 'Precio', 'rules' => 'trim|required|min_length[2]|max_length[255]')
