@@ -90,6 +90,13 @@ public function get_pregunta(){
     return $query->result();
  }
 
+ public function get_opciones(){
+		$this->db->select('*');
+    $this->db->from('opciones_respuestas');
+    $query=$this->db->get();
+    return $query->result();
+ }
+
  	public function get_abierta(){
 		$this->db->select('*');
     $this->db->from('pregunta');

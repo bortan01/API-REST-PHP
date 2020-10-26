@@ -21,6 +21,7 @@ public function __construct(){
 	public function preguntita_get(){
 
 	$pregunta=$this->Pregunta_model->get_pregunta();
+	$opciones=$this->Pregunta_model->get_opciones();
 
 	if (isset($pregunta)) {
 		//quitar campos que no quiero
@@ -28,7 +29,8 @@ public function __construct(){
 		//unset($cliente->telefono2);
 		$respuesta=array('err'=>FALSE,
 						 'mensaje'=>'Registros cargados correctamente',
-						  'preguntas'=>$pregunta);
+						  'preguntas'=>$pregunta,
+						  'opciones'=>$opciones);
 
 		$this->response($respuesta);
 	}else{
