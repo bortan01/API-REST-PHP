@@ -3,12 +3,11 @@ defined('BASEPATH') or exit('No direct script access allowed');
 class RentaAuto_model extends CI_Model
 {
     public $id_rentaCar;
+    public $idusuarioRentaCar;
     public $rentaCar;
     public $lugar;
     public $descripcion;
     public $telefono;
-    public $usuario;
-    public $contrasena;
     public $activo = TRUE;
 
     public function get_rentaAuto(){
