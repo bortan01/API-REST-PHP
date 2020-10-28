@@ -3,10 +3,10 @@ defined('BASEPATH') or exit('No direct script access allowed');
 class SitioTuristico_model extends CI_Model
 {
 
-    public $nombre;
+    public $nombre_sitio;
     public $longitud;
     public $latitud;
-    public $descripcion;
+    public $descripcion_sitio;
     public $tipo;
     public $informacion_contacto;
     public $id_sitio_turistico;
@@ -62,7 +62,7 @@ class SitioTuristico_model extends CI_Model
         $parametros = $this->verificar_camposEntrada($data);
 
         try {
-            $this->db->select('id_sitio_turistico,id_contacto,sitio_turistico.nombre,precio_sitio,tipo,latitud,longitud,descripcion, contacto.nombre as contactoN,telefono,correo ');
+            $this->db->select('id_sitio_turistico,id_contacto,sitio_turistico.nombre_sitio,precio_sitio,tipo,latitud,longitud,descripcion_sitio, contacto.nombre_contacto as contactoN,telefono,correo ');
             $this->db->from("sitio_turistico");
             $this->db->join('contacto', 'sitio_turistico.informacion_contacto=contacto.id_contacto');
             $this->db->where($parametros);
@@ -71,7 +71,7 @@ class SitioTuristico_model extends CI_Model
             $sitios  = $query->result();
             if (count($sitios) < 1) {
 
-                $respuesta = array('err' => FALSE, 'sitios' => null, 'mensaje' => "NO SE ENCONTRO NINGUN USUARIO");
+                $respuesta = array('err' => FALSE, 'sitios' => null, 'mensaje' => "NO SE ENCONTRO NINGUN SITIO TURISTICO");
                 return $respuesta;
             } else {
                 foreach ($sitios as $fila) {

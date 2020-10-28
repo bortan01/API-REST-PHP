@@ -127,10 +127,10 @@ $config = array(
 	),
 
 	'insertarSitio' => array(
-		array('field' => 'nombre'	           , 'label' => 'nombre'                 , 'rules' => 'trim|required'),
+		array('field' => 'nombre_sitio'        , 'label' => 'nombre'                 , 'rules' => 'trim|required'),
 		array('field' => 'longitud'            , 'label' => 'longiitud'              , 'rules' => 'trim|required|min_length[3]'),
 		array('field' => 'latitud'             , 'label' => 'latitud'                , 'rules' => 'trim|required|min_length[3]'),
-		array('field' => 'descripcion'         , 'label' => 'descripcion'            , 'rules' => 'trim|required|min_length[3]'),
+		array('field' => 'descripcion_sitio'         , 'label' => 'descripcion'            , 'rules' => 'trim|required|min_length[3]'),
 		array('field' => 'informacion_contacto', 'label' => 'informacion de contacto', 'rules' => 'trim|required'),
 		array('field' => 'tipo'                , 'label' => 'El tipo es necesario'   , 'rules' => 'trim|required'),
 	),
@@ -216,7 +216,7 @@ $config = array(
 		array('field' => 'nombre'      ,'label' => 'Nombre'       , 'rules' => 'trim|required')
 	),
 	'insertarServicio' => array(
-		array('field' => 'nombre'                ,'label' => 'Nombre'                , 'rules' => 'trim|required'),
+		array('field' => 'nombre_servicio'      ,'label' => 'Nombre'                , 'rules' => 'trim|required'),
 		array('field' => 'descripcion_servicio'  ,'label' => 'Descripcion Servicio'  , 'rules' => 'trim|required|min_length[10]'),
 		array('field' => 'tipo_servicio'         ,'label' => 'Tipo de Servicio'      , 'rules' => 'trim|required'),
 		array('field' => 'costos_defecto'        ,'label' => 'Costo por defecto'     , 'rules' => 'trim|required|numeric'),
@@ -230,6 +230,6 @@ $config = array(
 		
 	),
 	'insertarContacto' => array(
-		array('field' => 'nombre'        ,'label' => 'Nombre'                    , 'rules' => 'trim|required|min_length[3]')
+		array('field' => 'nombre_contacto'        ,'label' => 'Nombre'                    , 'rules' => 'trim|required|min_length[3]')
 		)
 );

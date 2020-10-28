@@ -3,7 +3,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
 class Contacto_model extends CI_Model
 {
     public $id_contacto;
-    public $nombre;
+    public $nombre_contacto;
     public $telefono;
     public $correo;
 

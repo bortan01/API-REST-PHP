@@ -3,7 +3,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
 class Servicios_adicionales_model extends CI_Model
 {
     public $id_servicios;
-    public $nombre;
+    public $nombre_servicio;
     public $descripcion_servicio;
     public $costos_defecto;
     public $tipo_servicio;
