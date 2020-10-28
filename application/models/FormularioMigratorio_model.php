@@ -8,8 +8,7 @@ class FormularioMigratorio_model extends CI_Model
 	public $id_cita;
 	public $respuesta;
 
-
-	public function eliminar($datos){
+public function eliminar($datos){
 
 		$query=$this->db->get_where('formulario_migratorio',array('id_formulario'=>$datos["id_formulario"]) );
 		$formulario=$query->row();
@@ -44,10 +43,10 @@ class FormularioMigratorio_model extends CI_Model
 			
 			}
  		return $respuesta;
-	}//fin metodo
+}//fin metodo
 
 
-	public function modificar_formulario($datos){
+public function modificar_formulario($datos){
 		$this->db->set($datos);
  		$this->db->where('id_formulario',$datos["id_formulario"]);
 
@@ -75,18 +74,18 @@ class FormularioMigratorio_model extends CI_Model
 			
 			}
  		return $respuesta;
- 	}//fin metodo
+}//fin metodo
 
 
-	public function get_pregunta(){
+public function get_pregunta(){
 
 
  	$query=$this->db->get('formulario_migratorio');
  	
  		return $query->result();
- 	}
+}
 
-    public function set_datos($data_cruda){
+public function set_datos($data_cruda){
     	 $objeto =array();
         ///par aquitar campos no existentes
         foreach ($data_cruda as $nombre_campo => $valor_campo) {
@@ -97,13 +96,23 @@ class FormularioMigratorio_model extends CI_Model
         }
 
         return $objeto;
- 	}//fin de capitalizar los datos segun el modelo y campos correctos de la base
+}//fin de capitalizar los datos segun el modelo y campos correctos de la base
 
- 	public function insert($datos){
+public function insert($id_cita,$id_pregunta,$respuestas){
+
+	$recorrer=count($id_pregunta);
+
+	for ($i=0; $i < $recorrer ; $i++) { 
+		# code...
+		$this->id_cita=$id_cita;
+		$this->id_pregunta=$id_pregunta[$i];
+		$this->respuesta=$respuestas[$i];
+		//insertar el registro
+			$hecho=$this->db->insert('formulario_migratorio',$this);
+	}
 
 
-			//insertar el registro
-			$hecho=$this->db->insert('formulario_migratorio',$datos);
+			
 
 			if ($hecho) {
 				#insertado
@@ -111,7 +120,7 @@ class FormularioMigratorio_model extends CI_Model
 					'err'=>FALSE,
 					'mensaje'=>'Registro insertado correctamente',
 					'pregunta_id'=>$this->db->insert_id(),
-					'datos'=>$datos
+					'datos'=>$this
 				);
 
 			

@@ -187,7 +187,7 @@ $config = array(
 		array('field' => 'nombre'  ,'label' => 'Nombre categoria' , 'rules' => 'trim|required|min_length[4]|max_length[255]')
 	),
 	'formulario_put' => array(
-		array('field' => 'respuesta'  ,'label' => 'Nombre respuesta' , 'rules' => 'trim|required|min_length[2]|max_length[255]')
+		array('field' => 'respuesta'  ,'label' => 'respuesta' , 'rules' => 'trim|min_length[1]|max_length[255]')
 	),
 	'producto_put' => array(
 		array('field' => 'nombre'  ,'label' => 'Nombre' , 'rules' => 'trim|required|min_length[4]|max_length[255]')

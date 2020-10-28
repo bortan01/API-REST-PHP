@@ -11,7 +11,7 @@ public function __construct(){
 		$this->load->model('FormularioMigratorio_model');
 
 	}
-	 public function deleteFormulario_post(){
+public function deleteFormulario_post(){
 
 	 $data=$this->post();
 	 $verificar=$this->FormularioMigratorio_model->set_datos($data);
@@ -25,9 +25,9 @@ public function __construct(){
 			 $this->response($respuesta);
 
 	    }
-	 }//fin metodo
+}//fin metodo
 
-	public function updateFormulario_post(){
+public function updateFormulario_post(){
 
 		$data=$this->post();
 
@@ -43,7 +43,7 @@ public function __construct(){
 
 	 }
 
-	}//fin de metodo
+}//fin de metodo
 
 
 public function formularios_get(){
@@ -81,8 +81,10 @@ public function formulario_post(){
 		if ( $this->form_validation->run('formulario_put') ) {
 			//todo bien
 			//$this->response('Todo bien');
-		$pregunta=$this->FormularioMigratorio_model->set_datos($data);
-        $respuesta=$this->FormularioMigratorio_model->insert($pregunta); 
+		$id_cita=$data['id_cita'];
+		$id_pregunta=$data['id_pregunta'];
+		$respuestas=$data['respuesta'];
+        $respuesta=$this->FormularioMigratorio_model->insert($id_cita,$id_pregunta,$respuestas); 
 
 		if ($respuesta['err']) {
 
