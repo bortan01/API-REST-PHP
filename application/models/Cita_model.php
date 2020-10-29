@@ -127,9 +127,9 @@ public function modificar_cita($id_cita,$fecha,$compania,$input,$asistiran,$hora
 	    $query = $this->db->get('cita');
 		$cita=$query->row();//No modificara hora
 
-	if (isset($cita)) {
+	     if (isset($cita)) {
 
-	$this->load->model('PersonasCitas_model');//cargo el modelo para actualizar en la otra tabla si es necesario
+	    $this->load->model('PersonasCitas_model');//cargo el modelo para actualizar en la otra tabla si es necesario
 		$datos=array(
 			'compania'=>$compania,
 			'start'=>$fecha.' '.$hora,
@@ -222,7 +222,7 @@ public function modificar_cita($id_cita,$fecha,$compania,$input,$asistiran,$hora
 
 	 }//ese del si no modifica fecha
 
-	}else{
+	    }else{
 
 		$respuesta=array(
 				'err'=>TRUE,
@@ -230,11 +230,11 @@ public function modificar_cita($id_cita,$fecha,$compania,$input,$asistiran,$hora
 			);
 
 			return $respuesta;
-	}
-  }	//else pollo
- }//function
+	    }
+    }	//else pollo
+}//function
 
- public function insertCita($id_cliente,$asitencia,$personas,$motivo,$color,$textColor,$start,$fecha,$hora){
+public function insertCita($id_cliente,$asitencia,$personas,$motivo,$color,$textColor,$start,$fecha,$hora){
 		//insertar el registro
 		$horas_validas= array(
 						0 =>'8:00 AM',
@@ -265,7 +265,7 @@ public function modificar_cita($id_cita,$fecha,$compania,$input,$asistiran,$hora
 	    $query = $this->db->get('cita');
 		$cita=$query->row();//si ya esta esa hora con esa fecha
 
-	if (!isset($cita)) {
+	    if (!isset($cita)) {
  		
 
  			$this->id_cita=$this->db->insert_id();
@@ -309,56 +309,49 @@ public function modificar_cita($id_cita,$fecha,$compania,$input,$asistiran,$hora
 					'error_num'=>$this->db->_error_number()
 				);
 			
-			}
+			    }
 
- 		return $respuesta;
- 	   }else{
- 	   	$respuesta=array(
+ 		      return $respuesta;
+ 	        }else{
+ 	        	$respuesta=array(
 				'err'=>TRUE,
 				'mensaje'=>'La hora ya esta ocupada'
-			);
+			   );
 
 			return $respuesta;
 
- 	   }
-    }else{
-    	$respuesta=array(
+ 	        }
+              }else{
+            	$respuesta=array(
 				'err'=>TRUE,
 				'mensaje'=>'Hora no valida, Las asesorías duran 1HR!!'
-			);
+		      	);
 
-			return $respuesta;
+			   return $respuesta;
 
     }
   }
 }//fin de insertar la pregunta
 
+public function get_citasFormulario(){
+
+	$this->db->select('cita.id_cita,usuario.nombre');
+    $this->db->from('cita');
+ 	$this->db->join('usuario', 'usuario.id_cliente=cita.id_cliente','inner');
+ 	$this->db->where(array('fecha'=>date("Y-m-d"),'estado_cita'=>1));
+    $query=$this->db->get();
+    return $query->result();
+
+}
 
 public function get_citas(){
-   // $query=$this->db->get('cita');
- 	//return $query->result();
 
  	$this->db->select('*');
     $this->db->from('cita');
  	$this->db->join('usuario', 'usuario.id_cliente=cita.id_cliente','inner');
     $query=$this->db->get();
     return $query->result();
-
- 	/*foreach ($query->result() as $row)
-     {
-         $this->id_cita=$row->id_cita;
-         $this->motivo=$row->title;
-         $this->title=$row->nombre;
-         $this->start=$row->start;
-         $this->color=$row->color;
-         $this->textColor=$row->textColor;
-        //echo $row->body;
-            return [$this];
-    }*/
-
-
-
- 	}
+}
 
     public function set_datos($data_cruda){
     	 $objeto =array();

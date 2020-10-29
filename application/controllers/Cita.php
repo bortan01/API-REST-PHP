@@ -17,7 +17,7 @@ public function deleteCita_post(){
 	 $verificar=$this->Cita_model->set_datos($data);
 	 $respuesta=$this->Cita_model->eliminar($verificar);
 	 $this->response($respuesta);
-	 }
+}
 
 public function moverDias_post(){
 	$data=$this->post();
@@ -86,8 +86,34 @@ public function updateCita_post(){
 
 	    
 
-	}//fin de metodo
+}//fin de metodo
+public function formularioMigratorioCitas_get(){
 
+	$cita=$this->Cita_model->get_citasFormulario();
+
+	if (isset($cita)) {
+		//quitar campos que no quiero
+		//unset($cita->motivo);
+		unset($cita['activo']);
+		//$respuesta=array($cita);
+		$respuesta=array(
+			'err'=>FALSE,
+			'mensaje'=>'Registro Cargado correctamente',
+			'citas'=>$cita
+
+		);
+		$this->response($respuesta);
+	}else{
+		$respuesta=array(
+			'err'=>TRUE,
+			'mensaje'=>'Error al cargar los datos.',
+			'citas'=>null
+
+		);
+		$this->response($respuesta,REST_Controller::HTTP_NOT_FOUND);
+
+	}
+}
 public function cita_get(){
 
 	$cita=$this->Cita_model->get_citas();
