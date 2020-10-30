@@ -94,7 +94,6 @@ public function formularioMigratorioCitas_get(){
 	if (isset($cita)) {
 		//quitar campos que no quiero
 		//unset($cita->motivo);
-		unset($cita['activo']);
 		//$respuesta=array($cita);
 		$respuesta=array(
 			'err'=>FALSE,
