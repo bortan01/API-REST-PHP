@@ -67,9 +67,14 @@ class Servicios_adicionales_model extends CI_Model
         $data["activo"] = TRUE;
         try {
             $parametros = $this->verificar_camposEntrada($data);
+       
+            $this->db->select('*');
+            $this->db->from($nombreTabla);
+            $this->db->join('contacto', 'servicios_adicionales.id_contacto=contacto.id_contacto');
             $this->db->where($parametros);
-            $query = $this->db->get($nombreTabla);
-            $servicioSeleccionado = $query->result();
+            $query = $this->db->get();
+            $servicioSeleccionado  = $query->result();
+
 
             if (count($servicioSeleccionado) < 1) {
                 //PROBLEMA
@@ -80,7 +85,18 @@ class Servicios_adicionales_model extends CI_Model
                 );
                 return $respuesta;
             } else {
-
+                foreach ($servicioSeleccionado as $fila) {
+                    $url = "http://www.lagraderia.com/wp-content/uploads/2018/12/no-imagen.jpg";
+                    $this->db->select("foto_path");
+                    $this->db->where("identificador", $fila->id_contacto);
+                    $this->db->where("tipo", "contacto");
+                    $query = $this->db->get("galeria");
+                 
+                   foreach ($query->result() as $galeria ) {
+                       $url = $galeria->foto_path;
+                   }
+                   $fila->url = $url;
+                }
                 $respuesta = array(
                     'err'          => FALSE,
                     'servicio'   => $servicioSeleccionado
@@ -129,8 +145,8 @@ class Servicios_adicionales_model extends CI_Model
         $this->db->where('id_servicios', $identificador);
         $hecho = $this->db->update($nombreTabla, $campos);
         if ($hecho) {
-           $this->load->model('Imagen_model');
-           $this->Imagen_model->eliminarGaleria($nombreTabla, $identificador);
+            $this->load->model('Imagen_model');
+            $this->Imagen_model->eliminarGaleria($nombreTabla, $identificador);
             ///LOGRO ACTUALIZAR 
             $respuesta = array(
                 'err'     => FALSE,
