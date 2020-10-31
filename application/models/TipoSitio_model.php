@@ -1,49 +1,27 @@
 <?php
 defined('BASEPATH') or exit('No direct script access allowed');
-class SitioTuristico_model extends CI_Model
+class TipoSitio_model extends CI_Model
 {
-
-    public $nombre_sitio;
-    public $longitud;
-    public $latitud;
-    public $descripcion_sitio;
     public $id_tipo_sitio;
-    public $informacion_contacto;
-    public $id_sitio_turistico;
-    public $precio_sitio;
+    public $tipo_sitio;
     public $estado;
-
-
-    public function verificar_campos($dataCruda)
-    {
-        ///par aquitar campos no existentes 
-        foreach ($dataCruda as $nombre_campo => $valor_campo) {
-            # para verificar si la propiedad existe..
-            if (property_exists('SitioTuristico_model', $nombre_campo)) {
-                $this->$nombre_campo = $valor_campo;
-            }
-        }
-
-
-        return $this;
-    }
 
     public function guardar(array $data)
     {
         $data["estado"] = TRUE;
         $campos = $this->verificar_camposEntrada($data);
-        $nombreTabla = "sitio_turistico";
+        $nombreTabla = "tipo_sitio";
+         
         $insert = $this->db->insert($nombreTabla, $campos);
         if ($insert) {
             ///LOGRO GUARDAR LOS DATOS, TRATAREMOS DE GUARDAR LA GALERIA SI MANDARON FOTOS
             $identificador = $this->db->insert_id();
-            $this->Imagen_model->guardarGaleria($nombreTabla,  $identificador);
 
             $respuesta = array(
                 'err' => FALSE,
                 'mensaje' => 'Registro Guardado Exitosamente',
                 'id' => $identificador,
-                'sitio' => $campos
+                'tipo' => $campos
             );
             return $respuesta;
         } else {
@@ -52,42 +30,29 @@ class SitioTuristico_model extends CI_Model
                 'err' => TRUE,
                 'mensaje' => 'Error al insertar ', $this->db->error_message(),
                 'error_number' => $this->db->error_number(),
-                'cliente' => null
+                'tipo' => null
             );
             return $respuesta;
         }
     }
-    public function obtenerSitio(array $data)
+    public function obtenerTipo(array $data)
     {
+        $data["estado"] = TRUE;
         $parametros = $this->verificar_camposEntrada($data);
 
         try {
-            $this->db->select('id_sitio_turistico,id_contacto,sitio_turistico.nombre_sitio,precio_sitio,id_tipo_sitio,latitud,longitud,descripcion_sitio, contacto.nombre_contacto as contactoN,telefono,correo ');
-            $this->db->from("sitio_turistico");
-            $this->db->join('contacto', 'sitio_turistico.informacion_contacto=contacto.id_contacto');
+            $nombreTabla = "tipo_sitio";
+            $this->db->select('*');
+            $this->db->from($nombreTabla);
             $this->db->where($parametros);
-            // $this->db->where($parametros);
             $query = $this->db->get();
-            $sitios  = $query->result();
-            if (count($sitios) < 1) {
+            $tipo  = $query->result();
+            if (count($tipo) < 1) {
 
-                $respuesta = array('err' => FALSE, 'sitios' => null, 'mensaje' => "NO SE ENCONTRO NINGUN SITIO TURISTICO");
+                $respuesta = array('err' => FALSE, 'tipo' => null, 'mensaje' => "NO SE ENCONTRO NINGUN TIPO");
                 return $respuesta;
             } else {
-                foreach ($sitios as $fila) {
-                    $url = "http://www.lagraderia.com/wp-content/uploads/2018/12/no-imagen.jpg";
-                    $this->db->select("foto_path");
-                    $this->db->where("identificador", $fila->id_contacto);
-                    $this->db->where("tipo", "contacto");
-                    $query = $this->db->get("galeria");
-                 
-                   foreach ($query->result() as $galeria ) {
-                       $url = $galeria->foto_path;
-                   }
-                   $fila->url = $url;
-                }
-                
-                $respuesta = array('err' => FALSE, 'sitios' => $sitios);
+                $respuesta = array('err' => FALSE, 'tipo' => $tipo);
                 return $respuesta;
             }
         } catch (Exception $e) {
@@ -100,7 +65,7 @@ class SitioTuristico_model extends CI_Model
         ///par aquitar campos no existentes
         foreach ($dataCruda as $nombre_campo => $valor_campo) {
             # para verificar si la propiedad existe..
-            if (property_exists('SitioTuristico_model', $nombre_campo)) {
+            if (property_exists('TipoSitio_model', $nombre_campo)) {
                 $objeto[$nombre_campo] = $valor_campo;
             }
         }
@@ -110,10 +75,10 @@ class SitioTuristico_model extends CI_Model
     }
     public function editar($data)
     {
-        $nombreTabla = "sitio_turistico";
+        $nombreTabla = "tipo_sitio";
         ///VAMOS A ACTUALIZAR UN REGISTRO
         $campos = $this->verificar_camposEntrada($data);
-        $this->db->where('id_sitio_turistico', $campos["id_sitio_turistico"]);
+        $this->db->where('id_tipo_sitio', $campos["id_sitio_turistico"]);
 
         $hecho = $this->db->update($nombreTabla, $campos);
         if ($hecho) {
@@ -138,20 +103,19 @@ class SitioTuristico_model extends CI_Model
     }
     public function elimination($campos)
     {
-        $nombreTabla      = "sitio_turistico";
-        $identificador    = $campos["id_sitio_turistico"];
+        $nombreTabla = "tipo_sitio";
+        $identificador    = $campos["id_tipo_sitio"];
         $campos["estado"] = FALSE;
         ///VAMOS A ACTUALIZAR UN REGISTRO
-        $this->db->where('id_sitio_turistico', $identificador);
+        $this->db->where('id_tipo_sitio', $identificador);
         $hecho = $this->db->update($nombreTabla, $campos);
         if ($hecho) {
-           $this->load->model('Imagen_model');
-           $this->Imagen_model->eliminarGaleria($nombreTabla, $identificador);
+
             ///LOGRO ACTUALIZAR 
             $respuesta = array(
                 'err'     => FALSE,
                 'mensaje' => 'Registro Elimiinado Exitosamente',
-                'sitio' => $campos
+                'tipo' => $campos
 
             );
             return $respuesta;
@@ -161,7 +125,7 @@ class SitioTuristico_model extends CI_Model
                 'err' => TRUE,
                 'mensaje' => 'Error al eliminar ', $this->db->error_message(),
                 'error_number' => $this->db->error_number(),
-                'sitio' => null
+                'tipo' => null
             );
             return $respuesta;
         }

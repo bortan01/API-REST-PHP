@@ -1,25 +1,26 @@
 <?php
 defined('BASEPATH') or exit('No direct script access allowed');
 require APPPATH . '/libraries/REST_Controller.php';
-class ServiciosAdicionales extends REST_Controller
+class TipoServicio extends REST_Controller
 {
     public function __construct()
     {
         parent::__construct();
         $this->load->database();
-        $this->load->model('Servicios_adicionales_model');
+        $this->load->model('Imagen_model');
+        $this->load->model('TipoServicio_model');
     }
     public function save_post()
     {
         $data = $this->post();
+
         $this->load->library("form_validation");
         $this->form_validation->set_data($data);
-
         //corremos las reglas de validacion
-        if ($this->form_validation->run('insertarServicio')) {
+        if ($this->form_validation->run('insertarTipoServicio')) {
             //VERIFICAMOS QUE TODOS LOS PARAMETROS ESTEN BIEN
 
-            $respuesta =  $this->Servicios_adicionales_model->guardar($data);
+            $respuesta =  $this->TipoServicio_model->guardar($data);
             if ($respuesta['err']) {
                 $this->response($respuesta, REST_Controller::HTTP_BAD_REQUEST);
             } else {
@@ -35,12 +36,12 @@ class ServiciosAdicionales extends REST_Controller
             $this->response($respuesta, REST_Controller::HTTP_BAD_REQUEST);
         }
     }
-    public function obtenerServicio_get()
+    public function show_get()
     {
         sleep(1);
         $data = $this->get();
 
-        $respuesta =  $this->Servicios_adicionales_model->obtenerServicio($data);
+        $respuesta =  $this->TipoServicio_model->obtenerTipo($data);
         if ($respuesta['err']) {
             $this->response($respuesta, REST_Controller::HTTP_BAD_REQUEST);
         } else {
@@ -58,7 +59,7 @@ class ServiciosAdicionales extends REST_Controller
             $this->response($respuesta, REST_Controller::HTTP_BAD_REQUEST);
         } else {
             try {
-                $respuesta = $this->Servicios_adicionales_model->editar($data);
+                $respuesta = $this->TipoServicio_model->editar($data);
                 if ($respuesta['err']) {
                     $this->response($respuesta, REST_Controller::HTTP_BAD_REQUEST);
                 } else {
@@ -78,7 +79,7 @@ class ServiciosAdicionales extends REST_Controller
             $this->response($respuesta, REST_Controller::HTTP_BAD_REQUEST);
         } else {
             try {
-                $respuesta = $this->Servicios_adicionales_model->elimination($data);
+                $respuesta = $this->TipoServicio_model->elimination($data);
                 if ($respuesta['err']) {
                     $this->response($respuesta, REST_Controller::HTTP_BAD_REQUEST);
                 } else {

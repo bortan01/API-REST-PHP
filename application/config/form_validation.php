@@ -132,7 +132,7 @@ $config = array(
 		array('field' => 'latitud'             , 'label' => 'latitud'                , 'rules' => 'trim|required|min_length[3]'),
 		array('field' => 'descripcion_sitio'         , 'label' => 'descripcion'            , 'rules' => 'trim|required|min_length[3]'),
 		array('field' => 'informacion_contacto', 'label' => 'informacion de contacto', 'rules' => 'trim|required'),
-		array('field' => 'tipo'                , 'label' => 'El tipo es necesario'   , 'rules' => 'trim|required'),
+		array('field' => 'id_tipo_sitio'                , 'label' => 'El tipo es necesario'   , 'rules' => 'trim|required'),
 	),
 	
 	'insertarTurPaquete' => array(
@@ -216,9 +216,9 @@ $config = array(
 		array('field' => 'nombre'      ,'label' => 'Nombre'       , 'rules' => 'trim|required')
 	),
 	'insertarServicio' => array(
-		array('field' => 'nombre_servicio'      ,'label' => 'Nombre'                , 'rules' => 'trim|required'),
+		array('field' => 'nombre_servicio'       ,'label' => 'Nombre'                , 'rules' => 'trim|required'),
 		array('field' => 'descripcion_servicio'  ,'label' => 'Descripcion Servicio'  , 'rules' => 'trim|required|min_length[10]'),
-		array('field' => 'tipo_servicio'         ,'label' => 'Tipo de Servicio'      , 'rules' => 'trim|required'),
+		array('field' => 'id_tipo_servicio'      ,'label' => 'Tipo de Servicio'      , 'rules' => 'trim|required'),
 		array('field' => 'costos_defecto'        ,'label' => 'Costo por defecto'     , 'rules' => 'trim|required|numeric'),
 		array('field' => 'id_contacto'           ,'label' => 'Informacion Contacto'  , 'rules' => 'trim|required')
 	),
@@ -231,5 +231,11 @@ $config = array(
 	),
 	'insertarContacto' => array(
 		array('field' => 'nombre_contacto'        ,'label' => 'Nombre'                    , 'rules' => 'trim|required|min_length[3]')
-		)
+	),
+	'insertarTipoServicio' => array(
+		array('field' => 'tipo_servicio' ,'label' => 'Tipo de Servicio' , 'rules' => 'trim|required')
+	),
+	'insertarTipoSitio' => array(
+		array('field' => 'tipo_sitio' ,'label' => 'Tipo de Sitio Turistico' , 'rules' => 'trim|required')
+	),
 );
