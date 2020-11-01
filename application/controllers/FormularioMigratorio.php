@@ -8,6 +8,8 @@ public function __construct(){
 		//constructor del padre
 		parent::__construct();
 		$this->load->database();
+		$this->load->model('Cita_model');
+		$this->load->model('Pregunta_model');
 		$this->load->model('FormularioMigratorio_model');
 
 	}
@@ -84,7 +86,13 @@ public function formulario_post(){
 		$id_cita=$data['id_cita'];
 		$id_pregunta=$data['id_pregunta'];
 		$respuestas=$data['respuesta'];
-        $respuesta=$this->FormularioMigratorio_model->insert($id_cita,$id_pregunta,$respuestas); 
+		$mas_respuesta=$data['respuesta_mas'];
+		$mas_id=$data['id_pregunta_mas'];
+		//para los input que solo es una pregunta
+		$id_pregunta1=$data['id_pregunta1'];
+		$respuestas1=$data['respuesta1'];
+		$this->Cita_model->formularioModificar($id_cita);
+        $respuesta=$this->FormularioMigratorio_model->insert($id_cita,$id_pregunta,$respuestas,$mas_respuesta,$mas_id,$id_pregunta1,$respuestas1); 
 
 		if ($respuesta['err']) {
 

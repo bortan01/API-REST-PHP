@@ -98,9 +98,30 @@ public function set_datos($data_cruda){
         return $objeto;
 }//fin de capitalizar los datos segun el modelo y campos correctos de la base
 
-public function insert($id_cita,$id_pregunta,$respuestas){
+public function insert($id_cita,$id_pregunta,$respuestas,$mas_respuesta,$mas_id,$id_pregunta1,$respuestas1){
 
 	$recorrer=count($id_pregunta);
+	$recorrer1=count($id_pregunta1);
+	$contar=count($mas_id);
+
+	for ($pivote=0; $pivote < $recorrer1 ; $pivote++) { 
+		# code...
+		$this->id_cita=$id_cita;
+		$this->id_pregunta=$id_pregunta1[$pivote];
+		$this->respuesta=$respuestas1[$pivote];
+		//insertar el registro
+	  $this->db->insert('formulario_migratorio',$this);
+	}
+
+	for ($index=0; $index < $contar ; $index++) { 
+		# code...
+		$this->id_cita=$id_cita;
+		$this->id_pregunta=$mas_id[$index];
+		$this->respuesta=$mas_respuesta[$index];
+		//insertar el registro
+	$this->db->insert('formulario_migratorio',$this);
+
+	}
 
 	for ($i=0; $i < $recorrer ; $i++) { 
 		# code...

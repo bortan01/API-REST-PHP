@@ -52,7 +52,7 @@ public $id_rama;
 	}//fin metodo
 
 
-	public function modificar_pregunta($datos){
+public function modificar_pregunta($datos){
 		$this->db->set($datos);
  		$this->db->where('id_pregunta',$datos["id_pregunta"]);
 
@@ -80,10 +80,21 @@ public $id_rama;
 			
 			}
  		return $respuesta;
- 	}
+ 	
+}
 
+public function obtener_cerradas(){
+
+	$this->db->select('id_pregunta');
+    $this->db->from('pregunta');
+    $this->db->where('opcion','cerrada');
+    $query=$this->db->get();
+    $respuesta=array('id'=>$query->result());
+    return $respuesta;
+
+}
 public function get_pregunta(){
-		$this->db->select('*');
+	$this->db->select('*');
     $this->db->from('pregunta');
  	$this->db->join('ramas_preguntas', 'pregunta.id_rama=ramas_preguntas.id_rama','inner');
     $query=$this->db->get();

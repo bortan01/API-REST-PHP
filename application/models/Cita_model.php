@@ -96,6 +96,15 @@ public function mover($id_cita,$fecha,$start,$hora){
  		return $respuesta;
 
 }
+
+public function formularioModificar($id){
+	//aqui vamos a modificar el estado, cuando ya se aya llenado el formulario
+	//al cliente
+	$this->db->set(array('color' =>'#FF0040','estado_cita'=>0));
+    $this->db->where('id_cita',$id);
+    $respuestas=$this->db->update('cita');
+    return $respuestas;
+}
 public function modificar_cita($id_cita,$fecha,$compania,$input,$asistiran,$hora){
 		//$this->db->set($datos);
 		$horas_validas= array(
@@ -338,7 +347,8 @@ public function get_citasFormulario(){
 	$this->db->select('cita.id_cita,usuario.nombre');
     $this->db->from('cita');
  	$this->db->join('usuario', 'usuario.id_cliente=cita.id_cliente','inner');
- 	$this->db->where(array('fecha'=>date("Y-m-d"),'estado_cita'=>1));
+ 	//$this->db->where(array('fecha'=>date("Y-m-d"),'estado_cita'=>1));
+ 	$this->db->where(array('estado_cita'=>1));
     $query=$this->db->get();
     return $query->result();
 
