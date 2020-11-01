@@ -54,7 +54,9 @@ $config = array(
 		array('field' => 'lugar', 'label' => 'Lugar', 'rules' => 'trim|required|min_length[2]|max_length[255]'),
 		array('field' => 'descripcion', 'label' => 'Descripción', 'rules' => 'trim|required|min_length[2]|max_length[255]'),
 		array('field' => 'telefono', 'label' => 'Telefono', 'rules' => 'trim|required|min_length[8]|max_length[255]'),
-		array('field' => 'idusuarioRentaCar', 'label' => 'ID de usuario', 'rules' => 'trim|required|min_length[1]|max_length[255]')
+		array('field' => 'usuario', 'label' => 'Usuario del Encargado de Renta cars', 'rules' => 'trim|required|min_length[6]|max_length[255]'),
+		array('field' => 'contrasena', 'label' => 'Contraseña', 'rules' => 'trim|required|min_length[6]|max_length[255]')
+	
 	),
 	'usuarioRenta_put' => array(
 		array('field' => 'usuario', 'label' => 'Usuario del Encargado de Renta cars', 'rules' => 'trim|required|min_length[6]|max_length[255]'),

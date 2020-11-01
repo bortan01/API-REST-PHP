@@ -3,7 +3,8 @@ defined('BASEPATH') or exit('No direct script access allowed');
 class RentaAuto_model extends CI_Model
 {
     public $id_rentaCar;
-    public $idusuarioRentaCar;
+    public $usuario;
+    public $contrasena;
     public $rentaCar;
     public $lugar;
     public $descripcion;
@@ -33,6 +34,8 @@ class RentaAuto_model extends CI_Model
    
             
            $query=$this->db->get_where('rentacar',array('rentaCar'=>$this->rentaCar) );
+           $query=$this->db->get_where('rentacar',array('usuario'=>$this->usuario) );
+           $query=$this->db->get_where('rentacar',array('contrasena'=>$this->contrasena) );
            $carrito=$query->row();
    
                if (isset($carrito)) {
