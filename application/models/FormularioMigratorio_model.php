@@ -76,6 +76,15 @@ public function modificar_formulario($datos){
  		return $respuesta;
 }//fin metodo
 
+public function get_formularios_llenos($id){
+	$this->db->select('*');
+    $this->db->from('pregunta');
+    $this->db->join('formulario_migratorio', 'pregunta.id_pregunta=formulario_migratorio.id_pregunta','inner');
+    $this->db->join('ramas_preguntas', 'pregunta.id_rama=ramas_preguntas.id_rama','inner');
+ 	$this->db->where(array('formulario_migratorio.id_cita'=>$id));
+    $query=$this->db->get();
+    return $query->result();
+}
 
 public function get_pregunta(){
 

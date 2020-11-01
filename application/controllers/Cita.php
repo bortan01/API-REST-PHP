@@ -113,6 +113,31 @@ public function formularioMigratorioCitas_get(){
 
 	}
 }
+
+public function formularios_get(){
+
+	$citas=$this->Cita_model->get_formularios();
+
+	if (isset($citas)) {
+		$respuesta=array(
+			'err'=>FALSE,
+			'mensaje'=>'Registro Cargado correctamente',
+			'citas'=>$citas
+
+		);
+		$this->response($respuesta);
+	}else{
+		$respuesta=array(
+			'err'=>TRUE,
+			'mensaje'=>'Error al cargar los datos.',
+			'citas'=>null
+
+		);
+		$this->response($respuesta,REST_Controller::HTTP_NOT_FOUND);
+
+	}
+}
+
 public function cita_get(){
 
 	$cita=$this->Cita_model->get_citas();

@@ -47,6 +47,32 @@ public function updateFormulario_post(){
 
 }//fin de metodo
 
+public function formulariosLlenos_get(){
+
+	$id =$this->uri->segment(3);
+	$formulario=$this->FormularioMigratorio_model->get_formularios_llenos($id);
+
+	if (isset($formulario)) {
+		//quitar campos que no quiero
+		//unset($cliente->telefono1);
+		//sunset($cliente->telefono2);
+		$respuesta=array(
+			'err'=>FALSE,
+			'mensaje'=>'Registro Cargado correctamente',
+			'formulario'=>$formulario
+
+		);
+		$this->response($respuesta);
+	}else{
+		$respuesta=array(
+			'err'=>TRUE,
+			'mensaje'=>'Error al cargar los datos.'
+		);
+		$this->response($respuesta,REST_Controller::HTTP_NOT_FOUND);
+
+	}
+
+}
 
 public function formularios_get(){
 

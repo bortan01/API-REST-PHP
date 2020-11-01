@@ -342,13 +342,24 @@ public function insertCita($id_cliente,$asitencia,$personas,$motivo,$color,$text
   }
 }//fin de insertar la pregunta
 
+public function get_formularios(){
+
+	$this->db->select('cita.id_cita,usuario.nombre,cita.fecha,cita.hora');
+    $this->db->from('cita');
+    $this->db->join('usuario', 'usuario.id_cliente=cita.id_cliente','inner');
+ 	$this->db->where(array('estado_cita'=>0));
+    $query=$this->db->get();
+    return $query->result();
+
+}
+
 public function get_citasFormulario(){
 
 	$this->db->select('cita.id_cita,usuario.nombre');
     $this->db->from('cita');
  	$this->db->join('usuario', 'usuario.id_cliente=cita.id_cliente','inner');
- 	//$this->db->where(array('fecha'=>date("Y-m-d"),'estado_cita'=>1));
- 	$this->db->where(array('estado_cita'=>1));
+ 	$this->db->where(array('fecha'=>date("Y-m-d"),'estado_cita'=>1));
+ 	//$this->db->where(array('estado_cita'=>1));
     $query=$this->db->get();
     return $query->result();
 
