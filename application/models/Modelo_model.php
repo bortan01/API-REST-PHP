@@ -7,11 +7,10 @@ class Modelo_model extends CI_Model
     public $modelo;
     public $activo = TRUE;
 
-    public function get_modelo(){
-
+    public function get_modelo()
+    {  
         $query=$this->db->get('modelo');
-
-            return $query->result();
+        return $query->result();
         }
    
    
