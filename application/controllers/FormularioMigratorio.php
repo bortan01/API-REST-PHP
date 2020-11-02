@@ -50,6 +50,7 @@ public function updateFormulario_post(){
 public function formulariosLlenos_get(){
 
 	$id =$this->uri->segment(3);
+	$opciones=$this->Pregunta_model->get_opciones();
 	$formulario=$this->FormularioMigratorio_model->get_formularios_llenos($id);
 
 	if (isset($formulario)) {
@@ -59,7 +60,8 @@ public function formulariosLlenos_get(){
 		$respuesta=array(
 			'err'=>FALSE,
 			'mensaje'=>'Registro Cargado correctamente',
-			'formulario'=>$formulario
+			'formulario'=>$formulario,
+			'opciones'=>$opciones
 
 		);
 		$this->response($respuesta);
