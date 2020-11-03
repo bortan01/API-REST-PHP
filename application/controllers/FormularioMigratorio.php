@@ -30,20 +30,42 @@ public function deleteFormulario_post(){
 }//fin metodo
 
 public function updateFormulario_post(){
+	$data=$this->post();
+		$this->load->library('form_validation');
+		$this->form_validation->set_data($data);
 
-		$data=$this->post();
+		if ( $this->form_validation->run('formulario_put') ) {
+			//todo bien
+			//$this->response('Todo bien');
+		$id_cita=$data['id_cita'];
+		$id_pregunta=$data['id_pregunta'];
+		$respuestas=$data['respuesta'];
+		$mas_respuesta=$data['respuesta_mas'];
+		$mas_id=$data['id_pregunta_mas'];
+		//para los input que solo es una pregunta
+		$id_pregunta1=$data['id_pregunta1'];
+		$respuestas1=$data['respuesta1'];
 
-		$verificar=$this->FormularioMigratorio_model->set_datos($data);
-		$respuesta=$this->FormularioMigratorio_model->modificar_formulario($verificar);
+        $respuesta=$this->FormularioMigratorio_model->insertarActualizaciones($id_cita,$id_pregunta,$respuestas,$mas_respuesta,$mas_id,$id_pregunta1,$respuestas1); 
 
-	    if ($respuesta['err']) {
+		if ($respuesta['err']) {
 
-			$this->response($respuesta, REST_Controller::HTTP_BAD_REQUEST); 
+		$this->response($respuesta, REST_Controller::HTTP_BAD_REQUEST); 	
 
 		}else{
-			 $this->response($respuesta);
+		$this->response($respuesta); 	
+		}
 
-	 }
+		}else{
+			//algo mal
+
+			$respuesta=array(
+				'err'=>TRUE,
+				'mensaje'=>'Hay errores en el envio de la informacion',
+				'errores'=>$this->form_validation->get_errores_arreglo()
+			);
+			$this->response($respuesta, REST_Controller::HTTP_BAD_REQUEST); 
+		}
 
 }//fin de metodo
 
@@ -100,7 +122,6 @@ public function formularios_get(){
 
 	}
 }//fin metodo
-
 
 public function formulario_post(){
 

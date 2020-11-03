@@ -107,6 +107,75 @@ public function set_datos($data_cruda){
         return $objeto;
 }//fin de capitalizar los datos segun el modelo y campos correctos de la base
 
+public function insertarActualizaciones($id_cita,$id_pregunta,$respuestas,$mas_respuesta,$mas_id,$id_pregunta1,$respuestas1){
+
+	//BORRAMOS POR EL TIPO DE PROCEDIMIENTO
+	$this->db->where('id_cita',$id_cita);
+    $this->db->delete('formulario_migratorio');
+
+	$recorrer=count($id_pregunta);
+	$recorrer1=count($id_pregunta1);
+	$contar=count($mas_id);
+
+	for ($pivote=0; $pivote < $recorrer1 ; $pivote++) { 
+		# code...
+		$this->id_cita=$id_cita;
+		$this->id_pregunta=$id_pregunta1[$pivote];
+		$this->respuesta=$respuestas1[$pivote];
+		//insertar el registro
+	  $this->db->insert('formulario_migratorio',$this);
+	}
+
+	for ($index=0; $index < $contar ; $index++) { 
+		# code...
+		$this->id_cita=$id_cita;
+		$this->id_pregunta=$mas_id[$index];
+		$this->respuesta=$mas_respuesta[$index];
+		//insertar el registro
+	$this->db->insert('formulario_migratorio',$this);
+
+	}
+
+	for ($i=0; $i < $recorrer ; $i++) { 
+		# code...
+		$this->id_cita=$id_cita;
+		$this->id_pregunta=$id_pregunta[$i];
+		$this->respuesta=$respuestas[$i];
+		//insertar el registro
+			$hecho=$this->db->insert('formulario_migratorio',$this);
+	}
+
+
+			
+
+			if ($hecho) {
+				#insertado
+				$respuesta=array(
+					'err'=>FALSE,
+					'mensaje'=>'Registro actualizado correctamente',
+					'pregunta_id'=>$this->db->insert_id(),
+					'datos'=>$this
+				);
+
+			
+
+			}else{
+				//error
+
+				$respuesta=array(
+					'err'=>TRUE,
+					'mensaje'=>'Error al insertar',
+					'error'=>$this->db->_error_message(),
+					'error_num'=>$this->db->_error_number()
+				);
+			
+			}
+
+
+
+ 		return $respuesta;
+ 	}//fin de insertar
+
 public function insert($id_cita,$id_pregunta,$respuestas,$mas_respuesta,$mas_id,$id_pregunta1,$respuestas1){
 
 	$recorrer=count($id_pregunta);
