@@ -32,11 +32,13 @@ class Vehiculo_model extends CI_Model
         INNER JOIN transmisionvehiculo ON vehiculo.id_transmicionFK=transmisionvehiculo.idtransmicion 
         INNEr JOIN modelo ON marca_vehiculo.id_marca=modelo.id_marca */
 
+        //marca_vehiculo ON modelo.id_marca = marca_vehiculo.id_marca
+
         $this->db->select('*');
         $this->db->from('vehiculo');
-       
         $this->db->join('transmisionvehiculo', 'vehiculo.id_transmicionFK=transmisionvehiculo.idtransmicion');
-        $this->db->join('modelo', 'modelo.id_marca = marca_vehiculo.id_marca');
+        $this->db->join('modelo', 'vehiculo.idmodelo = modelo.idmodelo');
+        $this->db->join('marca_vehiculo', 'modelo.id_marca = marca_vehiculo.id_marca');
         $this->db->join('categoria', 'vehiculo.idcategoria=categoria.idcategoria');
         $this->db->join('rentacar', 'vehiculo.id_rentaCarFK=rentacar.id_rentaCar');
         $this->db->join('servicios_opc', 'vehiculo.idservicios_opc=servicios_opc.idservicios_opc');
