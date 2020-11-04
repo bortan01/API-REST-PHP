@@ -3,7 +3,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
 class Servicios_adicionales_model extends CI_Model
 {
     public $id_servicios;
-    public $id_tipo;
+    public $id_tipo_servicio;
     public $nombre_servicio;
     public $descripcion_servicio;
     public $costos_defecto;
@@ -13,6 +13,9 @@ class Servicios_adicionales_model extends CI_Model
     public $asientos_fondo;
     public $filas;
     public $activo;
+    public $mapa;
+    public $asiento_deshabilitado;
+
 
     public function verificar_camposEntrada($dataCruda)
     {
@@ -32,9 +35,12 @@ class Servicios_adicionales_model extends CI_Model
     public function guardar(array $data)
     {
         $nombreTabla = "servicios_adicionales";
-        $data["activo"] = TRUE;
-        $servicio = $this->verificar_camposEntrada($data);
-        $insert = $this->db->insert($nombreTabla, $servicio);
+
+        $data["activo"]                 = TRUE;
+        $data["mapa"]                   = isset($data["mapa"]) ? $data["mapa"]  : "";
+        $data["asiento_deshabilitado"]  = isset($data["asiento_deshabilitado"]) ? $data["asiento_deshabilitado"]  : "";
+        $servicio                       = $this->verificar_camposEntrada($data);
+        $insert                         = $this->db->insert($nombreTabla, $servicio);
         if (!$insert) {
             //NO GUARDO
             $respuesta = array(
@@ -67,15 +73,15 @@ class Servicios_adicionales_model extends CI_Model
         $data["activo"] = TRUE;
         try {
             $parametros = $this->verificar_camposEntrada($data);
-       
+
             $this->db->select('*');
             $this->db->from($nombreTabla);
             $this->db->join('contacto', 'servicios_adicionales.id_contacto=contacto.id_contacto');
+            $this->db->join('tipo_servicio', 'servicios_adicionales.id_tipo_servicio=tipo_servicio.id_tipo_servicio');
             $this->db->where($parametros);
             $query = $this->db->get();
             $servicioSeleccionado  = $query->result();
-
-
+        
             if (count($servicioSeleccionado) < 1) {
                 //PROBLEMA
                 $respuesta = array(
@@ -91,11 +97,23 @@ class Servicios_adicionales_model extends CI_Model
                     $this->db->where("identificador", $fila->id_contacto);
                     $this->db->where("tipo", "contacto");
                     $query = $this->db->get("galeria");
-                 
-                   foreach ($query->result() as $galeria ) {
-                       $url = $galeria->foto_path;
-                   }
-                   $fila->url = $url;
+
+                    foreach ($query->result() as $galeria) {
+                        $url = $galeria->foto_path;
+                    }
+                    $fila->url = $url;
+
+                    if (empty($fila->mapa)) {
+                        $fila->mapa = [];
+                        $fila->asiento_deshabilitado = [];
+                    } else {
+                        $fila->mapa =   explode(",", $fila->mapa);
+                        if (empty($fila->asiento_deshabilitado)) {
+                            $fila->asiento_deshabilitado = [];
+                        } else {
+                            $fila->asiento_deshabilitado =   explode(",", $fila->asiento_deshabilitado);
+                        }
+                    }
                 }
                 $respuesta = array(
                     'err'          => FALSE,
