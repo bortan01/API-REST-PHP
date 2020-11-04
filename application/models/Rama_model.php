@@ -119,6 +119,35 @@ class Rama_model extends CI_Model
  		return $this; //retornamos el objeto de clase
  	}//fin de capitalizar los datos segun el modelo y campos correctos de la base
 
+ 	public function rama_auto(){
+
+ 		$query=$this->db->get('ramas_preguntas');
+            $respu=$query->result();
+            $cuantos=count($respu);
+
+            if ($cuantos==0) {
+            	$dato1=array('categoria_rama' =>'Información Personal','num_rama'=>1);
+            	$dato2=array('categoria_rama' =>'Información de Viaje','num_rama'=>2);
+            	$this->db->insert('ramas_preguntas',$dato1);
+            	$this->db->insert('ramas_preguntas',$dato2);
+
+            	$respuesta=array(
+					'err'=>FALSE,
+					'mensaje'=>'Registro insertado correctamente'
+					
+					);
+            	return $respuesta;
+            }else{
+            	$respuesta=array(
+					'err'=>TRUE,
+					'mensaje'=>'Ya existen ramas'
+					
+					);
+            	return $respuesta;
+            }
+
+ 	}
+
  	public function insert(){
 
  		//verificar el correo

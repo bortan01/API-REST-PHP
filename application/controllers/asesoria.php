@@ -328,6 +328,16 @@ public function updateCerrada_post(){
 	//***********************fin de rama get //**************
 
 	//********************INSERTAR**************************
+   public function ramaAutomatica_post(){
+   	$respuesta=$this->Rama_model->rama_auto();
+
+   	if ($respuesta['err']) {
+   		# code...
+   		$this->response($respuesta);
+   	}else{
+   		$this->response($respuesta);
+   	}
+   }
 	public function ramitas_post(){
 
 		$data=$this->post();
