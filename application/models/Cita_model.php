@@ -268,8 +268,12 @@ public function insertCita($id_cliente,$asitencia,$personas,$motivo,$color,$text
 		//VAMOS A VERIFICAR QUE LA HORA QUE LLEGUE TENGA LA DIFERENCIA DE 1HR
          if (in_array($hora,$horas_validas)) {
 			# si esta dentro de las horas validas va ha pasar por el desorden de abajo
-		
+		$query=$this->db->where(array('fecha'=>$fecha,'id_cliente'=>$id_cliente) );
+	    $query = $this->db->get('cita');
+		$cliente_el_mismo_dia=$query->row();//si es el mismo cliente para el mismo dia
 
+		if (!isset($cliente_el_mismo_dia)) {
+			# -------
 	    $query=$this->db->where(array('fecha'=>$fecha,'hora'=>$hora) );
 	    $query = $this->db->get('cita');
 		$cita=$query->row();//si ya esta esa hora con esa fecha
@@ -321,7 +325,7 @@ public function insertCita($id_cliente,$asitencia,$personas,$motivo,$color,$text
 			    }
 
  		      return $respuesta;
- 	        }else{
+ 	    }else{
  	        	$respuesta=array(
 				'err'=>TRUE,
 				'mensaje'=>'La hora ya esta ocupada'
@@ -329,7 +333,17 @@ public function insertCita($id_cliente,$asitencia,$personas,$motivo,$color,$text
 
 			return $respuesta;
 
- 	        }
+ 	        }//fin else para la hora
+ 	    }else{
+
+ 	    	$respuesta=array(
+				'err'=>TRUE,
+				'mensaje'=>'No se puede registrar cita, el cliente ya tiene una para este dia'
+			   );
+
+			return $respuesta;
+
+ 	    }//fin else para el mismo cliene el mismo dia
               }else{
             	$respuesta=array(
 				'err'=>TRUE,
