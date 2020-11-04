@@ -194,6 +194,18 @@ public function updateCerrada_post(){
 	  }
 
 	}
+
+	public function preguntaAutomatica_post(){
+   	$respuesta=$this->Pregunta_model->pregunta_auto();
+
+   	if ($respuesta['err']) {
+   		# code...
+   		$this->response($respuesta);
+   	}else{
+   		$this->response($respuesta);
+   	}
+   }
+
 	public function preguntita_post(){
 
 		$data=$this->post();

@@ -239,6 +239,38 @@ public function get_pregunta(){
  		return $respuesta;
 
  	}
+
+ 	public function pregunta_auto(){
+
+ 		$query=$this->db->get('pregunta');
+            $respu=$query->result();
+            $cuantos=count($respu);
+
+            if ($cuantos==0) {
+            	$dato1=array('pregunta' =>'Cuantas personas viajan con usted','opcion'=>'abierta',
+                              'mas_respuestas'=>'No','id_rama'=>2,'estado_pregunta'=>0);
+            	$dato2=array('pregunta' =>'Nombre de las personas','opcion'=>'abierta',
+                              'mas_respuestas'=>'No','id_rama'=>2,'estado_pregunta'=>0);
+            	
+            	$this->db->insert('pregunta',$dato1);
+            	$this->db->insert('pregunta',$dato2);
+
+            	$respuesta=array(
+					'err'=>FALSE,
+					'mensaje'=>'Registro insertado correctamente'
+					
+					);
+            	return $respuesta;
+            }else{
+            	$respuesta=array(
+					'err'=>TRUE,
+					'mensaje'=>'Ya existen preguntas'
+					
+					);
+            	return $respuesta;
+            }
+
+ 	}
  	public function insert(){
 
  		//verificar el correo
