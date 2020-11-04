@@ -7,7 +7,7 @@ class Vehiculo_model extends CI_Model
     public $idmodelo;
     public $id_transmicionFK;
     public $idcategoria;
-    public $idservicios_opc;
+
     public $placa;
     public $anio;
     public $color;
@@ -41,7 +41,7 @@ class Vehiculo_model extends CI_Model
         $this->db->join('marca_vehiculo', 'modelo.id_marca = marca_vehiculo.id_marca');
         $this->db->join('categoria', 'vehiculo.idcategoria=categoria.idcategoria');
         $this->db->join('rentacar', 'vehiculo.id_rentaCarFK=rentacar.id_rentaCar');
-        $this->db->join('servicios_opc', 'vehiculo.idservicios_opc=servicios_opc.idservicios_opc');
+ 
         $this->db->where($parametros);
         $query = $this->db->get();
 
