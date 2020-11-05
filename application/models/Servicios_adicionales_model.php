@@ -8,13 +8,10 @@ class Servicios_adicionales_model extends CI_Model
     public $descripcion_servicio;
     public $costos_defecto;
     public $id_contacto;
-    public $asientos_derecho;
-    public $asientos_izquierdos;
-    public $asientos_fondo;
-    public $filas;
     public $activo;
     public $mapa;
-    public $asiento_deshabilitado;
+    public $asientos_deshabilitados;
+    public $asientos_dispobibles;
 
 
     public function verificar_camposEntrada($dataCruda)
@@ -38,7 +35,8 @@ class Servicios_adicionales_model extends CI_Model
 
         $data["activo"]                 = TRUE;
         $data["mapa"]                   = isset($data["mapa"]) ? $data["mapa"]  : "";
-        $data["asiento_deshabilitado"]  = isset($data["asiento_deshabilitado"]) ? $data["asiento_deshabilitado"]  : "";
+        $data["asientos_deshabilitados"]  = isset($data["asientos_deshabilitados"]) ? $data["asientos_deshabilitados"]  : "";
+        $data["asientos_dispobibles"]  = isset($data["asientos_dispobibles"]) ? $data["asientos_dispobibles"]  : "";
         $servicio                       = $this->verificar_camposEntrada($data);
         $insert                         = $this->db->insert($nombreTabla, $servicio);
         if (!$insert) {
@@ -81,7 +79,7 @@ class Servicios_adicionales_model extends CI_Model
             $this->db->where($parametros);
             $query = $this->db->get();
             $servicioSeleccionado  = $query->result();
-        
+
             if (count($servicioSeleccionado) < 1) {
                 //PROBLEMA
                 $respuesta = array(
@@ -105,13 +103,13 @@ class Servicios_adicionales_model extends CI_Model
 
                     if (empty($fila->mapa)) {
                         $fila->mapa = [];
-                        $fila->asiento_deshabilitado = [];
+                        $fila->asientos_deshabilitados = [];
                     } else {
                         $fila->mapa =   explode(",", $fila->mapa);
-                        if (empty($fila->asiento_deshabilitado)) {
-                            $fila->asiento_deshabilitado = [];
+                        if (empty($fila->asientos_deshabilitados)) {
+                            $fila->asientos_deshabilitados = [];
                         } else {
-                            $fila->asiento_deshabilitado =   explode(",", $fila->asiento_deshabilitado);
+                            $fila->asientos_deshabilitados =   explode(",", $fila->asientos_deshabilitados);
                         }
                     }
                 }
