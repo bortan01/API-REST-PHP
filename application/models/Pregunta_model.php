@@ -113,7 +113,7 @@ public function get_pregunta(){
 		$this->db->select('*');
     $this->db->from('pregunta');
  	$this->db->join('ramas_preguntas', 'pregunta.id_rama=ramas_preguntas.id_rama','inner');
- 	$this->db->where('opcion','abierta');
+ 	$this->db->where(array('opcion'=>'abierta','estado_pregunta'=>1));
     $query=$this->db->get();
    
 
@@ -124,7 +124,7 @@ public function get_pregunta(){
 		$this->db->select('*');
     $this->db->from('pregunta');
  	$this->db->join('ramas_preguntas', 'pregunta.id_rama=ramas_preguntas.id_rama','inner');
- 	$this->db->where('opcion','cerrada');
+ 	$this->db->where(array('opcion'=>'cerrada','estado_pregunta'=>1));
     $query=$this->db->get();
    
 
