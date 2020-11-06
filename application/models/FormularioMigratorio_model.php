@@ -102,7 +102,7 @@ public function set_datos($data_cruda){
             if (property_exists('FormularioMigratorio_model', $nombre_campo)) {
                 $objeto[$nombre_campo] = $valor_campo;
             }
-        }
+           }
 
         return $objeto;
 }//fin de capitalizar los datos segun el modelo y campos correctos de la base
@@ -175,6 +175,38 @@ public function insertarActualizaciones($id_cita,$id_pregunta,$respuestas,$mas_r
 
  		return $respuesta;
  	}//fin de insertar
+
+public function insertarRespuestaPersonas($cita,$personas){
+	$this->db->select('id_pregunta');
+    $this->db->from('pregunta');
+    $this->db->where(array('pregunta'=>'Cuantas personas viajan con usted'));
+    $pregunta1=$this->db->get();
+    $row = $pregunta1->row('id_pregunta');
+
+    $this->db->select('id_pregunta');
+    $this->db->from('pregunta');
+    $this->db->where(array('pregunta'=>'Nombre de las personas'));
+    $pregunta2=$this->db->get();
+     $row2 = $pregunta2->row('id_pregunta');
+
+    $cantidad_personas = count($personas);
+
+    $this->id_pregunta = $row;
+    $this->id_cita = $cita;
+    $this->respuesta = $cantidad_personas;
+
+    $this->db->insert('formulario_migratorio',$this);
+
+    for ($i=0; $i < $cantidad_personas ; $i++) { 
+    	# code...
+    	$this->id_pregunta = $row2;
+    	$this->id_cita = $cita;
+    	$this->respuesta = $personas[$i];
+
+    	$this->db->insert('formulario_migratorio',$this);
+    }
+
+}
 
 public function insert($id_cita,$id_pregunta,$respuestas,$mas_respuesta,$mas_id,$id_pregunta1,$respuestas1){
 

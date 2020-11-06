@@ -293,7 +293,6 @@ public function insertCita($id_cliente,$asitencia,$personas,$motivo,$color,$text
 
 			$this->load->model('PersonasCitas_model');
 			
-			
 			//for ($i=0; $i <$cuantos ; $i++) {
 			//$this->descripcion=$descripcion[$i];
 			$hecho=$this->db->insert('cita',$this);
