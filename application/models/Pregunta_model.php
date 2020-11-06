@@ -97,6 +97,7 @@ public function get_pregunta(){
 	$this->db->select('*');
     $this->db->from('pregunta');
  	$this->db->join('ramas_preguntas', 'pregunta.id_rama=ramas_preguntas.id_rama','inner');
+ 	$this->db->where('estado_pregunta',1);
     $query=$this->db->get();
     return $query->result();
  }
