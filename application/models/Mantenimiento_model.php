@@ -15,8 +15,17 @@ class Mantenimiento_model extends CI_Model
     public function get_mantenimiento(){
 
         $query=$this->db->get('mantenimiento');
+        $respuesta = $query->result();
+      
+        
+        foreach ($respuesta as $mantenimiento) {
+            ///CON LA FUNCIOIN EXPLOTE CREAMOS UN UN ARRAY A PARTIR DE UN STRING, EN ESTE CASO
+            //CADA ELEMENTO LLEGA HASTA DONDE APARECE UNA COMA
+            $mantenimiento->mantenimiento_realizado =   explode(",", $mantenimiento->mantenimiento_realizado);
+            $mantenimiento->piezas_cambiadas =   explode(",", $mantenimiento->piezas_cambiadas);
+        }
 
-            return $query->result();
+            return $respuesta;
         }
    
        public function set_datos( $data_cruda){
