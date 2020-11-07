@@ -13,7 +13,6 @@ class Servicios_adicionales_model extends CI_Model
     public $asientos_deshabilitados;
     public $asientos_dispobibles;
 
-
     public function verificar_camposEntrada($dataCruda)
     {
         $objeto = array();

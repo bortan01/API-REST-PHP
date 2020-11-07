@@ -62,9 +62,10 @@ class SitioTuristico_model extends CI_Model
         $parametros = $this->verificar_camposEntrada($data);
 
         try {
-            $this->db->select('id_sitio_turistico,id_contacto,sitio_turistico.nombre_sitio,precio_sitio,id_tipo_sitio,latitud,longitud,descripcion_sitio, contacto.nombre_contacto as contactoN,telefono,correo ');
+            $this->db->select('id_sitio_turistico,id_contacto,sitio_turistico.nombre_sitio,precio_sitio,sitio_turistico.id_tipo_sitio,latitud,longitud,descripcion_sitio, contacto.nombre_contacto as contactoN,telefono,correo,tipo_sitio ');
             $this->db->from("sitio_turistico");
             $this->db->join('contacto', 'sitio_turistico.informacion_contacto=contacto.id_contacto');
+            $this->db->join('tipo_sitio', 'sitio_turistico.id_tipo_sitio=tipo_sitio.id_tipo_sitio');
             $this->db->where($parametros);
             // $this->db->where($parametros);
             $query = $this->db->get();
