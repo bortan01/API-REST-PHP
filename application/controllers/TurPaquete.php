@@ -10,6 +10,7 @@ class TurPaquete extends REST_Controller
         $this->load->database();
         $this->load->model('Imagen_model');
         $this->load->model('Tours_paquete_model');
+        $this->load->model('detalle_servicio_model');
     }
 
     public function save_post()
@@ -26,6 +27,9 @@ class TurPaquete extends REST_Controller
             if ($respuesta['err']) {
                 $this->response($respuesta, REST_Controller::HTTP_BAD_REQUEST);
             } else {
+                //SE GURDO EL TUR POR LO QUE YA TENEMOS EL ID PARA EL DETALLE
+                $servicios =json_decode($data["servicios"],true);
+                $this->detalle_servicio_model->guardar($servicios, $respuesta['id']);
                 $this->response($respuesta, REST_Controller::HTTP_OK);
             }
         } else {

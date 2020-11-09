@@ -28,8 +28,6 @@ class detalle_servicio_model extends CI_Model
         for ($i = 0; $i < count($servicios); $i++) {
             $servicios[$i]["id_tours"] = $id_tours;
         }
-        // print_r($servicios);
-        // die();
         //$servicio = $this->verificar_camposEntrada($data);
         $insert = $this->db->insert_batch($nombreTabla, $servicios);
         if (!$insert) {
