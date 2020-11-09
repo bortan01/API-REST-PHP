@@ -11,6 +11,8 @@ class Itinerario_model extends CI_Model
     public $id_itinerario;
     public $id_tours;
     public $id_sitio_turistico;
+    public $costo;
+    public $por_usuario;
     public $title;
     public $start;
     public $end;
@@ -32,12 +34,14 @@ class Itinerario_model extends CI_Model
         //este es un objeto tipo cliente model
         return $this;
     }
-    public function guardar(array $data)
+    public function guardar(array $sitiosTuristicos, string $id_tours)
     {
         $nombreTabla = "itinerario";
+        for ($i = 0; $i < count($sitiosTuristicos); $i++) {
+            $sitiosTuristicos[$i]["id_tours"] = $id_tours;
+        }
 
-
-        $insert = $this->db->insert_batch($nombreTabla, $data);
+        $insert = $this->db->insert_batch($nombreTabla, $sitiosTuristicos);
         if (!$insert) {
             //NO GUARDO
             $respuesta = array(
@@ -109,8 +113,11 @@ class Itinerario_model extends CI_Model
         $nombreTabla = "itinerario";
         try {
             $parametros = $this->verificar_camposEntrada($data);
+            $this->db->select('*');
+            $this->db->from("itinerario");
+             $this->db->join('sitio_turistico', 'id_sitio_turistico');          
             $this->db->where($parametros);
-            $query = $this->db->get($nombreTabla);
+            $query = $this->db->get();
             $itinerarioSeleccionado = $query->result();
 
             if (count($itinerarioSeleccionado) < 1) {

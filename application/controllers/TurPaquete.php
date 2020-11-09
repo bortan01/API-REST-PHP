@@ -11,6 +11,7 @@ class TurPaquete extends REST_Controller
         $this->load->model('Imagen_model');
         $this->load->model('Tours_paquete_model');
         $this->load->model('detalle_servicio_model');
+        $this->load->model('Itinerario_model');
     }
 
     public function save_post()
@@ -28,8 +29,14 @@ class TurPaquete extends REST_Controller
                 $this->response($respuesta, REST_Controller::HTTP_BAD_REQUEST);
             } else {
                 //SE GURDO EL TUR POR LO QUE YA TENEMOS EL ID PARA EL DETALLE
-                $servicios =json_decode($data["servicios"],true);
-                $this->detalle_servicio_model->guardar($servicios, $respuesta['id']);
+                if (!empty($data["servicios"])) {
+                    $servicios = json_decode($data["servicios"], true);
+                    $this->detalle_servicio_model->guardar($servicios, $respuesta['id']);
+                }
+                if (!empty($data["sitios"])) {
+                    $servicios = json_decode($data["sitios"], true);
+                    $this->Itinerario_model->guardar($servicios, $respuesta['id']);
+                }
                 $this->response($respuesta, REST_Controller::HTTP_OK);
             }
         } else {
@@ -64,8 +71,6 @@ class TurPaquete extends REST_Controller
     public function obtenerViaje_get()
     {
         $data = $this->get();
-
-
         $respuesta =  $this->Tours_paquete_model->obtenerViaje($data);
         if ($respuesta['err']) {
             $this->response($respuesta, REST_Controller::HTTP_BAD_REQUEST);

@@ -53,6 +53,7 @@ class Tours_paquete_model extends CI_Model
             $respuesta = array(
                 'err'          => FALSE,
                 'mensaje'      => 'Registro Guardado Exitosamente',
+                'id'           => $identificador,
                 'turPaquete'   => $turPaquete
             );
             return $respuesta;
