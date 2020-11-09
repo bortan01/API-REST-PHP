@@ -7,17 +7,15 @@ class Tours_paquete_model extends CI_Model
     public $fecha_salida;
     public $lugar_salida;
     public $precio;
-    public $incluye;
     public $no_incluye;
     public $requisitos;
     public $promociones;
-    public $descripcion;
-    public $foto;
+    public $descripcion_tur;
     public $cupos_disponibles;
     public $nombre_encargado;
     public $estado;
-    public $tipo;
     public $aprobado;
+    public $tipo;
 
 
     public function verificar_campos($dataCruda)
@@ -34,10 +32,12 @@ class Tours_paquete_model extends CI_Model
 
     public function guardar(array $turPaquete)
     {
+        // print_r($turPaquete);
+        // die();
         $nombreTabla = "tours_paquete";
         $insert = $this->db->insert($nombreTabla, $turPaquete);
         if (!$insert) {
-            //NO GUARDO
+            //NO GUARDO 
             $respuesta = array(
                 'err'          => TRUE,
                 'mensaje'      => 'Error al insertar ', $this->db->error_message(),

@@ -23,11 +23,8 @@ class SitioTuristico_model extends CI_Model
                 $this->$nombre_campo = $valor_campo;
             }
         }
-
-
         return $this;
     }
-
     public function guardar(array $data)
     {
         $data["estado"] = TRUE;
@@ -60,7 +57,6 @@ class SitioTuristico_model extends CI_Model
     public function obtenerSitio(array $data)
     {
         $parametros = $this->verificar_camposEntrada($data);
-
         try {
             $this->db->select('id_sitio_turistico,id_contacto,sitio_turistico.nombre_sitio,precio_sitio,sitio_turistico.id_tipo_sitio,latitud,longitud,descripcion_sitio, contacto.nombre_contacto as contactoN,telefono,correo,tipo_sitio ');
             $this->db->from("sitio_turistico");

@@ -19,14 +19,19 @@ class detalle_servicio_model extends CI_Model
                 $objeto[$nombre_campo] = $valor_campo;
             }
         }
-            return $objeto;
+        return $objeto;
     }
 
-    public function guardar(array $data)
+    public function guardar(array $servicios, string $id_tours)
     {
         $nombreTabla = "detalle_servicio";
+        for ($i = 0; $i < count($servicios); $i++) {
+            $servicios[$i]["id_tours"] = $id_tours;
+        }
+        // print_r($servicios);
+        // die();
         //$servicio = $this->verificar_camposEntrada($data);
-        $insert = $this->db->insert_batch($nombreTabla, $data);
+        $insert = $this->db->insert_batch($nombreTabla, $servicios);
         if (!$insert) {
             //NO GUARDO
             $respuesta = array(
@@ -41,7 +46,7 @@ class detalle_servicio_model extends CI_Model
             $this->load->model('Imagen_model');
             $identificador = $this->db->insert_id();
             $this->Imagen_model->guardarGaleria("tours_paquete", $identificador);
-            
+
             $respuesta = array(
                 'err'          => FALSE,
                 'mensaje'      => 'Registro Guardado Exitosamente',
@@ -53,14 +58,14 @@ class detalle_servicio_model extends CI_Model
 
     public function obtenerServicio(array $data = array())
     {
-       $nombreTabla = "detalle_servicio";
+        $nombreTabla = "detalle_servicio";
         try {
             $parametros = $this->verificar_camposEntrada($data);
             $this->db->where($parametros);
             $query = $this->db->get($nombreTabla);
             $servicioSeleccionado = $query->result();
-                      
-            if (count($servicioSeleccionado)<1) {
+
+            if (count($servicioSeleccionado) < 1) {
                 //PROBLEMA
                 $respuesta = array(
                     'err'          => TRUE,
@@ -69,8 +74,8 @@ class detalle_servicio_model extends CI_Model
                 );
                 return $respuesta;
             } else {
-                
-                 $respuesta = array(
+
+                $respuesta = array(
                     'err'          => FALSE,
                     'servicio'   => $servicioSeleccionado
                 );
@@ -80,6 +85,4 @@ class detalle_servicio_model extends CI_Model
             return array('err' => TRUE, 'status' => 400, 'mensaje' => $e->getMessage());
         }
     }
-
-   
 }

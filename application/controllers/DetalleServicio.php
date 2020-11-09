@@ -13,6 +13,9 @@ class DetalleServicio extends REST_Controller
     public function save_post()
     {
         $data = $this->post();
+       
+        $servicios =json_decode($data["servil"],true);
+
         $this->load->library("form_validation");
         $this->form_validation->set_data($data);
 
@@ -20,8 +23,8 @@ class DetalleServicio extends REST_Controller
         //$this->form_validation->run('insertarServicioDetalle')
         if (TRUE) {
             //VERIFICAMOS QUE TODOS LOS PARAMETROS ESTEN BIEN
-          
-            $respuesta =  $this->detalle_servicio_model->guardar($data);
+
+            $respuesta =  $this->detalle_servicio_model->guardar($servicios, "1");
             if ($respuesta['err']) {
                 $this->response($respuesta, REST_Controller::HTTP_BAD_REQUEST);
             } else {
@@ -48,6 +51,4 @@ class DetalleServicio extends REST_Controller
             $this->response($respuesta, REST_Controller::HTTP_OK);
         }
     }
-  
-    
 }
