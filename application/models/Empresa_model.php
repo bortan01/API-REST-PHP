@@ -22,8 +22,17 @@ public $forma_operacion;
  		}
  		return $this; //retornamos el objeto de clase
  	}//fin de capitalizar los datos segun el modelo y campos correctos de la base
+public function get_empresas(){
+	$this->db->select('*');
+    $this->db->from('empresa');
+    $query=$this->db->get();
+   
 
- 		public function insertarEmpresa(){
+        return $query->result();
+   
+ 	}
+
+public function insertarEmpresa(){
 
  		//verificar el correo
 		$query=$this->db->get_where('empresa',array('nombre_empresa'=>$this->nombre_empresa) );

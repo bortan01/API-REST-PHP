@@ -10,6 +10,30 @@ public function __construct(){
 		$this->load->database();
 		$this->load->model('Empresa_model');
 	}
+public function empresas_get(){
+
+	$empresa=$this->Empresa_model->get_empresas();
+
+	if (isset($empresa)) {
+		//quitar campos que no quiero
+		//unset($cita->motivo);
+		//unset($cliente->telefono2);
+		$respuesta=array('err'=>FALSE,
+						 'mensaje'=>'Registros cargados correctamente',
+						  'empresa'=>$empresa);
+
+		$this->response($respuesta);
+	}else{
+		$respuesta=array(
+			'err'=>TRUE,
+			'mensaje'=>'Error al cargar los datos.',
+			'citas'=>null
+
+		);
+		$this->response($respuesta,REST_Controller::HTTP_NOT_FOUND);
+
+	}
+}
 
 public function empresa_post(){
 
