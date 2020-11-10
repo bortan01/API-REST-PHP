@@ -26,7 +26,7 @@ public $forma_operacion;
  		public function insertarEmpresa(){
 
  		//verificar el correo
-		$query=$this->db->get_where('empresa',array('pregunta'=>$this->nombre_empresa) );
+		$query=$this->db->get_where('empresa',array('nombre_empresa'=>$this->nombre_empresa) );
 		$empresa_ya=$query->row();
 
 			if (isset($empresa_ya)) {
@@ -44,7 +44,7 @@ public $forma_operacion;
 				#insertado
 				$respuesta=array(
 					'err'=>FALSE,
-					'mensaje'=>'Registro insertado correctamente',
+					'mensaje'=>'Empresa registrada correctamente',
 					'pregunta_id'=>$this->db->insert_id()
 				);
 			}else{

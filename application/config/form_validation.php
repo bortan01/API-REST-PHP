@@ -182,7 +182,7 @@ $config = array(
 		array('field' => 'nombre_empresa','label' => 'nombre de la empresa'       , 'rules' => 'trim|required|min_length[4]|max_length[255]'),
 		array('field' => 'nombre_encargado'  ,'label' => 'nombre del encargado' , 'rules' => 'trim|required|min_length[4]|max_length[255]'),
 		array('field' => 'direccion'  ,'label' => 'la dirección' , 'rules' => 'trim|required|min_length[4]|max_length[255]'),
-		array('field' => 'telefono'  ,'label' => 'el teléfono' , 'rules' => 'trim|required|min_length[8]|max_length[9]|integer')
+		array('field' => 'telefono'  ,'label' => 'el teléfono' , 'rules' => 'trim|required|min_length[8]|max_length[9]')
 	),
 
 	'encomienda_put' => array(
