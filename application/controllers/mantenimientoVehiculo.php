@@ -12,7 +12,8 @@ public function __construct(){
 	}
 	public function mantenimiento_get(){
 
-	$mantenimientos=$this->Mantenimiento_model->get_mantenimiento();
+	$data = $this->get();
+	$mantenimientos=$this->Mantenimiento_model->get_mantenimiento($data);
 
 	if (isset($mantenimientos)) {
 		

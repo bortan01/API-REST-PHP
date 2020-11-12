@@ -12,9 +12,18 @@ class Mantenimiento_model extends CI_Model
     public $costoMantenimiento;
     public $activo = TRUE;
     
-    public function get_mantenimiento(){
+    public function get_mantenimiento(array $data){
+    
+        $parametros = $this->verificar_camposEntrada($data);//idMantenimiento 
+        $this->db->select('*');
+        $this->db->from('modelo');
+        $this->db->join('marca_vehiculo', 'modelo.id_marca = marca_vehiculo.id_marca');
+        $this->db->join('vehiculo', 'vehiculo.idmodelo = modelo.idmodelo');
+        $this->db->join('mantenimiento', 'mantenimiento.id_vehiculoFK = vehiculo.idvehiculo');
+        
+        $this->db->where($parametros);//id_mantenimeto=1
+        $query=$this->db->get();
 
-        $query=$this->db->get('mantenimiento');
         $respuesta = $query->result();
       
         

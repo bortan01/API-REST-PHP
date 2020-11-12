@@ -19,7 +19,7 @@ class Vehiculo_model extends CI_Model
     public $sonido;
     public $wifi;
     public $aireAcondicionado;
-    public $activo = TRUE;
+    public $activo=TRUE;
     public $kilometraje;
     public $tipoCombustible;
 
@@ -28,6 +28,8 @@ class Vehiculo_model extends CI_Model
     {
         $parametros = $this->verificar_camposEntrada($data);
 
+
+
         $this->db->select('*');
         $this->db->from('vehiculo');
         $this->db->join('transmisionvehiculo', 'vehiculo.id_transmicionFK=transmisionvehiculo.idtransmicion');
@@ -35,10 +37,8 @@ class Vehiculo_model extends CI_Model
         $this->db->join('marca_vehiculo', 'modelo.id_marca = marca_vehiculo.id_marca');
         $this->db->join('categoria', 'vehiculo.idcategoria=categoria.idcategoria');
         $this->db->join('rentacar', 'vehiculo.id_rentaCarFK=rentacar.id_rentaCar');
-        
-        $where = "vehiculo.activo=1";
-        
-        $this->db->where($where);
+        $this->db->where($parametros);
+        $this->db->where_in('vehiculo.activo',1);
         $query = $this->db->get();
 
         //$query=$this->db->get('vehiculo');
