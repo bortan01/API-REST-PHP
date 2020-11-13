@@ -178,6 +178,11 @@ $config = array(
 
 	),
 
+	'estandar' => array(
+		array('field' => 'costo','label' => 'costo', 'rules' => 'trim|required'),
+		array('field' => 'direccion'  ,'label' => 'dirección' , 'rules' => 'trim|required|min_length[4]|max_length[255]')
+	),
+
 	'empresa_put' => array(
 		array('field' => 'nombre_empresa','label' => 'nombre de la empresa'       , 'rules' => 'trim|required|min_length[4]|max_length[255]'),
 		array('field' => 'nombre_encargado'  ,'label' => 'nombre del encargado' , 'rules' => 'trim|required|min_length[4]|max_length[255]'),

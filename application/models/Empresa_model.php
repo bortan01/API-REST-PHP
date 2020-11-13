@@ -9,7 +9,6 @@ public $nombre_encargado;
 public $direccion;
 public $telefono;
 public $forma_operacion;
-public $id_deptos;
 
  public function set_datos( $data_cruda){
 
@@ -39,11 +38,11 @@ public function verificar_camposEntrada($dataCruda)
 
 public function get_municipio(array $data){
 
-	$parametros = $this->verificar_camposEntrada($data);
+	//$parametros = $this->verificar_camposEntrada($data);
 
         $this->db->select('*');
         $this->db->from('municipios');
-        $this->db->where($parametros);
+        $this->db->where($data);
         $query = $this->db->get();
 
         //$query=$this->db->get('vehiculo');
