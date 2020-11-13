@@ -10,6 +10,56 @@ public function __construct(){
 		$this->load->database();
 		$this->load->model('Empresa_model');
 	}
+
+public function municipios_get(){
+	$data = $this->get();
+	$municipio = $this->Empresa_model->get_municipio($data);
+
+	if (isset($municipio)) {
+		
+		$respuesta=array(
+			'err'=>FALSE,
+			'mensaje'=>'Registro Cargado correctamente',
+			'municipios'=>$municipio
+
+		);
+		$this->response($respuesta,REST_Controller::HTTP_OK);
+	}else{
+		$respuesta=array(
+			'err'=>TRUE,
+			'mensaje'=>'Error al cargar los datos.',
+			'municipios'=>null
+
+		);
+		$this->response($respuesta,REST_Controller::HTTP_NOT_FOUND);
+
+	}
+}
+
+public function deptos_get(){
+
+	$deptos=$this->Empresa_model->get_deptos();
+
+	if (isset($deptos)) {
+		//quitar campos que no quiero
+		//unset($cita->motivo);
+		//unset($cliente->telefono2);
+		$respuesta=array('err'=>FALSE,
+						 'mensaje'=>'Registros cargados correctamente',
+						  'deptos'=>$deptos);
+
+		$this->response($respuesta);
+	}else{
+		$respuesta=array(
+			'err'=>TRUE,
+			'mensaje'=>'Error al cargar los datos.',
+			'citas'=>null
+
+		);
+		$this->response($respuesta,REST_Controller::HTTP_NOT_FOUND);
+
+	}
+}
 public function empresas_get(){
 
 	$empresa=$this->Empresa_model->get_empresas();

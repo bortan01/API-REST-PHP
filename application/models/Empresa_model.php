@@ -9,6 +9,7 @@ public $nombre_encargado;
 public $direccion;
 public $telefono;
 public $forma_operacion;
+public $id_deptos;
 
  public function set_datos( $data_cruda){
 
@@ -22,6 +23,44 @@ public $forma_operacion;
  		}
  		return $this; //retornamos el objeto de clase
  	}//fin de capitalizar los datos segun el modelo y campos correctos de la base
+
+public function verificar_camposEntrada($dataCruda)
+    {
+        $objeto = array();
+        ///quitar campos no existentes
+        foreach ($dataCruda as $nombre_campo => $valor_campo) {
+            # para verificar si la propiedad existe..
+            if (property_exists('Empresa_model', $nombre_campo)) {
+                $objeto[$nombre_campo] = $valor_campo;
+            }
+        }
+        return $objeto;
+    }
+
+public function get_municipio(array $data){
+
+	$parametros = $this->verificar_camposEntrada($data);
+
+        $this->db->select('*');
+        $this->db->from('municipios');
+        $this->db->where($parametros);
+        $query = $this->db->get();
+
+        //$query=$this->db->get('vehiculo');
+
+        return $query->result();
+
+}
+public function get_deptos(){
+	$this->db->select('*');
+    $this->db->from('departamentos');
+    $query=$this->db->get();
+
+    return $query->result();
+   
+ 	}
+
+
 public function get_empresas(){
 	$this->db->select('*');
     $this->db->from('empresa');
