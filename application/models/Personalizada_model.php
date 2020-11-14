@@ -4,7 +4,6 @@ class Personalizada_model extends CI_Model
 {
 	public $id_personalizada;
 	public $costo;
-	public $direccion;
 	public $punto_referencia;
 	public $envoltura;
 	public $id_producto;
@@ -21,7 +20,6 @@ class Personalizada_model extends CI_Model
 		$this->id_producto = $id_producto;
 		$this->id_municipios = $datos['id_municipios'];
 		$this->costo = $datos['costo'];
-		$this->direccion = $datos['direccion'];
 		$this->punto_referencia = $datos['punto_referencia'];
 		$this->envoltura =$datos['envoltura'];
 

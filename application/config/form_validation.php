@@ -180,7 +180,7 @@ $config = array(
 
 	'estandar' => array(
 		array('field' => 'costo','label' => 'costo', 'rules' => 'trim|required'),
-		array('field' => 'direccion'  ,'label' => 'dirección' , 'rules' => 'trim|required|min_length[4]|max_length[255]')
+		array('field' => 'punto_referencia'  ,'label' => 'punto de referencia' , 'rules' => 'trim|required|min_length[4]|max_length[255]')
 	),
 
 	'empresa_put' => array(

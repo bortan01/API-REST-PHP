@@ -5,7 +5,6 @@ class Estandar_model extends CI_Model
 
 public $id_estandar;
 public $costo;
-public $direccion;
 public $punto_referencia;
 public $id_empresa;
 public $id_municipios;
