@@ -34,8 +34,8 @@ class TurPaquete extends REST_Controller
                     $this->detalle_servicio_model->guardar($servicios, $respuesta['id']);
                 }
                 if (!empty($data["sitios"])) {
-                    $servicios = json_decode($data["sitios"], true);
-                    $this->Itinerario_model->guardar($servicios, $respuesta['id']);
+                    $itinerario = json_decode($data["sitios"], true);
+                    $this->Itinerario_model->guardar($itinerario, $respuesta['id']);
                 }
                 $this->response($respuesta, REST_Controller::HTTP_OK);
             }

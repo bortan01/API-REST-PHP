@@ -37,66 +37,69 @@ class Itinerario_model extends CI_Model
     public function guardar(array $sitiosTuristicos, string $id_tours)
     {
         $nombreTabla = "itinerario";
-        for ($i = 0; $i < count($sitiosTuristicos); $i++) {
-            $sitiosTuristicos[$i]["id_tours"] = $id_tours;
-        }
 
-        $insert = $this->db->insert_batch($nombreTabla, $sitiosTuristicos);
-        if (!$insert) {
-            //NO GUARDO
+        if (count($sitiosTuristicos) < 1) {
             $respuesta = array(
                 'err'          => TRUE,
-                'mensaje'      => 'Error al insertar ', $this->db->error_message(),
-                'error_number' => $this->db->error_number(),
+                'mensaje'      => "NO SE INSERTO NINGUN REGISTRO",
                 'itinerario'      => null
             );
             return $respuesta;
         } else {
-            $this->id_itinerario = $this->db->insert_id();
-            $respuesta = array(
-                'err'          => FALSE,
-                'mensaje'      => 'Registro de tItinerario Guardado Exitosamente',
-            );
-            return $respuesta;
-        }
-    }
 
-    public function editar(array $data)
-    {
-        $nombreTabla = "itinerario";
-
-        for ($i = 0; $i < count($data); $i++) {
-            if (isset($data[$i]["end"])) {
-                $fecha = $data[$i]["end"] = DateTime::createFromFormat('d/m/Y H:m:s', $data[$i]["end"]);
-                $data[$i]["end"] = $data[$i]["end"]->format('Y-m-d h:m:s');
+            for ($i = 0; $i < count($sitiosTuristicos); $i++) {
+                $sitiosTuristicos[$i]["id_tours"] = $id_tours;
             }
-            if (isset($data[$i]["start"])) {
-                $fecha =  DateTime::createFromFormat('d/m/Y H:m:s', $data[$i]["start"]);
-                $data[$i]["start"] = $fecha->format('Y-m-d h:m:s');
-            }
-        }
-
-        try {
-
-            $insert = $this->db->update_batch($nombreTabla, $data, 'id_itinerario');
-
-
+            $insert = $this->db->insert_batch($nombreTabla, $sitiosTuristicos);
             if (!$insert) {
                 //NO GUARDO
                 $respuesta = array(
-                    'err'         => TRUE,
-                    'mensaje'     => 'Ningun Registro Fue Modificado',
-                    'itinerario'  => null
+                    'err'          => TRUE,
+                    'mensaje'      => 'Error al insertar ', $this->db->error_message(),
+                    'error_number' => $this->db->error_number(),
+                    'itinerario'      => null
                 );
                 return $respuesta;
             } else {
                 $this->id_itinerario = $this->db->insert_id();
                 $respuesta = array(
                     'err'          => FALSE,
-                    'mensaje'      => 'Registro Guardado Exitosamente',
-
+                    'mensaje'      => 'Registro de tItinerario Guardado Exitosamente',
                 );
                 return $respuesta;
+            }
+        }
+    }
+    public function editar(array $data)
+    {
+
+        $nombreTabla = "itinerario";
+        try {
+            if (count($data) < 1) {
+                $respuesta = array(
+                    'err'         => TRUE,
+                    'mensaje'     => 'Ningun Registro Fue Modificado',
+                    'itinerario'  => null
+                );
+            } else {
+                $insert = $this->db->update_batch($nombreTabla, $data, 'id_itinerario');
+                if (!$insert) {
+                    //NO GUARDO
+                    $respuesta = array(
+                        'err'         => TRUE,
+                        'mensaje'     => 'Ningun Registro Fue Modificado',
+                        'itinerario'  => null
+                    );
+                    return $respuesta;
+                } else {
+                    $this->id_itinerario = $this->db->insert_id();
+                    $respuesta = array(
+                        'err'          => FALSE,
+                        'mensaje'      => 'Registro Guardado Exitosamente',
+
+                    );
+                    return $respuesta;
+                }
             }
         } catch (\Throwable $th) {
             $respuesta = array(
@@ -107,15 +110,15 @@ class Itinerario_model extends CI_Model
             return $respuesta;
         }
     }
-
     public function obtener(array $data)
     {
-        $nombreTabla = "itinerario";
+
         try {
             $parametros = $this->verificar_camposEntrada($data);
+
             $this->db->select('*');
             $this->db->from("itinerario");
-             $this->db->join('sitio_turistico', 'id_sitio_turistico');          
+            $this->db->join('sitio_turistico', 'id_sitio_turistico');
             $this->db->where($parametros);
             $query = $this->db->get();
             $itinerarioSeleccionado = $query->result();
@@ -130,26 +133,90 @@ class Itinerario_model extends CI_Model
                 return $respuesta;
             } else {
 
-
-                for ($i = 0; $i < count($itinerarioSeleccionado); $i++) {
-                    if (isset($itinerarioSeleccionado[$i]->start) && $itinerarioSeleccionado[$i]->start != null) {
-
-                        $itinerarioSeleccionado[$i]->start = new DateTime($itinerarioSeleccionado[$i]->start);
+                foreach ($itinerarioSeleccionado as $key => $value) {
+                    if ($value->title  == null) {
+                        $value->title = $value->nombre_sitio;
                     }
-                    if (isset($itinerarioSeleccionado[$i]->end) && $itinerarioSeleccionado[$i]->end != null) {
-                        $itinerarioSeleccionado[$i]->end = new DateTime($itinerarioSeleccionado[$i]->end);
-                    }
+                    $value->id = $value->id_itinerario;
                 }
-                $respuesta = array(
-                    'err'          => FALSE,
-                    'itinerario'   => $itinerarioSeleccionado
-                );
-                return $respuesta;
+                // $respuesta = array(
+                //     'err'          => FALSE,
+                //     'itinerario'   => $itinerarioSeleccionado
+                // );
+                return $itinerarioSeleccionado;
             }
         } catch (Exception $e) {
             return array('err' => TRUE, 'status' => 400, 'mensaje' => $e->getMessage());
         }
+    }
+    public function obtenerNulos(array $data)
+    {
 
+        try {
+            $parametros = $this->verificar_camposEntrada($data);
+
+            $this->db->select('*');
+            $this->db->from("itinerario");
+            $this->db->where($parametros);
+            $this->db->where("start", null);
+            $query = $this->db->get();
+            $itinerarioSeleccionado = $query->result();
+
+
+
+            return $itinerarioSeleccionado;
+        } catch (Exception $e) {
+            return array('err' => TRUE, 'status' => 400, 'mensaje' => $e->getMessage());
+        }
+    }
+
+
+    public function obtenerCalendario(array $data)
+    {
+        try {
+            $start = DateTime::createFromFormat("Y-m-d\TH:i:sO", $data["start"]);
+            $end   = DateTime::createFromFormat("Y-m-d\TH:i:sO", $data["end"]);
+
+            $this->db->select('*');
+            $this->db->from("itinerario");
+            $this->db->where("id_tours", $data["id_tours"]);
+            $this->db->where('start >=', $start->format('Y-m-d H:i:s'));
+            $this->db->where('end <=', $end->format('Y-m-d H:i:s'));
+            $query = $this->db->get();
+            $itinerarioSeleccionado = $query->result();
+
+            foreach ($itinerarioSeleccionado as $key => $value) {
+                $value->id = $value->id_itinerario;
+            }
+            return $itinerarioSeleccionado;
+        } catch (Exception $e) {
+            return array('err' => TRUE, 'status' => 400, 'mensaje' => $e->getMessage());
+        }
+    }
+    public function borrar($campos)
+    {
+        $nombreTabla = "itinerario";
+        $this->db->where('id_itinerario', $campos["id_itinerario"]);
+        $hecho = $this->db->delete($nombreTabla);
+
+        if ($hecho) {
+            ///LOGRO ACTUALIZAR 
+            $respuesta = array(
+                'err'     => FALSE,
+                'mensaje' => 'Registro Eliminado Exitosamente',
+                'id'      => $campos["id_itinerario"]
+            );
+            return $respuesta;
+        } else {
+            //NO GUARDO
+            $respuesta = array(
+                'err' => TRUE,
+                'mensaje' => 'Error al actualizar ', $this->db->error_message(),
+                'error_number' => $this->db->error_number(),
+
+            );
+            return $respuesta;
+        }
     }
 
     public function verificar_camposEntrada($dataCruda)
