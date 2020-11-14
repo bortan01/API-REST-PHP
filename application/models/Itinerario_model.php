@@ -86,6 +86,8 @@ class Itinerario_model extends CI_Model
                     'itinerario'  => null
                 );
             } else {
+                // print_r($data);
+                // die();
                 $insert = $this->db->update_batch($nombreTabla, $data, 'id_itinerario');
                 if (!$insert) {
                     //NO GUARDO
@@ -191,6 +193,8 @@ class Itinerario_model extends CI_Model
 
             foreach ($itinerarioSeleccionado as $key => $value) {
                 $value->id = $value->id_itinerario;
+                $value->allDay= $value->allDay== "1"? TRUE :FALSE;
+               
             }
             return $itinerarioSeleccionado;
         } catch (Exception $e) {
