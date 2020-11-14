@@ -25,7 +25,7 @@ public $id_municipios;
 
 	public function insertarEstandar($data){
 
- 		//verificar el correo
+ 		//extraer la empresa
 		$query=$this->db->get_where('empresa',array('nombre_empresa'=>$data['nombre_empresa']) );
 		$id_empresa=$query->row('id_empresa');
 

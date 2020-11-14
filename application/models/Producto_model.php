@@ -100,7 +100,10 @@ class Producto_model extends CI_Model
 
 
 			//insertar el registro
-			$hecho=$this->db->insert('producto',$datos);
+			$hecho=$this->db->insert('producto',$this);
+			$this->load->model('Personalizada_model');
+			$id_producto=$this->db->insert_id();
+			$this->Personalizada_model->insertarPersonalizada($id_producto,$datos);
 
 			if ($hecho) {
 				#insertado
