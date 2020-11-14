@@ -204,7 +204,7 @@ $config = array(
 		array('field' => 'respuesta'  ,'label' => 'respuesta' , 'rules' => 'trim|min_length[1]|max_length[255]')
 	),
 	'producto_put' => array(
-		array('field' => 'nombre'  ,'label' => 'Nombre' , 'rules' => 'trim|required|min_length[4]|max_length[255]')
+		array('field' => 'nombre_producto'  ,'label' => 'Nombre del producto' , 'rules' => 'trim|required|min_length[4]|max_length[255]')
 	),
 	'detalleEncomienda_put' => array(
 		array('field' => 'cantidad'  ,'label' => 'catidad' , 'rules' => 'required')

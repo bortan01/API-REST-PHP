@@ -3,9 +3,8 @@ defined('BASEPATH') or exit('No direct script access allowed');
 class Producto_model extends CI_Model
 {
 	public $id_producto;
-	public $id_categoria;
-	public $nombre;
-	public $permitido;
+	public $nombre_producto;
+
 
 	public function eliminar($datos){
 
@@ -97,9 +96,8 @@ class Producto_model extends CI_Model
  	}//fin de capitalizar los datos segun el modelo y campos correctos de la base
 
  	public function insert($datos){
-
-
 			//insertar el registro
+ 		$this->nombre_producto=$datos['nombre_producto'];
 			$hecho=$this->db->insert('producto',$this);
 			$this->load->model('Personalizada_model');
 			$id_producto=$this->db->insert_id();
