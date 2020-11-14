@@ -80,7 +80,7 @@ class Itinerario extends REST_Controller
   public function elimination_delete()
   {
     $data = $this->delete();
-   
+
     if (!isset($data["id_itinerario"])) {
       $respuesta = array(
         'err' => TRUE,

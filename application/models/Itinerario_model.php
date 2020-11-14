@@ -49,6 +49,10 @@ class Itinerario_model extends CI_Model
 
             for ($i = 0; $i < count($sitiosTuristicos); $i++) {
                 $sitiosTuristicos[$i]["id_tours"] = $id_tours;
+          
+
+
+
             }
             $insert = $this->db->insert_batch($nombreTabla, $sitiosTuristicos);
             if (!$insert) {
