@@ -9,6 +9,7 @@ public $nombre_encargado;
 public $direccion;
 public $telefono;
 public $forma_operacion;
+public $unidad;
 
  public function set_datos( $data_cruda){
 
