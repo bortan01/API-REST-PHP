@@ -61,8 +61,8 @@ public function deptos_get(){
 	}
 }
 public function empresas_get(){
-
-	$empresa=$this->Empresa_model->get_empresas();
+	$data=$this->get();
+	$empresa=$this->Empresa_model->get_empresas($data);
 
 	if (isset($empresa)) {
 		//quitar campos que no quiero

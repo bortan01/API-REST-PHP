@@ -61,9 +61,10 @@ public function get_deptos(){
  	}
 
 
-public function get_empresas(){
+public function get_empresas($data){
 	$this->db->select('*');
     $this->db->from('empresa');
+    $this->db->where($data);
     $query=$this->db->get();
    
 
