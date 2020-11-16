@@ -25,7 +25,6 @@ $config = array(
 		array('field' => 'precio_diario', 'label' => 'Precio Diario', 'rules' => 'trim|required|min_length[1]|max_length[255]'),
 		array('field' => 'descripcion', 'label' => 'Descripción', 'rules' => 'trim|required|min_length[2]|max_length[255]'),
 		array('field' => 'detalles', 'label' => 'Detalles', 'rules' => 'trim|required|min_length[2]|max_length[255]'),
-		array('field' => 'opc_avanzadas', 'label' => 'Opciones Avanzadas', 'rules' => 'trim|required|min_length[2]|max_length[255]'),
 		array('field' => 'kilometraje', 'label' => 'Kilometraje', 'rules' => 'trim|required|min_length[2]|max_length[255]'),
 		array('field' => 'tipoCombustible', 'label' => 'Tipo de Combustible', 'rules' => 'trim|required|min_length[2]|max_length[255]')		
 	),

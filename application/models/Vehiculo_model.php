@@ -37,9 +37,14 @@ class Vehiculo_model extends CI_Model
         $this->db->where_in('vehiculo.activo',1);
         $query = $this->db->get();
 
-        //$query=$this->db->get('vehiculo');
-
-        return $query->result();
+        $respuesta = $query->result();
+      
+        
+        foreach ($respuesta as $carro) {
+            $carro->opc_avanzadas =   explode(",", $carro->opc_avanzadas);
+        }
+            return $respuesta;
+        
     }
        public function set_datos( $data_cruda){
    
