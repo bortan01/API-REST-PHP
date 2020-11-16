@@ -16,19 +16,15 @@ class Vehiculo_model extends CI_Model
     public $precio_diario;
     public $descripcion;
     public $detalles;
-    public $sonido;
-    public $wifi;
-    public $aireAcondicionado;
     public $activo=TRUE;
     public $kilometraje;
     public $tipoCombustible;
+    public $opc_avanzadas;
 
 
     public function get_vehiculo(array $data)
     {
         $parametros = $this->verificar_camposEntrada($data);
-
-
 
         $this->db->select('*');
         $this->db->from('vehiculo');

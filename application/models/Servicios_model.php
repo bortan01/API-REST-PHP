@@ -8,8 +8,12 @@ class Servicios_model extends CI_Model
     public $precio;
     public $activo = TRUE;
     
-    public function get_servicios(){
+    public function get_servicios(array $data){
 
+        $parametros = $this->verificar_camposEntrada($data);
+
+        $this->db->where($parametros);
+        
         $query=$this->db->get('servicios_opc');
 
             return $query->result();

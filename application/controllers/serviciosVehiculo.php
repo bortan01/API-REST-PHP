@@ -12,7 +12,8 @@ public function __construct(){
 	}
 	public function servicios_get(){
 
-	$servicio=$this->Servicios_model->get_servicios();
+		$data = $this->get();
+	    $servicio=$this->Servicios_model->get_servicios($data);
 
 	if (isset($servicio)) {
 		

@@ -25,11 +25,9 @@ $config = array(
 		array('field' => 'precio_diario', 'label' => 'Precio Diario', 'rules' => 'trim|required|min_length[1]|max_length[255]'),
 		array('field' => 'descripcion', 'label' => 'Descripción', 'rules' => 'trim|required|min_length[2]|max_length[255]'),
 		array('field' => 'detalles', 'label' => 'Detalles', 'rules' => 'trim|required|min_length[2]|max_length[255]'),
-		array('field' => 'sonido', 'label' => 'Sonido', 'rules' => 'trim|required|min_length[2]|max_length[255]'),
-		array('field' => 'wifi', 'label' => 'Wifi', 'rules' => 'trim|required|min_length[2]|max_length[255]'),
-		array('field' => 'aireAcondicionado', 'Aire Acondicionado' => 'Placa', 'rules' => 'trim|required|min_length[2]|max_length[255]'),
+		array('field' => 'opc_avanzadas', 'label' => 'Opciones Avanzadas', 'rules' => 'trim|required|min_length[2]|max_length[255]'),
 		array('field' => 'kilometraje', 'label' => 'Kilometraje', 'rules' => 'trim|required|min_length[2]|max_length[255]'),
-		array('field' => 'tipoCombustible', 'label' => 'Tipo de Combustible', 'rules' => 'trim|required|min_length[2]|max_length[255]'),		
+		array('field' => 'tipoCombustible', 'label' => 'Tipo de Combustible', 'rules' => 'trim|required|min_length[2]|max_length[255]')		
 	),
 	'marca_put' => array(
 		array('field' => 'marca', 'label' => 'Marca', 'rules' => 'trim|required|min_length[2]|max_length[255]')
