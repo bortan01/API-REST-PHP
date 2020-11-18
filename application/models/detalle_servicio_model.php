@@ -25,32 +25,42 @@ class detalle_servicio_model extends CI_Model
     public function guardar(array $servicios, string $id_tours)
     {
         $nombreTabla = "detalle_servicio";
-        for ($i = 0; $i < count($servicios); $i++) {
-            $servicios[$i]["id_tours"] = $id_tours;
-        }
-        //$servicio = $this->verificar_camposEntrada($data);
-        $insert = $this->db->insert_batch($nombreTabla, $servicios);
-        if (!$insert) {
-            //NO GUARDO
+
+        if (count($servicios) < 1) {
             $respuesta = array(
                 'err'          => TRUE,
-                'mensaje'      => 'Error al insertar ', $this->db->error_message(),
-                'error_number' => $this->db->error_number(),
-                'serrvicio'      => null
+                'mensaje'      => "NO SE INSERTO NINGUN REGISTRO",
+                'itinerario'      => null
             );
             return $respuesta;
         } else {
-            //ESTA ES POR SI SE VA A SUBIR LA GALAREIA 
-            $this->load->model('Imagen_model');
-            $identificador = $this->db->insert_id();
-            $this->Imagen_model->guardarGaleria("tours_paquete", $identificador);
+            for ($i = 0; $i < count($servicios); $i++) {
+                $servicios[$i]["id_tours"] = $id_tours;
+            }
+            //$servicio = $this->verificar_camposEntrada($data);
+            $insert = $this->db->insert_batch($nombreTabla, $servicios);
+            if (!$insert) {
+                //NO GUARDO
+                $respuesta = array(
+                    'err'          => TRUE,
+                    'mensaje'      => 'Error al insertar ', $this->db->error_message(),
+                    'error_number' => $this->db->error_number(),
+                    'serrvicio'      => null
+                );
+                return $respuesta;
+            } else {
+                //ESTA ES POR SI SE VA A SUBIR LA GALAREIA 
+                $this->load->model('Imagen_model');
+                $identificador = $this->db->insert_id();
+                $this->Imagen_model->guardarGaleria("tours_paquete", $identificador);
 
-            $respuesta = array(
-                'err'          => FALSE,
-                'mensaje'      => 'Registro Guardado Exitosamente',
-                //'servicio'   => $servicio
-            );
-            return $respuesta;
+                $respuesta = array(
+                    'err'          => FALSE,
+                    'mensaje'      => 'Registro Guardado Exitosamente',
+                    //'servicio'   => $servicio
+                );
+                return $respuesta;
+            }
         }
     }
 
