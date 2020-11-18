@@ -4,7 +4,8 @@ class Tours_paquete_model extends CI_Model
 {
     public $id_tours;
     public $nombreTours;
-    public $fecha_salida;
+    public $start;
+    public $end;
     public $lugar_salida;
     public $precio;
     public $no_incluye;
