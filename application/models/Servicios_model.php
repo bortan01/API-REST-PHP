@@ -13,7 +13,7 @@ class Servicios_model extends CI_Model
         $parametros = $this->verificar_camposEntrada($data);
 
         $this->db->where($parametros);
-        
+        $this->db->where_in('servicios_opc.activo',1);
         $query=$this->db->get('servicios_opc');
 
             return $query->result();

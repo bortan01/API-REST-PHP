@@ -22,6 +22,7 @@ class Mantenimiento_model extends CI_Model
         $this->db->join('mantenimiento', 'mantenimiento.id_vehiculoFK = vehiculo.idvehiculo');
         
         $this->db->where($parametros);//id_mantenimeto=1
+        $this->db->where_in('mantenimiento.activo',1);
         $query=$this->db->get();
 
         $respuesta = $query->result();
