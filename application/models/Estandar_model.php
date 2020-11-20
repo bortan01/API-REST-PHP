@@ -9,6 +9,23 @@ public $punto_referencia;
 public $id_empresa;
 public $id_municipios;
 
+
+public function get_puntoEstandar(array $data){
+
+		$query=$this->db->get_where('empresa',array('nombre_empresa'=>$data['nombre_empresa']) );
+		$id_empresa=$query->row('id_empresa');
+
+        $this->db->select('*');
+        $this->db->from('estandar');
+        $this->db->where(array('id_empresa'=>$id_empresa,'id_municipios'=>$data['id_municipios']));
+        $query = $this->db->get();
+
+        //$query=$this->db->get('vehiculo');
+
+        return $query->result();
+
+}
+
  public function set_datos( $data_cruda){
 
  		foreach ($data_cruda as $nombre_campo => $valor_campo) {

@@ -12,6 +12,30 @@ public function __construct(){
 	}
 
 //******registro de forma de operar estandar
+public function puntoReferencia_get(){
+	$data = $this->get();
+	$punto = $this->Estandar_model->get_puntoEstandar($data);
+
+	if (count($punto)>0) {
+		
+		$respuesta=array(
+			'err'=>FALSE,
+			'mensaje'=>'Registro Cargado correctamente',
+			'punto'=>$punto
+
+		);
+		$this->response($respuesta,REST_Controller::HTTP_OK);
+	}else{
+		$respuesta=array(
+			'err'=>TRUE,
+			'mensaje'=>'No hay ruta para ',
+			'punto'=>null
+
+		);
+		$this->response($respuesta,REST_Controller::HTTP_NOT_FOUND);
+
+	}
+}
 
 public function registroEstandar_post(){
 
