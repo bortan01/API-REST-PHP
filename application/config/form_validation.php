@@ -47,9 +47,9 @@ $config = array(
 		array('field' => 'lugar', 'label' => 'Lugar', 'rules' => 'trim|required|min_length[2]|max_length[255]')
 	),
 	'renta_put' => array(
-		array('field' => 'rentaCar', 'label' => 'Nombre', 'rules' => 'trim|required|min_length[2]|max_length[255]'),
-		array('field' => 'lugar', 'label' => 'Lugar', 'rules' => 'trim|required|min_length[2]|max_length[255]'),
-		array('field' => 'descripcion', 'label' => 'Descripción', 'rules' => 'trim|required|min_length[2]|max_length[255]'),
+		array('field' => 'rentaCar', 'label' => 'Nombre de Renta Cars', 'rules' => 'trim|required|min_length[6]|max_length[255]'),
+		array('field' => 'lugar', 'label' => 'Dirección donde esta ubicado', 'rules' => 'trim|required|min_length[2]|max_length[255]'),
+		array('field' => 'descripcion', 'label' => 'Descripción', 'rules' => 'trim|required|min_length[10]|max_length[255]'),
 		array('field' => 'telefono', 'label' => 'Telefono', 'rules' => 'trim|required|min_length[8]|max_length[255]'),
 		array('field' => 'usuario', 'label' => 'Usuario del Encargado de Renta cars', 'rules' => 'trim|required|min_length[6]|max_length[255]'),
 		array('field' => 'contrasena', 'label' => 'Contraseña', 'rules' => 'trim|required|min_length[6]|max_length[255]')
