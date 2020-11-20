@@ -35,6 +35,7 @@ class Itinerario extends REST_Controller
   public function calendarSave_post()
   {
     $data = $this->post();
+ 
     if (!empty($data["eventos"])) {
       $eventos = json_decode($data["eventos"], true);
       $this->Itinerario_model->guardar($eventos, $data['id_tours']);

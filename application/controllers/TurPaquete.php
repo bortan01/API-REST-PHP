@@ -13,7 +13,6 @@ class TurPaquete extends REST_Controller
         $this->load->model('detalle_servicio_model');
         $this->load->model('Itinerario_model');
     }
-
     public function save_post()
     {
         $data = $this->post();

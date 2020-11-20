@@ -37,7 +37,6 @@ class Itinerario_model extends CI_Model
     public function guardar(array $sitiosTuristicos, string $id_tours)
     {
         $nombreTabla = "itinerario";
-
         if (count($sitiosTuristicos) < 1) {
             $respuesta = array(
                 'err'          => TRUE,
@@ -188,8 +187,7 @@ class Itinerario_model extends CI_Model
 
             foreach ($itinerarioSeleccionado as $key => $value) {
                 $value->id = $value->id_itinerario;
-                $value->allDay= $value->allDay== "1"? TRUE :FALSE;
-               
+                $value->allDay = $value->allDay == "1" ? TRUE : FALSE;
             }
             return $itinerarioSeleccionado;
         } catch (Exception $e) {
