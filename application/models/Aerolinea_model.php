@@ -3,26 +3,19 @@ defined('BASEPATH') or exit('No direct script access allowed');
 class Aerolinea_model extends CI_Model
 {
     public $idaerolinea;
+    public $idalianza;
     public $nombre_aerolinea;
     public $sitioWeb;
     public $telefonoContacto;
     public $activo = TRUE;
     
+
     public function get_aerolinea(){
-      $query=$this->db->get('aerolinea');
-        $respu=$query->result();
-        if (count($respu)<1) {
-          $respuesta=array('err'=>FALSE,'mensaje'=>'Error al cargar los datos','aerolinea'=>null);
 
-          return $respuesta;
-        }else{
-          $respuesta=array('err'=>TRUE,'mensaje'=>'Registro Cargado correctamente',
-            'aerolinea'=>$respu);
+        $query=$this->db->get('aerolinea');
 
-          return $respuesta;
+            return $query->result();
         }
-    }
-
        public function set_datos( $data_cruda){
    
             foreach ($data_cruda as $nombre_campo => $valor_campo) {

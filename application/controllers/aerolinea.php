@@ -13,16 +13,27 @@ public function __construct(){
 
 	public function aerolinea_get(){
 
-	$aerolineas=$this->Aerolinea_model->get_aerolinea();
-
-	if ($aerolineas['err']) {
-		
-		$this->response($aerolineas,REST_Controller::HTTP_OK);
-	}else{
-		
-		$this->response($aerolineas,REST_Controller::HTTP_NOT_FOUND);
-
-	}
+		$aerolineas=$this->Aerolinea_model->get_aerolinea();
+	
+		if (isset($aerolineas)) {
+			
+			$respuesta=array(
+				'err'=>FALSE,
+				'mensaje'=>'Registro Cargado correctamente',
+				'aerolineas'=>$aerolineas
+	
+			);
+			$this->response($respuesta,REST_Controller::HTTP_OK);
+		}else{
+			$respuesta=array(
+				'err'=>TRUE,
+				'mensaje'=>'Error al cargar los datos.',
+				'aerolineas'=>null
+	
+			);
+			$this->response($respuesta,REST_Controller::HTTP_NOT_FOUND);
+	
+		}
 }
 	
 	//INSERTAR
