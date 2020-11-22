@@ -10,12 +10,23 @@ class Aerolinea_model extends CI_Model
     public $activo = TRUE;
     
 
-    public function get_aerolinea(){
+    public function get_aerolinea(array $data){
 
-        $query=$this->db->get('aerolinea');
+        $parametros = $this->verificar_camposEntrada($data);
 
-            return $query->result();
+        $this->db->select('*');
+        $this->db->from('aerolinea');
+        $this->db->join('alianza', 'aerolinea.idalianza = alianza.idalianza');
+        $this->db->where($parametros);
+        $this->db->where_in('aerolinea.activo',1);
+        $query = $this->db->get();
+
+        return $query->result();
+
         }
+
+
+
        public function set_datos( $data_cruda){
    
             foreach ($data_cruda as $nombre_campo => $valor_campo) {

@@ -13,7 +13,8 @@ public function __construct(){
 
 	public function aerolinea_get(){
 
-		$aerolineas=$this->Aerolinea_model->get_aerolinea();
+		$data = $this->get();
+		$aerolineas=$this->Aerolinea_model->get_aerolinea($data);
 	
 		if (isset($aerolineas)) {
 			
