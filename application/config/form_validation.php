@@ -87,7 +87,7 @@ $config = array(
 	),
 	'clases_put' => array(
 		array('field' => 'nombre_clase', 'label' => 'Clase', 'rules' => 'trim|required|min_length[2]|max_length[255]'),
-		array('field' => 'descripcion', 'label' => 'Descripción', 'rules' => 'trim|required|min_length[2]|max_length[255]')
+		array('field' => 'descripcion', 'label' => 'Descripción', 'rules' => 'trim|required|min_length[2]|max_length[2000]')
 	),
 	'direccion_put' => array(
 		array('field' => 'idlugar', 'label' => 'Recogida', 'rules' => 'trim|required|min_length[1]|max_length[255]'),

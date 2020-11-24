@@ -8,9 +8,21 @@ class Clases_model extends CI_Model
     public $activo = TRUE;
   
     
-    public function get_clases(){
-        $query=$this->db->get('tipo_clase');
+    public function get_clases(array $data){
+       // $query=$this->db->get('tipo_clase');
+          //  return $query->result();
+
+            $parametros = $this->verificar_camposEntrada($data);
+
+            $this->db->select('*');
+            $this->db->from('tipo_clase');
+            $this->db->where($parametros);
+            $this->db->where_in('tipo_clase.activo',1);
+            $query = $this->db->get();
+    
             return $query->result();
+
+
         }
 
        public function set_datos( $data_cruda){

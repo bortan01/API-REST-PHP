@@ -11,8 +11,8 @@ public function __construct(){
 		$this->load->model('Clases_model');
 	}
 	public function clases_get(){
-
-	$clase=$this->Clases_model->get_clases();
+		$data = $this->get();
+	    $clase=$this->Clases_model->get_clases($data);
 
 	if (isset($clase)) {
 		
