@@ -8,11 +8,21 @@ class Viajes_model extends CI_Model
     public $descripcion;
     public $activo = TRUE;
     
-    public function get_viajes(){
+    public function get_viajes(array $data){
 
-        $query=$this->db->get('tipo_viaje');
+       // $query=$this->db->get('tipo_viaje');
 
+         //   return $query->result();
+            $parametros = $this->verificar_camposEntrada($data);
+
+            $this->db->select('*');
+            $this->db->from('tipo_viaje');
+            $this->db->where($parametros);
+            $this->db->where_in('tipo_viaje.activo',1);
+            $query = $this->db->get();
+    
             return $query->result();
+
         }
    
        public function set_datos( $data_cruda){

@@ -9,8 +9,6 @@ class Clases_model extends CI_Model
   
     
     public function get_clases(array $data){
-       // $query=$this->db->get('tipo_clase');
-          //  return $query->result();
 
             $parametros = $this->verificar_camposEntrada($data);
 

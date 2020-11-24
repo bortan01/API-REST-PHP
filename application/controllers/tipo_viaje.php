@@ -12,7 +12,8 @@ public function __construct(){
 	}
 	public function viajes_get(){
 
-	$viaje=$this->Viajes_model->get_viajes();
+		$data = $this->get();
+		$viaje=$this->Viajes_model->get_viajes($data);
 
 	if (isset($viaje)) {
 		
