@@ -77,16 +77,32 @@ class SitioTuristico_model extends CI_Model
                     $this->db->where("identificador", $fila->id_contacto);
                     $this->db->where("tipo", "contacto");
                     $query = $this->db->get("galeria");
-                 
-                   foreach ($query->result() as $galeria ) {
-                       $url = $galeria->foto_path;
-                   }
-                   $fila->url = $url;
+
+                    foreach ($query->result() as $galeria) {
+                        $url = $galeria->foto_path;
+                    }
+                    $fila->url = $url;
                 }
-                
+
                 $respuesta = array('err' => FALSE, 'sitios' => $sitios);
                 return $respuesta;
             }
+        } catch (Exception $e) {
+            echo $e->getMessage();
+        }
+    }
+    public function obtenerLista(array $data)
+    {
+        $parametros = $this->verificar_camposEntrada($data);
+        try {
+            $this->db->select('*');
+            $this->db->from("sitio_turistico");
+            // $this->db->join('contacto', 'sitio_turistico.informacion_contacto=contacto.id_contacto');
+            // $this->db->join('tipo_sitio', 'sitio_turistico.id_tipo_sitio=tipo_sitio.id_tipo_sitio');
+            $this->db->where($parametros);
+            $query = $this->db->get();
+            $sitios  = $query->result();
+            return $sitios;
         } catch (Exception $e) {
             echo $e->getMessage();
         }
@@ -142,8 +158,8 @@ class SitioTuristico_model extends CI_Model
         $this->db->where('id_sitio_turistico', $identificador);
         $hecho = $this->db->update($nombreTabla, $campos);
         if ($hecho) {
-           $this->load->model('Imagen_model');
-           $this->Imagen_model->eliminarGaleria($nombreTabla, $identificador);
+            $this->load->model('Imagen_model');
+            $this->Imagen_model->eliminarGaleria($nombreTabla, $identificador);
             ///LOGRO ACTUALIZAR 
             $respuesta = array(
                 'err'     => FALSE,

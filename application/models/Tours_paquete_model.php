@@ -8,6 +8,7 @@ class Tours_paquete_model extends CI_Model
     public $end;
     public $lugar_salida;
     public $precio;
+    public $incluye;
     public $no_incluye;
     public $requisitos;
     public $promociones;
@@ -30,12 +31,19 @@ class Tours_paquete_model extends CI_Model
         }
         return $this;
     }
-
     public function guardar(array $turPaquete)
     {
         // print_r($turPaquete);
         // die();
         $nombreTabla = "tours_paquete";
+        $turPaquete["incluye"] = str_replace(",", "_", $turPaquete["incluye"]);
+        $turPaquete["no_incluye"] = str_replace(",", "_", $turPaquete["no_incluye"]);
+        $turPaquete["requisitos"] = str_replace(",", "_", $turPaquete["requisitos"]);
+        $turPaquete["lugar_salida"] = str_replace(",", "_", $turPaquete["lugar_salida"]);
+
+
+        print_r($turPaquete);
+        die();
         $insert = $this->db->insert($nombreTabla, $turPaquete);
         if (!$insert) {
             //NO GUARDO 
@@ -43,14 +51,14 @@ class Tours_paquete_model extends CI_Model
                 'err'          => TRUE,
                 'mensaje'      => 'Error al insertar ', $this->db->error_message(),
                 'error_number' => $this->db->error_number(),
-                'turPaquete'      => null
+                'turPaquete'   => null
             );
             return $respuesta;
         } else {
             $this->load->model('Imagen_model');
             $identificador = $this->db->insert_id();
-            $this->Imagen_model->guardarGaleria("tours_paquete", $identificador);
-            
+            $foto = $this->Imagen_model->guardarGaleria("tours_paquete", $identificador);
+
             $respuesta = array(
                 'err'          => FALSE,
                 'mensaje'      => 'Registro Guardado Exitosamente',
@@ -64,31 +72,43 @@ class Tours_paquete_model extends CI_Model
     {
         $this->load->model("Utils_model");
         $nombreTabla = "tours_paquete";
+        $parametros = $this->verificar_camposEntrada($data);
 
-        try {
-            $parametros = $this->verificar_camposEntrada($data);
-            $viajeSEleccionado = $this->Utils_model->selectTabla($nombreTabla, $parametros);
-            ///usuario seleccionado es un array de clases genericas
-            if (count($viajeSEleccionado)<1) {
-                //PROBLEMA
-                $respuesta = array(
-                    'err'          => TRUE,
-                    'mensaje'      => 'NO HAY RESULTADOS QUE MOSTRAR',
-                    'viaje'     => null
-                );
-                return $respuesta;
-            } else {
-                
-                 $respuesta = array(
-                    'err'          => FALSE,
-                    'viaje'   => $viajeSEleccionado
-                );
-                return $respuesta;
-            }
-           
-        } catch (Exception $e) {
-            return array('err' => TRUE, 'status' => 400, 'mensaje' => $e->getMessage());
+
+        $this->db->select('*');
+        $this->db->from($nombreTabla);
+        // $this->db->join('contacto', 'sitio_turistico.informacion_contacto=contacto.id_contacto');
+        // $this->db->join('tipo_sitio', 'sitio_turistico.id_tipo_sitio=tipo_sitio.id_tipo_sitio');
+        $this->db->where($parametros);
+
+        $query = $this->db->get();
+        $respuesta  = $query->result();
+
+        foreach ($respuesta as $tur) {
+            ///CON LA FUNCIOIN EXPLOTE CREAMOS UN UN ARRAY A PARTIR DE UN STRING, EN ESTE CASO
+            //CADA ELEMENTO LLEGA HASTA DONDE APARECE UNA COMA
+            $tur->incluye      = explode("_", $tur->incluye);
+            $tur->no_incluye   = explode("_", $tur->no_incluye);
+            $tur->requisitos   = explode("_", $tur->requisitos);
+            $tur->lugar_salida = explode("_", $tur->lugar_salida);
+            $tur->promociones  = json_decode($tur->promociones, true);
         }
+
+        // foreach ($sitios as $fila) {
+        //     $url = "http://www.lagraderia.com/wp-content/uploads/2018/12/no-imagen.jpg";
+        //     $this->db->select("foto_path");
+        //     $this->db->where("identificador", $fila->id_contacto);
+        //     $this->db->where("tipo", "contacto");
+        //     $query = $this->db->get("galeria");
+
+        //     foreach ($query->result() as $galeria) {
+        //         $url = $galeria->foto_path;
+        //     }
+        //     $fila->url = $url;
+        // }
+
+
+        return $respuesta;
     }
 
     public function editar($data)

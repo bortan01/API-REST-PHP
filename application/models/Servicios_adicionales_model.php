@@ -34,8 +34,8 @@ class Servicios_adicionales_model extends CI_Model
 
         $data["activo"]                 = TRUE;
         $data["mapa"]                   = isset($data["mapa"]) ? $data["mapa"]  : "";
-        $data["asientos_deshabilitados"]  = isset($data["asientos_deshabilitados"]) ? $data["asientos_deshabilitados"]  : "";
-        $data["asientos_dispobibles"]  = isset($data["asientos_dispobibles"]) ? $data["asientos_dispobibles"]  : "";
+        $data["asientos_deshabilitados"]= isset($data["asientos_deshabilitados"]) ? $data["asientos_deshabilitados"]  : "";
+        $data["asientos_dispobibles"]   = isset($data["asientos_dispobibles"]) ? $data["asientos_dispobibles"]  : "";
         $servicio                       = $this->verificar_camposEntrada($data);
         $insert                         = $this->db->insert($nombreTabla, $servicio);
         if (!$insert) {

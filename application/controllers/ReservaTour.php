@@ -12,7 +12,7 @@ class ReservaTour extends REST_Controller
         $this->load->model('ReservaTour_model');
     }
 
-    public function save_post()
+    public function save_post() 
     {
         $data = $this->post();
 

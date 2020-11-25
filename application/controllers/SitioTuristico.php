@@ -16,7 +16,6 @@ class SitioTuristico extends REST_Controller
     {
         $this->load->view('upload_form', array('error' => ' '));
     }
-
     public function save_post()
     {
         $data = $this->post();
@@ -48,7 +47,6 @@ class SitioTuristico extends REST_Controller
             $this->response($respuesta, REST_Controller::HTTP_BAD_REQUEST);
         }
     }
-
     public function show_get()
     {
         $data = $this->get();
@@ -95,5 +93,12 @@ class SitioTuristico extends REST_Controller
                 $respuesta = array('err' => TRUE, 'mensaje' => 'Error interno de servidor');
             }
         }
+    }
+    public function list_get()
+    {
+        $data = $this->get();
+        ///si no mandan id por defecto sera 0
+        $sitio = $this->SitioTuristico_model->obtenerLista($data);
+        $this->response($sitio, REST_Controller::HTTP_OK);
     }
 }

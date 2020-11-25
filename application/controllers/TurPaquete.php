@@ -25,7 +25,7 @@ class TurPaquete extends REST_Controller
             //VERIFICAMOS QUE TODOS LOS PARAMETROS ESTEN BIEN
             $turPaquete = $this->Tours_paquete_model->verificar_camposEntrada($data);
             $respuesta =  $this->Tours_paquete_model->guardar($turPaquete);
-           
+
             if ($respuesta['err']) {
                 $this->response($respuesta, REST_Controller::HTTP_BAD_REQUEST);
             } else {
@@ -69,15 +69,11 @@ class TurPaquete extends REST_Controller
             }
         }
     }
-    public function obtenerViaje_get()
+    public function show_get()
     {
         $data = $this->get();
         $respuesta =  $this->Tours_paquete_model->obtenerViaje($data);
-        if ($respuesta['err']) {
-            $this->response($respuesta, REST_Controller::HTTP_BAD_REQUEST);
-        } else {
-            $this->response($respuesta, REST_Controller::HTTP_OK);
-        }
+        $this->response($respuesta, REST_Controller::HTTP_OK);
     }
     public function elimination_delete()
     {
