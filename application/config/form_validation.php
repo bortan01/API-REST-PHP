@@ -111,7 +111,7 @@ $config = array(
 		array('field' => 'maletas', 'label' => 'Cantidad de Maletas', 'rules' => 'trim|required|min_length[2]|max_length[255]')
 	),
 	'informacion_put' => array(
-		array('field' => 'condiciones', 'label' => 'Condiciones', 'rules' => 'trim|required|min_length[2]|max_length[255]')
+		array('field' => 'condiciones', 'label' => 'Condiciones', 'rules' => 'trim|required|min_length[2]|max_length[2000]')
 	),
 	'opciones_put' => array(
 		array('field' => 'idaerolinea', 'label' => 'Aerolinea', 'rules' => 'trim|required|min_length[1]|max_length[255]'),
