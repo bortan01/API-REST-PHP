@@ -4,8 +4,6 @@ class infoAdicional_model extends CI_Model
 {
     public $idinfo_adicional;
     public $condiciones;
-    public $anuncios;
-    public $otros;
     public $activo = TRUE;
     
     public function get_informacion(){

@@ -7,6 +7,9 @@ class cotizarVuelo_model extends CI_Model
     public $id_generales;
     public $opc_avanzadas;
     public $idinfo_adicional;
+    public $idaerolinea;
+    public $idclase;
+    public $idtipo_viaje;
     public $total;
     public $descuentos;
     public $activo = TRUE;
