@@ -67,7 +67,7 @@ public function __construct(){
 			//todo bien
 			//$this->response('Todo bien');
 		$prod=$this->Producto_model->set_datos($data);
-        $respuesta=$this->Producto_model->insert($data); 
+        $respuesta=$this->Producto_model->insertarProducto($data); 
 
 		if ($respuesta['err']) {
 

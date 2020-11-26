@@ -95,13 +95,13 @@ class Producto_model extends CI_Model
         return $objeto;
  	}//fin de capitalizar los datos segun el modelo y campos correctos de la base
 
- 	public function insert($datos){
+ 	public function insertarProducto($datos){
 			//insertar el registro
- 		$this->nombre_producto=$datos['nombre_producto'];
+ 		    $this->nombre_producto=$datos['nombre_producto'];
 			$hecho=$this->db->insert('producto',$this);
-			$this->load->model('Personalizada_model');
+			$this->load->model('Tarifa_model');
 			$id_producto=$this->db->insert_id();
-			$this->Personalizada_model->insertarPersonalizada($id_producto,$datos);
+			$this->Tarifa_model->insertarTarifa($id_producto,$datos);
 
 			if ($hecho) {
 				#insertado

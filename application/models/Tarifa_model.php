@@ -3,9 +3,9 @@ defined('BASEPATH') or exit('No direct script access allowed');
 class Tarifa_model extends CI_Model
 {
 	public $id_tarifa;
-	public $libras;
 	public $tarifa;
 	public $comision;
+	public $id_producto;
 
 	public function eliminar($datos){
 
@@ -96,11 +96,13 @@ class Tarifa_model extends CI_Model
         return $objeto;
  	}//fin de capitalizar los datos segun el modelo y campos correctos de la base
 
- 	public function insert($datos){
+ 	public function insertarTarifa($id_producto,$datos){
 
-
+ 			$this->tarifa = $datos['tarifa'];
+ 			$this->comision = $datos['comision'];
+ 			$this->id_producto = $id_producto;
 			//insertar el registro
-			$hecho=$this->db->insert('tarifa',$datos);
+			$hecho=$this->db->insert('tarifa',$this);
 
 			if ($hecho) {
 				#insertado
