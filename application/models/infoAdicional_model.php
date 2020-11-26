@@ -6,11 +6,22 @@ class infoAdicional_model extends CI_Model
     public $condiciones;
     public $activo = TRUE;
     
-    public function get_informacion(){
+    public function get_informacion(array $data){
 
-        $query=$this->db->get('info_adicional');
+        //$query=$this->db->get('info_adicional');
 
-            return $query->result();
+        //return $query->result();
+
+        $parametros = $this->verificar_camposEntrada($data);
+
+        $this->db->select('*');
+        $this->db->from('info_adicional');
+        $this->db->where($parametros);
+        $this->db->where_in('info_adicional.activo',1);
+        $query = $this->db->get();
+
+        return $query->result();
+
         }
    
        public function set_datos( $data_cruda){

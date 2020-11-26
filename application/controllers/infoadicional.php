@@ -12,7 +12,8 @@ public function __construct(){
 	}
 	public function informacion_get(){
 
-	$informacion=$this->infoAdicional_model->get_informacion();
+		$data = $this->get();
+	    $informacion=$this->infoAdicional_model->get_informacion($data);
 
 	if (isset($informacion)) {
 		
