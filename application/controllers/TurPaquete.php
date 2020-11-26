@@ -75,6 +75,12 @@ class TurPaquete extends REST_Controller
         $respuesta =  $this->Tours_paquete_model->obtenerViaje($data);
         $this->response($respuesta, REST_Controller::HTTP_OK);
     }
+    public function showEdit_get()
+    {
+        $data = $this->get();
+        $respuesta =  $this->Tours_paquete_model->obtenerViajeEdit($data);
+        $this->response($respuesta, REST_Controller::HTTP_OK);
+    }
     public function elimination_delete()
     {
         $data = $this->delete();
@@ -83,7 +89,7 @@ class TurPaquete extends REST_Controller
             $this->response($respuesta, REST_Controller::HTTP_BAD_REQUEST);
         } else {
 
-            $campos = array('id_tours' => $data["id_tours"], 'estado' => 'inactivo');
+            $campos = array('id_tours' => $data["id_tours"], 'estado' => '0');
 
             try {
                 $respuesta = $this->Tours_paquete_model->borrar($campos);

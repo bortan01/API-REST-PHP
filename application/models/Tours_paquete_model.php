@@ -36,14 +36,6 @@ class Tours_paquete_model extends CI_Model
         // print_r($turPaquete);
         // die();
         $nombreTabla = "tours_paquete";
-        $turPaquete["incluye"] = str_replace(",", "_", $turPaquete["incluye"]);
-        $turPaquete["no_incluye"] = str_replace(",", "_", $turPaquete["no_incluye"]);
-        $turPaquete["requisitos"] = str_replace(",", "_", $turPaquete["requisitos"]);
-        $turPaquete["lugar_salida"] = str_replace(",", "_", $turPaquete["lugar_salida"]);
-
-
-        print_r($turPaquete);
-        die();
         $insert = $this->db->insert($nombreTabla, $turPaquete);
         if (!$insert) {
             //NO GUARDO 
@@ -72,7 +64,9 @@ class Tours_paquete_model extends CI_Model
     {
         $this->load->model("Utils_model");
         $nombreTabla = "tours_paquete";
+        // $data["estado"] = 1;
         $parametros = $this->verificar_camposEntrada($data);
+
 
 
         $this->db->select('*');
@@ -87,11 +81,12 @@ class Tours_paquete_model extends CI_Model
         foreach ($respuesta as $tur) {
             ///CON LA FUNCIOIN EXPLOTE CREAMOS UN UN ARRAY A PARTIR DE UN STRING, EN ESTE CASO
             //CADA ELEMENTO LLEGA HASTA DONDE APARECE UNA COMA
-            $tur->incluye      = explode("_", $tur->incluye);
-            $tur->no_incluye   = explode("_", $tur->no_incluye);
-            $tur->requisitos   = explode("_", $tur->requisitos);
-            $tur->lugar_salida = explode("_", $tur->lugar_salida);
+            $tur->incluye      = json_decode($tur->incluye, true);
+            $tur->no_incluye   = json_decode($tur->no_incluye, true);
+            $tur->requisitos   = json_decode($tur->requisitos, true);
+            $tur->lugar_salida = json_decode($tur->lugar_salida, true);
             $tur->promociones  = json_decode($tur->promociones, true);
+            $tur->descripcion_tur = nl2br($tur->descripcion_tur);
         }
 
         // foreach ($sitios as $fila) {
@@ -110,7 +105,75 @@ class Tours_paquete_model extends CI_Model
 
         return $respuesta;
     }
+    public function obtenerViajeEdit(array $parametros = array())
+    {
+        $incluye = [];
+        $no_incluye = [];
+        $requisitos = [];
+        $lugar_salida = [];
+        $promociones = [];
+        $nombreTur  = "";
+        $start = "";
+        $end = "";
+        $precio = "";
+        $cupos_disponibles = "";
+        $descripcion_tur = "";
 
+
+        $this->db->select('id_servicios,costo,por_usuario,nombre_servicio');
+        $this->db->from("detalle_servicio");
+        $this->db->join('servicios_adicionales', 'id_servicios');
+        $this->db->where($parametros);
+        $query = $this->db->get();
+        $servicios  = $query->result();
+
+        $this->db->select('id_sitio_turistico,costo,por_usuario,nombre_sitio');
+        $this->db->from("itinerario");
+        $this->db->join('sitio_turistico', 'id_sitio_turistico');
+        $this->db->where($parametros);
+        $query = $this->db->get();
+        $tur  = $query->result();
+
+        $this->db->select('descripcion_tur,incluye,no_incluye,requisitos,lugar_salida, promociones,cupos_disponibles,nombreTours,start,end,precio',"descripcion_tur");
+        $this->db->from("tours_paquete");
+        $this->db->where($parametros);
+        $query = $this->db->get();
+        $result  = $query->result();
+
+        foreach ($result as $viaje) {
+            $incluye =  json_decode($viaje->incluye, true);
+            $no_incluye =  json_decode($viaje->no_incluye, true);
+            $requisitos =  json_decode($viaje->requisitos, true);
+            $lugar_salida =  json_decode($viaje->lugar_salida, true);
+            $promociones =  json_decode($viaje->promociones, true);
+            $nombreTurX  = $viaje->nombreTours;
+            $start =  $viaje->start;
+            $end =  $viaje->end;
+            $precio = $viaje->precio;
+            $cupos_disponibles = $viaje->cupos_disponibles;
+            $descripcion_tur = $viaje->descripcion_tur;
+           
+        }
+
+        $respuesta = array(
+            'nombre' => $nombreTurX,
+            'start' => $start,
+            'start' => $end,
+            'precio' => $precio,
+            'cupos' => $cupos_disponibles,
+            'descripcion_tur' => $descripcion_tur,
+            'incluye' => $incluye,
+            'no_incluye' => $no_incluye,
+            'requisitos' => $requisitos,
+            'lugar_salidas' => $lugar_salida,
+            'promociones' => $promociones,
+            'servicios' => $servicios,
+            'turs' => $tur,
+
+        );
+
+        return $respuesta;
+    }
     public function editar($data)
     {
         $nombreTabla = "tours_paquete";
@@ -156,13 +219,16 @@ class Tours_paquete_model extends CI_Model
     }
     public function borrar($campos)
     {
+
         $nombreTabla = "tours_paquete";
         ///VAMOS A ACTUALIZAR UN REGISTRO
-        $this->db->where('id_tours', $campos["id_tours"]);
+        $identificador = $campos["id_tours"];
+        $this->db->where('id_tours', $identificador);
 
         $hecho = $this->db->update($nombreTabla, $campos);
         if ($hecho) {
             ///LOGRO ACTUALIZAR 
+            $this->Imagen_model->eliminarGaleria($nombreTabla, $identificador);
             $respuesta = array(
                 'err'     => FALSE,
                 'mensaje' => 'Registro Eliminado Exitosamente',
