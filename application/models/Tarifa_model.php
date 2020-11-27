@@ -75,10 +75,13 @@ class Tarifa_model extends CI_Model
  		return $respuesta;
  	}//fin metodo
 
-	public function get_tarifa(){
+	public function get_tarifa($data){
 
-
- 	$query=$this->db->get('tarifa');
+ 	    $this->db->select('*');
+        $this->db->from('tarifa');
+        //array('id_municipios'=>$data['id_municipios'])
+        $this->db->where($data);
+        $query = $this->db->get();
  	
  		return $query->result();
  	}

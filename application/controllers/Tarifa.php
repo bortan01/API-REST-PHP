@@ -49,8 +49,8 @@ public function updateTarifa_post(){
 	}//fin de metodo
 
 public function tarifas_get(){
-
-	$tarifa=$this->Tarifa_model->get_tarifa();
+	$data = $this->get();
+	$tarifa=$this->Tarifa_model->get_tarifa($data);
 
 	if (isset($tarifa)) {
 		//quitar campos que no quiero
