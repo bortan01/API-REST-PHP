@@ -27,3 +27,4 @@ final class ValidateMessage implements RequestInterface
         $this->wrappedRequest = new Request('POST', $uri, $headers, $body);
     }
 }
+    

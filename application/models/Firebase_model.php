@@ -1,6 +1,6 @@
 <?php
 defined('BASEPATH') or exit('No direct script access allowed');
-require  'C:\xampp\htdocs\API-REST-PHP\vendor\autoload.php';
+require('./vendor/autoload.php');
 
 use Kreait\Firebase\Factory;
 use Kreait\Firebase\ServiceAccount;
@@ -17,7 +17,7 @@ class Firebase_model extends CI_Model
     function __construct()
     {
         try {
-            $serviceAccount = ServiceAccount::fromValue('C:\xampp\htdocs\API-REST-PHP\push.json');
+            $serviceAccount = ServiceAccount::fromValue('./push.json');
             $this->firebase = (new Factory)->withServiceAccount($serviceAccount);
         } catch (PDOException $e) {
             echo 'Exception -> ';
@@ -99,7 +99,7 @@ class Firebase_model extends CI_Model
             $notification = Notification::create($titulo, $body, $url);
             $message = CloudMessage::withTarget("topic", "TODOS_LOS_USUARIOS")
             ->withNotification($notification)
-            ->withData($data);
+            ->withData($data);   
             $respuesta =  $messaging->send($message);
             return $respuesta;
         } else {

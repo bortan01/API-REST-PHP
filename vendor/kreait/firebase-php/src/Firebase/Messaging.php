@@ -62,7 +62,6 @@ class Messaging
         if (!($projectId = \array_pop($uriParts))) {
             throw new InvalidArgumentException("Project ID could not be determined from {$baseUri}");
         }
-
         return $projectId;
     }
 

@@ -162,7 +162,7 @@ class Usuario extends REST_Controller
         } else {
 
             $this->load->model('Imagen_model');
-            $imagen = $this->Imagen_model->guardarImagen();
+            $imagen = $this->Imagen_model->guardarImagen('ENLACE_PAGO', 2020);
 
             if ($imagen["err"]) {
                 $respuesta = array(

@@ -158,7 +158,7 @@ class Tours_paquete_model extends CI_Model
         $respuesta = array(
             'nombre' => $nombreTurX,
             'start' => $start,
-            'start' => $end,
+            'end' => $end,
             'precio' => $precio,
             'cupos' => $cupos_disponibles,
             'descripcion_tur' => $descripcion_tur,
