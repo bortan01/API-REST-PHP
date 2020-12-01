@@ -4,7 +4,6 @@ class cotizarVuelo_model extends CI_Model
 {
     public $id_cotizacion;
     public $id_cliente;
-    public $id_generales;
     public $opc_avanzadas;
     public $idinfo_adicional;
     public $idaerolinea;
@@ -12,12 +11,41 @@ class cotizarVuelo_model extends CI_Model
     public $idtipo_viaje;
     public $total;
     public $descuentos;
+    public $ciudad_partida;
+    public $fechaHoraPartida;
+    public $ciudad_llegada;
+    public $fechaHoraLlegada;
+    public $adultos;
+    public $ninos;
+    public $bebes;
+    public $maletas;
     public $activo = TRUE;
 
-    public function get_cotizar(){
-        $query=$this->db->get('cotizacion_vuelo');
-            return $query->result();
+    public function get_cotizar(array $data)
+    {
+
+        $parametros = $this->verificar_camposEntrada($data);
+        $this->db->select('*');
+        $this->db->from('cotizacion_vuelo');
+        $this->db->join('aerolinea', 'cotizacion_vuelo.idaerolinea = aerolinea.idaerolinea');
+        $this->db->join('alianza', 'aerolinea.idalianza = alianza.idalianza');
+        $this->db->join('tipo_clase', 'cotizacion_vuelo.idclase = tipo_clase.idclase');
+        $this->db->join('tipo_viaje', 'cotizacion_vuelo.idtipo_viaje = tipo_viaje.idtipo_viaje');
+        $this->db->join('info_adicional', 'cotizacion_vuelo.idinfo_adicional = info_adicional.idinfo_adicional');
+
+        $this->db->where($parametros);
+        $this->db->where_in('cotizacion_vuelo.activo',1);
+        $query=$this->db->get();
+
+        $respuesta = $query->result();
+      
+        
+        foreach ($respuesta as $opciones) {
+            $opciones->opc_avanzadas =   explode(",", $opciones->opc_avanzadas);
         }
+
+            return $respuesta;
+    }
    
    
        public function set_datos( $data_cruda){

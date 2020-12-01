@@ -12,7 +12,8 @@ public function __construct(){
 	}
 	public function cotizar_get(){
 
-	$cotizacion=$this->cotizarVuelo_model->get_cotizar();
+		$data = $this->get();
+	    $cotizacion=$this->cotizarVuelo_model->get_cotizar($data);
 
 	if (isset($cotizacion)) {
 		
