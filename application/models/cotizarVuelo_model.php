@@ -12,9 +12,11 @@ class cotizarVuelo_model extends CI_Model
     public $total;
     public $descuentos;
     public $ciudad_partida;
-    public $fechaHoraPartida;
+    public $fechaPartida;
+    public $HoraPartida;
     public $ciudad_llegada;
-    public $fechaHoraLlegada;
+    public $fechaLlegada;
+    public $HoraLlegada;
     public $adultos;
     public $ninos;
     public $bebes;
