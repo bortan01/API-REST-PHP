@@ -121,7 +121,6 @@ $config = array(
 	),
 	'cotizacionv_put' => array(
 		array('field' => 'opc_avanzadas', 'label' => 'Opciones Avanzadas', 'rules' => 'trim|required|min_length[1]|max_length[255]'),
-		array('field' => 'id_cliente', 'label' => 'Nombre del Cliente', 'rules' => 'trim|required|min_length[1]|max_length[255]'),
 		array('field' => 'idaerolinea', 'label' => 'Aerolinea', 'rules' => 'trim|required|min_length[1]|max_length[255]')
 	),
 
