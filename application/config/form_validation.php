@@ -156,14 +156,11 @@ $config = array(
 		array('field' => 'password'	 ,'label' => 'Password'           , 'rules' => 'trim|required|min_length[3]|max_length[45]')	
 	),
 	'insertarUsuario' => array(
-		
-		
-		
-		array('field' => 'password'	 ,'label' => 'Password'           , 'rules' => 'trim|required|min_length[3]|max_length[45]'),	
-		array('field' => 'nombre'    ,'label' => 'Nombre Copleto'     , 'rules' => 'trim|required|min_length[3]|max_length[45]'),
-		array('field' => 'correo'    ,'label' => 'Correo Electronico' , 'rules' => 'trim|required|min_length[3]|max_length[45]'),
-		array('field' => 'nivel'     ,'label' => 'Nivel de Usuario'   , 'rules' => 'trim|required|min_length[3]|max_length[45]'),
-		array('field' => 'celular'   ,'label' => 'Celular'            , 'rules' => 'trim|min_length[8]|max_length[45]'),
+		array('field' => 'nombre'    ,'label' => 'Nombre Copleto'     , 'rules' => 'trim|required|min_length[3]|max_length[50]'),
+		array('field' => 'correo'    ,'label' => 'Correo Electronico' , 'rules' => 'trim|required'),
+		array('field' => 'password'  ,'label' => 'Password'           , 'rules' => 'trim|required|min_length[3]|max_length[45]'),	
+		array('field' => 'nivel'     ,'label' => 'Nivel de Usuario'   , 'rules' => 'trim|required'),
+		// array('field' => 'celular'   ,'label' => 'Celular'            , 'rules' => 'trim|min_length[8]|max_length[45]'),
 		
 	),
 

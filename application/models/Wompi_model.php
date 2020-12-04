@@ -67,72 +67,123 @@ class Wompi_model extends CI_Model
     {
         $this->load->model('Credenciales_model');
         $curl = curl_init();
-        $certificate = "C:\wamp\cacert.pem";
-        curl_setopt($curl, CURLOPT_CAINFO, $certificate);
-        curl_setopt($curl, CURLOPT_CAPATH, $certificate);
+
         $ACCESS_TOKEN = $this->obtenerToken()->access_token;
-
-        $headers[] = "authorization:Bearer " . $ACCESS_TOKEN;
-        $headers[] = "Content-Type:application/json-patch+json";
-
-        $fieds = '{
-            "identificadorEnlaceComercio": "' . $this->Credenciales_model->client_id . '",
-            "monto": ' . $monto . ',
-            "nombreProducto": "' . $nombreProducto . '",
-            "formaPago": {
-              "permitirTarjetaCreditoDebido": true,
-              "permitirPagoConPuntoAgricola": true
-            },
-            "infoProducto": {
-              "descripcionProducto": "' . $descripcion . '",
-              "urlImagenProducto": "' . $imagen . '"
-            },
-            "configuracion": {
-              "esMontoEditable": true,
-              "esCantidadEditable": false,
-              "cantidadPorDefecto": 1,
-              "urlRedirect": "https://www.facebook.com/martineztours99",
-              "emailsNotificacion": "fjmiranda009@gmail.com",
-              "urlWebhook": "' . $webHook . '",
-              "notificarTransaccionCliente": true
-            }
-          }';
-        curl_setopt_array($curl, array(
-            CURLOPT_URL            => "https://api.wompi.sv/EnlacePago",
-            CURLOPT_RETURNTRANSFER => true,
-            CURLOPT_ENCODING       => "",
-            CURLOPT_MAXREDIRS      => 10,
-            CURLOPT_TIMEOUT        => 30,
-            CURLOPT_HTTP_VERSION   => CURL_HTTP_VERSION_1_1,
-            CURLOPT_CUSTOMREQUEST  => "POST",
-            CURLOPT_SSL_VERIFYHOST => false,
-            CURLOPT_SSL_VERIFYPEER => false,
-            CURLOPT_POSTFIELDS     => $fieds,
-            CURLOPT_HTTPHEADER     => $headers,
-        ));
-
-        $response = curl_exec($curl);
-        $err = curl_error($curl);
-        curl_close($curl);
-        if ($err) {
-            //ERROR DE cURL
-            return array('err' => "ERROR DE cURL " . $err);
+        if (!$ACCESS_TOKEN) {
+            # code...
         } else {
 
-            $decodificada = json_decode($response, true);
+            $headers[] = "authorization:Bearer " . $ACCESS_TOKEN;
+            $headers[] = "Content-Type:application/json-patch+json";
 
-            if ($decodificada == null) {
-                //ERROR INTERNO DE WOMPI
-                return array('err' => "ERROR INTERNO DE WOMPI");
+            $fieds = '{
+                        "identificadorEnlaceComercio": "' . $this->Credenciales_model->client_id . '",
+                        "monto": ' . $monto . ',
+                        "nombreProducto": "' . $nombreProducto . '",
+                        "formaPago": {
+                          "permitirTarjetaCreditoDebido": true,
+                          "permitirPagoConPuntoAgricola": true
+                        },
+                        "infoProducto": {
+                          "descripcionProducto": "' . $descripcion . '",
+                          "urlImagenProducto": "' . $imagen . '"
+                        },
+                        "configuracion": {
+                          "esMontoEditable": true,
+                          "esCantidadEditable": false,
+                          "cantidadPorDefecto": 1,
+                          "urlRedirect": "https://www.facebook.com/martineztours99",
+                          "emailsNotificacion": "fjmiranda009@gmail.com",
+                          "notificarTransaccionCliente": true
+                        }
+                      }';
+            curl_setopt_array($curl, array(
+                CURLOPT_URL            => "https://api.wompi.sv/EnlacePago",
+                CURLOPT_RETURNTRANSFER => true,
+                CURLOPT_ENCODING       => "",
+                CURLOPT_MAXREDIRS      => 10,
+                CURLOPT_TIMEOUT        => 30,
+                CURLOPT_HTTP_VERSION   => CURL_HTTP_VERSION_1_1,
+                CURLOPT_CUSTOMREQUEST  => "POST",
+                CURLOPT_SSL_VERIFYHOST => false,
+                CURLOPT_SSL_VERIFYPEER => false,
+                CURLOPT_POSTFIELDS     => $fieds,
+                CURLOPT_HTTPHEADER     => $headers,
+            ));
+
+            $response = curl_exec($curl);
+            $err = curl_error($curl);
+            curl_close($curl);
+            if ($err) {
+                //ERROR DE cURL
+                return array('err' => "ERROR DE cURL " . $err);
             } else {
-                if (!isset($decodificada["idEnlace"])) {
-                    //RESPUEESTA DE ERROR DE WOMPI
-                    return array('err' => "ERROR DE PETICION");
+
+                $decodificada = json_decode($response, true);
+
+                if ($decodificada == null) {
+                    //ERROR INTERNO DE WOMPI
+                    return array('err' => "ERROR INTERNO DE WOMPI");
                 } else {
-                    //TENEMOS NUESTRA RESPUETA CORRECTA DE WOMPI
-                    return $decodificada;
+                    if (!isset($decodificada["idEnlace"])) {
+                        //RESPUEESTA DE ERROR DE WOMPI
+                     
+                        return array('err' => "ERROR DE PETICION", 'res' => $decodificada);
+                    } else {
+                        //TENEMOS NUESTRA RESPUETA CORRECTA DE WOMPI
+                        return $decodificada;
+                    }
                 }
             }
+        }
+    }
+    public function crearEnlacePagoHttp($monto, $nombreProducto, $descripcion, $imagen, $webHook)
+    {
+        $ACCESS_TOKEN = $this->obtenerToken()->access_token;
+        if (!$ACCESS_TOKEN) {
+            $respuesta = array(
+                "err" => TRUE,
+                "mensaje" => "Error al generar el Token"
+            );
+            return $respuesta;
+        } else {
+            $this->load->model('Credenciales_model');
+            $fieds = ['{
+                "identificadorEnlaceComercio": "' . $this->Credenciales_model->client_id . '",
+                "monto": ' . $monto . ',
+                "nombreProducto": "' . $nombreProducto . '",
+                "formaPago": {
+                  "permitirTarjetaCreditoDebido": true,
+                  "permitirPagoConPuntoAgricola": true
+                },
+                "infoProducto": {
+                  "descripcionProducto": "' . $descripcion . '",
+                  "urlImagenProducto": "' . $imagen . '"
+                },
+                "configuracion": {
+                  "esMontoEditable": true,
+                  "esCantidadEditable": false,
+                  "cantidadPorDefecto": 1,
+                  "urlRedirect": "https://www.facebook.com/martineztours99",
+                  "emailsNotificacion": "fjmiranda009@gmail.com",
+                  "notificarTransaccionCliente": true
+                }
+              }'];
+            // $fieds = [
+            //     "identificadorEnlaceComercio"   => $this->Credenciales_model->client_id,
+            //     "monto"    => $monto,
+            //     "nombreProducto" => $nombreProducto
+            // ];
+            $myClient = new Client(
+                ['headers' => [
+                    'Content-Type' => 'application/json-patch+json',
+                    'Accept' => 'application/json',
+                    'authorization' => 'Bearer ' . $ACCESS_TOKEN,
+                ]]
+            );
+            $response = $myClient->request('POST', 'https://api.wompi.sv/EnlacePago', ["form_params" => $fieds]);
+
+            return  json_decode($response->getBody());
         }
     }
 

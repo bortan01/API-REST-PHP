@@ -8,6 +8,7 @@ class Usuario extends REST_Controller
         parent::__construct();
         $this->load->database();
         $this->load->model('Usuario_model');
+        $this->load->model('Firebase_model');
     }
     public function registroUser_post()
     {
@@ -25,12 +26,7 @@ class Usuario extends REST_Controller
             );
             $this->response($respuesta, REST_Controller::HTTP_BAD_REQUEST);
         } else {
-
-
-            $correo = $data["correo"];
-            $password = $data["password"];
-            $usuario = $this->Usuario_model->verificar_campos($data);
-            $respuesta = $usuario->createAccount($correo, $password);
+            $respuesta = $this->Usuario_model->createAccount($data);
             if ($respuesta['err']) {
                 $this->response($respuesta, REST_Controller::HTTP_BAD_REQUEST);
             } else {
@@ -57,7 +53,7 @@ class Usuario extends REST_Controller
             $email    = $data["username"];
             $password = $data["password"];
 
-            $this->load->model('Firebase_model');
+
             $respuesta = $this->Firebase_model->loginEmailPassword($email, $password);
             if ($respuesta['err']) {
                 $this->response($respuesta["mensaje"], REST_Controller::HTTP_BAD_REQUEST);
@@ -94,7 +90,7 @@ class Usuario extends REST_Controller
     }
     public function enviarNotificacion_post()
     {
-        $this->load->model("Firebase_model");
+
         $tokens = ["cg7jHTZxRmuLoLePCmVfR3:APA91bEaEaN0fw_iWrphfXd9uk1JcyIYBk0k3XAqh4ESLOKmzRmFCPx5umvhRKlsy4URu0n13ft_fyPI_cBoqTfxY7WNe9No69bz9ANvrVEjnU_dmrVsaLPGbuhQ3oYfwVPaUISHAChX"];
         $respuesta =   $this->Firebase_model->EnviarNotificacionSDK();
         $this->response($respuesta, REST_Controller::HTTP_OK);
@@ -141,7 +137,6 @@ class Usuario extends REST_Controller
             }
         }
     }
-
     public function generarEnlace_post()
     {
         $data = $this->post();
@@ -176,12 +171,21 @@ class Usuario extends REST_Controller
                 $monto          = $data["monto"];
                 $nombreProducto = $data["nombreProducto"];
                 $descripcion    = $data["descripcion"];
-                $webHook        = "None";
 
+                $webHook        = "";
                 $this->load->model('Wompi_model');
-                $respuesta =  $this->Wompi_model->crearEnlacePagopPrueba($monto, $nombreProducto, $descripcion, $urlImagen, $webHook);
+                $urlImagen = 'https://wompistorage.blob.core.windows.net/imagenes/f7c5e956-5fa4-4cf6-9480-aaaa855b1d7e.jpg';
+                $respuesta =  $this->Wompi_model->crearEnlacePagoHttp($monto, $nombreProducto, $descripcion, $urlImagen, $webHook);
                 $this->response($respuesta, REST_Controller::HTTP_OK);
             }
+        }
+    }
+    public function updatePassword_put()
+    {
+        $data = $this->put();
+        if (isset($data['email'])) {;
+            $respuesta =   $this->Firebase_model->cambioPassword($data['email']);
+            $this->response($respuesta, REST_Controller::HTTP_OK);
         }
     }
 }

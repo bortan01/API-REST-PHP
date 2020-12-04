@@ -19,32 +19,31 @@ class Usuario_model extends CI_Model
     public $uuid;
     public $fbToken;
     public $dui;
-    public $foto;
-    public $foto_documento;
     public $activo;
 
-
     public function __construct()
+
     {
         $this->load->model('Firebase_model');
     }
-    public function createAccount($correo, $password)
+    public function createAccount($data)
     {
-        $usuarioFirebase = $this->Firebase_model->crearUsuarioConEmailPassword($correo, $password);
-
+        $usuarioFirebase = $this->Firebase_model->crearUsuarioConEmailPassword($data["correo"], $data["password"]);
         if ($usuarioFirebase["err"]) {
             return array("err" => TRUE, 'mensaje' => $usuarioFirebase["mensaje"]);
-        }
-
-        $nombreTabla    = "usuario";
-        $this->uuid     = $usuarioFirebase["uid"];
-        $this->activo   = TRUE;
-        $insert = $this->db->insert($nombreTabla, $this);
-
-        if ($insert) {
-            return array('err' => FALSE, 'status' => 200, 'mensaje' => 'Cuenta Creada Exitosamente!');
         } else {
-            return array('err' => TRUE, 'mensaje' => $this->db->error_message());
+            $nombreTabla    = "usuario";
+            $miUser =$this->verificar_campos($data);
+            $miUser->uuid     = $usuarioFirebase["uid"];
+            $miUser->activo   = TRUE;
+            
+            $insert = $this->db->insert($nombreTabla, $miUser);
+
+            if ($insert) {
+                return array('err' => FALSE,  'mensaje' => 'Cuenta Creada Exitosamente!');
+            } else {
+                return array('err' => TRUE, 'mensaje' => $this->db->error_message());
+            }
         }
     }
 
@@ -89,9 +88,9 @@ class Usuario_model extends CI_Model
             $parametros = $this->Usuario_model->verificar_camposEntrada($data);
             $usuarioSEleccionado = $this->Utils_model->selectTabla("usuario", $parametros);
             ///usuario seleccionado es un array de clases genericas
-        
-            if (count($usuarioSEleccionado) <1) {
-                $respuesta = array('err' => FALSE, 'usuario' => null,'mensaje'=> "NO SE ENCONTRO NINGUN USUARIO");
+
+            if (count($usuarioSEleccionado) < 1) {
+                $respuesta = array('err' => FALSE, 'usuario' => null, 'mensaje' => "NO SE ENCONTRO NINGUN USUARIO");
                 return $respuesta;
             } else {
                 $respuesta = array('err' => FALSE, 'usuario' => $usuarioSEleccionado);
@@ -101,7 +100,7 @@ class Usuario_model extends CI_Model
             return array('err' => TRUE, 'status' => 400, 'mensaje' => $e->getMessage());
         }
     }
- 
+
     public function createChatRecord($user_1_uuid, $user_2_uuid)
     {
         $this->db->select('chat_uuid');

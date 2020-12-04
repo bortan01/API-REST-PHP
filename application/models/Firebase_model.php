@@ -125,7 +125,6 @@ class Firebase_model extends CI_Model
             return $respuesta;
         }
     }
-
     public function crearToken($uid, $adicional)
     {
         $auth = $this->firebase->createAuth();
@@ -202,5 +201,12 @@ class Firebase_model extends CI_Model
             //     }
             // }
         }
+    }
+    public function cambioPassword($email)
+    {
+        $auth = $this->firebase->createAuth();
+        $user = $auth->getUserByEmail($email);
+        $updatedUser = $auth->changeUserPassword($user->uid, 'maradona30001');
+        return $updatedUser;
     }
 }
