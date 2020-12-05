@@ -4,7 +4,7 @@ class Tarifa_model extends CI_Model
 {
 	public $id_tarifa;
 	public $tarifa;
-	public $comision;
+	public $unidades_medidas;
 	public $id_producto;
 
 	public function eliminar($datos){
@@ -102,7 +102,7 @@ class Tarifa_model extends CI_Model
  	public function insertarTarifa($id_producto,$datos){
 
  			$this->tarifa = $datos['tarifa'];
- 			$this->comision = $datos['comision'];
+ 			$this->unidades_medidas = $datos['unidades_medidas'];
  			$this->id_producto = $id_producto;
 			//insertar el registro
 			$hecho=$this->db->insert('tarifa',$this);
