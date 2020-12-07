@@ -65,7 +65,7 @@ class Usuario extends REST_Controller
     public function obtenerUsuario_get()
     {
         $data = $this->get();
-
+        
 
         $respuesta =  $this->Usuario_model->getUser($data);
         if ($respuesta['err']) {

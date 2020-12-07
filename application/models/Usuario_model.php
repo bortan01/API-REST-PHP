@@ -33,10 +33,10 @@ class Usuario_model extends CI_Model
             return array("err" => TRUE, 'mensaje' => $usuarioFirebase["mensaje"]);
         } else {
             $nombreTabla    = "usuario";
-            $miUser =$this->verificar_campos($data);
+            $miUser = $this->verificar_campos($data);
             $miUser->uuid     = $usuarioFirebase["uid"];
             $miUser->activo   = TRUE;
-            
+
             $insert = $this->db->insert($nombreTabla, $miUser);
 
             if ($insert) {
@@ -82,22 +82,15 @@ class Usuario_model extends CI_Model
 
     public function getUser(array $data = array())
     {
-        $this->load->model("Utils_model");
-
         try {
             $parametros = $this->Usuario_model->verificar_camposEntrada($data);
-            $usuarioSEleccionado = $this->Utils_model->selectTabla("usuario", $parametros);
-            ///usuario seleccionado es un array de clases genericas
-
-            if (count($usuarioSEleccionado) < 1) {
-                $respuesta = array('err' => FALSE, 'usuario' => null, 'mensaje' => "NO SE ENCONTRO NINGUN USUARIO");
-                return $respuesta;
-            } else {
-                $respuesta = array('err' => FALSE, 'usuario' => $usuarioSEleccionado);
-                return $respuesta;
-            }
+            $nombreTabla = "usuario";
+            $this->db->where($parametros);
+            $query = $this->db->get($nombreTabla);
+            $result = $query->result();
+            return array('err' => FALSE, 'usuarios' => $result);
         } catch (Exception $e) {
-            return array('err' => TRUE, 'status' => 400, 'mensaje' => $e->getMessage());
+            return array('err' => TRUE, 'mensaje' => $e->getMessage());
         }
     }
 
