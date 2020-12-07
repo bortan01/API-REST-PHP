@@ -5,7 +5,6 @@ class cotizarVuelo_model extends CI_Model
     public $id_cotizacion;
     public $id_cliente;
     public $opc_avanzadas;
-    public $idinfo_adicional;
     public $idaerolinea;
     public $idclase;
     public $idtipo_viaje;
@@ -33,7 +32,6 @@ class cotizarVuelo_model extends CI_Model
         $this->db->join('alianza', 'aerolinea.idalianza = alianza.idalianza');
         $this->db->join('tipo_clase', 'cotizacion_vuelo.idclase = tipo_clase.idclase');
         $this->db->join('tipo_viaje', 'cotizacion_vuelo.idtipo_viaje = tipo_viaje.idtipo_viaje');
-        $this->db->join('info_adicional', 'cotizacion_vuelo.idinfo_adicional = info_adicional.idinfo_adicional')
         $this->db->join('usuario', 'cotizacion_vuelo.id_cliente = usuario.id_cliente');
 
 
