@@ -8,9 +8,11 @@ class CotizarVehiculo_model extends CI_Model
     public $anio;
     public $caracteristicas;
     public $direccion_recogida;
-    public $fechaHoraRecogida;
+    public $fechaRecogida;
+    public $HoraRecogida;
     public $direccion_devolucion;
-    public $fechaHoraDevolucion;
+    public $fechaDevolucion;
+    public $HoraDevolucion;
     public $activo = TRUE;
     
     public function get_cotizar(){

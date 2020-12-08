@@ -74,9 +74,9 @@ $config = array(
 		array('field' => 'anio'                , 'label' => 'Vehiculo', 'rules' => 'trim|required|min_length[2]|max_length[255]'),
 		array('field' => 'caracteristicas'     , 'label' => 'Vehiculo', 'rules' => 'trim|required|min_length[2]|max_length[255]'),
 		array('field' => 'direccion_recogida'  , 'label' => 'Vehiculo', 'rules' => 'trim|required|min_length[2]|max_length[255]'),
-		array('field' => 'fechaHoraRecogida'   , 'label' => 'Vehiculo', 'rules' => 'trim|required|min_length[2]|max_length[255]'),
+		array('field' => 'fechaRecogida'   , 'label' => 'Vehiculo', 'rules' => 'trim|required|min_length[2]|max_length[255]'),
 		array('field' => 'direccion_devolucion', 'label' => 'Vehiculo', 'rules' => 'trim|required|min_length[2]|max_length[255]'),
-		array('field' => 'fechaHoraDevolucion' , 'label' => 'Vehiculo', 'rules' => 'trim|required|min_length[2]|max_length[255]')
+		array('field' => 'fechaDevolucion' , 'label' => 'Vehiculo', 'rules' => 'trim|required|min_length[2]|max_length[255]')
 	),
 	'aerolinea_put' => array(
 		array('field' => 'nombre_aerolinea', 'label' => 'Aerolinea', 'rules' => 'trim|required|min_length[2]|max_length[255]'),
