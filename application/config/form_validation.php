@@ -184,8 +184,7 @@ $config = array(
 	),
 
 	'encomienda_put' => array(
-		array('field' => 'direccion'      ,'label' => 'direccion'       , 'rules' => 'trim|required|min_length[4]|max_length[255]'),
-		array('field' => 'destino_final'  ,'label' => 'direccion final' , 'rules' => 'trim|required|min_length[4]|max_length[255]')
+		array('field' => 'direccion'      ,'label' => 'direccion'       , 'rules' => 'trim|required|min_length[4]|max_length[255]')
 	),
 	'detalleEnvio_put' => array(
 		array('field' => 'lugar'  ,'label' => 'Lugar' , 'rules' => 'trim|required|min_length[4]|max_length[255]')

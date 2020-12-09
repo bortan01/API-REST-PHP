@@ -65,6 +65,8 @@ public function __construct(){
    public function encomiendas_post(){
 
 		$data=$this->post();
+		print_r($data);
+		die();
 		$this->load->library('form_validation');
 		$this->form_validation->set_data ($data);
 
