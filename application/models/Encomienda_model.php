@@ -101,36 +101,31 @@ public function get_encomienda(){
         return $objeto;
  	}//fin de capitalizar los datos segun el modelo y campos correctos de la base
 
- 	public function insert($datos){
+ 	public function insertarEncomienda($datos){
 
-			//insertar el registro
-			$hecho=$this->db->insert('encomienda',$datos);
+ 		$nombreTabla = "encomienda";
+        $insert = $this->db->insert($nombreTabla, $datos);
+        if (!$insert) {
+            //NO GUARDO 
+            $respuesta = array(
+                'err'          => TRUE,
+                'mensaje'      => 'Error al insertar ', $this->db->error_message(),
+                'error_number' => $this->db->error_number(),
+                'turPaquete'   => null
+            );
+            return $respuesta;
+        } else {
+            $identificador = $this->db->insert_id();
+           
+            $respuesta = array(
+                'err'          => FALSE,
+                'mensaje'      => 'Registro Guardado Exitosamente',
+                'id'           => $identificador,
+                'encomienda'   => $datos
+            );
+            return $respuesta;
+        }
 
-			if ($hecho) {
-				#insertado
-				$respuesta=array(
-					'err'=>FALSE,
-					'mensaje'=>'Registro insertado correctamente',
-					'encomienda_id'=>$this->db->insert_id()
-				);
-
-			
-
-			}else{
-				//error
-
-				$respuesta=array(
-					'err'=>TRUE,
-					'mensaje'=>'Error al insertar',
-					'error'=>$this->db->_error_message(),
-					'error_num'=>$this->db->_error_number()
-				);
-			
-			}
-
-
-
- 		return $respuesta;
  	}//fin de insertar la pregunta
 
 }

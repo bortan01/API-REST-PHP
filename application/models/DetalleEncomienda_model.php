@@ -5,8 +5,7 @@ class DetalleEncomienda_model extends CI_Model
 public $id_producto;
 public $id_encomienda;
 public $cantidad;
-public $id_caja;
-public $id_tarifa;
+
 
 public function get_detalle(){
 
@@ -29,37 +28,43 @@ public function set_datos($data_cruda){
         return $objeto;
  	}//fin de capitalizar los datos segun el modelo y campos correctos de la base
 
- 	public function insert($datos){
+ 	public function guardarDetalle(array $detalles, string $id){
+
+ 		$nombreTabla = "detalle_encomienda";
+
+        if (count($detalles) < 1) {
+            $respuesta = array(
+                'err'          => TRUE,
+                'mensaje'      => "NO SE INSERTO NINGUN REGISTRO",
+                'detalle_encomienda'      => null
+            );
+            return $respuesta;
+        } else {
+            for ($i = 0; $i < count($detalles); $i++) {
+                $detalles[$i]["id_encomienda"] = $id;
+            }
+            //$servicio = $this->verificar_camposEntrada($data);
+            $insert = $this->db->insert_batch($nombreTabla, $detalles);
+            if (!$insert) {
+                //NO GUARDO
+                $respuesta = array(
+                    'err'          => TRUE,
+                    'mensaje'      => 'Error al insertar ', $this->db->error_message(),
+                    'error_number' => $this->db->error_number(),
+                    'serrvicio'      => null
+                );
+                return $respuesta;
+            } else {
+                $respuesta = array(
+                    'err'          => FALSE,
+                    'mensaje'      => 'Registro Guardado Exitosamente',
+                    //'servicio'   => $servicio
+                );
+                return $respuesta;
+            }
+        }
 
 
-			//insertar el registro
-			$hecho=$this->db->insert('detalle_encomienda',$datos);
-
-			if ($hecho) {
-				#insertado
-				$respuesta=array(
-					'err'=>FALSE,
-					'mensaje'=>'Registro insertado correctamente',
-					'datos'=>$datos
-				);
-
-			
-
-			}else{
-				//error
-
-				$respuesta=array(
-					'err'=>TRUE,
-					'mensaje'=>'Error al insertar',
-					'error'=>$this->db->_error_message(),
-					'error_num'=>$this->db->_error_number()
-				);
-			
-			}
-
-
-
- 		return $respuesta;
  	}//fin de insertar
 
 

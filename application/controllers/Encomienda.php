@@ -9,7 +9,7 @@ public function __construct(){
 		parent::__construct();
 		$this->load->database();
 		$this->load->model('Encomienda_model');
-		
+		$this->load->model('DetalleEncomienda_model');
 
 	}
 
@@ -65,8 +65,8 @@ public function __construct(){
    public function encomiendas_post(){
 
 		$data=$this->post();
-		print_r($data);
-		die();
+		//print_r($data);
+		//die();
 		$this->load->library('form_validation');
 		$this->form_validation->set_data ($data);
 
@@ -74,13 +74,17 @@ public function __construct(){
 			//todo bien
 			//$this->response('Todo bien')
 		$encomiendas=$this->Encomienda_model->set_datos($data);
-        $respuesta=$this->Encomienda_model->insert($encomiendas); 
+        $respuesta=$this->Encomienda_model->insertarEncomienda($encomiendas); 
 
 		if ($respuesta['err']) {
 
 		$this->response($respuesta, REST_Controller::HTTP_BAD_REQUEST); 	
 
 		}else{
+			if (!empty($data["detalle_encomienda"])) {
+                    $detalle = json_decode($data["detalle_encomienda"], true);
+                    $this->DetalleEncomienda_model->guardarDetalle($detalle, $respuesta['id']);
+                }
 		$this->response($respuesta); 	
 		}
 
