@@ -65,6 +65,10 @@ class Vehiculo_model extends CI_Model
            $carrito=$query->row();
    
                if (isset($carrito)) {
+
+                    ///LOGRO GUARDAR LOS DATOS, TRATAREMOS DE GUARDAR LA GALERIA SI MANDARON FOTOS
+            
+
                $respuesta=array(
                    'err'=>TRUE,
                    'mensaje'=>'El vehiculo fue registrado'
@@ -77,6 +81,9 @@ class Vehiculo_model extends CI_Model
    
                if ($hecho) {
                    #insertado
+                   $this->load->model('Imagen_model');
+                   $identificador = $this->db->insert_id();
+                   $this->Imagen_model->guardarGaleria("vehiculo",  $identificador);
                    $respuesta=array(
                        'err'=>FALSE,
                        'mensaje'=>'Registro insertado correctamente',
@@ -84,7 +91,10 @@ class Vehiculo_model extends CI_Model
                    );
                }else{
                    //error
-   
+                   $this->load->model('Imagen_model');
+                   $identificador = $this->db->insert_id();
+                   ///ESTO ES PARA GUARDAR UNA IMAGEN INDIVIDUAL Y UNA GALERIA
+                   $this->Imagen_model->guardarGaleria("vehiculo", $identificador);
                    $respuesta=array(
                        'err'=>TRUE,
                        'mensaje'=>'Error al insertar',
