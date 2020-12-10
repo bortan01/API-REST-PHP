@@ -6,6 +6,7 @@ class Imagen_model extends CI_Model
     public $tipo;
     public $identificador;
     public $activo;
+    public $nombre_foto;
 
     ///EN EL BODY DEBE DE RECIBIR UN PARAMETRO LLAMADO foto, DE TIPO FILE
     public function guardarImagen($tipo, $identificador, $activo = TRUE)
@@ -28,14 +29,16 @@ class Imagen_model extends CI_Model
             );
             return $respuesta;
         } else {
-            $data = $this->upload->data();
-            $path =  $URL . $data["file_name"];
+            $data   =  $this->upload->data();
+            $path   =  $URL . $data["file_name"];
             $nombre = $data["file_name"];
 
             $this->tipo          = $tipo;
             $this->identificador = $identificador;
             $this->foto_path     = $path;
-            $this->activo     = $activo;
+            $this->activo        = $activo;
+            $this->nombre_foto   = $nombre;
+
             $this->db->insert('galeria', $this);
 
             $respuesta = array(
@@ -95,11 +98,10 @@ class Imagen_model extends CI_Model
                         $this->tipo          = $tipo;
                         $this->identificador = $identificador;
                         $this->foto_path     = $path;
-                        $this->activo     = $activo;
+                        $this->activo        = $activo;
+                        $this->nombre_foto   = $nombre;
                         $this->db->insert('galeria', $this);
-
                         ///INFORMACION DE FOTOS GUARDADAS
-
                         $informacion_subida[] = array(
                             "error"   => FALSE,
                             "mensaje" => "Imagen subida exitosamente",
@@ -126,7 +128,7 @@ class Imagen_model extends CI_Model
     public function eliminarImagen($id_foto)
     {
         $URL = "http://localhost/API-REST-PHP/uploads/";
-        $RUTA = "C:/wamp64/www/API-REST-PHP/uploads/";
+        $RUTA = "www/API-REST-PHP/uploads/";
 
         //ELIMINADO DE LA BASE DE DATOS 
         $this->db->where('id_foto', $id_foto);
@@ -135,11 +137,14 @@ class Imagen_model extends CI_Model
         //ELIMINANDO EL ARCHIVO
         $this->db->where(array("id_foto" => $id_foto));
         $query = $this->db->get("galeria");
-        $urlImagen = "";
+        $nombreFoto = "";
         foreach ($query->result() as $row) {
-            $urlImagen = $row->foto_path;
+            $nombreFoto = $row->nombre_foto;
         }
-        $ruta_foto = ($RUTA . substr($urlImagen,  strlen($URL)));
+
+        $ruta_foto = './uploads/' . $nombreFoto;
+       
+     
         try {
             if (file_exists($ruta_foto)) {
                 unlink($ruta_foto);
@@ -169,11 +174,11 @@ class Imagen_model extends CI_Model
         $URL = "http://localhost/API-REST-PHP/uploads/";
         $RUTA = "C:/wamp64/www/API-REST-PHP/uploads/";
         foreach ($imagenes as $imagen) {
-            $urlImagen = $imagen->foto_path;
-            $ruta_foto = ($RUTA . substr($urlImagen,  strlen($URL)));
+            $nombreFoto = $imagen->foto_path;
+            $ruta_foto = ($RUTA . substr($nombreFoto,  strlen($URL)));
             try {
                 if (file_exists($ruta_foto)) {
-                    return $urlImagen;
+                    return $nombreFoto;
                 }
             } catch (\Throwable $th) {
                 $th->getMessage();

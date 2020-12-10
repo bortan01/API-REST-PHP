@@ -9,6 +9,7 @@ class Usuario extends REST_Controller
         $this->load->database();
         $this->load->model('Usuario_model');
         $this->load->model('Firebase_model');
+        $this->load->model('Imagen_model');
     }
     public function registroUser_post()
     {

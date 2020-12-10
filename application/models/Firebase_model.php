@@ -30,8 +30,8 @@ class Firebase_model extends CI_Model
             $auth = $this->firebase->createAuth();
             $user = $auth->createUserWithEmailAndPassword($email, $password);
             $uid = $user->uid;
-            $campos = ['displayName' => 'El Coco loco'];
-            $auth->updateUser($uid, $campos);
+            // $campos = ['displayName' => 'El Coco loco'];
+            // $auth->updateUser($uid, $campos);
             //TODO : HACER EL SING OUT
 
             //PARA ENVIAR CORREO ELECTRONICO DE VERIFICACION

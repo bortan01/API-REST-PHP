@@ -40,6 +40,11 @@ class Usuario_model extends CI_Model
             $insert = $this->db->insert($nombreTabla, $miUser);
 
             if ($insert) {
+                $identificador = $this->db->insert_id();
+                //PARA GUARDAR GALERIA (LOS DUI)
+                $this->Imagen_model->guardarGaleria("usuario_documentos",  $identificador);
+                //PARA GUARDAR LA FOTO DE PERFIL
+                $this->Imagen_model->guardarImagen("usuario_perfil",  $identificador);
                 return array('err' => FALSE,  'mensaje' => 'Cuenta Creada Exitosamente!');
             } else {
                 return array('err' => TRUE, 'mensaje' => $this->db->error_message());
