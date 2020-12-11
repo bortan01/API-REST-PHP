@@ -82,12 +82,12 @@ public function modificar_encomienda($datos){
 
 
 public function get_encomienda(){
-
-
- 	$query=$this->db->get('encomienda');
- 	
- 		return $query->result();
- 	}
+	$this->db->select('*');
+    $this->db->from('encomienda');
+    $this->db->join('usuario', 'usuario.id_cliente=encomienda.id_usuario','inner');
+    $query=$this->db->get();
+    return $query->result();
+}
 
 
   public function set_datos($data_cruda){
