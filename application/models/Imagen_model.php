@@ -143,8 +143,8 @@ class Imagen_model extends CI_Model
         }
 
         $ruta_foto = './uploads/' . $nombreFoto;
-       
-     
+
+
         try {
             if (file_exists($ruta_foto)) {
                 unlink($ruta_foto);
@@ -169,23 +169,12 @@ class Imagen_model extends CI_Model
     {
         $this->db->where(array("tipo" => $tipo, "identificador" => $identificado, "activo" => TRUE));
         $query = $this->db->get("galeria");
-        $imagenes = $query->result();
-
-        $URL = "http://localhost/API-REST-PHP/uploads/";
-        $RUTA = "C:/wamp64/www/API-REST-PHP/uploads/";
-        foreach ($imagenes as $imagen) {
-            $nombreFoto = $imagen->foto_path;
-            $ruta_foto = ($RUTA . substr($nombreFoto,  strlen($URL)));
-            try {
-                if (file_exists($ruta_foto)) {
-                    return $nombreFoto;
-                }
-            } catch (\Throwable $th) {
-                $th->getMessage();
-            } catch (Exception $e) {
-                $e->getMessage();
-            }
+        if ($query->row(0)) {
+            # code...
+            $foto = $query->row(0)->foto_path; 
+            return $foto;
         }
+        return null;
     }
     public function obtenerImagen($tipo, $identificado)
     {

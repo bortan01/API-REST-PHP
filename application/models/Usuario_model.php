@@ -93,6 +93,12 @@ class Usuario_model extends CI_Model
             $this->db->where($parametros);
             $query = $this->db->get($nombreTabla);
             $result = $query->result();
+
+            foreach ($result as $row) {
+                $identificador = $row->id_cliente;
+                $row->foto =    $this->Imagen_model->obtenerImagenUnica("usuario_perfil", $identificador);
+            }
+
             return array('err' => FALSE, 'usuarios' => $result);
         } catch (Exception $e) {
             return array('err' => TRUE, 'mensaje' => $e->getMessage());
