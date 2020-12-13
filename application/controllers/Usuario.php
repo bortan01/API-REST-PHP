@@ -97,21 +97,30 @@ class Usuario extends REST_Controller
     public function update_put()
     {
         $data = $this->put();
-        ///VERIFICANDO SI EXISTE EL ID PRINCIPAL DE LA TABLA
-        if (!isset($data["id_cliente"])) {
-            $respuesta = array('err' => TRUE, 'mensaje' => 'No se encontro nungun identificador de usuario');
-            $this->response($respuesta, REST_Controller::HTTP_BAD_REQUEST);
-        } else {
-            try {
-                $respuesta = $this->Usuario_model->editar($data);
-                if ($respuesta['err']) {
-                    $this->response($respuesta, REST_Controller::HTTP_BAD_REQUEST);
-                } else {
-                    $this->response($respuesta, REST_Controller::HTTP_OK);
+
+        $this->load->library("form_validation");
+        $this->form_validation->set_data($data);
+        if ($this->form_validation->run('ActualizarUsuario')) {
+            if (isset($data["password"])) {
+                $respuestaFirebase = $this->Firebase_model->cambioPassword($data['correo'], $data["password"]);
+                if($respuestaFirebase  ["err"]){
+                    $this->response($respuestaFirebase, REST_Controller::HTTP_BAD_REQUEST);
                 }
-            } catch (\Throwable $th) {
-                $respuesta = array('err' => TRUE, 'mensaje' => 'Error interno de servidor');
             }
+        
+            $respuesta = $this->Usuario_model->editar($data);
+            if ($respuesta['err']) {
+                $this->response($respuesta, REST_Controller::HTTP_BAD_REQUEST);
+            } else {
+                $this->response($respuesta, REST_Controller::HTTP_OK);
+            }
+        } else {
+            $respuesta = array(
+                'err' => TRUE,
+                'mensaje' => 'har errores en el envio de informacion',
+                'errores' => $this->form_validation->get_errores_arreglo()
+            );
+            $this->response($respuesta, REST_Controller::HTTP_BAD_REQUEST);
         }
     }
     public function elimination_delete()
@@ -182,8 +191,8 @@ class Usuario extends REST_Controller
     public function updatePassword_put()
     {
         $data = $this->put();
-        if (isset($data['email'])) {;
-            $respuesta =   $this->Firebase_model->cambioPassword($data['email']);
+        if (isset($data['email'])) {
+            $respuesta = $this->Firebase_model->cambioPassword($data['email'],"12344596");
             $this->response($respuesta, REST_Controller::HTTP_OK);
         }
     }

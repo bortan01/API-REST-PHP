@@ -182,7 +182,6 @@ class Usuario_model extends CI_Model
         ///VAMOS A ACTUALIZAR UN REGISTRO
         $campos = $this->Usuario_model->verificar_camposEntrada($data);
         $this->db->where('id_cliente', $campos["id_cliente"]);
-        unset($this->id_cliente);
         $hecho = $this->db->update('usuario', $campos);
         if ($hecho) {
             ///LOGRO ACTUALIZAR 

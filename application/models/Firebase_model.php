@@ -93,18 +93,18 @@ class Firebase_model extends CI_Model
             'click_action' => 'FLUTTER_NOTIFICATION_CLICK',
         ];
         $messaging = $this->firebase->createMessaging();
-        
-        
+
+
         if (count($tokens) == 0) {
             $notification = Notification::create($titulo, $body, $url);
             $message = CloudMessage::withTarget("topic", "TODOS_LOS_USUARIOS")
-            ->withNotification($notification)
-            ->withData($data);   
+                ->withNotification($notification)
+                ->withData($data);
             $respuesta =  $messaging->send($message);
             return $respuesta;
         } else {
             //DEBEN DE SER MENOS DE 500 POR PETICION
-            
+
             $notification = ["title" => $titulo, "body" => $body, "image" => $url];
             $message = CloudMessage::fromArray(['data' => $data, 'notification' => $notification]);
 
@@ -202,11 +202,18 @@ class Firebase_model extends CI_Model
             // }
         }
     }
-    public function cambioPassword($email)
+    public function cambioPassword($email, $password)
     {
-        $auth = $this->firebase->createAuth();
-        $user = $auth->getUserByEmail($email);
-        $updatedUser = $auth->changeUserPassword($user->uid, 'maradona30001');
-        return $updatedUser;
+        try {
+
+            $auth = $this->firebase->createAuth();
+            $user = $auth->getUserByEmail($email);
+            $updatedUser = $auth->changeUserPassword($user->uid, $password);
+            return array("err" => FALSE, "user" => $updatedUser);
+        } catch (AuthException $e) {
+            return array("err" => TRUE, "mensaje" => $e->getMessage());
+        } catch (FirebaseException $e) {
+            return array("err" => TRUE, "mensaje" => $e->getMessage());
+        }
     }
 }
