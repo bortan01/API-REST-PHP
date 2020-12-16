@@ -12,8 +12,8 @@ public function __construct(){
 
 	}
 public function detalles_get(){
-
-	$detalles=$this->DetalleEncomienda_model->get_detalle();
+	$data=$this->get();
+	$detalles=$this->DetalleEncomienda_model->get_detalle($data);
 
 	if (isset($detalles)) {
 		//quitar campos que no quiero

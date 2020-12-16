@@ -7,12 +7,16 @@ public $id_encomienda;
 public $cantidad;
 
 
-public function get_detalle(){
+public function get_detalle(array $data){
+    
+    $this->db->select('*');
+    $this->db->from('detalle_encomienda');
+    $this->db->join('producto', 'producto.id_producto=detalle_encomienda.id_producto','inner');
+    $this->db->join('tarifa', 'tarifa.id_producto=producto.id_producto','inner');
+    $this->db->where(array('id_encomienda'=>$data['id_encomienda']));
+    $query=$this->db->get();
+    return $query->result();
 
-
- 	$query=$this->db->get('detalle_encomienda');
- 	
- 		return $query->result();
  	}
 
 public function set_datos($data_cruda){

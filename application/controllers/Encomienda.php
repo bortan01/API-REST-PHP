@@ -34,6 +34,35 @@ public function __construct(){
 
 	}//fin de metodo
 
+	public function encomiendaModificar_get(){
+
+	$data = $this->get();
+	$enco=$this->Encomienda_model->get_encomiendaModificar($data);
+
+	if (isset($enco)) {
+		//quitar campos que no quiero
+		//unset($cliente->telefono1);
+		//sunset($cliente->telefono2);
+		$respuesta=array(
+			'err'=>FALSE,
+			'mensaje'=>'Registro Cargado correctamente',
+			'Encomiendas'=>$enco
+
+		);
+		$this->response($respuesta);
+	}else{
+		$respuesta=array(
+			'err'=>TRUE,
+			'mensaje'=>'Error al cargar los datos.',
+			'Encomiendas'=>null
+
+		);
+		$this->response($respuesta,REST_Controller::HTTP_NOT_FOUND);
+
+	}
+
+   }
+
 
 	public function encomienda_get(){
 
@@ -60,6 +89,7 @@ public function __construct(){
 		$this->response($respuesta,REST_Controller::HTTP_NOT_FOUND);
 
 	}
+	
    }
 
    public function encomiendas_post(){
