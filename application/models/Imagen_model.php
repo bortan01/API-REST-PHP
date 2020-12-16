@@ -8,6 +8,7 @@ class Imagen_model extends CI_Model
     public $activo;
     public $nombre_foto;
 
+
     ///EN EL BODY DEBE DE RECIBIR UN PARAMETRO LLAMADO foto, DE TIPO FILE
     public function guardarImagen($tipo, $identificador, $activo = TRUE)
     {
@@ -124,12 +125,15 @@ class Imagen_model extends CI_Model
             return $informacion_subida;
         }
     }
+
+    public function actualizarGaleria($tipo, $identificador, $activo = TRUE)
+    {
+        $this->eliminarGaleria($tipo, $identificador);
+        $this->guardarImagen($tipo, $identificador);
+    }
     //DEBE DE ENVIARSE LA URL DE LA IMAGEN A ELIMINAR
     public function eliminarImagen($id_foto)
     {
-        $URL = "http://localhost/API-REST-PHP/uploads/";
-        $RUTA = "www/API-REST-PHP/uploads/";
-
         //ELIMINADO DE LA BASE DE DATOS 
         $this->db->where('id_foto', $id_foto);
         $this->db->update('galeria', array('activo' => FALSE));
@@ -144,7 +148,6 @@ class Imagen_model extends CI_Model
 
         $ruta_foto = './uploads/' . $nombreFoto;
 
-
         try {
             if (file_exists($ruta_foto)) {
                 unlink($ruta_foto);
@@ -157,9 +160,10 @@ class Imagen_model extends CI_Model
     }
     public function eliminarGaleria($tipo, $identificado)
     {
-        $this->db->where(array("tipo" => $tipo, "identificador" => $identificado));
+        $this->db->where(array("tipo" => $tipo, "identificador" => $identificado, "activo" => "1"));
         $query = $this->db->get("galeria");
         $imagenes = $query->result();
+
 
         foreach ($imagenes as $imagen) {
             $this->eliminarImagen($imagen->id_foto);
@@ -170,8 +174,7 @@ class Imagen_model extends CI_Model
         $this->db->where(array("tipo" => $tipo, "identificador" => $identificado, "activo" => TRUE));
         $query = $this->db->get("galeria");
         if ($query->row(0)) {
-            # code...
-            $foto = $query->row(0)->foto_path; 
+            $foto = $query->row(0)->foto_path;
             return $foto;
         }
         return null;

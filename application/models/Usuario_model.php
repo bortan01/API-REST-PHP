@@ -96,9 +96,15 @@ class Usuario_model extends CI_Model
 
             foreach ($result as $row) {
                 $identificador = $row->id_cliente;
-                $row->foto =    $this->Imagen_model->obtenerImagenUnica("usuario_perfil", $identificador);
+                $respuestaFoto=   $this->Imagen_model->obtenerImagenUnica("usuario_perfil", $identificador);
+                if ($respuestaFoto == null) {
+                    //por si no hay ninguna foto mandamos una por defecto
+                    $row->foto = "http://localhost/API-REST-PHP/uploads/avatar.png";
+                }else{
+                    $row->foto = $respuestaFoto;
+                }
             }
-
+          
             return array('err' => FALSE, 'usuarios' => $result);
         } catch (Exception $e) {
             return array('err' => TRUE, 'mensaje' => $e->getMessage());

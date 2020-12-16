@@ -28,12 +28,26 @@ class Imagen extends REST_Controller
     }
     public function show_get()
     {
-        sleep(1);
         $data          = $_GET;
         $tipo          = $data["tipo"];
         $identificador = $data["identificador"];
 
         $respuesta = $this->Imagen_model->obtenerImagen($tipo, $identificador);
         $this->response($respuesta, REST_Controller::HTTP_OK);
+    }
+    public function apdate_post()
+    {
+
+        if (count($_FILES)) {
+
+            $tipo = $_POST["tipo"];
+            $identificador = $_POST["identificador"];
+            $this->Imagen_model->actualizarGaleria($tipo, $identificador);
+            $respuesta = array('mensaje' => 'imagen actualizada');
+            $this->response($respuesta, REST_Controller::HTTP_OK);
+        } else {
+            $respuesta = array('mensaje' => 'no se seleccionono ninguna imagen');
+            $this->response($respuesta, REST_Controller::HTTP_BAD_REQUEST);
+        }
     }
 }
