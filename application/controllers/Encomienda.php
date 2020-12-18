@@ -26,11 +26,39 @@ public function __construct(){
 	public function updateEncomienda_post(){
 
 		$data=$this->post();
+		//print_r($data);
+		//die();
+		$this->load->library('form_validation');
+		$this->form_validation->set_data ($data);
 
-		$verificar=$this->Encomienda_model->set_datos($data);
-        $respuesta=$this->Encomienda_model->modificar_encomienda($verificar);
+		if ( $this->form_validation->run('encomienda_put') ) {
+			//todo bien
+			//$this->response('Todo bien')
+		$encomiendas=$this->Encomienda_model->set_datos($data);
+        $respuesta=$this->Encomienda_model->modificar_encomienda($encomiendas); 
 
-	    $this->response($respuesta);
+		if ($respuesta['err']) {
+
+		$this->response($respuesta, REST_Controller::HTTP_BAD_REQUEST); 	
+
+		}else{
+			if (!empty($data["detalle_encomienda"])) {
+                    $detalle = json_decode($data["detalle_encomienda"], true);
+                    $this->DetalleEncomienda_model-> modificarDetalle($detalle, $respuesta['id']);
+                }
+		$this->response($respuesta); 	
+		}
+
+		}else{
+			//algo mal
+
+			$respuesta=array(
+				'err'=>TRUE,
+				'mensaje'=>'Hay errores en el envio de la informacion',
+				'errores'=>$this->form_validation->get_errores_arreglo()
+			);
+			$this->response($respuesta, REST_Controller::HTTP_BAD_REQUEST); 
+		}
 
 	}//fin de metodo
 

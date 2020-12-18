@@ -32,6 +32,49 @@ public function set_datos($data_cruda){
         return $objeto;
  	}//fin de capitalizar los datos segun el modelo y campos correctos de la base
 
+    public function modificarDetalle(array $detalles, string $id){
+
+        //BORRAMOS POR EL TIPO DE PROCEDIMIENTO
+        $this->db->where('id_encomienda',$id);
+        $this->db->delete('detalle_encomienda');
+
+        $nombreTabla = "detalle_encomienda";
+
+        if (count($detalles) < 1) {
+            $respuesta = array(
+                'err'          => TRUE,
+                'mensaje'      => "NO SE INSERTO NINGUN REGISTRO",
+                'detalle_encomienda'      => null
+            );
+            return $respuesta;
+        } else {
+            for ($i = 0; $i < count($detalles); $i++) {
+                $detalles[$i]["id_encomienda"] = $id;
+            }
+            //$servicio = $this->verificar_camposEntrada($data);
+            $insert = $this->db->insert_batch($nombreTabla, $detalles);
+            if (!$insert) {
+                //NO GUARDO
+                $respuesta = array(
+                    'err'          => TRUE,
+                    'mensaje'      => 'Error al insertar ', $this->db->error_message(),
+                    'error_number' => $this->db->error_number(),
+                    'serrvicio'      => null
+                );
+                return $respuesta;
+            } else {
+                $respuesta = array(
+                    'err'          => FALSE,
+                    'mensaje'      => 'Registro Guardado Exitosamente',
+                    //'servicio'   => $servicio
+                );
+                return $respuesta;
+            }
+        }
+
+
+    }
+
  	public function guardarDetalle(array $detalles, string $id){
 
  		$nombreTabla = "detalle_encomienda";

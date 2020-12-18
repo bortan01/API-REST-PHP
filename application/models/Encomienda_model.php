@@ -51,6 +51,39 @@ public function eliminar($datos){
 	}//fin metodo
 
 public function modificar_encomienda($datos){
+
+	$nombreTabla = "encomienda";
+    $this->db->set($datos);
+    $this->db->where('id_encomienda',$datos["id_encomienda"]);
+    $update=$this->db->update('encomienda');
+
+        if (!$update) {
+            //NO GUARDO 
+            $respuesta = array(
+                'err'          => TRUE,
+                'mensaje'      => 'Error al insertar ', $this->db->error_message(),
+                'error_number' => $this->db->error_number(),
+                'turPaquete'   => null
+            );
+            return $respuesta;
+        } else {
+            //$identificador = $this->db->insert_id();
+           
+            $respuesta = array(
+                'err'          => FALSE,
+                'mensaje'      => 'Registro Guardado Exitosamente',
+                'id'           => $datos['id_encomienda'],
+                'encomienda'   => $datos
+            );
+            return $respuesta;
+        }
+
+
+
+
+
+
+	//************
 		$this->db->set($datos);
  		$this->db->where('id_encomienda',$datos["id_encomienda"]);
 
