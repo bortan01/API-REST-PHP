@@ -47,11 +47,11 @@ class ServiciosAdicionales extends REST_Controller
             $this->response($respuesta, REST_Controller::HTTP_OK);
         }
     }
-    public function update_put()
-
+    public function update_post()
     {
-
-        $data = $this->put();
+        $data = $this->post();
+        print_r($data);
+        die();
         ///VERIFICANDO SI EXISTE EL ID PRINCIPAL DE LA TABLA
         if (!isset($data["id_servicios"])) {
             $respuesta = array('err' => TRUE, 'mensaje' => 'No se encontro nungun identificador de servicio');

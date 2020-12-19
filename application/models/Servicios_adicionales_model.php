@@ -9,9 +9,13 @@ class Servicios_adicionales_model extends CI_Model
     public $costos_defecto;
     public $id_contacto;
     public $activo;
-    public $mapa;
     public $asientos_deshabilitados;
     public $asientos_dispobibles;
+    public $filas;
+    public $asiento_derecho;
+    public $asiento_izquierdo;
+    public $fila_trasera;
+    
 
     public function verificar_camposEntrada($dataCruda)
     {
@@ -33,8 +37,7 @@ class Servicios_adicionales_model extends CI_Model
         $nombreTabla = "servicios_adicionales";
 
         $data["activo"]                 = TRUE;
-        $data["mapa"]                   = isset($data["mapa"]) ? $data["mapa"]  : "";
-        $data["asientos_deshabilitados"]= isset($data["asientos_deshabilitados"]) ? $data["asientos_deshabilitados"]  : "";
+        $data["asientos_deshabilitados"] = isset($data["asientos_deshabilitados"]) ? $data["asientos_deshabilitados"]  : "";
         $data["asientos_dispobibles"]   = isset($data["asientos_dispobibles"]) ? $data["asientos_dispobibles"]  : "";
         $servicio                       = $this->verificar_camposEntrada($data);
         $insert                         = $this->db->insert($nombreTabla, $servicio);
@@ -99,17 +102,10 @@ class Servicios_adicionales_model extends CI_Model
                         $url = $galeria->foto_path;
                     }
                     $fila->url = $url;
-
-                    if (empty($fila->mapa)) {
-                        $fila->mapa = [];
+                    if (empty($fila->asientos_deshabilitados)) {
                         $fila->asientos_deshabilitados = [];
                     } else {
-                        $fila->mapa =   explode(",", $fila->mapa);
-                        if (empty($fila->asientos_deshabilitados)) {
-                            $fila->asientos_deshabilitados = [];
-                        } else {
-                            $fila->asientos_deshabilitados =   explode(",", $fila->asientos_deshabilitados);
-                        }
+                        $fila->asientos_deshabilitados =   explode(",", $fila->asientos_deshabilitados);
                     }
                 }
                 $respuesta = array(
@@ -122,11 +118,13 @@ class Servicios_adicionales_model extends CI_Model
             return array('err' => TRUE, 'status' => 400, 'mensaje' => $e->getMessage());
         }
     }
-
     public function editar($data)
     {
         $nombreTabla = "servicios_adicionales";
         ///VAMOS A ACTUALIZAR UN REGISTRO
+        $data["asientos_deshabilitados"] = isset($data["asientos_deshabilitados"]) ? $data["asientos_deshabilitados"]  : "";
+        $data["asientos_dispobibles"]   = isset($data["asientos_dispobibles"]) ? $data["asientos_dispobibles"]  : "";
+        
         $campos = $this->verificar_camposEntrada($data);
         $this->db->where('id_servicios', $campos["id_servicios"]);
 

@@ -145,9 +145,7 @@ class Imagen_model extends CI_Model
         foreach ($query->result() as $row) {
             $nombreFoto = $row->nombre_foto;
         }
-
         $ruta_foto = './uploads/' . $nombreFoto;
-
         try {
             if (file_exists($ruta_foto)) {
                 unlink($ruta_foto);
