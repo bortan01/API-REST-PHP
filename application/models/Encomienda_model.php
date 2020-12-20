@@ -6,6 +6,7 @@ class Encomienda_model extends CI_Model
 public $id_encomienda;
 public $id_usuario;
 public $direccion;
+public $estado;
 public $punto_referencia;
 public $punto_geografico;
 public $total_encomienda;
