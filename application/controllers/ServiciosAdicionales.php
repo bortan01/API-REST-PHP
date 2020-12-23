@@ -12,6 +12,7 @@ class ServiciosAdicionales extends REST_Controller
     public function save_post()
     {
         $data = $this->post();
+    
         $this->load->library("form_validation");
         $this->form_validation->set_data($data);
 
@@ -50,8 +51,6 @@ class ServiciosAdicionales extends REST_Controller
     public function update_post()
     {
         $data = $this->post();
-        print_r($data);
-        die();
         ///VERIFICANDO SI EXISTE EL ID PRINCIPAL DE LA TABLA
         if (!isset($data["id_servicios"])) {
             $respuesta = array('err' => TRUE, 'mensaje' => 'No se encontro nungun identificador de servicio');
