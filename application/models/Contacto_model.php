@@ -53,7 +53,7 @@ class Contacto_model extends CI_Model
         }
     }
     public function obtenerContacto(array $data = array())
-    {
+    { 
         $nombreTabla = "contacto";
         $data["activo"] = TRUE;
         try {
@@ -71,6 +71,16 @@ class Contacto_model extends CI_Model
                 );
                 return $respuesta;
             } else {
+                foreach ($contactoSeleccionado as $row) {
+                    $identificador = $row->id_contacto;
+                    $respuestaFoto=   $this->Imagen_model->obtenerImagenUnica("contacto", $identificador);
+                    if ($respuestaFoto == null) {
+                        //por si no hay ninguna foto mandamos una por defecto
+                        $row->foto = "http://localhost/API-REST-PHP/uploads/avatar.png";
+                    }else{
+                        $row->foto = $respuestaFoto;
+                    }
+                }
 
                 $respuesta = array(
                     'err'          => FALSE,
