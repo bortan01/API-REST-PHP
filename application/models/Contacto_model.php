@@ -6,6 +6,7 @@ class Contacto_model extends CI_Model
     public $nombre_contacto;
     public $telefono;
     public $correo;
+    public $activo;
 
     public function verificar_camposEntrada($dataCruda)
     {
@@ -105,7 +106,7 @@ class Contacto_model extends CI_Model
             $respuesta = array(
                 'err'     => FALSE,
                 'mensaje' => 'Registro Actualizado Exitosamente',
-                'sitio' => $campos
+                'contacto' => $campos
 
             );
             return $respuesta;
@@ -115,28 +116,26 @@ class Contacto_model extends CI_Model
                 'err' => TRUE,
                 'mensaje' => 'Error al actualizar ', $this->db->error_message(),
                 'error_number' => $this->db->error_number(),
-                'sitio' => null
+                'contacto' => null
             );
             return $respuesta;
         }
     }
-    public function elimination($campos)
+    public function borrar($campos)
     {
-        $nombreTabla      = "contacto";
-        $identificador    = $campos["id_contacto"];
+        $nombreTabla  = 'contacto';
+        $identificador = $campos["id_contacto"];
         $campos["activo"] = FALSE;
         ///VAMOS A ACTUALIZAR UN REGISTRO
         $this->db->where('id_contacto', $identificador);
         $hecho = $this->db->update($nombreTabla, $campos);
         if ($hecho) {
-           $this->load->model('Imagen_model');
-           $this->Imagen_model->eliminarGaleria($nombreTabla, $identificador);
+            $this->load->model('Imagen_model');
+            $this->Imagen_model->eliminarGaleria($nombreTabla, $identificador);
             ///LOGRO ACTUALIZAR 
             $respuesta = array(
                 'err'     => FALSE,
-                'mensaje' => 'Registro Elimiinado Exitosamente',
-                'sitio' => $campos
-
+                'mensaje' => 'Registro Eliminado Exitosamente'
             );
             return $respuesta;
         } else {
@@ -145,7 +144,7 @@ class Contacto_model extends CI_Model
                 'err' => TRUE,
                 'mensaje' => 'Error al actualizar ', $this->db->error_message(),
                 'error_number' => $this->db->error_number(),
-                'sitio' => null
+                'usuario' => null
             );
             return $respuesta;
         }

@@ -50,41 +50,47 @@ class Contacto extends REST_Controller
     public function update_put()
     {
         $data = $this->put();
-        ///VERIFICANDO SI EXISTE EL ID PRINCIPAL DE LA TABLA
-        if (!isset($data["id_servicios"])) {
-            $respuesta = array('err' => TRUE, 'mensaje' => 'No se encontro nungun identificador de servicio');
-            $this->response($respuesta, REST_Controller::HTTP_BAD_REQUEST);
-        } else {
-            try {
-                $respuesta = $this->Contacto_model->editar($data);
-                if ($respuesta['err']) {
-                    $this->response($respuesta, REST_Controller::HTTP_BAD_REQUEST);
-                } else {
-                    $this->response($respuesta, REST_Controller::HTTP_OK);
-                }
-            } catch (\Throwable $th) {
-                $respuesta = array('err' => TRUE, 'mensaje' => 'Error interno de servidor');
+
+        $this->load->library("form_validation");
+        $this->form_validation->set_data($data);
+        if ($this->form_validation->run('ActualizarContacto')) {
+             
+            $respuesta = $this->Contacto_model->editar($data);
+            if ($respuesta['err']) {
+                $this->response($respuesta, REST_Controller::HTTP_BAD_REQUEST);
+            } else {
+                $this->response($respuesta, REST_Controller::HTTP_OK);
             }
+        } else {
+            $respuesta = array(
+                'err' => TRUE,
+                'mensaje' => 'hay errores en el envio de informacion',
+                'errores' => $this->form_validation->get_errores_arreglo()
+            );
+            $this->response($respuesta, REST_Controller::HTTP_BAD_REQUEST);
         }
     }
     public function elimination_delete()
     {
         $data = $this->delete();
-        ///VERIFICANDO SI EXISTE EL ID PRINCIPAL DE LA TABLA
-        if (!isset($data["id_servicios"])) {
-            $respuesta = array('err' => TRUE, 'mensaje' => 'No se encontro nungun identificador de servicio');
-            $this->response($respuesta, REST_Controller::HTTP_BAD_REQUEST);
-        } else {
-            try {
-                $respuesta = $this->Contacto_model->elimination($data);
-                if ($respuesta['err']) {
-                    $this->response($respuesta, REST_Controller::HTTP_BAD_REQUEST);
-                } else {
-                    $this->response($respuesta, REST_Controller::HTTP_OK);
-                }
-            } catch (\Throwable $th) {
-                $respuesta = array('err' => TRUE, 'mensaje' => 'Error interno de servidor');
+        $this->load->library("form_validation");
+        $this->form_validation->set_data($data);
+        if ($this->form_validation->run('EliminarContacto')) {
+             
+            $respuesta = $this->Contacto_model->borrar($data);
+            if ($respuesta['err']) {
+                $this->response($respuesta, REST_Controller::HTTP_BAD_REQUEST);
+            } else {
+                $this->response($respuesta, REST_Controller::HTTP_OK);
             }
+        } else {
+            $respuesta = array(
+                'err' => TRUE,
+                'mensaje' => 'hay errores en el envio de informacion',
+                'errores' => $this->form_validation->get_errores_arreglo()
+            );
+            $this->response($respuesta, REST_Controller::HTTP_BAD_REQUEST);
         }
     }
+   
 }

@@ -166,11 +166,7 @@ $config = array(
 	'ActualizarUsuario' => array(
 		array('field' => 'id_cliente'  ,'label' => 'id usuario' , 'rules' => 'trim|required'),
 		array('field' => 'correo'      ,'label' => 'Correo Electronico'       , 'rules' => 'trim|required'),
-		array('field' => 'password'    ,'label' => 'Password'                 , 'rules' => 'trim|min_length[8]'),	
-		
-		
-		
-		
+		array('field' => 'password'    ,'label' => 'Password'                 , 'rules' => 'trim|min_length[8]'),		
 	),
 
 	'citas_put' => array(
@@ -252,5 +248,11 @@ $config = array(
 	),
 	'insertarTipoSitio' => array(
 		array('field' => 'tipo_sitio' ,'label' => 'Tipo de Sitio Turistico' , 'rules' => 'trim|required')
+	),
+	'ActualizarContacto' => array(
+		array('field' => 'id_contacto' ,'label' => 'id contacto' , 'rules' => 'trim|required'),
+	),
+	'EliminarContacto' => array(
+		array('field' => 'id_contacto' ,'label' => 'id contacto'        , 'rules' => 'trim|required'),
 	),
 );

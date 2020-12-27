@@ -211,16 +211,18 @@ class Usuario_model extends CI_Model
     }
     public function borrar($campos)
     {
+        $nombreTabla  = 'usuario';
+        $identificador = $campos["id_cliente"];
         ///VAMOS A ACTUALIZAR UN REGISTRO
-        $this->db->where('id_cliente', $campos["id_cliente"]);
-        $hecho = $this->db->update('usuario', $campos);
+        $this->db->where('id_cliente', $identificador);
+        $hecho = $this->db->update($nombreTabla, $campos);
         if ($hecho) {
+            $this->load->model('Imagen_model');
+            $this->Imagen_model->eliminarGaleria($nombreTabla, $identificador);
             ///LOGRO ACTUALIZAR 
             $respuesta = array(
                 'err'     => FALSE,
                 'mensaje' => 'Registro Eliminado Exitosamente'
-
-
             );
             return $respuesta;
         } else {
