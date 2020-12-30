@@ -37,7 +37,7 @@ class Tours_paquete_model extends CI_Model
         // die();
         $nombreTabla = "tours_paquete";
         $insert = $this->db->insert($nombreTabla, $turPaquete);
-        if (!$insert) {
+           if (!$insert) {
             //NO GUARDO 
             $respuesta = array(
                 'err'          => TRUE,
@@ -134,7 +134,7 @@ class Tours_paquete_model extends CI_Model
         $query = $this->db->get();
         $tur  = $query->result();
 
-        $this->db->select('descripcion_tur,incluye,no_incluye,requisitos,lugar_salida, promociones,cupos_disponibles,nombreTours,start,end,precio',"descripcion_tur");
+        $this->db->select('descripcion_tur,incluye,no_incluye,requisitos,lugar_salida, promociones,cupos_disponibles,nombreTours,start,end,precio', "descripcion_tur");
         $this->db->from("tours_paquete");
         $this->db->where($parametros);
         $query = $this->db->get();
@@ -152,7 +152,6 @@ class Tours_paquete_model extends CI_Model
             $precio = $viaje->precio;
             $cupos_disponibles = $viaje->cupos_disponibles;
             $descripcion_tur = $viaje->descripcion_tur;
-           
         }
 
         $respuesta = array(
@@ -177,7 +176,6 @@ class Tours_paquete_model extends CI_Model
     public function editar($data)
     {
         $nombreTabla = "tours_paquete";
-
         ///VAMOS A ACTUALIZAR UN REGISTRO
         $campos = $this->Tours_paquete_model->verificar_camposEntrada($data);
         $this->db->where('id_tours', $campos["id_tours"]);

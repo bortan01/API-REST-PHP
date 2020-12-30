@@ -50,9 +50,9 @@ class TurPaquete extends REST_Controller
             $this->response($respuesta, REST_Controller::HTTP_BAD_REQUEST);
         }
     }
-    public function update_put()
+    public function update_post()
     {
-        $data = $this->put();
+        $data = $this->post();
         if (!isset($data["id_tours"])) {
             $respuesta = array('err' => TRUE, 'mensaje' => 'No se encontro nungun identificador de Tour o Paquete');
             $this->response($respuesta, REST_Controller::HTTP_BAD_REQUEST);
