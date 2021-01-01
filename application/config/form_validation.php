@@ -150,6 +150,22 @@ $config = array(
 		// array('field' => 'nombre_encargado' ,'label' => 'Nombre de Encargado' , 'rules' => 'trim|required|min_length[3]|max_length[45]'),
 	
 	),
+	'editarTurPaquete' => array(
+		array('field' => 'id_tours'         ,'label' => 'ID TUR'              , 'rules' => 'trim|required'),
+		array('field' => 'nombreTours'      ,'label' => 'Nombre del Viaje'    , 'rules' => 'trim|required'),
+		array('field' => 'start'            ,'label' => 'Fecha de Salida'     , 'rules' => 'trim|required'),
+		array('field' => 'descripcion_tur'  ,'label' => 'Descripcion'         , 'rules' => 'trim|required|min_length[3]'),
+		array('field' => 'tipo'             ,'label' => 'Tipo'                , 'rules' => 'trim|required'),
+		array('field' => 'cupos_disponibles','label' => 'Cupos de Paquetes'   , 'rules' => 'trim|required|integer'),
+		array('field' => 'precio'           ,'label' => 'Precio'              , 'rules' => 'trim|required|numeric'),
+		array('field' => 'lugar_salida'     ,'label' => 'Lugar de salida'     , 'rules' => 'trim|required'),
+		array('field' => 'no_incluye'       ,'label' => 'No Incluye'          , 'rules' => 'trim|required'),
+		array('field' => 'requisitos'       ,'label' => 'Requisitos'          , 'rules' => 'trim|required'),
+		array('field' => 'promociones'      ,'label' => 'Promociones'         , 'rules' => 'trim|required'),
+		array('field' => 'incluye'          ,'label' => 'Incluye'             , 'rules' => 'trim|required'),
+		// array('field' => 'nombre_encargado' ,'label' => 'Nombre de Encargado' , 'rules' => 'trim|required|min_length[3]|max_length[45]'),
+	
+	),
 	
 	'loginUsuario' => array(
 		array('field' => 'username'  ,'label' => 'Correo Electronico' , 'rules' => 'trim|required|min_length[3]|max_length[45]'),

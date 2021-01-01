@@ -68,7 +68,14 @@ class Itinerario_model extends CI_Model
             }
         }
     }
-    public function editar(array $data)
+    public function editar(array $sitiosTuristicos, string $id_tours){
+        
+    }
+    public function eliminar(array $sitiosTuristicos, string $id_tours){
+        
+    }
+
+    public function editarOLD(array $data)
     {
 
         $nombreTabla = "itinerario";

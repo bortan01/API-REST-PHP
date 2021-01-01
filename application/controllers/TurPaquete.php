@@ -53,20 +53,33 @@ class TurPaquete extends REST_Controller
     public function update_post()
     {
         $data = $this->post();
-        if (!isset($data["id_tours"])) {
-            $respuesta = array('err' => TRUE, 'mensaje' => 'No se encontro nungun identificador de Tour o Paquete');
-            $this->response($respuesta, REST_Controller::HTTP_BAD_REQUEST);
-        } else {
-            try {
-                $respuesta = $this->Tours_paquete_model->editar($data);
-                if ($respuesta['err']) {
-                    $this->response($respuesta, REST_Controller::HTTP_BAD_REQUEST);
-                } else {
-                    $this->response($respuesta, REST_Controller::HTTP_OK);
+        $this->load->library("form_validation");
+        $this->form_validation->set_data($data);
+        if ($this->form_validation->run('editarTurPaquete')) {
+            $respuesta = $this->Tours_paquete_model->editar($data);
+            if ($respuesta['err']) {
+                $this->response($respuesta, REST_Controller::HTTP_BAD_REQUEST);
+            } else {
+                 //SE GURDO EL TUR POR LO QUE YA TENEMOS EL ID PARA EL DETALLE
+                 if (!empty($data["servicios"])) {
+                     
+                    $servicios = json_decode($data["servicios"], true);
+                    $this->detalle_servicio_model->editar($servicios, $respuesta["viaje"]["id_tours"]);
                 }
-            } catch (\Throwable $th) {
-                $respuesta = array('err' => TRUE, 'mensaje' => 'Error interno de servidor');
+                if (!empty($data["sitios"])) {
+                    $itinerario = json_decode($data["sitios"], true);
+                    $this->Itinerario_model->editar($itinerario, $respuesta["viaje"]["id_tours"]);
+                }
+                $this->response($respuesta, REST_Controller::HTTP_OK);
             }
+        } else {
+            //algo mal
+            $respuesta = array(
+                'err' => TRUE,
+                'mensaje' => 'har errores en el envio de informacion',
+                'errores' => $this->form_validation->get_errores_arreglo()
+            );
+            $this->response($respuesta, REST_Controller::HTTP_BAD_REQUEST);
         }
     }
     public function show_get()

@@ -63,6 +63,12 @@ class detalle_servicio_model extends CI_Model
             }
         }
     }
+    public function editar(array $servicios, string $id_tours){
+        
+    }
+    public function eliminar(array $servicios, string $id_tours){
+        
+    }
 
     public function obtenerServicio(array $data = array())
     {

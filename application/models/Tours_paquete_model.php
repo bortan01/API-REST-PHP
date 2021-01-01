@@ -37,7 +37,7 @@ class Tours_paquete_model extends CI_Model
         // die();
         $nombreTabla = "tours_paquete";
         $insert = $this->db->insert($nombreTabla, $turPaquete);
-           if (!$insert) {
+        if (!$insert) {
             //NO GUARDO 
             $respuesta = array(
                 'err'          => TRUE,
@@ -175,10 +175,12 @@ class Tours_paquete_model extends CI_Model
     }
     public function editar($data)
     {
-        $nombreTabla = "tours_paquete";
-        ///VAMOS A ACTUALIZAR UN REGISTRO
+       $nombreTabla = "tours_paquete";
+    
         $campos = $this->Tours_paquete_model->verificar_camposEntrada($data);
         $this->db->where('id_tours', $campos["id_tours"]);
+        $campos["start"] = $this->combertirFecha($campos["start"]);
+        $campos["end"] = $this->combertirFecha($campos["end"]);
 
         $hecho = $this->db->update($nombreTabla, $campos);
         if ($hecho) {
@@ -243,5 +245,12 @@ class Tours_paquete_model extends CI_Model
             );
             return $respuesta;
         }
+    }
+    public function combertirFecha($fecha)
+    {
+        //PRIMERA PARTE ES COMO NOS MANDAN EL STRING (d/m/Y)
+        //EL SEGUNDO ES EL NUEVO FORMATO AL QUE LO VAMOS A PASAR  (Y-m-d)
+        return DateTime::createFromFormat('d/m/Y', $fecha)->format('Y-m-d');
+       
     }
 }
