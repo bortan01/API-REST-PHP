@@ -38,11 +38,23 @@ class Vehiculo_model extends CI_Model
         $query = $this->db->get();
 
         $respuesta = $query->result();
+        $this->load->model('Imagen_model');
+        foreach ($respuesta as $row) {
+            $row->opc_avanzadas =   explode(",", $row->opc_avanzadas);
+            $identificador = $row->idvehiculo;
+            $respuestaFoto=   $this->Imagen_model->obtenerImagenUnica('vehiculo', $identificador);
+            if ($respuestaFoto == null) {
+                //por si no hay ninguna foto mandamos una por defecto
+                $row->foto = "http://localhost/API-REST-PHP/uploads/avatar.png";
+            }else{
+                $row->foto = $respuestaFoto;
+            }
+        }
       
         
-        foreach ($respuesta as $carro) {
-            $carro->opc_avanzadas =   explode(",", $carro->opc_avanzadas);
-        }
+        // foreach ($respuesta as $carro) {
+          
+        // }
             return $respuesta;
         
     }
@@ -176,5 +188,41 @@ class Vehiculo_model extends CI_Model
             );
             return $respuesta;
         }
+    }
+
+    public function getFlota(array $data)
+    {
+        $parametros = $this->verificar_camposEntrada($data);
+
+        $this->db->select('*');
+        $this->db->from('vehiculo');
+        $this->db->join('modelo', 'vehiculo.idmodelo = modelo.idmodelo');
+        $this->db->join('marca_vehiculo', 'modelo.id_marca = marca_vehiculo.id_marca');
+        $this->db->join('categoria', 'vehiculo.idcategoria=categoria.idcategoria');
+        
+        $this->db->where($parametros);
+        $this->db->where_in('vehiculo.activo',1);
+        $query = $this->db->get();
+
+        $respuesta = $query->result();
+        $this->load->model('Imagen_model');
+        foreach ($respuesta as $row) {
+            $row->opc_avanzadas =   explode(",", $row->opc_avanzadas);
+            $identificador = $row->idvehiculo;
+            $respuestaFoto=   $this->Imagen_model->obtenerImagen('vehiculo', $identificador);
+            if ($respuestaFoto == null) {
+                //por si no hay ninguna foto mandamos una por defecto
+                $row->foto = [];
+            }else{
+                $row->foto = $respuestaFoto;
+            }
+        }
+      
+        
+        // foreach ($respuesta as $carro) {
+          
+        // }
+            return $respuesta;
+        
     }
 }

@@ -110,4 +110,31 @@ public function __construct(){
 				}
 			}
 		}
+
+		
+		public function flota_get()
+		{
+			$data = $this->get();
+			$carro = $this->Vehiculo_model->getFlota($data);
+	
+		if (isset($carro)) {
+			
+			$respuesta=array(
+				'err'=>FALSE,
+				'mensaje'=>'Registro Cargado correctamente',
+				'autos'=>$carro
+	
+			);
+			$this->response($respuesta,REST_Controller::HTTP_OK);
+		}else{
+			$respuesta=array(
+				'err'=>TRUE,
+				'mensaje'=>'Error al cargar los datos.',
+				'autos'=>null
+	
+			);
+			$this->response($respuesta,REST_Controller::HTTP_NOT_FOUND);
+	
+		}
+	}
 }
