@@ -69,10 +69,17 @@ class Itinerario_model extends CI_Model
         }
     }
     public function editar(array $sitiosTuristicos, string $id_tours){
-        
+        $this->eliminar($id_tours);
+        $this->guardar($sitiosTuristicos, $id_tours);
     }
-    public function eliminar(array $sitiosTuristicos, string $id_tours){
-        
+    public function eliminar( string $id_tours){
+        $nombreTabla = "itinerario";
+        try {
+            $this->db->where('id_tours', $id_tours);
+            $this->db->delete($nombreTabla);
+        } catch (Exception $e) {
+            echo $e->getMessage();
+        }
     }
 
     public function editarOLD(array $data)
