@@ -173,10 +173,89 @@ class Tours_paquete_model extends CI_Model
 
         return $respuesta;
     }
+    public function informacionViaje(array $parametros = array())
+    {
+        $incluye = [];
+        $no_incluye = [];
+        $requisitos = [];
+        $lugar_salida = [];
+        $promociones = [];
+        $nombreTur  = "";
+        $start = "";
+        $end = "";
+        $precio = "";
+        $cupos_disponibles = "";
+        $descripcion_tur = "";
+
+
+        $this->db->select('descripcion_tur,incluye,no_incluye,requisitos,lugar_salida, promociones,cupos_disponibles,nombreTours,start,end,precio', "descripcion_tur");
+        $this->db->from("tours_paquete");
+        $this->db->where($parametros);
+        $query = $this->db->get();
+        $result  = $query->result();
+
+        foreach ($result as $viaje) {
+            $incluye =  json_decode($viaje->incluye, true);
+            $no_incluye =  json_decode($viaje->no_incluye, true);
+            $requisitos =  json_decode($viaje->requisitos, true);
+            $lugar_salida =  json_decode($viaje->lugar_salida, true);
+            $promociones =  json_decode($viaje->promociones, true);
+            $nombreTurX  = $viaje->nombreTours;
+            $start =  $viaje->start;
+            $end =  $viaje->end;
+            $precio = $viaje->precio;
+            $cupos_disponibles = $viaje->cupos_disponibles;
+            $descripcion_tur = $viaje->descripcion_tur;
+        }
+
+
+        $this->db->select('asientos_deshabilitados, nombre_servicio, fila_trasera,  asiento_derecho, asiento_izquierdo,filas');
+        $this->db->from("detalle_servicio");
+        $this->db->join('servicios_adicionales', 'id_servicios');
+        $this->db->where(array('id_tours'=> $parametros['id_tours'], 'id_tipo_servicio'=>2));
+        $query = $this->db->get();
+        // $vehiculos  = $query->result();
+        if ($query->row(0)) {
+            $transporte = $query->row(0);
+             $transporte;
+        }else{
+            $transporte = null;
+        }
+
+        $this->db->select('asientos_seleccionados');
+        $this->db->from("tours_paquete");
+        $this->db->join('detalle_tour', 'id_tours');
+        $this->db->join('reserva_tour', 'id_detalle');
+        $this->db->where(array('id_tours'=> $parametros['id_tours']));
+        $query = $this->db->get();
+        $asientos  = $query->result();
+   
+
+
+
+        $respuesta = array(
+            'nombre' => $nombreTur,
+            'start' => $start,
+            'end' => $end,
+            'precio' => $precio,
+            'cupos' => $cupos_disponibles,
+            'descripcion_tur' => $descripcion_tur,
+            'incluye' => $incluye,
+            'no_incluye' => $no_incluye,
+            'requisitos' => $requisitos,
+            'lugar_salidas' => $lugar_salida,
+            'promociones' => $promociones,
+            'transporte' =>$transporte,
+            'asientos' =>$asientos
+
+        );
+
+        return $respuesta;
+    }
     public function editar($data)
     {
-       $nombreTabla = "tours_paquete";
-    
+        $nombreTabla = "tours_paquete";
+
         $campos = $this->Tours_paquete_model->verificar_camposEntrada($data);
         $this->db->where('id_tours', $campos["id_tours"]);
         $campos["start"] = $this->combertirFecha($campos["start"]);
@@ -251,6 +330,5 @@ class Tours_paquete_model extends CI_Model
         //PRIMERA PARTE ES COMO NOS MANDAN EL STRING (d/m/Y)
         //EL SEGUNDO ES EL NUEVO FORMATO AL QUE LO VAMOS A PASAR  (Y-m-d)
         return DateTime::createFromFormat('d/m/Y', $fecha)->format('Y-m-d');
-       
     }
 }
