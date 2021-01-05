@@ -12,15 +12,16 @@ public function __construct(){
 	
 	}
 
-	 public function deleteEnvios_post(){
+public function deleteEnvios_post(){
 
 	 $data=$this->post();
 	 $verificar=$this->DetalleEnvio_model->set_datos($data);
      $respuesta=$this->DetalleEnvio_model->eliminar($verificar);
 
 	 	  $this->response($respuesta);
-	 }
-	public function updateEnvios_post(){
+}
+	
+public function updateEnvios_post(){
 
 		$data=$this->post();
 
@@ -29,12 +30,12 @@ public function __construct(){
 
 	    $this->response($respuesta);
 
-	}//fin de metodo
-
+}//fin de metodo
 	//************rama get todas**/***************************
 	public function detalleEnvio_get(){
 
-	$detalle=$this->DetalleEnvio_model->get_pregunta();
+	$data = $this->get();
+	$detalle=$this->DetalleEnvio_model->get_detallesEnvio($data);
 
 	if (isset($detalle)) {
 		//quitar campos que no quiero
@@ -43,7 +44,7 @@ public function __construct(){
 		$respuesta=array(
 			'err'=>FALSE,
 			'mensaje'=>'Registro Cargado correctamente',
-			'Detalle'=>$detalle
+			'detalles'=>$detalle
 
 		);
 		$this->response($respuesta);
@@ -51,13 +52,14 @@ public function __construct(){
 		$respuesta=array(
 			'err'=>TRUE,
 			'mensaje'=>'Error al cargar los datos.',
-			'detalle'=>null
+			'detalles'=>null
 
 		);
 		$this->response($respuesta,REST_Controller::HTTP_NOT_FOUND);
 
 	}
-}
+
+   }
 
 public function detalleEnvios_post(){
 
@@ -69,7 +71,7 @@ public function detalleEnvios_post(){
 			//todo bien
 			//$this->response('Todo bien');
 		$detalle=$this->DetalleEnvio_model->set_datos($data);
-        $respuesta=$this->DetalleEnvio_model->insert($detalle); 
+        $respuesta=$this->DetalleEnvio_model->insertarDetalle($detalle); 
 
 		if ($respuesta['err']) {
 

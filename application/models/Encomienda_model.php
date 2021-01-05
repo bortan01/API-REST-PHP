@@ -114,11 +114,12 @@ public function modificar_encomienda($datos){
  		return $respuesta;
  	}
 
-public function get_encomiendaEnvio(){
+public function get_encomiendaEnvio($data){
     $this->db->select('*');
     $this->db->from('encomienda');
     $this->db->join('usuario', 'usuario.id_cliente=encomienda.id_usuario','inner');
-    $this->db->where(array('estado'=>'Enviado'));
+     $this->db->where($data);
+    $this->db->where_in(array('estado'=>'Enviado'));
     $query=$this->db->get();
     return $query->result();
 }

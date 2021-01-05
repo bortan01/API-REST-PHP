@@ -77,13 +77,15 @@ public function modificar_detalle($datos){
  		return $respuesta;
  	}//fin metodo
 
-public function get_pregunta(){
+public function get_detallesEnvio($data){
 
+	$this->db->select('*');
+    $this->db->from('detalle_envio');
+    $this->db->where(array('id_encomienda'=>$data['id_encomienda']));
+    $query=$this->db->get();
+    return $query->result();
 
- 	$query=$this->db->get('detalle_envio');
- 	
- 		return $query->result();
- 	}
+}
 
 
     public function set_datos( $data_cruda){
@@ -99,7 +101,7 @@ public function get_pregunta(){
         return $objeto;
  	}//fin de capitalizar los datos segun el modelo y campos correctos de la base
 
- 	public function insert($datos){
+ 	public function insertarDetalle($datos){
 
  	
 			//insertar el registro
