@@ -46,17 +46,18 @@ class Tarifa_model extends CI_Model
 
 
 	public function modificar_tarifa($datos){
-		$this->db->set($datos);
- 		$this->db->where('id_tarifa',$datos["id_tarifa"]);
+		$this->db->set(array('tarifa'=>$datos['tarifa'],
+			                 'unidades_medidas'=>$datos['unidades_medidas']
+	                  ));
+ 		$this->db->where('id_producto',$datos["id_producto"]);
+        $hecho=$this->db->update('tarifa');
 
- 		$hecho=$this->db->update('tarifa');
-
- 		if ($hecho) {
-				#borrado
+			if ($hecho) {
+				#insertado
 				$respuesta=array(
 					'err'=>FALSE,
-					'mensaje'=>'Registro actualizado correctamente',
-					'tarifa'=>$datos
+					'mensaje'=>'Registro insertado correctamente',
+					'datos'=>$datos
 				);
 
 			
@@ -66,12 +67,13 @@ class Tarifa_model extends CI_Model
 
 				$respuesta=array(
 					'err'=>TRUE,
-					'mensaje'=>'Error al actualizar',
+					'mensaje'=>'Error al insertar',
 					'error'=>$this->db->_error_message(),
 					'error_num'=>$this->db->_error_number()
 				);
 			
 			}
+
  		return $respuesta;
  	}//fin metodo
 

@@ -25,14 +25,20 @@ public function __construct(){
 
 		$data=$this->post();
 
-		$verificar=$this->Producto_model->set_datos($data);
-		$respuesta=$this->Producto_model->modificar_producto($verificar);
+		$prod=$this->Producto_model->set_datos($data);
+        $respuesta=$this->Producto_model->modificar_producto($data); 
 
-	    $this->response($respuesta);
+		if ($respuesta['err']) {
+
+		$this->response($respuesta, REST_Controller::HTTP_BAD_REQUEST); 	
+
+		}else{
+		$this->response($respuesta); 	
+		}
 
 	}//fin de metodo
 
-	public function productos_get(){
+public function productos_get(){
 
 	$product=$this->Producto_model->get_producto();
 

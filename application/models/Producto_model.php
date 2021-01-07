@@ -44,17 +44,22 @@ class Producto_model extends CI_Model
 	}//fin metodo
 
 	public function modificar_producto($datos){
-		$this->db->set($datos);
- 		$this->db->where('id_producto',$datos["id_producto"]);
 
- 		$hecho=$this->db->update('producto');
+ 		//para modificar
+ 		
+ 			$this->db->set(array('nombre_producto'=> $datos['nombre_producto']));
+ 		    $this->db->where('id_producto',$datos["id_producto"]);
+            $hecho=$this->db->update('producto');
+            $this->load->model('Tarifa_model');
+			$this->Tarifa_model->modificar_tarifa($datos);
 
- 		if ($hecho) {
-				#borrado
+			if ($hecho) {
+				#insertado
 				$respuesta=array(
 					'err'=>FALSE,
-					'mensaje'=>'Registro actualizado correctamente',
-					'Producto'=>$datos
+					'mensaje'=>'Registro Actualizado correctamente',
+					'producto_id'=>$this->db->insert_id(),
+					'datos'=>$datos
 				);
 
 			
@@ -64,21 +69,22 @@ class Producto_model extends CI_Model
 
 				$respuesta=array(
 					'err'=>TRUE,
-					'mensaje'=>'Error al actualizar',
+					'mensaje'=>'Error al insertar',
 					'error'=>$this->db->_error_message(),
 					'error_num'=>$this->db->_error_number()
 				);
 			
 			}
- 		return $respuesta;
+
+			return $respuesta;
  	}//fin metodo
 
 	public function get_producto(){
-
-
- 	$query=$this->db->get('producto');
- 	
- 		return $query->result();
+    $this->db->select('*');
+    $this->db->from('producto');
+    $this->db->join('tarifa', 'tarifa.id_producto=producto.id_producto','inner');
+    $query=$this->db->get();
+    return $query->result();
  	}
 
 
