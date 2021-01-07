@@ -4,9 +4,9 @@ class Producto_model extends CI_Model
 {
 	public $id_producto;
 	public $nombre_producto;
+	public $estado_producto;
 
-
-	public function eliminarProducto($datos){
+public function altaProducto($datos){
 
 		$query=$this->db->get_where('producto',array('id_producto'=>$datos["id_producto"]) );
 		$producto=$query->row();
@@ -18,20 +18,15 @@ class Producto_model extends CI_Model
 			);
 			return $respuesta;
 			}
-
-
-		$this->db->where('id_producto',$datos["id_producto"]);
-        $hecho=$this->db->delete('producto');
-
-        $this->db->where('id_producto',$datos["id_producto"]);
-
- 		$this->db->delete('tarifa');
+		$this->db->set(array('estado_producto'=> 1 ));
+ 		$this->db->where('id_producto',$datos["id_producto"]);
+        $hecho = $this->db->update('producto');
 
  		if ($hecho) {
 				#borrado
 				$respuesta=array(
 					'err'=>FALSE,
-					'mensaje'=>'Registro eliminado correctamente'
+					'mensaje'=>'Registro dado de alta correctamente'
 				);
 			}else{
 				//error
@@ -45,9 +40,46 @@ class Producto_model extends CI_Model
 			
 			}
  		return $respuesta;
-	}//fin metodo
+}//fin metodo
 
-	public function modificar_producto($datos){
+
+public function eliminarProducto($datos){
+
+		$query=$this->db->get_where('producto',array('id_producto'=>$datos["id_producto"]) );
+		$producto=$query->row();
+
+			if (!isset($producto)) {
+			$respuesta=array(
+				'err'=>TRUE,
+				'mensaje'=>'El producto no existe'
+			);
+			return $respuesta;
+			}
+		$this->db->set(array('estado_producto'=> 0 ));
+ 		$this->db->where('id_producto',$datos["id_producto"]);
+        $hecho = $this->db->update('producto');
+
+ 		if ($hecho) {
+				#borrado
+				$respuesta=array(
+					'err'=>FALSE,
+					'mensaje'=>'Registro dado de baja correctamente'
+				);
+			}else{
+				//error
+
+				$respuesta=array(
+					'err'=>TRUE,
+					'mensaje'=>'Error al eliminar',
+					'error'=>$this->db->_error_message(),
+					'error_num'=>$this->db->_error_number()
+				);
+			
+			}
+ 		return $respuesta;
+}//fin metodo
+
+public function modificar_producto($datos){
 
  		//para modificar
  		
@@ -81,21 +113,31 @@ class Producto_model extends CI_Model
 			}
 
 			return $respuesta;
- 	}//fin metodo
+}//fin metodo
 
-	public function get_producto(){
+public function get_productoTabla(){
     $this->db->select('*');
     $this->db->from('producto');
     $this->db->join('tarifa', 'tarifa.id_producto=producto.id_producto','inner');
     $query=$this->db->get();
     return $query->result();
- 	}
+}
 
 
-	public function set_datos($data_cruda){
+public function get_producto(){
+    $this->db->select('*');
+    $this->db->from('producto');
+    $this->db->join('tarifa', 'tarifa.id_producto=producto.id_producto','inner');
+    $this->db->where('producto.estado_producto',1);
+    $query=$this->db->get();
+    return $query->result();
+}
+
+
+public function set_datos($data_cruda){
     	 $objeto =array();
         ///par aquitar campos no existentes
-        foreach ($data_cruda as $nombre_campo => $valor_campo) {
+           foreach ($data_cruda as $nombre_campo => $valor_campo) {
             # para verificar si la propiedad existe..
             if (property_exists('Producto_model', $nombre_campo)) {
                 $objeto[$nombre_campo] = $valor_campo;
@@ -103,7 +145,7 @@ class Producto_model extends CI_Model
         }
 
         return $objeto;
- 	}//fin de capitalizar los datos segun el modelo y campos correctos de la base
+}//fin de capitalizar los datos segun el modelo y campos correctos de la base
 
  	public function insertarProducto($datos){
 			//insertar el registro
