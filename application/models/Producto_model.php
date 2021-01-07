@@ -6,7 +6,7 @@ class Producto_model extends CI_Model
 	public $nombre_producto;
 
 
-	public function eliminar($datos){
+	public function eliminarProducto($datos){
 
 		$query=$this->db->get_where('producto',array('id_producto'=>$datos["id_producto"]) );
 		$producto=$query->row();
@@ -19,9 +19,13 @@ class Producto_model extends CI_Model
 			return $respuesta;
 			}
 
-		$this->db->where('id_producto',$datos["id_producto"]);
 
- 		$hecho=$this->db->delete('producto');
+		$this->db->where('id_producto',$datos["id_producto"]);
+        $hecho=$this->db->delete('producto');
+
+        $this->db->where('id_producto',$datos["id_producto"]);
+
+ 		$this->db->delete('tarifa');
 
  		if ($hecho) {
 				#borrado

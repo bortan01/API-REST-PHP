@@ -12,13 +12,22 @@ public function __construct(){
 
 	}
 
-	public function deleteProducto_post(){
+	public function deleteProducto_delete(){
 
-	 $data=$this->post();
+	 $data=$this->delete();
+     
+	 $data=$this->delete();
 	 $verificar=$this->Producto_model->set_datos($data);
-     $respuesta=$this->Producto_model->eliminar($verificar);
+     $respuesta=$this->Producto_model->eliminarProducto($verificar);
 
-	 	  $this->response($respuesta);
+      if ($respuesta['err']) {
+
+			$this->response($respuesta, REST_Controller::HTTP_BAD_REQUEST); 
+
+		}else{
+			 $this->response($respuesta);
+
+	 }
 	 }
 
 	public function updateProducto_post(){
