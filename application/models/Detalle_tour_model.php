@@ -29,7 +29,6 @@ class Detalle_tour_model extends CI_Model
     public function guardar($data)
     {
         $camposTur = $this->verificar_camposEntrada($data);
-        // $camposTur['id_detalle'] = date("HisYmd") . rand(1, 100);
         $nombreTabla = "detalle_tour";
         $insertTur = $this->db->insert($nombreTabla, $camposTur);
 

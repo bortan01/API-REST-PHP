@@ -212,13 +212,13 @@ class Tours_paquete_model extends CI_Model
         $this->db->select('asientos_deshabilitados, nombre_servicio, fila_trasera,  asiento_derecho, asiento_izquierdo,filas');
         $this->db->from("detalle_servicio");
         $this->db->join('servicios_adicionales', 'id_servicios');
-        $this->db->where(array('id_tours'=> $parametros['id_tours'], 'id_tipo_servicio'=>2));
+        $this->db->where(array('id_tours' => $parametros['id_tours'], 'id_tipo_servicio' => 2));
         $query = $this->db->get();
         // $vehiculos  = $query->result();
         if ($query->row(0)) {
             $transporte = $query->row(0);
-             $transporte;
-        }else{
+            $transporte;
+        } else {
             $transporte = null;
         }
 
@@ -226,10 +226,10 @@ class Tours_paquete_model extends CI_Model
         $this->db->from("tours_paquete");
         $this->db->join('detalle_tour', 'id_tours');
         $this->db->join('reserva_tour', 'id_detalle');
-        $this->db->where(array('id_tours'=> $parametros['id_tours']));
+        $this->db->where(array('id_tours' => $parametros['id_tours']));
         $query = $this->db->get();
         $asientos  = $query->result();
-   
+
 
 
 
@@ -245,8 +245,8 @@ class Tours_paquete_model extends CI_Model
             'requisitos' => $requisitos,
             'lugar_salidas' => $lugar_salida,
             'promociones' => $promociones,
-            'transporte' =>$transporte,
-            'asientos' =>$asientos
+            'transporte' => $transporte,
+            'asientos' => $asientos
 
         );
 
@@ -258,8 +258,8 @@ class Tours_paquete_model extends CI_Model
 
         $campos = $this->Tours_paquete_model->verificar_camposEntrada($data);
         $this->db->where('id_tours', $campos["id_tours"]);
-        $campos["start"] = $this->combertirFecha($campos["start"]);
-        $campos["end"] = $this->combertirFecha($campos["end"]);
+        isset($campos["start"]) &&  $campos["start"] = $this->combertirFecha($campos["start"]);
+        isset($campos["end"]) &&   $campos["end"] = $this->combertirFecha($campos["end"]);
 
         $hecho = $this->db->update($nombreTabla, $campos);
         if ($hecho) {

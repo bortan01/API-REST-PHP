@@ -10,25 +10,20 @@ class DetalleTour extends REST_Controller
         $this->load->database();
         $this->load->model('Imagen_model');
         $this->load->model("Detalle_tour_model");
+        $this->load->model("ReservaTour_model");
+        $this->load->model("Tours_paquete_model");
     }
 
-    public function save_post()
+    public function saveByAgency_post()
     {
         $data = $this->post();
+        $idDetalle = date("His") . rand(1, 1000);
+        $data['id_detalle'] = $idDetalle;
         $this->load->library("form_validation");
         $this->form_validation->set_data($data);
 
         //corremos las reglas de validacion
-        if (true) {
-            //VERIFICAMOS QUE TODOS LOS PARAMETROS ESTEN BIEN
-            $detalleTour = $this->Detalle_tour_model->verificar_camposEntrada($data);
-            $respuesta     = $this->Detalle_tour_model->guardar($detalleTour);
-            if ($respuesta['err']) {
-                $this->response($respuesta, REST_Controller::HTTP_BAD_REQUEST);
-            } else {
-                $this->response($respuesta, REST_Controller::HTTP_OK);
-            }
-        } else {
+        if (!true) {
             //algo mal
             $respuesta = array(
                 'err' => TRUE,
@@ -36,8 +31,31 @@ class DetalleTour extends REST_Controller
                 'errores' => $this->form_validation->get_errores_arreglo()
             );
             $this->response($respuesta, REST_Controller::HTTP_BAD_REQUEST);
+        } else {
+            //VERIFICAMOS QUE TODOS LOS PARAMETROS ESTEN BIEN
+            $respuesta     = $this->Detalle_tour_model->guardar($data);
+            if ($respuesta['err']) {
+                $this->response($respuesta, REST_Controller::HTTP_BAD_REQUEST);
+            } else {
+                $reservaTur = [];
+                $reservaTur["IdTransaccion"]        = date("HisYmd") . rand(1, 1000);
+                $reservaTur["EnlacePago"]["Id"]     = $idDetalle;
+                $reservaTur["FechaTransaccion"]     = date("Y-m-d H:i:s");
+                $reservaTur["FormaPagoUtilizada"]   = 'Agencia';
+                $reservaTur["ResultadoTransaccion"] = 'ExitosaAprobada';
+                $reservaTur["Monto"]                = $data['total'];
+                $reservaTur["Cantidad"]             = 1;
+
+                $respuesta = $this->ReservaTour_model->guardar($reservaTur);
+                if ($respuesta['err']) {
+                    $this->response($respuesta, REST_Controller::HTTP_BAD_REQUEST);
+                } else {
+                    // $respuesta     = $this->Tours_paquete_model->editar(arry('id_tours'=>''));
+
+                    $this->response($respuesta, REST_Controller::HTTP_OK);
+                }
+            }
         }
-        
     }
     public function obtenerDetalleVehiculo_get()
     {
@@ -49,5 +67,4 @@ class DetalleTour extends REST_Controller
             $this->response($respuesta, REST_Controller::HTTP_OK);
         }
     }
-
 }

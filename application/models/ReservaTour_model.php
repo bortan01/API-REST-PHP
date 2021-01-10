@@ -22,12 +22,10 @@ class ReservaTour_model extends CI_Model
         }
         return $objeto;
     }
-
-    
     public function guardar($data)
     {
         $nombreTabla = "reserva_tour";
-            
+
         $this->id_reserva           = $data["IdTransaccion"];
         $this->id_detalle           = $data["EnlacePago"]["Id"];
         $this->fecha_reserva        = $data["FechaTransaccion"];;
