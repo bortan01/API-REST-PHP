@@ -13,7 +13,6 @@ class Detalle_tour_model extends CI_Model
     public $urlEnlace;
     public $descripcionProducto;
 
-
     public function verificar_camposEntrada($dataCruda)
     {
         $objeto = array();
@@ -27,92 +26,29 @@ class Detalle_tour_model extends CI_Model
         //este es un objeto tipo cliente model
         return $objeto;
     }
-    public function guardarByCliente($detalleTur)
+    public function guardar($data)
     {
-        $this->load->model('Wompi_model');
-        $this->load->model('Imagen_model');
+        $camposTur = $this->verificar_camposEntrada($data);
+        // $camposTur['id_detalle'] = date("HisYmd") . rand(1, 100);
         $nombreTabla = "detalle_tour";
-        $urlWebHook  = "https://api.christianmeza.com/ReservaTour/save";
-        $foto        = $this->Imagen_model->obtenerImagenUnica("vehiculo", $detalleTur["id_tours"]);
+        $insertTur = $this->db->insert($nombreTabla, $camposTur);
 
-        if (!isset($foto)) {
-            $foto = "https://www.pagina.christianmeza.com/img/logo.jpg";
-        }
-        $respuestaWompi = $this->Wompi_model->crearEnlacePagopPrueba($detalleTur["total"], $detalleTur["nombre"], $detalleTur["descripcion"], $foto, $urlWebHook);
-
-        if (!isset($respuestaWompi["idEnlace"])) {
-            //HAY ERROR DE WOMPI
+        if (!$insertTur) {
+            //NO GUARDO
             $respuesta = array(
-                'err'     => TRUE,
-                'mensaje' => $respuestaWompi["err"],
+                'err'             => TRUE,
+                'mensaje'         => 'Error al insertar detalle tur', $this->db->error_message(),
+                'error_number'    => $this->db->error_number()
             );
             return $respuesta;
         } else {
-            //RECUPERAMOS LA INFORMACION DE WOMPI Y TRATAMOS DE GUARDAR EN LA BD
-            $detalleTur["id_detalle"]        = $respuestaWompi["idEnlace"];
-            $detalleTur["urlQrCodeEnlace"]   = $respuestaWompi["urlQrCodeEnlace"];
-            $detalleTur["urlEnlace"]         = $respuestaWompi["urlEnlace"];
-
-            $insert = $this->db->insert($nombreTabla, $detalleTur);
-            if (!$insert) {
-                //NO GUARDO
-                $respuesta = array(
-                    'err'             => TRUE,
-                    'mensaje'         => 'Error al insertar ', $this->db->error_message(),
-                    'error_number'    => $this->db->error_number(),
-                    'detalleVehiculo' => null
-                );
-                return $respuesta;
-            } else {
-                $identificador = $this->db->insert_id();
-                $respuesta = array(
-                    'err'             => FALSE,
-                    'mensaje'         => 'Registro Guardado Exitosamente',
-                    'detalleVehiculo' => $detalleTur
-                );
-                return $respuesta;
-            }
-        }
-    }
-    public function guardarByAgencia($data)
-    {
-        $campos = $this->verificar_camposEntrada($data);
-        $campos['']
-        $nombreTabla = "detalle_tour";
-        $respuestaWompi = $this->Wompi_model->crearEnlacePagopPrueba($detalleTur["total"], $detalleTur["nombre"], $detalleTur["descripcion"], $foto, $urlWebHook);
-
-        if (!isset($respuestaWompi["idEnlace"])) {
-            //HAY ERROR DE WOMPI
+            $identificador = $this->db->insert_id();
             $respuesta = array(
-                'err'     => TRUE,
-                'mensaje' => $respuestaWompi["err"],
+                'err'             => FALSE,
+                'mensaje'         => 'Registro Guardado Exitosamente',
+                'id'              => $identificador
             );
             return $respuesta;
-        } else {
-            //RECUPERAMOS LA INFORMACION DE WOMPI Y TRATAMOS DE GUARDAR EN LA BD
-            $detalleTur["id_detalle"]        = $respuestaWompi["idEnlace"];
-            $detalleTur["urlQrCodeEnlace"]   = $respuestaWompi["urlQrCodeEnlace"];
-            $detalleTur["urlEnlace"]         = $respuestaWompi["urlEnlace"];
-
-            $insert = $this->db->insert($nombreTabla, $detalleTur);
-            if (!$insert) {
-                //NO GUARDO
-                $respuesta = array(
-                    'err'             => TRUE,
-                    'mensaje'         => 'Error al insertar ', $this->db->error_message(),
-                    'error_number'    => $this->db->error_number(),
-                    'detalleVehiculo' => null
-                );
-                return $respuesta;
-            } else {
-                $identificador = $this->db->insert_id();
-                $respuesta = array(
-                    'err'             => FALSE,
-                    'mensaje'         => 'Registro Guardado Exitosamente',
-                    'detalleVehiculo' => $detalleTur
-                );
-                return $respuesta;
-            }
         }
     }
     public function obtenerDetalle(array $data = array())
