@@ -5,11 +5,14 @@ class Detalle_tour_model extends CI_Model
     public $id_detalle;
     public $id_tours;
     public $id_cliente;
+    public $asientos_seleccionados;
+    public $label_asiento;
+    public $nombre_producto;
     public $total;
     public $urlQrCodeEnlace;
     public $urlEnlace;
-    public $nombre;
-    public $descripcion;
+    public $descripcionProducto;
+
 
     public function verificar_camposEntrada($dataCruda)
     {
@@ -22,9 +25,9 @@ class Detalle_tour_model extends CI_Model
             }
         }
         //este es un objeto tipo cliente model
-            return $objeto;
+        return $objeto;
     }
-    public function guardar($detalleTur)
+    public function guardarByCliente($detalleTur)
     {
         $this->load->model('Wompi_model');
         $this->load->model('Imagen_model');
@@ -35,6 +38,47 @@ class Detalle_tour_model extends CI_Model
         if (!isset($foto)) {
             $foto = "https://www.pagina.christianmeza.com/img/logo.jpg";
         }
+        $respuestaWompi = $this->Wompi_model->crearEnlacePagopPrueba($detalleTur["total"], $detalleTur["nombre"], $detalleTur["descripcion"], $foto, $urlWebHook);
+
+        if (!isset($respuestaWompi["idEnlace"])) {
+            //HAY ERROR DE WOMPI
+            $respuesta = array(
+                'err'     => TRUE,
+                'mensaje' => $respuestaWompi["err"],
+            );
+            return $respuesta;
+        } else {
+            //RECUPERAMOS LA INFORMACION DE WOMPI Y TRATAMOS DE GUARDAR EN LA BD
+            $detalleTur["id_detalle"]        = $respuestaWompi["idEnlace"];
+            $detalleTur["urlQrCodeEnlace"]   = $respuestaWompi["urlQrCodeEnlace"];
+            $detalleTur["urlEnlace"]         = $respuestaWompi["urlEnlace"];
+
+            $insert = $this->db->insert($nombreTabla, $detalleTur);
+            if (!$insert) {
+                //NO GUARDO
+                $respuesta = array(
+                    'err'             => TRUE,
+                    'mensaje'         => 'Error al insertar ', $this->db->error_message(),
+                    'error_number'    => $this->db->error_number(),
+                    'detalleVehiculo' => null
+                );
+                return $respuesta;
+            } else {
+                $identificador = $this->db->insert_id();
+                $respuesta = array(
+                    'err'             => FALSE,
+                    'mensaje'         => 'Registro Guardado Exitosamente',
+                    'detalleVehiculo' => $detalleTur
+                );
+                return $respuesta;
+            }
+        }
+    }
+    public function guardarByAgencia($data)
+    {
+        $campos = $this->verificar_camposEntrada($data);
+        $campos['']
+        $nombreTabla = "detalle_tour";
         $respuestaWompi = $this->Wompi_model->crearEnlacePagopPrueba($detalleTur["total"], $detalleTur["nombre"], $detalleTur["descripcion"], $foto, $urlWebHook);
 
         if (!isset($respuestaWompi["idEnlace"])) {
