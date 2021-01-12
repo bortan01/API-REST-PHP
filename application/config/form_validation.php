@@ -271,4 +271,15 @@ $config = array(
 	'EliminarContacto' => array(
 		array('field' => 'id_contacto' ,'label' => 'id contacto'        , 'rules' => 'trim|required'),
 	),
+	'insertarDetalleTur' => array(
+		array('field' => 'id_tours'               ,'label' => 'id tur'                , 'rules' => 'trim|required|integer'),
+		array('field' => 'id_cliente'             ,'label' => 'id cliente'            , 'rules' => 'trim|required|integer'),
+		array('field' => 'asientos_seleccionados' ,'label' => 'asientos seleccionados', 'rules' => 'trim|required'),
+		array('field' => 'total'                  ,'label' => 'total'                 , 'rules' => 'trim|required|numeric'),
+		array('field' => 'label_asiento'          ,'label' => 'label de asientos'     , 'rules' => 'trim|required'),
+		array('field' => 'nombre_producto'        ,'label' => 'nombre del producto'   , 'rules' => 'trim|required'),
+		array('field' => 'descripcionProducto'    ,'label' => 'descripcion'           , 'rules' => 'trim|required'),
+		array('field' => 'cantidad_asientos'       ,'label' => 'cantidad de asientos'  , 'rules' => 'trim|required|integer'),
+	),
+	
 );

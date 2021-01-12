@@ -25,17 +25,17 @@ class ReservaTour_model extends CI_Model
     public function guardar($data)
     {
         $nombreTabla = "reserva_tour";
+        $campos = [];
+        $campos["id_reserva"]           = $data["IdTransaccion"];
+        $campos["id_detalle"]           = $data["EnlacePago"]["Id"];
+        $campos["fecha_reserva"]        = $data["FechaTransaccion"];;
+        $campos["formaPagoUtilizada"]   = $data["FormaPagoUtilizada"];
+        $campos["resultadoTransaccion"] = $data["ResultadoTransaccion"];
+        $campos["monto"]                = $data["Monto"];
+        $campos["cantidad"]             = $data["Cantidad"];
 
-        $this->id_reserva           = $data["IdTransaccion"];
-        $this->id_detalle           = $data["EnlacePago"]["Id"];
-        $this->fecha_reserva        = $data["FechaTransaccion"];;
-        $this->formaPagoUtilizada   = $data["FormaPagoUtilizada"];
-        $this->resultadoTransaccion = $data["ResultadoTransaccion"];
-        $this->monto                = $data["Monto"];
-        $this->cantidad             = $data["Cantidad"];
 
-
-        $insert = $this->db->insert($nombreTabla, $this);
+        $insert = $this->db->insert($nombreTabla, $campos);
         if (!$insert) {
             //NO GUARDO
             $respuesta = array(
@@ -46,12 +46,29 @@ class ReservaTour_model extends CI_Model
             );
             return $respuesta;
         } else {
+            $this->load->model("Detalle_tour_model");
+            $this->load->model("Tours_paquete_model");
+            $detalleTur = $this->Detalle_tour_model->obtenerDetalle($campos);
+            $respuesta = $this->Tours_paquete_model->actualizarCupos($detalleTur[0]);
+
             $respuesta = array(
                 'err' => FALSE,
-                'mensaje' => 'Registro Guardado Exitosamente',
-                'reserva' => $this
+                'mensaje' => 'Registro Guardado Exitosamente'
             );
             return $respuesta;
         }
+    }
+    public function obtener(array $data = array())
+    {
+        $nombreTabla = "reservaTour";
+        $parametros = $this->verificar_camposEntrada($data);
+
+        $this->db->select('*');
+        $this->db->from($nombreTabla);
+        $this->db->where($parametros);
+
+        $query = $this->db->get();
+        $respuesta  = $query->result();
+        return $respuesta;
     }
 }

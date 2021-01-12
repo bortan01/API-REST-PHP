@@ -12,6 +12,7 @@ class Detalle_tour_model extends CI_Model
     public $urlQrCodeEnlace;
     public $urlEnlace;
     public $descripcionProducto;
+    public $cantidad_asientos;
 
     public function verificar_camposEntrada($dataCruda)
     {
@@ -41,34 +42,63 @@ class Detalle_tour_model extends CI_Model
             );
             return $respuesta;
         } else {
-            $identificador = $this->db->insert_id();
             $respuesta = array(
                 'err'             => FALSE,
                 'mensaje'         => 'Registro Guardado Exitosamente',
-                'id'              => $identificador
+                'detalleTur'      => $data
             );
             return $respuesta;
         }
     }
-    public function obtenerDetalle(array $data = array())
+    public function guardarByCliente($data)
     {
-        $this->load->model("Utils_model");
-        $nombreTabla = "detalle_tour";
+        $this->load->model('Wompi_model');
+        $this->load->model('Imagen_model');
+        $urlWebHook  = "https://api.christianmeza.com/ReservaVehiculo/save";
+        $foto        = $this->Imagen_model->obtenerImagenUnica("tours_paquete", $data["id_tours"]);
 
-        try {
-            $parametros = $this->Detalle_vehiculo_model->verificar_camposEntrada($data);
-            $deetalleSeleccionado = $this->Utils_model->selectTabla($nombreTabla, $parametros);
-            ///usuario seleccionado es un array de clases genericas
+        if (!isset($foto)) {
+            $foto = "https://www.pagina.christianmeza.com/img/logo.jpg";
+        }
+        $respuestaWompi = $this->Wompi_model->crearEnlacePagopPrueba($data["total"], $data["nombre_producto"], $data["descripcionProducto"], $foto, $urlWebHook);
+        if (!isset($respuestaWompi["idEnlace"])) {
+            //HAY ERROR DE WOMPI
+            $respuesta = array(
+                'err'     => TRUE,
+                'mensaje' => $respuestaWompi["err"],
+            );
+            return $respuesta;
+        } else {
+            //RECUPERAMOS LA INFORMACION DE WOMPI Y TRATAMOS DE GUARDAR EN LA BD
+            $data["id_detalle"]        = $respuestaWompi["idEnlace"];
+            $data["urlQrCodeEnlace"]   = $respuestaWompi["urlQrCodeEnlace"];
+            $data["urlEnlace"]         = $respuestaWompi["urlEnlace"];
+            $guardado =  $this->guardar($data);
 
-            if (count($deetalleSeleccionado) < 1) {
-                $respuesta = array('err' => TRUE, 'mensaje' => 'No se encontro el Usuario');
-                return $respuesta;
+            if ($guardado["err"]) {
+                return $guardado;
             } else {
-                $respuesta = array('err' => FALSE, 'detalleVehiculo' => $deetalleSeleccionado);
+                $respuesta = array(
+                    'err'             => FALSE,
+                    'idEnlace' =>   $respuestaWompi["idEnlace"],
+                    'urlQrCodeEnlace' => $respuestaWompi["urlQrCodeEnlace"],
+                    'urlEnlace' => $respuestaWompi["urlEnlace"]
+                );
                 return $respuesta;
             }
-        } catch (Exception $e) {
-            return array('err' => TRUE, 'status' => 400, 'mensaje' => $e->getMessage());
         }
+    }
+    public function obtenerDetalle(array $data = array())
+    {
+        $nombreTabla = "detalle_tour";
+        $parametros = $this->verificar_camposEntrada($data);
+
+        $this->db->select('*');
+        $this->db->from($nombreTabla);
+        $this->db->where($parametros);
+
+        $query = $this->db->get();
+        $respuesta  = $query->result_array();
+        return $respuesta;
     }
 }

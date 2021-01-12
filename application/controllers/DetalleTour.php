@@ -23,7 +23,7 @@ class DetalleTour extends REST_Controller
         $this->form_validation->set_data($data);
 
         //corremos las reglas de validacion
-        if (!true) {
+        if (!$this->form_validation->run('insertarDetalleTur')) {
             //algo mal
             $respuesta = array(
                 'err' => TRUE,
@@ -50,21 +50,43 @@ class DetalleTour extends REST_Controller
                 if ($respuesta['err']) {
                     $this->response($respuesta, REST_Controller::HTTP_BAD_REQUEST);
                 } else {
-                    // $respuesta     = $this->Tours_paquete_model->editar(arry('id_tours'=>''));
-
                     $this->response($respuesta, REST_Controller::HTTP_OK);
                 }
             }
         }
     }
-    public function obtenerDetalleVehiculo_get()
+    public function saveByClient_post()
     {
-        $data = $this->get();
-        $respuesta =  $this->Detalle_tour_model->obtenerDetalle($data);
-        if ($respuesta['err']) {
+        $data = $this->post();
+        ///SE HACE LA PETICION A WOMPI
+        //corremos las reglas de validacion
+        $this->load->library("form_validation");
+        $this->form_validation->set_data($data);
+        if (!$this->form_validation->run('insertarDetalleTur')) {
+            //algo mal
+            $respuesta = array(
+                'err' => TRUE,
+                'mensaje' => 'har errores en el envio de informacion',
+                'errores' => $this->form_validation->get_errores_arreglo()
+            );
             $this->response($respuesta, REST_Controller::HTTP_BAD_REQUEST);
         } else {
-            $this->response($respuesta, REST_Controller::HTTP_OK);
+            $this->load->model('Wompi_model');
+            $this->load->model('Imagen_model');
+            
+            //VERIFICAMOS QUE TODOS LOS PARAMETROS ESTEN BIEN
+            $respuesta     = $this->Detalle_tour_model->guardarByCliente($data);
+            if ($respuesta['err']) {
+                $this->response($respuesta, REST_Controller::HTTP_BAD_REQUEST);
+            } else {
+                $this->response($respuesta, REST_Controller::HTTP_OK);
+            }
         }
+    }
+    public function showDetalleTur_get()
+    {
+        $data = $this->get();
+        $respuesta = $this->Detalle_tour_model->obtenerDetalle($data);
+        $this->response($respuesta, REST_Controller::HTTP_OK);
     }
 }

@@ -67,12 +67,10 @@ class Wompi_model extends CI_Model
     {
         $this->load->model('Credenciales_model');
         $curl = curl_init();
-
         $ACCESS_TOKEN = $this->obtenerToken()->access_token;
         if (!$ACCESS_TOKEN) {
             # code...
         } else {
-
             $headers[] = "authorization:Bearer " . $ACCESS_TOKEN;
             $headers[] = "Content-Type:application/json-patch+json";
 

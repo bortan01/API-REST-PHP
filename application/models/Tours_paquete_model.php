@@ -187,13 +187,13 @@ class Tours_paquete_model extends CI_Model
         $cupos_disponibles = "";
         $descripcion_tur = "";
 
-
+        //INFORMACION GENERAL DE TUR O PAQUETE
         $this->db->select('descripcion_tur,incluye,no_incluye,requisitos,lugar_salida, promociones,cupos_disponibles,nombreTours,start,end,precio', "descripcion_tur");
         $this->db->from("tours_paquete");
         $this->db->where($parametros);
         $query = $this->db->get();
         $result  = $query->result();
-
+        //MUCHA DE LA INFORMACION ESTA GUARDADA COMO STRING POR LO QUE HAY QUE DECODIFICARLA 
         foreach ($result as $viaje) {
             $incluye =  json_decode($viaje->incluye, true);
             $no_incluye =  json_decode($viaje->no_incluye, true);
@@ -208,31 +208,33 @@ class Tours_paquete_model extends CI_Model
             $descripcion_tur = $viaje->descripcion_tur;
         }
 
-
+        //BUSCAMOS EL TRANSPORTE ASICIADO A ESTE TUR, POR DEFECTO SOLO TOMAREMOS LA CANTIDAD DE UN VEHICULO
         $this->db->select('asientos_deshabilitados, nombre_servicio, fila_trasera,  asiento_derecho, asiento_izquierdo,filas');
         $this->db->from("detalle_servicio");
         $this->db->join('servicios_adicionales', 'id_servicios');
         $this->db->where(array('id_tours' => $parametros['id_tours'], 'id_tipo_servicio' => 2));
         $query = $this->db->get();
-        // $vehiculos  = $query->result();
+        //SI SE ENCONTRO EL VEHICULO ASOCIADO AL VIAJE, BUSCAREMOS LOS ASIENTOS QUE HAN SIDO RESERVADOS POR CLIENTES
         if ($query->row(0)) {
             $transporte = $query->row(0);
-            $transporte;
+            $this->db->select('asientos_seleccionados');
+            $this->db->from("tours_paquete");
+            $this->db->join('detalle_tour', 'id_tours');
+            $this->db->join('reserva_tour', 'id_detalle');
+            $this->db->where(array('id_tours' => $parametros['id_tours']));
+            $query = $this->db->get();
+
+            $asientosOcupados = [];
+            foreach ($query->result() as $row) {
+                $seleccionados = explode(",", $row->asientos_seleccionados);
+                foreach ($seleccionados as $item) {
+                    array_push($asientosOcupados, $item);
+                }
+            }
+            $transporte->ocupados = $asientosOcupados;
         } else {
             $transporte = null;
         }
-
-        $this->db->select('asientos_seleccionados');
-        $this->db->from("tours_paquete");
-        $this->db->join('detalle_tour', 'id_tours');
-        $this->db->join('reserva_tour', 'id_detalle');
-        $this->db->where(array('id_tours' => $parametros['id_tours']));
-        $query = $this->db->get();
-        $asientos  = $query->result();
-
-
-
-
         $respuesta = array(
             'nombre' => $nombreTur,
             'start' => $start,
@@ -246,7 +248,7 @@ class Tours_paquete_model extends CI_Model
             'lugar_salidas' => $lugar_salida,
             'promociones' => $promociones,
             'transporte' => $transporte,
-            'asientos' => $asientos
+            // 'asientos' => $asientos
 
         );
 
@@ -261,6 +263,8 @@ class Tours_paquete_model extends CI_Model
         isset($campos["start"]) &&  $campos["start"] = $this->combertirFecha($campos["start"]);
         isset($campos["end"]) &&   $campos["end"] = $this->combertirFecha($campos["end"]);
 
+        print_r($campos);
+        die();
         $hecho = $this->db->update($nombreTabla, $campos);
         if ($hecho) {
             ///LOGRO ACTUALIZAR 
@@ -278,6 +282,29 @@ class Tours_paquete_model extends CI_Model
                 'mensaje' => 'Error al actualizar ', $this->db->error_message(),
                 'error_number' => $this->db->error_number(),
                 'viaje' => null
+            );
+            return $respuesta;
+        }
+    }
+    public function actualizarCupos($data)
+    {
+        $nombreTabla = "tours_paquete";
+        $this->db->set('cupos_disponibles', 'cupos_disponibles -' . $data['cantidad_asientos'], FALSE);
+        $this->db->where('id_tours', $data['id_tours']);
+        $hecho = $this->db->update($nombreTabla);
+        if ($hecho) {
+            ///LOGRO ACTUALIZAR 
+            $respuesta = array(
+                'err'     => FALSE,
+                'mensaje' => 'Registro Guardado Exitosamente',
+            );
+            return $respuesta;
+        } else {
+            //NO GUARDO
+            $respuesta = array(
+                'err' => TRUE,
+                'mensaje' => 'Error al actualizar ', $this->db->error_message(),
+                'error_number' => $this->db->error_number()
             );
             return $respuesta;
         }
