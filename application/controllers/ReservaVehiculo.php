@@ -15,7 +15,6 @@ class ReservaVehiculo extends REST_Controller
     public function save_post()
     {
         $data = $this->post();
-
         $respuesta = $this->ReservaVehiculo_model->guardar($data);
         if ($respuesta['err']) {
             $this->response($respuesta, REST_Controller::HTTP_BAD_REQUEST);

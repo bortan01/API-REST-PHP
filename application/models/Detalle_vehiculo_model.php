@@ -3,13 +3,14 @@ defined('BASEPATH') or exit('No direct script access allowed');
 class Detalle_vehiculo_model extends CI_Model
 {
     public $id_detalle;
-    public $id_cliente;
     public $id_vehiculo;
+    public $id_cliente;
+    public $iddireccionesReserva;
     public $total;
     public $urlQrCodeEnlace;
     public $urlEnlace;
     public $nombre;
-    public $descripcion;
+
 
     public function verificar_camposEntrada($dataCruda)
     {
@@ -20,25 +21,44 @@ class Detalle_vehiculo_model extends CI_Model
             if (property_exists('Detalle_vehiculo_model', $nombre_campo)) {
                 $objeto[$nombre_campo] = $valor_campo;
             }
-            return $objeto;
         }
-
-        //este es un objeto tipo cliente model
         return $objeto;
     }
-    public function guardar($detalleVehiculo)
+    public function guardar($data)
+    {
+        $camposVehiculo = $this->verificar_camposEntrada($data);
+        $nombreTabla = "detalle_vehiculo";
+
+        $insertTur = $this->db->insert($nombreTabla, $camposVehiculo);
+        if (!$insertTur) {
+            //NO GUARDO
+            $respuesta = array(
+                'err'             => TRUE,
+                'mensaje'         => 'Error al insertar detalle tur', $this->db->error_message(),
+                'error_number'    => $this->db->error_number()
+            );
+            return $respuesta;
+        } else {
+            //GUARDADO
+            $respuesta = array(
+                'err'             => FALSE,
+                'mensaje'         => 'Registro Guardado Exitosamente',
+                'detalleTur'      => $data
+            );
+            return $respuesta;
+        }
+    }
+    public function guardarByCliente($data)
     {
         $this->load->model('Wompi_model');
         $this->load->model('Imagen_model');
-        $nombreTabla = "detalle_vehiculo";
         $urlWebHook  = "https://api.christianmeza.com/ReservaVehiculo/save";
-        $foto        = $this->Imagen_model->obtenerImagenUnica("vehiculo", $detalleVehiculo["id_vehiculo"]);
-      
+        $foto        = $this->Imagen_model->obtenerImagenUnica("vehiculo", $data["id_vehiculo"]);
+
         if (!isset($foto)) {
             $foto = "https://www.pagina.christianmeza.com/img/logo.jpg";
-        } 
-        $respuestaWompi = $this->Wompi_model->crearEnlacePagopPrueba($detalleVehiculo["total"],$detalleVehiculo["nombre"], $detalleVehiculo["descripcion"], $foto, $urlWebHook);
-
+        }
+        $respuestaWompi = $this->Wompi_model->crearEnlacePagopPrueba($data["total"], $data["nombre"], $data["descripcion"], $foto, $urlWebHook);
         if (!isset($respuestaWompi["idEnlace"])) {
             //HAY ERROR DE WOMPI
             $respuesta = array(
@@ -48,31 +68,23 @@ class Detalle_vehiculo_model extends CI_Model
             return $respuesta;
         } else {
             //RECUPERAMOS LA INFORMACION DE WOMPI Y TRATAMOS DE GUARDAR EN LA BD
-            $detalleVehiculo["id_detalle"]        = $respuestaWompi["idEnlace"];
-            $detalleVehiculo["urlQrCodeEnlace"]   = $respuestaWompi["urlQrCodeEnlace"];
-            $detalleVehiculo["urlEnlace"]         = $respuestaWompi["urlEnlace"];
+            $data["id_detalle"]        = $respuestaWompi["idEnlace"];
+            $data["urlQrCodeEnlace"]   = $respuestaWompi["urlQrCodeEnlace"];
+            $data["urlEnlace"]         = $respuestaWompi["urlEnlace"];
+            $guardado =  $this->guardar($data);
 
-            $insert = $this->db->insert($nombreTabla, $detalleVehiculo);
-            if (!$insert) {
-                //NO GUARDO
-                $respuesta = array(
-                    'err'             => TRUE,
-                    'mensaje'         => 'Error al insertar ', $this->db->error_message(),
-                    'error_number'    => $this->db->error_number(),
-                    'detalleVehiculo' => null
-                );
-                return $respuesta;
+            if ($guardado["err"]) {
+                return $guardado;
             } else {
-                $identificador = $this->db->insert_id();
                 $respuesta = array(
                     'err'             => FALSE,
-                    'mensaje'         => 'Registro Guardado Exitosamente',
-                    'detalleVehiculo' => $detalleVehiculo
+                    'idEnlace' =>   $respuestaWompi["idEnlace"],
+                    'urlQrCodeEnlace' => $respuestaWompi["urlQrCodeEnlace"],
+                    'urlEnlace' => $respuestaWompi["urlEnlace"]
                 );
                 return $respuesta;
             }
         }
-
     }
     public function obtenerDetalle(array $data = array())
     {
@@ -95,4 +107,5 @@ class Detalle_vehiculo_model extends CI_Model
             return array('err' => TRUE, 'status' => 400, 'mensaje' => $e->getMessage());
         }
     }
+    
 }

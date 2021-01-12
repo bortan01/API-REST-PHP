@@ -12,6 +12,9 @@ class DetalleTour extends REST_Controller
         $this->load->model("Detalle_tour_model");
         $this->load->model("ReservaTour_model");
         $this->load->model("Tours_paquete_model");
+        $this->load->model('Wompi_model');
+       
+        
     }
 
     public function saveByAgency_post()
@@ -71,9 +74,7 @@ class DetalleTour extends REST_Controller
             );
             $this->response($respuesta, REST_Controller::HTTP_BAD_REQUEST);
         } else {
-            $this->load->model('Wompi_model');
-            $this->load->model('Imagen_model');
-            
+         
             //VERIFICAMOS QUE TODOS LOS PARAMETROS ESTEN BIEN
             $respuesta     = $this->Detalle_tour_model->guardarByCliente($data);
             if ($respuesta['err']) {

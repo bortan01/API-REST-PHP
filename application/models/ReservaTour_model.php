@@ -41,8 +41,8 @@ class ReservaTour_model extends CI_Model
             $respuesta = array(
                 'err' => TRUE,
                 'mensaje' => 'Error al insertar ', $this->db->error_message(),
-                'error_number' => $this->db->error_number(),
-                'cliente' => null
+                'error_number' => $this->db->error_number()
+              
             );
             return $respuesta;
         } else {

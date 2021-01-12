@@ -21,38 +21,34 @@ class ReservaVehiculo_model extends CI_Model
             }
         }
         return $objeto;
-    }
-
-    
+    }    
     public function guardar($data)
     {
         $nombreTabla = "reserva_vehiculo";
-        $this->load->model("Usuario_model");
-        
-        $this->id_reserva           = $data["IdTransaccion"];
-        $this->id_detalle           = $data["EnlacePago"]["Id"];
-        $this->fecha_reserva        = $data["FechaTransaccion"];;
-        $this->formaPagoUtilizada   = $data["FormaPagoUtilizada"];
-        $this->resultadoTransaccion = $data["ResultadoTransaccion"];
-        $this->monto                = $data["Monto"];
-        $this->cantidad             = $data["Cantidad"];
+        $campos = [];
+        $campos ["id_reserva"]           = $data["IdTransaccion"];
+        $campos ["id_detalle"]           = $data["EnlacePago"]["Id"];
+        $campos ["fecha_reserva"]        = $data["FechaTransaccion"];;
+        $campos ["formaPagoUtilizada"]   = $data["FormaPagoUtilizada"];
+        $campos ["resultadoTransaccion"] = $data["ResultadoTransaccion"];
+        $campos ["monto"]                = $data["Monto"];
+        $campos ["cantidad"]             = $data["Cantidad"];
 
-
-        $insert = $this->db->insert($nombreTabla, $this);
+        $insert = $this->db->insert($nombreTabla, $campos);
         if (!$insert) {
             //NO GUARDO
             $respuesta = array(
                 'err' => TRUE,
                 'mensaje' => 'Error al insertar ', $this->db->error_message(),
-                'error_number' => $this->db->error_number(),
-                'cliente' => null
+                'error_number' => $this->db->error_number()
             );
             return $respuesta;
         } else {
+            ///SI SE DESEA MODIFICAR MAS TRABLAS HACERLO ACA 
+
             $respuesta = array(
                 'err' => FALSE,
-                'mensaje' => 'Registro Guardado Exitosamente',
-                'reserva' => $this
+                'mensaje' => 'Registro Guardado Exitosamente'
             );
             return $respuesta;
         }
