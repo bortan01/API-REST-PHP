@@ -16,7 +16,7 @@ class Vehiculo_model extends CI_Model
     public $precio_diario;
     public $descripcion;
     public $detalles;
-    public $activo=TRUE;
+    public $activo = TRUE;
     public $kilometraje;
     public $tipoCombustible;
     public $opc_avanzadas;
@@ -34,7 +34,7 @@ class Vehiculo_model extends CI_Model
         $this->db->join('categoria', 'vehiculo.idcategoria=categoria.idcategoria');
         $this->db->join('rentacar', 'vehiculo.id_rentaCarFK=rentacar.id_rentaCar');
         $this->db->where($parametros);
-        $this->db->where_in('vehiculo.activo',1);
+        $this->db->where_in('vehiculo.activo', 1);
         $query = $this->db->get();
 
         $respuesta = $query->result();
@@ -42,81 +42,81 @@ class Vehiculo_model extends CI_Model
         foreach ($respuesta as $row) {
             $row->opc_avanzadas =   explode(",", $row->opc_avanzadas);
             $identificador = $row->idvehiculo;
-            $respuestaFoto=   $this->Imagen_model->obtenerImagenUnica('vehiculo', $identificador);
+            $respuestaFoto =   $this->Imagen_model->obtenerImagenUnica('vehiculo', $identificador);
             if ($respuestaFoto == null) {
                 //por si no hay ninguna foto mandamos una por defecto
-                $row->foto = "http://localhost/API-REST-PHP/uploads/avatar.png";
-            }else{
+                $row->foto = "http://localhost/API-REST-PHP/uploads/auto1.png";
+            } else {
                 $row->foto = $respuestaFoto;
             }
+            $respuestaGaleria =   $this->Imagen_model->obtenerImagen('vehiculo', $identificador);
+            if ($respuestaGaleria == null) {
+                //por si no hay ninguna foto mandamos una por defecto
+                $row->galeria = [];
+            } else {
+                $row->galeria = $respuestaGaleria;
+            }
         }
-      
-        
-        // foreach ($respuesta as $carro) {
-          
-        // }
-            return $respuesta;
-        
+        return $respuesta;
     }
-       public function set_datos( $data_cruda){
-   
-            foreach ($data_cruda as $nombre_campo => $valor_campo) {
-   
-            if (property_exists('Vehiculo_model',$nombre_campo)) {
-                $this->$nombre_campo=$valor_campo;
-            
+    public function set_datos($data_cruda)
+    {
+
+        foreach ($data_cruda as $nombre_campo => $valor_campo) {
+
+            if (property_exists('Vehiculo_model', $nombre_campo)) {
+                $this->$nombre_campo = $valor_campo;
             }
-                
-            }
-            return $this; 
         }
-   
-        public function insert(){
-            
-           $query=$this->db->get_where('vehiculo',array('placa'=>$this->placa) );
-           $carrito=$query->row();
-   
-               if (isset($carrito)) {
+        return $this;
+    }
 
-                    ///LOGRO GUARDAR LOS DATOS, TRATAREMOS DE GUARDAR LA GALERIA SI MANDARON FOTOS
-            
+    public function insert()
+    {
 
-               $respuesta=array(
-                   'err'=>TRUE,
-                   'mensaje'=>'El vehiculo fue registrado'
-               );
-               return $respuesta;
-               }
-   
-               //insertar el registro
-               $hecho=$this->db->insert('vehiculo',$this);
-   
-               if ($hecho) {
-                   #insertado
-                   $this->load->model('Imagen_model');
-                   $identificador = $this->db->insert_id();
-                   $this->Imagen_model->guardarGaleria("vehiculo",  $identificador);
-                   $respuesta=array(
-                       'err'=>FALSE,
-                       'mensaje'=>'Registro insertado correctamente',
-                       'vehiculo_id'=>$this->db->insert_id()
-                   );
-               }else{
-                   //error
-                   $this->load->model('Imagen_model');
-                   $identificador = $this->db->insert_id();
-                   ///ESTO ES PARA GUARDAR UNA IMAGEN INDIVIDUAL Y UNA GALERIA
-                   $this->Imagen_model->guardarGaleria("vehiculo", $identificador);
-                   $respuesta=array(
-                       'err'=>TRUE,
-                       'mensaje'=>'Error al insertar',
-                       'error'=>$this->db->_error_message(),
-                       'error_num'=>$this->db->_error_number()
-                   );
-               
-               }  
+        $query = $this->db->get_where('vehiculo', array('placa' => $this->placa));
+        $carrito = $query->row();
+
+        if (isset($carrito)) {
+
+            ///LOGRO GUARDAR LOS DATOS, TRATAREMOS DE GUARDAR LA GALERIA SI MANDARON FOTOS
+
+
+            $respuesta = array(
+                'err' => TRUE,
+                'mensaje' => 'El vehiculo fue registrado'
+            );
             return $respuesta;
         }
+
+        //insertar el registro
+        $hecho = $this->db->insert('vehiculo', $this);
+
+        if ($hecho) {
+            #insertado
+            $this->load->model('Imagen_model');
+            $identificador = $this->db->insert_id();
+            $this->Imagen_model->guardarGaleria("vehiculo",  $identificador);
+            $respuesta = array(
+                'err' => FALSE,
+                'mensaje' => 'Registro insertado correctamente',
+                'vehiculo_id' => $this->db->insert_id()
+            );
+        } else {
+            //error
+            $this->load->model('Imagen_model');
+            $identificador = $this->db->insert_id();
+            ///ESTO ES PARA GUARDAR UNA IMAGEN INDIVIDUAL Y UNA GALERIA
+            $this->Imagen_model->guardarGaleria("vehiculo", $identificador);
+            $respuesta = array(
+                'err' => TRUE,
+                'mensaje' => 'Error al insertar',
+                'error' => $this->db->_error_message(),
+                'error_num' => $this->db->_error_number()
+            );
+        }
+        return $respuesta;
+    }
     //MODIFICAR
     public function editar($data)
     {
@@ -127,8 +127,7 @@ class Vehiculo_model extends CI_Model
         $this->db->where('idvehiculo', $campos["idvehiculo"]);
 
         $hecho = $this->db->update($nombreTabla, $campos);
-        if ($hecho) 
-        {
+        if ($hecho) {
             ///LOGRO ACTUALIZAR 
             $respuesta = array(
                 'err'     => FALSE,
@@ -137,9 +136,7 @@ class Vehiculo_model extends CI_Model
 
             );
             return $respuesta;
-        } 
-        else 
-        {
+        } else {
             //NO GUARDO
             $respuesta = array(
                 'err' => TRUE,
@@ -164,7 +161,7 @@ class Vehiculo_model extends CI_Model
         }
         return $objeto;
     }
-   
+
     //ELIMINAR
     public function borrar($campos)
     {
@@ -199,9 +196,9 @@ class Vehiculo_model extends CI_Model
         $this->db->join('modelo', 'vehiculo.idmodelo = modelo.idmodelo');
         $this->db->join('marca_vehiculo', 'modelo.id_marca = marca_vehiculo.id_marca');
         $this->db->join('categoria', 'vehiculo.idcategoria=categoria.idcategoria');
-        
+
         $this->db->where($parametros);
-        $this->db->where_in('vehiculo.activo',1);
+        $this->db->where_in('vehiculo.activo', 1);
         $query = $this->db->get();
 
         $respuesta = $query->result();
@@ -209,20 +206,19 @@ class Vehiculo_model extends CI_Model
         foreach ($respuesta as $row) {
             $row->opc_avanzadas =   explode(",", $row->opc_avanzadas);
             $identificador = $row->idvehiculo;
-            $respuestaFoto=   $this->Imagen_model->obtenerImagen('vehiculo', $identificador);
+            $respuestaFoto =   $this->Imagen_model->obtenerImagen('vehiculo', $identificador);
             if ($respuestaFoto == null) {
                 //por si no hay ninguna foto mandamos una por defecto
                 $row->foto = [];
-            }else{
+            } else {
                 $row->foto = $respuestaFoto;
             }
         }
-      
-        
+
+
         // foreach ($respuesta as $carro) {
-          
+
         // }
-            return $respuesta;
-        
+        return $respuesta;
     }
 }

@@ -4,7 +4,8 @@ require APPPATH . '/libraries/REST_Controller.php';
 class vehiculo extends REST_Controller
 {
 
-public function __construct(){
+	public function __construct()
+	{
 		//constructor del padre
 		parent::__construct();
 		$this->load->database();
@@ -15,126 +16,123 @@ public function __construct(){
 		$data = $this->get();
 		$carro = $this->Vehiculo_model->get_vehiculo($data);
 
-	if (isset($carro)) {
-		
-		$respuesta=array(
-			'err'=>FALSE,
-			'mensaje'=>'Registro Cargado correctamente',
-			'autos'=>$carro
+		if (isset($carro)) {
+			$respuesta = array(
+				'err' => FALSE,
+				'mensaje' => 'Registro Cargado correctamente',
+				'autos' => $carro
 
-		);
-		$this->response($respuesta,REST_Controller::HTTP_OK);
-	}else{
-		$respuesta=array(
-			'err'=>TRUE,
-			'mensaje'=>'Error al cargar los datos.',
-			'autos'=>null
-
-		);
-		$this->response($respuesta,REST_Controller::HTTP_NOT_FOUND);
-
-	}
-}
-	//INSERTAR
-	public function vehiculo_post(){
-
-		$data=$this->post();
-		$this->load->library('form_validation');
-		$this->form_validation->set_data ($data);
-
-		if ( $this->form_validation->run('autos_put') ) {
-		
-		$carro=$this->Vehiculo_model->set_datos($data);
-
-		$respuesta=$carro->insert(); 
-
-		if ($respuesta['err']) {
-
-		$this->response($respuesta, REST_Controller::HTTP_BAD_REQUEST); 	
-
-		}else{
-		$this->response($respuesta); 	
-		}
-		}else{
-
-			$respuesta=array(
-				'err'=>TRUE,
-				'mensaje'=>'Hay errores en el envio de la informacion',
-				'errores'=>$this->form_validation->get_errores_arreglo()
 			);
-			$this->response($respuesta, REST_Controller::HTTP_BAD_REQUEST); 
+			$this->response($respuesta, REST_Controller::HTTP_OK);
+		} else {
+			$respuesta = array(
+				'err' => TRUE,
+				'mensaje' => 'Error al cargar los datos.',
+				'autos' => null
+
+			);
+			$this->response($respuesta, REST_Controller::HTTP_NOT_FOUND);
+		}
+	}
+	//INSERTAR
+	public function vehiculo_post()
+	{
+
+		$data = $this->post();
+		$this->load->library('form_validation');
+		$this->form_validation->set_data($data);
+
+		if ($this->form_validation->run('autos_put')) {
+
+			$carro = $this->Vehiculo_model->set_datos($data);
+
+			$respuesta = $carro->insert();
+
+			if ($respuesta['err']) {
+
+				$this->response($respuesta, REST_Controller::HTTP_BAD_REQUEST);
+			} else {
+				$this->response($respuesta);
+			}
+		} else {
+
+			$respuesta = array(
+				'err' => TRUE,
+				'mensaje' => 'Hay errores en el envio de la informacion',
+				'errores' => $this->form_validation->get_errores_arreglo()
+			);
+			$this->response($respuesta, REST_Controller::HTTP_BAD_REQUEST);
 		}
 	}
 
 	//MODIFICAR
-	public function actualizarVehiculo_put(){
+	public function actualizarVehiculo_put()
+	{
 
 		$data = $this->put();
-        if (!isset($data["idvehiculo"])) {
-            $respuesta = array('err' => TRUE, 'mensaje' => 'No se encontro ningun identificador del Vehiculo');
-            $this->response($respuesta, REST_Controller::HTTP_BAD_REQUEST);
-        } else {
-            try {
-                $respuesta = $this->Vehiculo_model->editar($data);
-                if ($respuesta['err']) {
-                    $this->response($respuesta, REST_Controller::HTTP_BAD_REQUEST);
-                } else {
-                    $this->response($respuesta, REST_Controller::HTTP_OK);
-                }
-            } catch (\Throwable $th) {
-                $respuesta = array('err' => TRUE, 'mensaje' => 'Error interno de servidor');
-            }
-        }
-	}
-
-		//ELIMINAR
-		public function eliminarVehiculo_delete()
-		{
-			$data = $this->delete();
-			if (!isset($data["idvehiculo"])) {
-				$respuesta = array('err' => TRUE, 'mensaje' => 'No se encontro ningun identificador del Vehiculo');
-				$this->response($respuesta, REST_Controller::HTTP_BAD_REQUEST);
-			} else {
-				$campos = array('idvehiculo' => $data["idvehiculo"], 'activo' => FALSE);
-				
-				try {
-					$respuesta = $this->Vehiculo_model->borrar($campos);
-					if ($respuesta['err']) {
-						$this->response($respuesta, REST_Controller::HTTP_BAD_REQUEST);
-					} else {
-						$this->response($respuesta, REST_Controller::HTTP_OK);
-					}
-					
-				} catch (\Throwable $th) {
-					$respuesta = array('err' => TRUE, 'mensaje' => 'Error interno de servidor');
+		if (!isset($data["idvehiculo"])) {
+			$respuesta = array('err' => TRUE, 'mensaje' => 'No se encontro ningun identificador del Vehiculo');
+			$this->response($respuesta, REST_Controller::HTTP_BAD_REQUEST);
+		} else {
+			try {
+				$respuesta = $this->Vehiculo_model->editar($data);
+				if ($respuesta['err']) {
+					$this->response($respuesta, REST_Controller::HTTP_BAD_REQUEST);
+				} else {
+					$this->response($respuesta, REST_Controller::HTTP_OK);
 				}
+			} catch (\Throwable $th) {
+				$respuesta = array('err' => TRUE, 'mensaje' => 'Error interno de servidor');
 			}
 		}
+	}
 
-		
-		public function flota_get()
-		{
-			$data = $this->get();
-			$carro = $this->Vehiculo_model->getFlota($data);
-	
+	//ELIMINAR
+	public function eliminarVehiculo_delete()
+	{
+		$data = $this->delete();
+		if (!isset($data["idvehiculo"])) {
+			$respuesta = array('err' => TRUE, 'mensaje' => 'No se encontro ningun identificador del Vehiculo');
+			$this->response($respuesta, REST_Controller::HTTP_BAD_REQUEST);
+		} else {
+			$campos = array('idvehiculo' => $data["idvehiculo"], 'activo' => FALSE);
+
+			try {
+				$respuesta = $this->Vehiculo_model->borrar($campos);
+				if ($respuesta['err']) {
+					$this->response($respuesta, REST_Controller::HTTP_BAD_REQUEST);
+				} else {
+					$this->response($respuesta, REST_Controller::HTTP_OK);
+				}
+			} catch (\Throwable $th) {
+				$respuesta = array('err' => TRUE, 'mensaje' => 'Error interno de servidor');
+			}
+		}
+	}
+
+
+	public function flota_get()
+	{
+		$data = $this->get();
+		$carro = $this->Vehiculo_model->getFlota($data);
+
 		if (isset($carro)) {
-			
-			$respuesta=array(
-				'err'=>FALSE,
-				'mensaje'=>'Registro Cargado correctamente',
-				'autos'=>$carro
-	
+
+			$respuesta = array(
+				'err' => FALSE,
+				'mensaje' => 'Registro Cargado correctamente',
+				'autos' => $carro
+
 			);
-			$this->response($respuesta,REST_Controller::HTTP_OK);
-		}else{
-			$respuesta=array(
-				'err'=>TRUE,
-				'mensaje'=>'Error al cargar los datos.',
-				'autos'=>null
-	
+			$this->response($respuesta, REST_Controller::HTTP_OK);
+		} else {
+			$respuesta = array(
+				'err' => TRUE,
+				'mensaje' => 'Error al cargar los datos.',
+				'autos' => null
+
 			);
-			$this->response($respuesta,REST_Controller::HTTP_NOT_FOUND);
-	
+			$this->response($respuesta, REST_Controller::HTTP_NOT_FOUND);
 		}
 	}
 }
