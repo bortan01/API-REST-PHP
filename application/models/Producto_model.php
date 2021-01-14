@@ -4,7 +4,6 @@ class Producto_model extends CI_Model
 {
 	public $id_producto;
 	public $nombre_producto;
-	public $estado_producto;
 
 public function altaProducto($datos){
 
