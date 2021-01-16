@@ -31,8 +31,9 @@ class Firebase_model extends CI_Model
             $user = $auth->createUserWithEmailAndPassword($email, $password);
             $uid = $user->uid;
             // $campos = ['displayName' => 'El Coco loco'];
+            // $campos = ['nivel' => 'CLIENTE'];
+            // $auth->setCustomUserClaims($uid, ['admin' => true, 'key1' => 'value1']);
             // $auth->updateUser($uid, $campos);
-            //TODO : HACER EL SING OUT
 
             //PARA ENVIAR CORREO ELECTRONICO DE VERIFICACION
             //$user = $auth->getUser('some-uid');
@@ -74,10 +75,9 @@ class Firebase_model extends CI_Model
             $ar['message']   = 'LOGIN EXITOSO';
             $ar['user_uuid'] = $uid;
             $ar['token']     = (string)$customToken;
+            // $ar['data']     = $data;
 
-
-
-            return array("err" => FALSE, "message" => $ar);
+            return $ar;
         } catch (AuthException $e) {
             return array("err" => TRUE, "mensaje" => $e->getMessage());
         } catch (FirebaseException $e) {

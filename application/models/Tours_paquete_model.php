@@ -236,7 +236,7 @@ class Tours_paquete_model extends CI_Model
             $transporte = null;
         }
         $respuesta = array(
-            'nombre' => $nombreTur,
+            'nombre' => $nombreTurX,
             'start' => $start,
             'end' => $end,
             'precio' => $precio,
@@ -263,9 +263,7 @@ class Tours_paquete_model extends CI_Model
         isset($campos["start"]) &&  $campos["start"] = $this->combertirFecha($campos["start"]);
         isset($campos["end"]) &&   $campos["end"] = $this->combertirFecha($campos["end"]);
 
-        print_r($campos);
-        die();
-        $hecho = $this->db->update($nombreTabla, $campos);
+          $hecho = $this->db->update($nombreTabla, $campos);
         if ($hecho) {
             ///LOGRO ACTUALIZAR 
             $respuesta = array(

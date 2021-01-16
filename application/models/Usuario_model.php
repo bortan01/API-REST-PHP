@@ -52,7 +52,7 @@ class Usuario_model extends CI_Model
         }
     }
 
-    public function loginUser($username, $password)
+    public function loginUserEjemplo($username, $password)
     {
         $query = $this->db->get_where("users", array("username" => $username), 1);
         $stmt = $query->result();
@@ -96,16 +96,44 @@ class Usuario_model extends CI_Model
 
             foreach ($result as $row) {
                 $identificador = $row->id_cliente;
-                $respuestaFoto=   $this->Imagen_model->obtenerImagenUnica("usuario_perfil", $identificador);
+                $respuestaFoto =   $this->Imagen_model->obtenerImagenUnica("usuario_perfil", $identificador);
                 if ($respuestaFoto == null) {
                     //por si no hay ninguna foto mandamos una por defecto
                     $row->foto = "http://localhost/API-REST-PHP/uploads/avatar.png";
-                }else{
+                } else {
                     $row->foto = $respuestaFoto;
                 }
             }
-          
+
             return array('err' => FALSE, 'usuarios' => $result);
+        } catch (Exception $e) {
+            return array('err' => TRUE, 'mensaje' => $e->getMessage());
+        }
+    }
+
+
+    public function getOneUser(array $data = array())
+    {
+        try {
+            $parametros = $this->Usuario_model->verificar_camposEntrada($data);
+            $nombreTabla = "usuario";
+            $this->db->where($parametros);
+            $query = $this->db->get($nombreTabla);
+            $row = $query->row_array();
+
+            $identificador = $row['id_cliente'];
+
+            if (isset($identificador) && $identificador != '') {
+                $respuestaFoto =   $this->Imagen_model->obtenerImagenUnica("usuario_perfil", $identificador);
+                if ($respuestaFoto == null) {
+                    //por si no hay ninguna foto mandamos una por defecto
+                    $row["foto"] = "http://localhost/API-REST-PHP/uploads/avatar.png";
+                } else {
+                    $row["foto"] = $respuestaFoto;
+                }
+            }
+            $row["err"] = FALSE;
+            return $row;
         } catch (Exception $e) {
             return array('err' => TRUE, 'mensaje' => $e->getMessage());
         }

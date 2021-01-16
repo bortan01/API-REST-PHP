@@ -57,9 +57,22 @@ class Usuario extends REST_Controller
 
             $respuesta = $this->Firebase_model->loginEmailPassword($email, $password);
             if ($respuesta['err']) {
-                $this->response($respuesta["mensaje"], REST_Controller::HTTP_BAD_REQUEST);
+                $this->response($respuesta, REST_Controller::HTTP_BAD_REQUEST);
             } else {
-                $this->response($respuesta["message"], REST_Controller::HTTP_OK);
+                $dataUsuario = $this->Usuario_model->getOneUser(array('uuid' => $respuesta['user_uuid']));
+                if ($dataUsuario['err']) {
+                    $this->response($dataUsuario, REST_Controller::HTTP_BAD_REQUEST);
+                } else {
+                    $respuesta['id_cliente'] =  $dataUsuario["id_cliente"];
+                    $respuesta['nombre'] =  $dataUsuario["nombre"];
+                    $respuesta['correo'] =  $dataUsuario["correo"];
+                    $respuesta['nivel'] =  $dataUsuario["nivel"];
+                    $respuesta['celular'] =  $dataUsuario["celular"];
+                    $respuesta['fbToken'] =  $dataUsuario["fbToken"];
+                    $respuesta['dui'] =  $dataUsuario["dui"];
+                    $respuesta['foto'] =  $dataUsuario["foto"];
+                    $this->response($respuesta, REST_Controller::HTTP_OK);
+                }
             }
         }
     }
@@ -103,11 +116,11 @@ class Usuario extends REST_Controller
         if ($this->form_validation->run('ActualizarUsuario')) {
             if (isset($data["password"])) {
                 $respuestaFirebase = $this->Firebase_model->cambioPassword($data['correo'], $data["password"]);
-                if($respuestaFirebase  ["err"]){
+                if ($respuestaFirebase["err"]) {
                     $this->response($respuestaFirebase, REST_Controller::HTTP_BAD_REQUEST);
                 }
             }
-        
+
             $respuesta = $this->Usuario_model->editar($data);
             if ($respuesta['err']) {
                 $this->response($respuesta, REST_Controller::HTTP_BAD_REQUEST);
@@ -192,7 +205,7 @@ class Usuario extends REST_Controller
     {
         $data = $this->put();
         if (isset($data['email'])) {
-            $respuesta = $this->Firebase_model->cambioPassword($data['email'],"12344596");
+            $respuesta = $this->Firebase_model->cambioPassword($data['email'], "12344596");
             $this->response($respuesta, REST_Controller::HTTP_OK);
         }
     }
