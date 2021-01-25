@@ -13,27 +13,12 @@ public function __construct(){
 	public function servicios_get(){
 
 		$data = $this->get();
-	    $servicio=$this->Servicios_model->get_servicios($data);
+	    $respuesta=$this->Servicios_model->get_servicios($data);
 
-	if (isset($servicio)) {
-		
-		$respuesta=array(
-			'err'=>FALSE,
-			'mensaje'=>'Registro Cargado correctamente',
-			'Servicios'=>$servicio
-
-		);
+	
 		$this->response($respuesta,REST_Controller::HTTP_OK);
-	}else{
-		$respuesta=array(
-			'err'=>TRUE,
-			'mensaje'=>'Error al cargar los datos.',
-			'Servicios'=>null
-
-		);
-		$this->response($respuesta,REST_Controller::HTTP_NOT_FOUND);
-
-	}
+	
+	
 }
 
 	

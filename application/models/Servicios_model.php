@@ -15,8 +15,13 @@ class Servicios_model extends CI_Model
         $this->db->where($parametros);
         $this->db->where_in('servicios_opc.activo',1);
         $query=$this->db->get('servicios_opc');
+        $Servicios=  $query->result();
+      
+        $this->db->where('idVehiculo',$data['id']);
+        $query=$this->db->get('vehiculo');
+        $vehiculo=  $query->row();
 
-            return $query->result();
+        return array('Servicios'=>$Servicios, 'vehiculo'=>$vehiculo);
         }
    
    
