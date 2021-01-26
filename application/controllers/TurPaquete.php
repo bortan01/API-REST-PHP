@@ -60,9 +60,9 @@ class TurPaquete extends REST_Controller
             if ($respuesta['err']) {
                 $this->response($respuesta, REST_Controller::HTTP_BAD_REQUEST);
             } else {
-                 //SE GURDO EL TUR POR LO QUE YA TENEMOS EL ID PARA EL DETALLE
-                 if (!empty($data["servicios"])) {
-                     
+                //SE GURDO EL TUR POR LO QUE YA TENEMOS EL ID PARA EL DETALLE
+                if (!empty($data["servicios"])) {
+
                     $servicios = json_decode($data["servicios"], true);
                     $this->detalle_servicio_model->editar($servicios, $respuesta["viaje"]["id_tours"]);
                 }
@@ -133,11 +133,16 @@ class TurPaquete extends REST_Controller
 
 
     }
-
     public function showReserva_get()
     {
         $data = $this->get();
         $respuesta =  $this->Tours_paquete_model->informacionViaje($data);
+        $this->response($respuesta, REST_Controller::HTTP_OK);
+    }
+    public function showAdicional_get()
+    {
+        $data = $this->get();
+        $respuesta =  $this->Tours_paquete_model->obtenerInfoAdicional($data);
         $this->response($respuesta, REST_Controller::HTTP_OK);
     }
 }

@@ -20,6 +20,7 @@ class Usuario_model extends CI_Model
     public $fbToken;
     public $dui;
     public $activo;
+    public $ultimaConexion;
 
     public function __construct()
 
@@ -91,6 +92,33 @@ class Usuario_model extends CI_Model
             $parametros = $this->Usuario_model->verificar_camposEntrada($data);
             $nombreTabla = "usuario";
             $this->db->where($parametros);
+            $query = $this->db->get($nombreTabla);
+            $result = $query->result();
+
+            foreach ($result as $row) {
+                $identificador = $row->id_cliente;
+                $respuestaFoto =   $this->Imagen_model->obtenerImagenUnica("usuario_perfil", $identificador);
+                if ($respuestaFoto == null) {
+                    //por si no hay ninguna foto mandamos una por defecto
+                    $row->foto = "http://localhost/API-REST-PHP/uploads/avatar.png";
+                } else {
+                    $row->foto = $respuestaFoto;
+                }
+            }
+
+            return array('err' => FALSE, 'usuarios' => $result);
+        } catch (Exception $e) {
+            return array('err' => TRUE, 'mensaje' => $e->getMessage());
+        }
+    }
+    public function getUserByChat()
+    {
+        try {
+
+            $nombreTabla = "usuario";
+            $this->db->where('nivel', 'CLIENTE');
+            $this->db->order_by('ultimaConexion', 'DESC');
+
             $query = $this->db->get($nombreTabla);
             $result = $query->result();
 
@@ -251,6 +279,32 @@ class Usuario_model extends CI_Model
             $respuesta = array(
                 'err'     => FALSE,
                 'mensaje' => 'Registro Eliminado Exitosamente'
+            );
+            return $respuesta;
+        } else {
+            //NO GUARDO
+            $respuesta = array(
+                'err' => TRUE,
+                'mensaje' => 'Error al actualizar ', $this->db->error_message(),
+                'error_number' => $this->db->error_number(),
+                'usuario' => null
+            );
+            return $respuesta;
+        }
+    }
+    public function actualizarFechaChat($data)
+    {
+        ///VAMOS A ACTUALIZAR UN REGISTRO
+        $campos = $this->Usuario_model->verificar_camposEntrada($data);
+        $this->db->where('uuid', $campos["uuid"]);
+        $hecho = $this->db->update('usuario', $campos);
+        if ($hecho) {
+            ///LOGRO ACTUALIZAR 
+            $respuesta = array(
+                'err'     => FALSE,
+                'mensaje' => 'Registro Actualizado Exitosamente',
+                'usuario' => $campos
+
             );
             return $respuesta;
         } else {

@@ -86,6 +86,15 @@ class Usuario extends REST_Controller
             $this->response($respuesta, REST_Controller::HTTP_OK);
         }
     }
+    public function obtenerUsuarioByChat_get()
+    {
+        $respuesta =  $this->Usuario_model->getUserByChat();
+        if ($respuesta['err']) {
+            $this->response($respuesta, REST_Controller::HTTP_BAD_REQUEST);
+        } else {
+            $this->response($respuesta, REST_Controller::HTTP_OK);
+        }
+    }
     public function obtenerChat_post()
     {
         $data = $this->post();
@@ -207,6 +216,30 @@ class Usuario extends REST_Controller
         if (isset($data['email'])) {
             $respuesta = $this->Firebase_model->cambioPassword($data['email'], "12344596");
             $this->response($respuesta, REST_Controller::HTTP_OK);
+        }
+    }
+    public function updateFecha_put()
+    {
+        $data = $this->put();
+        // $data['ultimaConexion'] = DateTime::createFromFormat('d/m/Y',  new DateTime())->format('Y-m-d');
+        $data['ultimaConexion'] = date("Y-m-d h:i:s");
+        $this->load->library("form_validation");
+        $this->form_validation->set_data($data);
+        if (isset($data['uuid'])) {
+
+            $respuesta = $this->Usuario_model->actualizarFechaChat($data);
+            if ($respuesta['err']) {
+                $this->response($respuesta, REST_Controller::HTTP_BAD_REQUEST);
+            } else {
+                $this->response($respuesta, REST_Controller::HTTP_OK);
+            }
+        } else {
+            $respuesta = array(
+                'err' => TRUE,
+                'mensaje' => 'Es necesario el UUID',
+
+            );
+            $this->response($respuesta, REST_Controller::HTTP_BAD_REQUEST);
         }
     }
 }

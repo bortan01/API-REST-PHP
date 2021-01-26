@@ -62,6 +62,7 @@ class Tours_paquete_model extends CI_Model
     }
     public function obtenerViaje(array $data = array())
     {
+
         $this->load->model("Utils_model");
         $nombreTabla = "tours_paquete";
         // $data["estado"] = 1;
@@ -78,6 +79,7 @@ class Tours_paquete_model extends CI_Model
         $query = $this->db->get();
         $respuesta  = $query->result();
 
+        $this->load->model('Imagen_model');
         foreach ($respuesta as $tur) {
             ///CON LA FUNCIOIN EXPLOTE CREAMOS UN UN ARRAY A PARTIR DE UN STRING, EN ESTE CASO
             //CADA ELEMENTO LLEGA HASTA DONDE APARECE UNA COMA
@@ -87,20 +89,26 @@ class Tours_paquete_model extends CI_Model
             $tur->lugar_salida = json_decode($tur->lugar_salida, true);
             $tur->promociones  = json_decode($tur->promociones, true);
             $tur->descripcion_tur = nl2br($tur->descripcion_tur);
+
+
+            $identificador = $tur->id_tours;
+            $respuestaFoto =   $this->Imagen_model->obtenerImagenUnica('tours_paquete', $identificador);
+            if ($respuestaFoto == null) {
+                //por si no hay ninguna foto mandamos una por defecto
+                $tur->foto = "http://localhost/API-REST-PHP/uploads/viaje.jpg";
+            } else {
+                $tur->foto = $respuestaFoto;
+            }
+            $respuestaGaleria =   $this->Imagen_model->obtenerImagen('tours_paquete', $identificador);
+            if ($respuestaGaleria == null) {
+                //por si no hay ninguna foto mandamos una por defecto
+                $tur->galeria = [];
+            } else {
+                $tur->galeria = $respuestaGaleria;
+            }
         }
 
-        // foreach ($sitios as $fila) {
-        //     $url = "http://www.lagraderia.com/wp-content/uploads/2018/12/no-imagen.jpg";
-        //     $this->db->select("foto_path");
-        //     $this->db->where("identificador", $fila->id_contacto);
-        //     $this->db->where("tipo", "contacto");
-        //     $query = $this->db->get("galeria");
 
-        //     foreach ($query->result() as $galeria) {
-        //         $url = $galeria->foto_path;
-        //     }
-        //     $fila->url = $url;
-        // }
 
 
         return $respuesta;
@@ -173,6 +181,49 @@ class Tours_paquete_model extends CI_Model
 
         return $respuesta;
     }
+    public function obtenerInfoAdicional(array $parametros = array())
+    {
+        $this->db->select('id_tours,nombre_sitio,descripcion_sitio');
+        $this->db->from("tours_paquete");
+        $this->db->join('itinerario', 'id_tours');
+        $this->db->join('sitio_turistico', 'id_sitio_turistico');
+        $this->db->where($parametros);
+        $query = $this->db->get();
+        $sitiosTuristicos  = $query->result();
+
+        foreach ($sitiosTuristicos  as $row) {
+            $identificador = $row->id_tours;
+            $respuestaGaleria =   $this->Imagen_model->obtenerGaleria('tours_paquete', $identificador);
+            if ($respuestaGaleria == null) {
+                //por si no hay ninguna foto mandamos una por defecto
+                $row->galeria = [];
+            } else {
+                $row->galeria = $respuestaGaleria;
+            }
+        }
+        $this->db->select('id_tours,nombre_servicio,descripcion_servicio');
+        $this->db->from("tours_paquete");
+        $this->db->join('detalle_servicio', 'id_tours');
+        $this->db->join('servicios_adicionales', 'id_servicios');
+        $this->db->where($parametros);
+        $query = $this->db->get();
+        $servicosAdicionales  = $query->result();
+
+        foreach ($servicosAdicionales  as $row) {
+            $identificador = $row->id_tours;
+            $respuestaGaleria =   $this->Imagen_model->obtenerGaleria('servicios_adicionales', $identificador);
+            if ($respuestaGaleria == null) {
+                //por si no hay ninguna foto mandamos una por defecto
+                $row->galeria = [];
+            } else {
+                $row->galeria = $respuestaGaleria;
+            }
+        }
+        $respuesta = array('sitiosTuristicos' => $sitiosTuristicos, 'serviciosAdicionales' => $servicosAdicionales);
+        return $respuesta;
+    }
+
+
     public function informacionViaje(array $parametros = array())
     {
         $incluye = [];
@@ -263,7 +314,7 @@ class Tours_paquete_model extends CI_Model
         isset($campos["start"]) &&  $campos["start"] = $this->combertirFecha($campos["start"]);
         isset($campos["end"]) &&   $campos["end"] = $this->combertirFecha($campos["end"]);
 
-          $hecho = $this->db->update($nombreTabla, $campos);
+        $hecho = $this->db->update($nombreTabla, $campos);
         if ($hecho) {
             ///LOGRO ACTUALIZAR 
             $respuesta = array(

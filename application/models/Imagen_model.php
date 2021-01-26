@@ -183,4 +183,16 @@ class Imagen_model extends CI_Model
         $query = $this->db->get("galeria");
         return $query->result();
     }
+
+    public function obtenerGaleria($tipo, $identificado)
+    {
+        $this->db->where(array("tipo" => $tipo, "identificador" => $identificado, "activo" => TRUE));
+        $query = $this->db->get("galeria");
+        $galeria = [];
+        foreach ($query->result() as $row) {
+            $galeria[] = $row->foto_path;
+            // print_r ($row);
+        }
+        return $galeria;
+    }
 }
