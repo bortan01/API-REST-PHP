@@ -183,7 +183,7 @@ class Tours_paquete_model extends CI_Model
     }
     public function obtenerInfoAdicional(array $parametros = array())
     {
-        $this->db->select('id_tours,nombre_sitio,descripcion_sitio');
+        $this->db->select('id_sitio_turistico,nombre_sitio,descripcion_sitio');
         $this->db->from("tours_paquete");
         $this->db->join('itinerario', 'id_tours');
         $this->db->join('sitio_turistico', 'id_sitio_turistico');
@@ -192,8 +192,8 @@ class Tours_paquete_model extends CI_Model
         $sitiosTuristicos  = $query->result();
 
         foreach ($sitiosTuristicos  as $row) {
-            $identificador = $row->id_tours;
-            $respuestaGaleria =   $this->Imagen_model->obtenerGaleria('tours_paquete', $identificador);
+            $identificador = $row->id_sitio_turistico;
+            $respuestaGaleria =   $this->Imagen_model->obtenerGaleria('sitio_turistico', $identificador);
             if ($respuestaGaleria == null) {
                 //por si no hay ninguna foto mandamos una por defecto
                 $row->galeria = [];
@@ -201,7 +201,7 @@ class Tours_paquete_model extends CI_Model
                 $row->galeria = $respuestaGaleria;
             }
         }
-        $this->db->select('id_tours,nombre_servicio,descripcion_servicio');
+        $this->db->select('id_servicios,nombre_servicio,descripcion_servicio');
         $this->db->from("tours_paquete");
         $this->db->join('detalle_servicio', 'id_tours');
         $this->db->join('servicios_adicionales', 'id_servicios');
@@ -210,7 +210,7 @@ class Tours_paquete_model extends CI_Model
         $servicosAdicionales  = $query->result();
 
         foreach ($servicosAdicionales  as $row) {
-            $identificador = $row->id_tours;
+            $identificador = $row->id_servicios;
             $respuestaGaleria =   $this->Imagen_model->obtenerGaleria('servicios_adicionales', $identificador);
             if ($respuestaGaleria == null) {
                 //por si no hay ninguna foto mandamos una por defecto

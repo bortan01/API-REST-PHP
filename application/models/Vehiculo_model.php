@@ -45,11 +45,11 @@ class Vehiculo_model extends CI_Model
             $respuestaFoto =   $this->Imagen_model->obtenerImagenUnica('vehiculo', $identificador);
             if ($respuestaFoto == null) {
                 //por si no hay ninguna foto mandamos una por defecto
-                $row->foto = "http://localhost/API-REST-PHP/uploads/viaje.jpg";
+                $row->foto = "http://localhost/API-REST-PHP/uploads/auto.png";
             } else {
                 $row->foto = $respuestaFoto;
             }
-            $respuestaGaleria =   $this->Imagen_model->obtenerImagen('tur', $identificador);
+            $respuestaGaleria =   $this->Imagen_model->obtenerGaleria('vehiculo', $identificador);
             if ($respuestaGaleria == null) {
                 //por si no hay ninguna foto mandamos una por defecto
                 $row->galeria = [];

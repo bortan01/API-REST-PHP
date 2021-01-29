@@ -14,8 +14,6 @@ public function __construct(){
 
 		$data = $this->get();
 	    $respuesta=$this->Servicios_model->get_servicios($data);
-
-	
 		$this->response($respuesta,REST_Controller::HTTP_OK);
 	
 	
