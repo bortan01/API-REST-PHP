@@ -35,15 +35,18 @@ class Itinerario extends REST_Controller
   public function calendarSave_post()
   {
     $data = $this->post();
- 
+
+    
     if (!empty($data["eventos"])) {
       $eventos = json_decode($data["eventos"], true);
       $this->Itinerario_model->guardar($eventos, $data['id_tours']);
     }
+    //ESTE ESPARA LOS SITIOS QUE YA ESTABAN EN EL CALENDARIO Y POSIBLEMENTE HAN SIDO ALTERADOS
     if (!empty($data["sitiosOld"])) {
       $sitios = json_decode($data["sitiosOld"], true);
-      $this->Itinerario_model->editar($sitios);
+      $this->Itinerario_model->editar($sitios,$data['id_tours']);
     }
+    //ESTE RECIBE UN ARREGLO DE NUEVOS EVENTOS, LOS QUE APARECEN LUEGO DE DARLE AGREGAR VIENE CON ALLDAY NULL
     if (!empty($data["sitiosNew"])) {
       $sitios = json_decode($data["sitiosNew"], true);
       $this->Itinerario_model->guardar($sitios, $data['id_tours']);

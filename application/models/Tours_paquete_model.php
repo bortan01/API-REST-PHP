@@ -33,9 +33,10 @@ class Tours_paquete_model extends CI_Model
     }
     public function guardar(array $turPaquete)
     {
-        // print_r($turPaquete);
-        // die();
         $nombreTabla = "tours_paquete";
+
+        isset($turPaquete["start"]) &&  $turPaquete["start"] = $this->combertirFecha($turPaquete["start"]);
+        isset($turPaquete["end"]) &&   $turPaquete["end"] = $this->combertirFecha($turPaquete["end"]);
         $insert = $this->db->insert($nombreTabla, $turPaquete);
         if (!$insert) {
             //NO GUARDO 

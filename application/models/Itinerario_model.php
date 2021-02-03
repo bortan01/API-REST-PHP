@@ -68,11 +68,13 @@ class Itinerario_model extends CI_Model
             }
         }
     }
-    public function editar(array $sitiosTuristicos, string $id_tours){
+    public function editar(array $sitiosTuristicos, string $id_tours)
+    {
         $this->eliminar($id_tours);
         $this->guardar($sitiosTuristicos, $id_tours);
     }
-    public function eliminar( string $id_tours){
+    public function eliminar(string $id_tours)
+    {
         $nombreTabla = "itinerario";
         try {
             $this->db->where('id_tours', $id_tours);
@@ -94,8 +96,6 @@ class Itinerario_model extends CI_Model
                     'itinerario'  => null
                 );
             } else {
-                // print_r($data);
-                // die();
                 $insert = $this->db->update_batch($nombreTabla, $data, 'id_itinerario');
                 if (!$insert) {
                     //NO GUARDO
