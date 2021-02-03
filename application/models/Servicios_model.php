@@ -17,13 +17,13 @@ class Servicios_model extends CI_Model
         $query=$this->db->get('servicios_opc');
         $Servicios=  $query->result();
       
-        $this->db->where('idVehiculo',$data['id']);
-        $query=$this->db->get('vehiculo');
-        $vehiculo=  $query->row();
+        //$this->db->where('idVehiculo',$data['id']);
+        //$query=$this->db->get('vehiculo');
+        //$vehiculo=  $query->row();
 
-        return array('Servicios'=>$Servicios, 'vehiculo'=>$vehiculo);
+      //  return array('Servicios'=>$Servicios, 'vehiculo'=>$vehiculo);
+      return array('Servicios'=>$Servicios);
         }
-   
    
        public function set_datos( $data_cruda){
    

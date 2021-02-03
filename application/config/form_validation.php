@@ -236,12 +236,11 @@ $config = array(
 		//array('field' => 'foto'            ,'label' => 'Foto'                 , 'rules' => 'trim|required') 
 	),
 	'insertarDetalleVehiculo' => array(
-		array('field' => 'id_vehiculo'          ,'label' => 'Id Vehiculo'  , 'rules' => 'trim|required|integer'),
-		array('field' => 'id_cliente'           ,'label' => 'Id Usuario'   , 'rules' => 'trim|required|integer'),
-		array('field' => 'iddireccionesReserva' ,'label' => 'Id Usuario'   , 'rules' => 'trim|required|integer'),
-		array('field' => 'total'                ,'label' => 'Total'        , 'rules' => 'trim|required|numeric'),
-		array('field' => 'descripcion'          ,'label' => 'Descripción'  , 'rules' => 'trim|required'),
-		array('field' => 'nombre'               ,'label' => 'Nombre'       , 'rules' => 'trim|required')
+	array('field' => 'id_cliente'           ,'label' => 'Id Usuario'   , 'rules' => 'trim|required|integer'),
+	array('field' => 'direccionRecogida'       ,'label' => 'Dirección de Recogida'                , 'rules' => 'trim|required'),
+	array('field' => 'direccionDevolucion'       ,'label' => 'Dirección de Devolución'                , 'rules' => 'trim|required'),
+	array('field' => 'fechaHora'       ,'label' => 'Fecha y Hora'                , 'rules' => 'trim|required'),
+			
 	),
 	'insertarServicio' => array(
 		array('field' => 'nombre_servicio'       ,'label' => 'Nombre'                , 'rules' => 'trim|required'),

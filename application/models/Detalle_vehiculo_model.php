@@ -5,12 +5,13 @@ class Detalle_vehiculo_model extends CI_Model
     public $id_detalle;
     public $id_vehiculo;
     public $id_cliente;
-    public $iddireccionesReserva;
     public $total;
     public $urlQrCodeEnlace;
     public $urlEnlace;
     public $nombre;
-
+    public $direccionRecogida;
+    public $direccionDevolucion;
+    public $fechaHora;
 
     public function verificar_camposEntrada($dataCruda)
     {
@@ -34,7 +35,7 @@ class Detalle_vehiculo_model extends CI_Model
             //NO GUARDO
             $respuesta = array(
                 'err'             => TRUE,
-                'mensaje'         => 'Error al insertar detalle tur', $this->db->error_message(),
+                'mensaje'         => 'Error al insertar detalle ', $this->db->error_message(),
                 'error_number'    => $this->db->error_number()
             );
             return $respuesta;
