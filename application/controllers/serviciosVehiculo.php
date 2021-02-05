@@ -19,6 +19,15 @@ public function __construct(){
 	
 }
 
+public function mostrarServicios_get(){
+
+	$data = $this->get();
+	$respuesta=$this->Servicios_model->get_mostrarServicios($data);
+	$this->response($respuesta,REST_Controller::HTTP_OK);
+
+
+}
+
 	
 	//INSERTAR
 	public function servicios_post(){
