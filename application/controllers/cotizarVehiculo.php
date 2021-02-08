@@ -11,8 +11,8 @@ public function __construct(){
 		$this->load->model('CotizarVehiculo_model');
 	}
 	public function cotizar_get(){
-
-	$cotizacion=$this->CotizarVehiculo_model->get_cotizar();
+		$data = $this->get();
+	$cotizacion=$this->CotizarVehiculo_model->get_cotizar($data);
 
 	if (isset($cotizacion)) {
 		

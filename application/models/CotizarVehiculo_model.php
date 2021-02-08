@@ -15,12 +15,21 @@ class CotizarVehiculo_model extends CI_Model
     public $HoraDevolucion;
     public $activo = TRUE;
     
-    public function get_cotizar(){
+    public function get_cotizar(array $data){
 
-        $query=$this->db->get('cotizarvehiculo');
 
-            return $query->result();
-        }
+        $parametros = $this->verificar_camposEntrada($data);
+        $this->db->select('*');
+        $this->db->from('cotizarvehiculo');
+        $this->db->join('usuario', 'cotizarvehiculo.id_usuario = usuario.id_cliente');
+        $this->db->where($parametros);
+        $this->db->where_in('cotizarvehiculo.activo',1);
+        $query=$this->db->get();
+
+        $respuesta = $query->result();
+    
+        return $respuesta;
+    }
    
        public function set_datos( $data_cruda){
    
