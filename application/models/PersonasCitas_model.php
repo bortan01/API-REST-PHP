@@ -27,7 +27,7 @@ public function modificarPersona($id_cita,$input,$asistiran){
 		for ($i=0; $i < $nuevos ; $i++) { 
 		# code...
 		$this->id_cita=$id_cita;
-		$this->cantidad_personas=$nuevos;
+		//$this->cantidad_personas=$nuevos;
 		
 	    $this->nombres_personas=$input[$i];
 	    $hecho=$this->db->insert('personas_cita',$this);
@@ -61,7 +61,7 @@ public function modificarPersona($id_cita,$input,$asistiran){
 		# code...
 
 		$this->id_cita=$id_cita;
-		$this->cantidad_personas=$modificar;
+		//$this->cantidad_personas=$modificar;
 		$this->nombres_personas=$asistiran[$i];
         $hecho=$this->db->insert('personas_cita',$this);
         

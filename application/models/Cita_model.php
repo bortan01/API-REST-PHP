@@ -156,8 +156,7 @@ public function modificar_cita($id_cita,$fecha,$compania,$input,$asistiran,$hora
 				$respuesta=array(
 					'err'=>FALSE,
 					'mensaje'=>'Registro actualizado correctamente',
-					'cita'=>$datos,
-					'ver'=>$validar
+					'cita'=>$datos
 				);
 
 			
