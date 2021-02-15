@@ -183,7 +183,10 @@ public function citas_post(){
 		$motivo=$data["title"].': '.$data["usuario"];
 		$color="#007bff";
 		$textColor="#FFFFFF";
-		$start=$data["fecha"].' '.$data["start"];
+		$partes=explode("-",$data["fecha"]);
+		$fechaConvertida=$partes[2].'-'.$partes[1].'-'.$partes[0];
+
+		$start=$fechaConvertida.' '.$data["start"];
 		$fecha=$data["fecha"];
 		$hora=$data["start"];
 

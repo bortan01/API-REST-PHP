@@ -215,7 +215,7 @@ public function updateCerrada_post(){
 			//todo bien
 			//$this->response('Todo bien');
 		$pregunta=$this->Pregunta_model->set_datos($data);
-		$respuesta=$pregunta->insert(); 
+		$respuesta=$pregunta->insertarPregunta(); 
 
 		if ($respuesta['err']) {
 

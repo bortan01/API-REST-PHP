@@ -258,9 +258,9 @@ public function get_pregunta(){
 			return $respuesta;
             }else{
 
-            	$dato1=array('pregunta' =>'Cuantas personas viajan con usted','opcion'=>'abierta','mas_respuestas'=>'No','id_rama'=>2);
+            	$dato1=array('pregunta' =>'Cuantas personas viajan con usted','opcion'=>'abierta','mas_respuestas'=>'No','id_rama'=>2,'estado_pregunta'=>0);
             	$dato2=array('pregunta' =>'Nombre de las personas','opcion'=>'abierta',
-                              'mas_respuestas'=>'No','id_rama'=>2);
+                              'mas_respuestas'=>'No','id_rama'=>2,'estado_pregunta'=>0);
             	
             	$this->db->insert('pregunta',$dato1);
             	$this->db->insert('pregunta',$dato2);
@@ -274,7 +274,7 @@ public function get_pregunta(){
             }
 
  	}
- 	public function insert(){
+ 	public function insertarPregunta(){
 
  		//verificar el correo
 		$query=$this->db->get_where('pregunta',array('pregunta'=>$this->pregunta) );

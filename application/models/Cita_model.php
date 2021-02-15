@@ -356,7 +356,7 @@ public function insertCita($id_cliente,$asitencia,$personas,$motivo,$color,$text
 
 public function get_formularios(){
 
-	$this->db->select('cita.id_cita,usuario.nombre,cita.fecha,cita.hora');
+	$this->db->select('cita.id_cita,usuario.nombre,DATE_FORMAT(cita.fecha, "%d-%m-%Y") as fecha,cita.hora');
     $this->db->from('cita');
     $this->db->join('usuario', 'usuario.id_cliente=cita.id_cliente','inner');
  	$this->db->where(array('estado_cita'=>0));
