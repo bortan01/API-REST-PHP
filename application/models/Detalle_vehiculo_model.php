@@ -12,6 +12,7 @@ class Detalle_vehiculo_model extends CI_Model
     public $direccionRecogida;
     public $direccionDevolucion;
     public $fechaHora;
+    public $activo=TRUE;
 
     public function verificar_camposEntrada($dataCruda)
     {
