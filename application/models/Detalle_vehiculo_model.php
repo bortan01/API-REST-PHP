@@ -92,9 +92,23 @@ class Detalle_vehiculo_model extends CI_Model
     {
         $this->load->model("Utils_model");
         $nombreTabla = "detalle_vehiculo";
+        
 
         try {
             $parametros = $this->verificar_camposEntrada($data);
+
+            $this->db->select('*');
+            $this->db->from('detalle_vehiculo');
+            $this->db->join('usuario', 'detalle_vehiculo.id_cliente = usuario.id_cliente');
+            $this->db->join('vehiculo', 'detalle_vehiculo.id_vehiculo = vehiculo.idvehiculo');
+            $this->db->join('modelo', 'vehiculo.idmodelo = modelo.idmodelo');
+            
+            $this->db->where($parametros);
+            $this->db->where_in('detalle_vehiculo.activo',2);
+            $query=$this->db->get();
+    
+            $z = $query->result();
+
             $deetalleSeleccionado = $this->Utils_model->selectTabla($nombreTabla, $parametros);
             ///usuario seleccionado es un array de clases genericas
 
@@ -102,12 +116,17 @@ class Detalle_vehiculo_model extends CI_Model
                 $respuesta = array('err' => TRUE, 'mensaje' => 'No se encontro el detalle vehiculo');
                 return $respuesta;
             } else {
-                $respuesta = array('err' => FALSE, 'detalleVehiculo' => $deetalleSeleccionado);
+                $respuesta = array('err' => FALSE, 'detalleVehiculo' => $z);
                 return $respuesta;
             }
         } catch (Exception $e) {
             return array('err' => TRUE, 'status' => 400, 'mensaje' => $e->getMessage());
         }
+
+        return $z;
     }
+
+
+    
     
 }

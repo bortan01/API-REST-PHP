@@ -85,11 +85,14 @@ class DetalleVehiculo extends REST_Controller
     {
         $data = $this->get();
         $respuesta =  $this->Detalle_vehiculo_model->obtenerDetalle($data);
+
         if ($respuesta['err']) {
             $this->response($respuesta, REST_Controller::HTTP_BAD_REQUEST);
         } else {
             $this->response($respuesta, REST_Controller::HTTP_OK);
         }
     }
+    
+
     
 }

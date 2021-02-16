@@ -7,7 +7,6 @@ class Vehiculo_model extends CI_Model
     public $idmodelo;
     public $id_transmicionFK;
     public $idcategoria;
-
     public $placa;
     public $anio;
     public $color;
