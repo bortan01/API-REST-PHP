@@ -4,13 +4,13 @@ class Mantenimiento_model extends CI_Model
 {
     public $id_mantenimiento;
     public $id_vehiculoFK;
-    public $fecha;
-    public $lugar;
+    public $fecha_mantenimiento;
+    public $lugar_mantenimiento;
     public $mantenimiento_realizado;
     public $piezas_cambiadas;
     public $comentariosIncidentes;
     public $costoMantenimiento;
-    public $activo = TRUE;
+    public $activo_mantenimiento = TRUE;
     
     public function get_mantenimiento(array $data){
     
@@ -22,7 +22,7 @@ class Mantenimiento_model extends CI_Model
         $this->db->join('mantenimiento', 'mantenimiento.id_vehiculoFK = vehiculo.idvehiculo');
         
         $this->db->where($parametros);//id_mantenimeto=1
-        $this->db->where_in('mantenimiento.activo',1);
+        $this->db->where_in('mantenimiento.activo_mantenimiento',1);
         $query=$this->db->get();
 
         $respuesta = $query->result();
@@ -51,7 +51,7 @@ class Mantenimiento_model extends CI_Model
    
         public function insert(){
             
-           $query=$this->db->get_where('mantenimiento',array('fecha'=>$this->fecha) );
+           $query=$this->db->get_where('mantenimiento',array('fecha_mantenimiento'=>$this->fecha_mantenimiento) );
            $mantenimientos=$query->row();
    
                if (isset($mantenimientos)) {

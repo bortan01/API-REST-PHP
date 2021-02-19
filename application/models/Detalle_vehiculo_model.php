@@ -8,7 +8,7 @@ class Detalle_vehiculo_model extends CI_Model
     public $total;
     public $urlQrCodeEnlace;
     public $urlEnlace;
-    public $nombre;
+    public $nombre_detalle;
     public $direccionRecogida;
     public $direccionDevolucion;
     public $fechaHora;
@@ -98,7 +98,7 @@ class Detalle_vehiculo_model extends CI_Model
             $parametros = $this->verificar_camposEntrada($data);
 
             $this->db->select('*');
-            $this->db->from('detalle_vehiculo');
+            $this->db->from('detalle_vehiculo' );
             $this->db->join('usuario', 'detalle_vehiculo.id_cliente = usuario.id_cliente');
             $this->db->join('vehiculo', 'detalle_vehiculo.id_vehiculo = vehiculo.idvehiculo');
             $this->db->join('modelo', 'vehiculo.idmodelo = modelo.idmodelo');
@@ -128,5 +128,36 @@ class Detalle_vehiculo_model extends CI_Model
 
 
     
-    
+    public function editar($data)
+    {
+        $nombreTabla = "detalle_vehiculo";
+
+        ///VAMOS A ACTUALIZAR UN REGISTRO
+        $campos = $this->Detalle_vehiculo_model->verificar_camposEntrada($data);
+        $this->db->where('id_detalle', $campos["id_detalle"]);
+
+        $hecho = $this->db->update($nombreTabla, $campos);
+        if ($hecho) 
+        {
+            ///LOGRO ACTUALIZAR 
+            $respuesta = array(
+                'err'     => FALSE,
+                'mensaje' => 'Registro Actualizado Exitosamente',
+                'Detalle' => $campos
+
+            );
+            return $respuesta;
+        } 
+        else 
+        {
+            //NO GUARDO
+            $respuesta = array(
+                'err' => TRUE,
+                'mensaje' => 'Error al actualizar ', $this->db->error_message(),
+                'error_number' => $this->db->error_number(),
+                'Detalle' => null
+            );
+            return $respuesta;
+        }
+    }
 }

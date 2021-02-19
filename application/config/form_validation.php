@@ -39,20 +39,20 @@ $config = array(
 		array('field' => 'transmision', 'label' => 'Transmision', 'rules' => 'trim|required|min_length[2]|max_length[255]')
 	),
 	'categorias_put' => array(
-		array('field' => 'nombre'     , 'label' => 'Nombre de Categoria'     , 'rules' => 'trim|required|min_length[2]|max_length[255]'),
-		array('field' => 'descripcion', 'label' => 'Descripcion de Categoria', 'rules' => 'trim|required|min_length[2]|max_length[255]')
+		array('field' => 'nombre_categoria'     , 'label' => 'Nombre de Categoria'     , 'rules' => 'trim|required|min_length[2]|max_length[255]'),
+		array('field' => 'descripcion_categoria', 'label' => 'Descripcion de Categoria', 'rules' => 'trim|required|min_length[2]|max_length[255]')
 	),
 	'mantenimiento_put' => array(
-		array('field' => 'fecha', 'label' => 'Fecha', 'rules' => 'trim|required|min_length[2]|max_length[255]'),
-		array('field' => 'lugar', 'label' => 'Lugar', 'rules' => 'trim|required|min_length[2]|max_length[255]')
+		array('field' => 'fecha_mantenimiento', 'label' => 'Fecha', 'rules' => 'trim|required|min_length[2]|max_length[255]'),
+		array('field' => 'lugar_mantenimiento', 'label' => 'Lugar', 'rules' => 'trim|required|min_length[2]|max_length[255]')
 	),
 	'renta_put' => array(
 		array('field' => 'rentaCar'   , 'label' => 'Nombre de Renta Cars'               , 'rules' => 'trim|required|min_length[6]|max_length[255]'),
-		array('field' => 'lugar'      , 'label' => 'Dirección donde esta ubicado'       , 'rules' => 'trim|required|min_length[2]|max_length[255]'),
-		array('field' => 'descripcion', 'label' => 'Descripción'                        , 'rules' => 'trim|required|min_length[10]|max_length[255]'),
-		array('field' => 'telefono'   , 'label' => 'Telefono'                           , 'rules' => 'trim|required|min_length[8]|max_length[255]'),
-		array('field' => 'contrasena' , 'label' => 'Contraseña'                         , 'rules' => 'trim|required|min_length[6]|max_length[255]'),
-		array('field' => 'usuario'    , 'label' => 'Usuario del Encargado de Renta cars', 'rules' => 'trim|required|min_length[6]|max_length[255]'),
+		array('field' => 'lugar_renta'      , 'label' => 'Dirección donde esta ubicado'       , 'rules' => 'trim|required|min_length[2]|max_length[255]'),
+		array('field' => 'descripcion_renta', 'label' => 'Descripción'                        , 'rules' => 'trim|required|min_length[10]|max_length[255]'),
+		array('field' => 'telefono_renta'   , 'label' => 'Telefono'                           , 'rules' => 'trim|required|min_length[8]|max_length[255]'),
+		array('field' => 'contrasena_renta' , 'label' => 'Contraseña'                         , 'rules' => 'trim|required|min_length[6]|max_length[255]'),
+		array('field' => 'usuario_renta'    , 'label' => 'Usuario del Encargado de Renta cars', 'rules' => 'trim|required|min_length[6]|max_length[255]'),
 	
 	),
 	'usuarioRenta_put' => array(

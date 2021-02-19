@@ -3,9 +3,9 @@ defined('BASEPATH') or exit('No direct script access allowed');
 class Categorias_model extends CI_Model
 {
     public $idcategoria;
-    public $nombre;
-    public $descripcion;
-    public $activo = TRUE;
+    public $nombre_categoria;
+    public $descripcion_categoria;
+    public $activo_categoria = TRUE;
 
     
     public function get_categorias(){
@@ -27,7 +27,7 @@ class Categorias_model extends CI_Model
    
         public function insert(){
    
-           $query=$this->db->get_where('categoria',array('nombre'=>$this->nombre) );
+           $query=$this->db->get_where('categoria',array('nombre_categoria'=>$this->nombre_categoria) );
            $categorias=$query->row();
    
                if (isset($categorias)) {

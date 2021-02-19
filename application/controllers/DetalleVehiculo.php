@@ -93,6 +93,25 @@ class DetalleVehiculo extends REST_Controller
         }
     }
     
+//MODIFICAR
+public function actualizarDetalle_put(){
 
+    $data = $this->put();
+    if (!isset($data["id_detalle"])) {
+        $respuesta = array('err' => TRUE, 'mensaje' => 'No se encontro ningun identificador del Detalle');
+        $this->response($respuesta, REST_Controller::HTTP_BAD_REQUEST);
+    } else {
+        try {
+            $respuesta = $this->Detalle_vehiculo_model->editar($data);
+            if ($respuesta['err']) {
+                $this->response($respuesta, REST_Controller::HTTP_BAD_REQUEST);
+            } else {
+                $this->response($respuesta, REST_Controller::HTTP_OK);
+            }
+        } catch (\Throwable $th) {
+            $respuesta = array('err' => TRUE, 'mensaje' => 'Error interno de servidor');
+        }
+    }
+}
     
 }
