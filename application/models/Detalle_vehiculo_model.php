@@ -134,8 +134,11 @@ class Detalle_vehiculo_model extends CI_Model
 
         ///VAMOS A ACTUALIZAR UN REGISTRO
         $campos = $this->Detalle_vehiculo_model->verificar_camposEntrada($data);
-        $this->db->where('id_detalle', $campos["id_detalle"]);
 
+        $this->db->where('idvehiculo', $data["idvehiculo"]);
+        $this->db->update('vehiculo',array('kilometraje'=>$data['kilometraje']));
+
+        $this->db->where('id_detalle', $campos["id_detalle"]);
         $hecho = $this->db->update($nombreTabla, $campos);
         if ($hecho) 
         {
@@ -143,7 +146,8 @@ class Detalle_vehiculo_model extends CI_Model
             $respuesta = array(
                 'err'     => FALSE,
                 'mensaje' => 'Registro Actualizado Exitosamente',
-                'Detalle' => $campos
+                'Detalle' => $campos,
+                'Data que llega'=>$data
 
             );
             return $respuesta;
