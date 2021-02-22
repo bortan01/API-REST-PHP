@@ -31,6 +31,9 @@ class Detalle_vehiculo_model extends CI_Model
         $camposVehiculo = $this->verificar_camposEntrada($data);
         $nombreTabla = "detalle_vehiculo";
 
+        $this->db->where('idvehiculo', $data["id_vehiculo"]);
+        $this->db->update('vehiculo',array('activo'=>2));
+
         $insertTur = $this->db->insert($nombreTabla, $camposVehiculo);
         if (!$insertTur) {
             //NO GUARDO
@@ -136,8 +139,9 @@ class Detalle_vehiculo_model extends CI_Model
         $campos = $this->Detalle_vehiculo_model->verificar_camposEntrada($data);
 
         $this->db->where('idvehiculo', $data["idvehiculo"]);
-        $this->db->update('vehiculo',array('kilometraje'=>$data['kilometraje']));
-
+        $this->db->update('vehiculo',array('kilometraje'=>$data['kilometraje'],
+                                            'activo'=>1));
+        
         $this->db->where('id_detalle', $campos["id_detalle"]);
         $hecho = $this->db->update($nombreTabla, $campos);
         if ($hecho) 
