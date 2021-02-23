@@ -107,7 +107,7 @@ class Detalle_vehiculo_model extends CI_Model
             $this->db->join('modelo', 'vehiculo.idmodelo = modelo.idmodelo');
             
             $this->db->where($parametros);
-            $this->db->where_in('detalle_vehiculo.activo',2);
+            $this->db->where_in('vehiculo.activo',2);
             $query=$this->db->get();
     
             $z = $query->result();
