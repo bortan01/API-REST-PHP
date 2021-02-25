@@ -208,43 +208,56 @@ public function insertarRespuestaPersonas($cita,$personas){
 
 }
 
-public function insert($id_cita,$id_pregunta,$respuestas,$mas_respuesta,$mas_id,$id_pregunta1,$respuestas1){
+public function insertarFormularios($id_cita,$id_pregunta,$respuestas,$mas_respuesta,$mas_id,$id_pregunta1,$respuestas1){
 
-	$recorrer=count($id_pregunta);
-	$recorrer1=count($id_pregunta1);
-	$contar=count($mas_id);
 
-	for ($pivote=0; $pivote < $recorrer1 ; $pivote++) { 
+	//para los input normales
+	if ($id_pregunta1!=NULL) {
+		# code...
+		$recorrer1=count($id_pregunta1);
+
+		for ($pivote=0; $pivote < $recorrer1 ; $pivote++) { 
 		# code...
 		$this->id_cita=$id_cita;
 		$this->id_pregunta=$id_pregunta1[$pivote];
 		$this->respuesta=$respuestas1[$pivote];
 		//insertar el registro
-	  $this->db->insert('formulario_migratorio',$this);
+	     $this->db->insert('formulario_migratorio',$this);
+	     }
 	}
+	
+	//par los input que tiene mas respuestas
+	if ($mas_id!=NULL) {
+		# code...
+		$contar=count($mas_id);
 
-	for ($index=0; $index < $contar ; $index++) { 
+	 for ($index=0; $index < $contar ; $index++) { 
 		# code...
 		$this->id_cita=$id_cita;
 		$this->id_pregunta=$mas_id[$index];
 		$this->respuesta=$mas_respuesta[$index];
 		//insertar el registro
-	$this->db->insert('formulario_migratorio',$this);
+	    $this->db->insert('formulario_migratorio',$this);
 
+	    }
 	}
+	
+	//para los combobox
+	if ($id_pregunta!=NULL) {
+		# code...
 
-	for ($i=0; $i < $recorrer ; $i++) { 
+		$recorrer=count($id_pregunta);
+
+	    for ($i=0; $i < $recorrer ; $i++) { 
 		# code...
 		$this->id_cita=$id_cita;
 		$this->id_pregunta=$id_pregunta[$i];
 		$this->respuesta=$respuestas[$i];
 		//insertar el registro
 			$hecho=$this->db->insert('formulario_migratorio',$this);
+	    }
+
 	}
-
-
-			
-
 			if ($hecho) {
 				#insertado
 				$respuesta=array(

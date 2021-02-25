@@ -133,15 +133,39 @@ public function formulario_post(){
 			//todo bien
 			//$this->response('Todo bien');
 		$id_cita=$data['id_cita'];
-		$id_pregunta=$data['id_pregunta'];
-		$respuestas=$data['respuesta'];
+
+		//para los combobox
+		if (isset($data['id_pregunta'])) {
+			# code...
+			$id_pregunta=$data['id_pregunta'];
+		    $respuestas=$data['respuesta'];
+		}else{
+			$id_pregunta=NULL;
+		    $respuestas=NULL;	
+		}
+		
+		//para los input que tienen mas de una respuesta
+		if (isset($data['respuesta_mas'])) {
+			# code...
 		$mas_respuesta=$data['respuesta_mas'];
 		$mas_id=$data['id_pregunta_mas'];
+		}else{
+			$mas_respuesta=NULL;
+			$mas_id=NULL;
+		}
+		
+
 		//para los input que solo es una pregunta
+		if (isset($data['id_pregunta1'])) {
 		$id_pregunta1=$data['id_pregunta1'];
 		$respuestas1=$data['respuesta1'];
+		}else{
+		$id_pregunta1=NULL;
+		$respuestas1=NULL;
+		}
+		
 		$this->Cita_model->formularioModificar($id_cita);
-        $respuesta=$this->FormularioMigratorio_model->insert($id_cita,$id_pregunta,$respuestas,$mas_respuesta,$mas_id,$id_pregunta1,$respuestas1); 
+        $respuesta=$this->FormularioMigratorio_model->insertarFormularios($id_cita,$id_pregunta,$respuestas,$mas_respuesta,$mas_id,$id_pregunta1,$respuestas1); 
 
 		if ($respuesta['err']) {
 

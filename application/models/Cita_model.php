@@ -1,5 +1,6 @@
 <?php
 defined('BASEPATH') or exit('No direct script access allowed');
+date_default_timezone_set('America/El_Salvador');
 class Cita_model extends CI_Model
 {
 public $id_cita;

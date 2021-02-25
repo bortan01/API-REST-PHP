@@ -187,7 +187,7 @@ public function citas_post(){
 		$fechaConvertida=$partes[2].'-'.$partes[1].'-'.$partes[0];
 
 		$start=$fechaConvertida.' '.$data["start"];
-		$fecha=$data["fecha"];
+		$fecha=$fechaConvertida;
 		$hora=$data["start"];
 
 		$respuesta=$this->Cita_model->insertCita($id_cliente,$asistencia,$personas,$motivo,$color,$textColor,$start,$fecha,$hora); 
