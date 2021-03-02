@@ -21,6 +21,10 @@ public function modificarPersona($id_cita,$input,$asistiran){
     $this->db->delete('personas_cita');
     //***************
 
+    //CUANDO HAY CAMBIOS EN LA PERSONA 
+      	$this->load->model('FormularioMigratorio_model');
+	    $this->FormularioMigratorio_model->modificarPersonaCambiosNombres($id_cita,$input,$asistiran);
+
 	if ($input!=NULL) {// SI ES NULL NO ARA NADA PORQ NO TRAE DATOS PARA EVITAR PROCEDIMIENTOS
 		# code...
 		$nuevos=count($input);

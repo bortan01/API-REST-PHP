@@ -42,7 +42,11 @@ public function updateCita_post(){
 		$data=$this->post();
 		//recogere los datos para pode concatenar
 		$id_cita=$data["id_cita"];
-		$fecha=$data["fecha"];
+
+		$partes=explode("-",$data["fecha"]);
+		$fechaConvertida=$partes[2].'-'.$partes[1].'-'.$partes[0];
+		$fecha=$fechaConvertida;
+
 		$compania=$data["asistencia"];
 
 		//como siempre me trae un valor por ser el input que espera un valor
@@ -71,7 +75,7 @@ public function updateCita_post(){
 			 $input=$data["input"];
 		}
 		
-	    $start=$data["fecha"].' '.$data["start"];
+	    $start=$fechaConvertida.' '.$data["start"];
 		$hora=$data["start"];
 
 		//$verificar=$this->Cita_model->set_datos($data);
