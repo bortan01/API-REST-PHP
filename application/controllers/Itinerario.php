@@ -31,7 +31,6 @@ class Itinerario extends REST_Controller
     $respuesta = $this->Itinerario_model->obtenerCalendario($data);
     $this->response($respuesta, REST_Controller::HTTP_OK);
   }
-
   public function calendarSave_post()
   {
     $data = $this->post();

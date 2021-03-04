@@ -125,7 +125,7 @@ class Wompi_model extends CI_Model
                 } else {
                     if (!isset($decodificada["idEnlace"])) {
                         //RESPUEESTA DE ERROR DE WOMPI
-                     
+
                         return array('err' => "ERROR DE PETICION", 'res' => $decodificada);
                     } else {
                         //TENEMOS NUESTRA RESPUETA CORRECTA DE WOMPI
@@ -191,7 +191,7 @@ class Wompi_model extends CI_Model
         $response = '{
                         "idEnlace": ' . $idEnlace . ',
                         "urlQrCodeEnlace":"https://wompistorage.blob.core.windows.net/imagenes/f7c5e956-5fa4-4cf6-9480-aaaa855b1d7e.jpg",
-                        "urlEnlace":"https://lk.wompi.sv/KrLN",
+                        "urlEnlace":"https://lk.wompi.sv/aU5W",
                         "estaProductivo":false
                     }';
         $err = FALSE;

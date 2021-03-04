@@ -73,6 +73,7 @@ class Tours_paquete_model extends CI_Model
 
         $this->db->select('*');
         $this->db->from($nombreTabla);
+        $this->db->order_by('id_tours', 'DESC');
         // $this->db->join('contacto', 'sitio_turistico.informacion_contacto=contacto.id_contacto');
         // $this->db->join('tipo_sitio', 'sitio_turistico.id_tipo_sitio=tipo_sitio.id_tipo_sitio');
         $this->db->where($parametros);
@@ -89,6 +90,7 @@ class Tours_paquete_model extends CI_Model
             $tur->requisitos   = json_decode($tur->requisitos, true);
             $tur->lugar_salida = json_decode($tur->lugar_salida, true);
             $tur->promociones  = json_decode($tur->promociones, true);
+            $tur->descripcionForApp = ($tur->descripcion_tur);
             $tur->descripcion_tur = nl2br($tur->descripcion_tur);
 
 
@@ -285,7 +287,7 @@ class Tours_paquete_model extends CI_Model
             }
             $transporte->ocupados = $asientosOcupados;
         } else {
-            $transporte = null;
+            $transporte = [];
         }
         $respuesta = array(
             'nombre' => $nombreTurX,

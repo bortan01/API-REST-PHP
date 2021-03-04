@@ -30,7 +30,7 @@ class detalle_servicio_model extends CI_Model
             $respuesta = array(
                 'err'          => TRUE,
                 'mensaje'      => "NO SE INSERTO NINGUN REGISTRO",
-                'itinerario'      => null
+                'detalle'      => null
             );
             return $respuesta;
         } else {
@@ -49,15 +49,10 @@ class detalle_servicio_model extends CI_Model
                 );
                 return $respuesta;
             } else {
-                //ESTA ES POR SI SE VA A SUBIR LA GALAREIA 
-                $this->load->model('Imagen_model');
-                $identificador = $this->db->insert_id();
-                $this->Imagen_model->guardarGaleria("tours_paquete", $identificador);
-
+                $this->id_itinerario = $this->db->insert_id();
                 $respuesta = array(
                     'err'          => FALSE,
-                    'mensaje'      => 'Registro Guardado Exitosamente',
-                    //'servicio'   => $servicio
+                    'mensaje'      => 'Registro de detalle servicio Guardado Exitosamente',
                 );
                 return $respuesta;
             }
