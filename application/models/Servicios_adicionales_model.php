@@ -37,9 +37,9 @@ class Servicios_adicionales_model extends CI_Model
         $nombreTabla = "servicios_adicionales";
 
         $data["activo"]                 = TRUE;
-        $data["asientos_deshabilitados"]= isset($data["asientos_deshabilitados"]) ? $data["asientos_deshabilitados"]  : "";
+        $data["asientos_deshabilitados"] = isset($data["asientos_deshabilitados"]) ? $data["asientos_deshabilitados"]  : "";
         $data["asientos_dispobibles"]   = isset($data["asientos_dispobibles"])    ? $data["asientos_dispobibles"]     : "";
-        $data["fila_trasera"]           = $data["fila_trasera"] == "true" ;
+        $data["fila_trasera"]           = isset($data["fila_trasera"]) ? $data["fila_trasera"] : null;
         $servicio                       = $this->verificar_camposEntrada($data);
         $insert                         = $this->db->insert($nombreTabla, $servicio);
 
@@ -65,7 +65,11 @@ class Servicios_adicionales_model extends CI_Model
                 'mensaje'      => 'Registro Guardado Exitosamente',
                 'servicio'   => $servicio
             );
-            return $respuesta;
+
+            $servicio["err"]  = FALSE;
+            $servicio["id"]  = $identificador;
+            $servicio["mensaje"]  = "Registro Guardado Exitosamente";
+            return $servicio;
         }
     }
     public function obtenerServicio(array $data = array())
@@ -125,7 +129,7 @@ class Servicios_adicionales_model extends CI_Model
         ///VAMOS A ACTUALIZAR UN REGISTRO
         $data["asientos_deshabilitados"] = isset($data["asientos_deshabilitados"]) ? $data["asientos_deshabilitados"]  : "";
         $data["asientos_dispobibles"]    = isset($data["asientos_dispobibles"])    ? $data["asientos_dispobibles"]     : "";
-        $data["fila_trasera"] = $data["fila_trasera"] == "true" ;
+        $data["fila_trasera"] = $data["fila_trasera"] == "true";
 
         $campos = $this->verificar_camposEntrada($data);
         $this->db->where('id_servicios', $campos["id_servicios"]);

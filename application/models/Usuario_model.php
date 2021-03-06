@@ -33,10 +33,12 @@ class Usuario_model extends CI_Model
         if ($usuarioFirebase["err"]) {
             return array("err" => TRUE, 'mensaje' => $usuarioFirebase["mensaje"]);
         } else {
-            $nombreTabla    = "usuario";
-            $miUser = $this->verificar_campos($data);
-            $miUser->uuid     = $usuarioFirebase["uid"];
-            $miUser->activo   = TRUE;
+            $nombreTabla              = "usuario";
+            $miUser                   = $this->verificar_campos($data);
+            $miUser->uuid             = $usuarioFirebase["uid"];
+            $miUser->activo           = TRUE;
+            $miUser->ultimaConexion   = new DateTime();
+
 
             $insert = $this->db->insert($nombreTabla, $miUser);
 
