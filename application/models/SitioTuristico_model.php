@@ -36,13 +36,11 @@ class SitioTuristico_model extends CI_Model
             $identificador = $this->db->insert_id();
             $this->Imagen_model->guardarGaleria($nombreTabla,  $identificador);
 
-            $respuesta = array(
-                'err' => FALSE,
-                'mensaje' => 'Registro Guardado Exitosamente',
-                'id' => $identificador,
-                'sitio' => $campos
-            );
-            return $respuesta;
+            $campos['err'] = FALSE;
+            $campos['mensaje'] = "Registro Guardado Exitosamente";
+            $campos['id'] = $identificador;
+         
+            return $campos;
         } else {
             //NO GUARDO
             $respuesta = array(

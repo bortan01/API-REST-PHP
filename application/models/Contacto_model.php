@@ -24,6 +24,7 @@ class Contacto_model extends CI_Model
     }
     public function guardar(array $data)
     {
+        // print_r($_FILES);
         $nombreTabla = "contacto";
         $data["activo"] = TRUE;
         $contact = $this->verificar_camposEntrada($data);

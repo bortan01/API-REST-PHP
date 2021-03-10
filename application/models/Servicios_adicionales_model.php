@@ -60,14 +60,8 @@ class Servicios_adicionales_model extends CI_Model
             $this->Imagen_model->guardarGaleria("servicios_adicionales", $identificador);
             //$this->Imagen_model->guardarImagen("contacto", $identificador);
 
-            $respuesta = array(
-                'err'          => FALSE,
-                'mensaje'      => 'Registro Guardado Exitosamente',
-                'servicio'   => $servicio
-            );
-
-            $servicio["err"]  = FALSE;
-            $servicio["id"]  = $identificador;
+            $servicio["err"]      = FALSE;
+            $servicio["id"]       = $identificador;
             $servicio["mensaje"]  = "Registro Guardado Exitosamente";
             return $servicio;
         }
