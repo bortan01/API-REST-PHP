@@ -193,8 +193,9 @@ public function citas_post(){
 		$start=$fechaConvertida.' '.$data["start"];
 		$fecha=$fechaConvertida;
 		$hora=$data["start"];
+		$pasaporte=$data["pasaporte"];
 
-		$respuesta=$this->Cita_model->insertCita($id_cliente,$asistencia,$personas,$motivo,$color,$textColor,$start,$fecha,$hora); 
+		$respuesta=$this->Cita_model->insertCita($id_cliente,$asistencia,$personas,$motivo,$color,$textColor,$start,$fecha,$hora,$pasaporte); 
 
 		if ($respuesta['err']) {
 

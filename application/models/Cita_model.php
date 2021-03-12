@@ -12,6 +12,7 @@ public $textColor;
 public $start;
 public $fecha;
 public $hora;
+public $pasaporte;
 
 public function eliminar($datos){
 
@@ -243,7 +244,7 @@ public function modificar_cita($id_cita,$fecha,$compania,$input,$asistiran,$hora
     }	//else pollo
 }//function
 
-public function insertCita($id_cliente,$asitencia,$personas,$motivo,$color,$textColor,$start,$fecha,$hora){
+public function insertCita($id_cliente,$asitencia,$personas,$motivo,$color,$textColor,$start,$fecha,$hora,$pasaporte){
 		//insertar el registro
 		$horas_validas= array(
 						0 =>'8:00 AM',
@@ -290,6 +291,7 @@ public function insertCita($id_cliente,$asitencia,$personas,$motivo,$color,$text
 			$this->start=$start;
 			$this->fecha=$fecha;
 			$this->hora=$hora;
+			$this->pasaporte=$pasaporte;
 
 			$this->load->model('PersonasCitas_model');
 			
