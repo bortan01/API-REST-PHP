@@ -14,6 +14,28 @@ public $fecha;
 public $hora;
 public $pasaporte;
 
+public function existSioNo($data){
+	$query=$this->db->get_where('cita',array('id_cliente'=>$data['id_cliente']) );
+		$cita=$query->row();
+
+			if (!isset($cita)) {
+			$respuesta=array(
+				'err'=>TRUE,
+				'mensaje'=>'La cita no existe',
+				'existe'=>$data
+			);
+			return $respuesta;
+			}else{
+				$respuesta=array(
+				'err'=>TRUE,
+				'mensaje'=>'Existe',
+				'existe'=>$cita
+			);
+			return $respuesta;
+			}
+
+}
+
 public function eliminar($datos){
 
 		$query=$this->db->get_where('cita',array('id_cita'=>$datos["id_cita"]) );

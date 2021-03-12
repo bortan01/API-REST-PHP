@@ -11,6 +11,15 @@ public function __construct(){
 		$this->load->model('Cita_model');
 	
 		}
+public function verificarExist_get(){
+
+	 $data=$this->get();
+
+	 
+	 $respuesta=$this->Cita_model->existSioNo($data);
+	 $this->response($respuesta);
+
+}
 public function deleteCita_post(){
 
 	 $data=$this->post();
