@@ -4,7 +4,7 @@ class CotizarVehiculo_model extends CI_Model
 {
     public $idcotizarVehiculo;
     public $id_usuario;
-    public $nombreVehiculo;
+    public $modelo;
     public $anio;
     public $caracteristicas;
     public $direccion_recogida;

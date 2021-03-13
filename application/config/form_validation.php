@@ -70,7 +70,7 @@ $config = array(
 	
 	),
 	'cotizar_put' => array(
-		array('field' => 'nombreVehiculo'      , 'label' => 'Vehiculo', 'rules' => 'trim|required|min_length[2]|max_length[255]'),
+		array('field' => 'modelo'                , 'label' => 'Marca', 'rules' => 'trim|required|min_length[1]|max_length[255]'),
 		array('field' => 'anio'                , 'label' => 'Vehiculo', 'rules' => 'trim|required|min_length[2]|max_length[255]'),
 		array('field' => 'caracteristicas'     , 'label' => 'Vehiculo', 'rules' => 'trim|required|min_length[2]|max_length[255]'),
 		array('field' => 'direccion_recogida'  , 'label' => 'Vehiculo', 'rules' => 'trim|required|min_length[2]|max_length[255]'),
