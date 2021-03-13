@@ -80,14 +80,13 @@ class Imagen_model extends CI_Model
                     $_FILES['userfile']['size']     = $_FILES['fotos']['size'][$i];
 
                     $config['upload_path']   = './uploads/';
-                    $config['allowed_types'] = 'gif|jpg|png|jpeg';
+                    $config['allowed_types'] = '*';
                     $config['max_size']      = 2000;
                     $config['detect_mime']   = TRUE;
                     //GENERAMOS UN NOMBRE UNICO
-                    $config['file_name']     = date("HisYmd") . rand(1, 100) . ".jpg";
-
+                    $config['file_name']     =  date("HisYmd") . rand(1, 100) . $_FILES['userfile']['name'][$i] ;
+                                      
                     $this->load->library('upload', $config);
-
                     //EMPEZAMOS A GUARDAR LAS IMAGENES EN LA CARPETA 
                     if ($this->upload->do_upload('userfile')) {
                         //ESTO ES PARA CONSEGUIR LA INFORMACION DE LA SUBIDA
