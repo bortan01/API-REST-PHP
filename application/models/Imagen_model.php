@@ -12,13 +12,15 @@ class Imagen_model extends CI_Model
     ///EN EL BODY DEBE DE RECIBIR UN PARAMETRO LLAMADO foto, DE TIPO FILE
     public function guardarImagen($tipo, $identificador, $activo = TRUE)
     {
+        //guardamos el nombre y lo separamos para obtener el formato
+        $formato = explode(".", $_FILES['foto']['name'])[1];
         $URL = "http://localhost/API-REST-PHP/uploads/";
         $config['upload_path']   = './uploads/';
-        $config['allowed_types'] = 'gif|jpg|png';
-        $config['max_size']      = 2000;
-        $config['file_name']     = date("HisYmd") . rand(1, 100) . ".jpg";
-
-        $this->load->library('upload', $config);
+        $config['allowed_types'] = '*';
+        $config['max_size']      = 10000;
+        $config['file_name']     = date("HisYmd") . rand(1, 100) .".". $formato;
+         $this->load->library('upload', $config);
+        
 
         if (!$this->upload->do_upload('foto')) {
             $errorImagen = $this->upload->error_msg;
