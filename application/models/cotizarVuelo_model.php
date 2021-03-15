@@ -20,6 +20,7 @@ class cotizarVuelo_model extends CI_Model
     public $ninos;
     public $bebes;
     public $maletas;
+    public $detallePasajero;
     public $activo = TRUE;
 
     public function get_cotizar(array $data)
