@@ -12,15 +12,21 @@ class Imagen_model extends CI_Model
     ///EN EL BODY DEBE DE RECIBIR UN PARAMETRO LLAMADO foto, DE TIPO FILE
     public function guardarImagen($tipo, $identificador, $activo = TRUE)
     {
+        //si no existe las fotos solo retornamos
+        if (!isset($_FILES['foto']) ){
+            
+            return;  
+        } 
+
         //guardamos el nombre y lo separamos para obtener el formato
         $formato = explode(".", $_FILES['foto']['name'])[1];
         $URL = "http://localhost/API-REST-PHP/uploads/";
         $config['upload_path']   = './uploads/';
         $config['allowed_types'] = '*';
         $config['max_size']      = 10000;
-        $config['file_name']     = date("HisYmd") . rand(1, 100) .".". $formato;
-         $this->load->library('upload', $config);
-        
+        $config['file_name']     = date("HisYmd") . rand(1, 100) . "." . $formato;
+        $this->load->library('upload', $config);
+
 
         if (!$this->upload->do_upload('foto')) {
             $errorImagen = $this->upload->error_msg;
@@ -86,8 +92,8 @@ class Imagen_model extends CI_Model
                     $config['max_size']      = 2000;
                     $config['detect_mime']   = TRUE;
                     //GENERAMOS UN NOMBRE UNICO
-                    $config['file_name']     =  date("HisYmd") . rand(1, 100) . $_FILES['userfile']['name'][$i] ;
-                                      
+                    $config['file_name']     =  date("HisYmd") . rand(1, 100) . $_FILES['userfile']['name'][$i];
+
                     $this->load->library('upload', $config);
                     //EMPEZAMOS A GUARDAR LAS IMAGENES EN LA CARPETA 
                     if ($this->upload->do_upload('userfile')) {
