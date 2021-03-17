@@ -50,7 +50,8 @@ class Tours_paquete_model extends CI_Model
         } else {
             $this->load->model('Imagen_model');
             $identificador = $this->db->insert_id();
-            $foto = $this->Imagen_model->guardarGaleria("tours_paquete", $identificador);
+            $tipoGaleria = $turPaquete['tipo'];
+            $foto = $this->Imagen_model->guardarGaleria($tipoGaleria, $identificador);
 
             $respuesta = array(
                 'err'          => FALSE,
@@ -63,24 +64,40 @@ class Tours_paquete_model extends CI_Model
     }
     public function obtenerViaje(array $data = array())
     {
-
-        $this->load->model("Utils_model");
         $nombreTabla = "tours_paquete";
-        // $data["estado"] = 1;
         $parametros = $this->verificar_camposEntrada($data);
 
+        $tipo = isset($parametros['tipo']) ? $parametros['tipo'] : '';
+        switch ($tipo) {
+            case 'paquete':
+                $this->db->where("(tipo='Paquete Nacional' OR tipo='Paquete Internacional')");
+                break;
+            case 'tour':
+                $this->db->where("(tipo='Tour Nacional' OR tipo='Tour Internacional')");
+                break;
+            case 'Paquete Nacional':
+                $this->db->where('tipo', 'Paquete Nacional');
+                break;
+            case 'Paquete Internacional':
+                $this->db->where('tipo', 'Paquete Internacional');
+                break;
+            case 'Tour Nacional':
+                $this->db->where('tipo', 'Tour Nacional');
+                break;
+            case 'Tour Internacional':
+                $this->db->where('tipo', 'Tour Internacional');
+                break;
+            default:
+                # code...
+                break;
+        }
+        if (isset($parametros['tipo']))  unset($parametros['tipo']);
 
-
-        $this->db->select('*');
-        $this->db->from($nombreTabla);
         $this->db->order_by('id_tours', 'DESC');
-        // $this->db->join('contacto', 'sitio_turistico.informacion_contacto=contacto.id_contacto');
-        // $this->db->join('tipo_sitio', 'sitio_turistico.id_tipo_sitio=tipo_sitio.id_tipo_sitio');
-        $this->db->where($parametros);
+        $this->db->or_where($parametros);
 
-        $query = $this->db->get();
+        $query = $this->db->get($nombreTabla);
         $respuesta  = $query->result();
-
         $this->load->model('Imagen_model');
         foreach ($respuesta as $tur) {
             ///CON LA FUNCIOIN EXPLOTE CREAMOS UN UN ARRAY A PARTIR DE UN STRING, EN ESTE CASO
@@ -95,14 +112,15 @@ class Tours_paquete_model extends CI_Model
 
 
             $identificador = $tur->id_tours;
-            $respuestaFoto =   $this->Imagen_model->obtenerImagenUnica('tours_paquete', $identificador);
+            $tipoFoto = $tur->tipo;
+            $respuestaFoto =   $this->Imagen_model->obtenerImagenUnica($tipoFoto, $identificador);
             if ($respuestaFoto == null) {
                 //por si no hay ninguna foto mandamos una por defecto
                 $tur->foto = "http://localhost/API-REST-PHP/uploads/viaje.jpg";
             } else {
                 $tur->foto = $respuestaFoto;
             }
-            $respuestaGaleria =   $this->Imagen_model->obtenerImagen('tours_paquete', $identificador);
+            $respuestaGaleria =   $this->Imagen_model->obtenerGaleria($tipoFoto, $identificador);
             if ($respuestaGaleria == null) {
                 //por si no hay ninguna foto mandamos una por defecto
                 $tur->galeria = [];

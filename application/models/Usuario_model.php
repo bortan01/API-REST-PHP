@@ -276,7 +276,32 @@ class Usuario_model extends CI_Model
         $hecho = $this->db->update($nombreTabla, $campos);
         if ($hecho) {
             $this->load->model('Imagen_model');
-            $this->Imagen_model->eliminarGaleria($nombreTabla, $identificador);
+            // $this->Imagen_model->eliminarGaleria($nombreTabla, $identificador);
+            ///LOGRO ACTUALIZAR 
+            $respuesta = array(
+                'err'     => FALSE,
+                'mensaje' => 'Registro Eliminado Exitosamente'
+            );
+            return $respuesta;
+        } else {
+            //NO GUARDO
+            $respuesta = array(
+                'err' => TRUE,
+                'mensaje' => 'Error al actualizar ', $this->db->error_message(),
+                'error_number' => $this->db->error_number(),
+                'usuario' => null
+            );
+            return $respuesta;
+        }
+    }
+    public function restaurar($campos)
+    {
+        $nombreTabla  = 'usuario';
+        $identificador = $campos["id_cliente"];
+        ///VAMOS A ACTUALIZAR UN REGISTRO
+        $this->db->where('id_cliente', $identificador);
+        $hecho = $this->db->update($nombreTabla, $campos);
+        if ($hecho) {
             ///LOGRO ACTUALIZAR 
             $respuesta = array(
                 'err'     => FALSE,

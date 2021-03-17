@@ -167,6 +167,28 @@ class Usuario extends REST_Controller
             }
         }
     }
+    public function restaurar_put()
+    {
+        $data = $this->put();
+        if (!isset($data["id_cliente"])) {
+            $respuesta = array('err' => TRUE, 'mensaje' => 'No se encontro nungun identificador de usuario');
+            $this->response($respuesta, REST_Controller::HTTP_BAD_REQUEST);
+        } else {
+
+            $campos = array('id_cliente' => $data["id_cliente"], 'activo' => TRUE);
+
+            try {
+                $respuesta = $this->Usuario_model->restaurar($campos);
+                if ($respuesta['err']) {
+                    $this->response($respuesta, REST_Controller::HTTP_BAD_REQUEST);
+                } else {
+                    $this->response($respuesta, REST_Controller::HTTP_OK);
+                }
+            } catch (\Throwable $th) {
+                $respuesta = array('err' => TRUE, 'mensaje' => 'Error interno de servidor');
+            }
+        }
+    }
     public function generarEnlace_post()
     {
         $data = $this->post();

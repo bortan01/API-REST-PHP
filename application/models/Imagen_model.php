@@ -13,10 +13,10 @@ class Imagen_model extends CI_Model
     public function guardarImagen($tipo, $identificador, $activo = TRUE)
     {
         //si no existe las fotos solo retornamos
-        if (!isset($_FILES['foto']) ){
-            
-            return;  
-        } 
+        if (!isset($_FILES['foto'])) {
+
+            return;
+        }
 
         //guardamos el nombre y lo separamos para obtener el formato
         $formato = explode(".", $_FILES['foto']['name'])[1];
