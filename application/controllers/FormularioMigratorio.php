@@ -13,6 +13,13 @@ public function __construct(){
 		$this->load->model('FormularioMigratorio_model');
 
 	}
+
+public function usuarioFormularios_get(){
+	 $data=$this->get();
+	 //aqui estoy me falta hacer la consulta para sacar el usuario 
+	 $respuesta=$this->FormularioMigratorio_model->usuarioForm($data);
+	 $this->response($respuesta);
+}
 public function deleteFormulario_post(){
 
 	 $data=$this->post();

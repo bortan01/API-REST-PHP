@@ -8,6 +8,28 @@ class FormularioMigratorio_model extends CI_Model
 	public $id_cita;
 	public $respuesta;
 
+public function usuarioForm($data){
+
+	//saco el id de la primera pregunta
+	$this->db->select('id_cliente');
+    $this->db->from('cita');
+    $this->db->where(array('id_cita'=>$data['id_cita']));
+    $id=$this->db->get();
+    $row = $id->row('id_cliente');
+
+    $this->db->select('nombre');
+    $this->db->from('usuario');
+    $this->db->where(array('id_cliente'=>$row));
+    $res=$this->db->get();
+
+    $respuesta=array(
+				'err'=>TRUE,
+				'mensaje'=>'Datos cargados correctamente',
+				'usuario'=>$res->result()
+			);
+	return $respuesta;
+}
+
 public function eliminar($datos){
 
 		$query=$this->db->get_where('formulario_migratorio',array('id_formulario'=>$datos["id_formulario"]) );
@@ -83,6 +105,7 @@ public function get_formularios_llenos($id){
     $this->db->join('ramas_preguntas', 'pregunta.id_rama=ramas_preguntas.id_rama','inner');
  	$this->db->where(array('formulario_migratorio.id_cita'=>$id));
     $query=$this->db->get();
+
     return $query->result();
 }
 
