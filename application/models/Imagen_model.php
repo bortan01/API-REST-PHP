@@ -14,7 +14,6 @@ class Imagen_model extends CI_Model
     {
         //si no existe las fotos solo retornamos
         if (!isset($_FILES['foto'])) {
-
             return;
         }
 
