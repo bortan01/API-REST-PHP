@@ -5,14 +5,14 @@ class Detalle_vehiculo_model extends CI_Model
     public $id_detalle;
     public $id_vehiculo;
     public $id_cliente;
-    public $total;
+    public $total_detalle;
     public $urlQrCodeEnlace;
     public $urlEnlace;
     public $nombre_detalle;
-    public $direccionRecogida;
-    public $direccionDevolucion;
-    public $fechaHora;
-    public $activo=TRUE;
+    public $direccionRecogida_detalle;
+    public $direccionDevolucion_detalle;
+    public $fechaHora_detalle;
+    public $activo_detalle=TRUE;
 
     public function verificar_camposEntrada($dataCruda)
     {

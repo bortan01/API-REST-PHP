@@ -237,9 +237,9 @@ $config = array(
 	),
 	'insertarDetalleVehiculo' => array(
 	array('field' => 'id_cliente'           ,'label' => 'Id Usuario'   , 'rules' => 'trim|required|integer'),
-	array('field' => 'direccionRecogida'       ,'label' => 'Dirección de Recogida'                , 'rules' => 'trim|required'),
-	array('field' => 'direccionDevolucion'       ,'label' => 'Dirección de Devolución'                , 'rules' => 'trim|required'),
-	array('field' => 'fechaHora'       ,'label' => 'Fecha y Hora'                , 'rules' => 'trim|required'),
+	array('field' => 'direccionRecogida_detalle'       ,'label' => 'Dirección de Recogida'                , 'rules' => 'trim|required'),
+	array('field' => 'direccionDevolucion_detalle'       ,'label' => 'Dirección de Devolución'                , 'rules' => 'trim|required'),
+	array('field' => 'fechaHora_detalle'       ,'label' => 'Fecha y Hora'                , 'rules' => 'trim|required'),
 			
 	),
 	'insertarServicio' => array(
