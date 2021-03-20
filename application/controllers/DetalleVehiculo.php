@@ -45,7 +45,7 @@ class DetalleVehiculo extends REST_Controller
                 $reseraVehiculo["FechaTransaccion"]     = date("Y-m-d H:i:s");
                 $reseraVehiculo["FormaPagoUtilizada"]   = 'Agencia';
                 $reseraVehiculo["ResultadoTransaccion"] = 'ExitosaAprobada';
-                $reseraVehiculo["Monto"]                = $data['total'];
+                $reseraVehiculo["Monto"]                = $data['total_detalle'];
                 $reseraVehiculo["Cantidad"]             = 1;
 
                 $respuesta = $this->ReservaVehiculo_model->guardar($reseraVehiculo);
