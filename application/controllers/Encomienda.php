@@ -13,17 +13,16 @@ public function __construct(){
 
 	}
 
-	 public function deleteEncomienda_post(){
+public function deleteEncomienda_post(){
 
 	 $data=$this->post();
 	 $verificar=$this->Encomienda_model->set_datos($data);
      $respuesta=$this->Encomienda_model->eliminar($verificar);
 
 	 	  $this->response($respuesta);
-	 }//fin metodo
+}//fin metodo
 
-
-	public function updateEncomienda_post(){
+public function updateEncomienda_post(){
 
 		$data=$this->post();
 		//print_r($data);
@@ -60,9 +59,9 @@ public function __construct(){
 			$this->response($respuesta, REST_Controller::HTTP_BAD_REQUEST); 
 		}
 
-	}//fin de metodo
+}//fin de metodo
 
-	public function encomiendaActualizar_get(){
+public function encomiendaActualizar_get(){
 
 	$data = $this->get();
 	$enco=$this->Encomienda_model->get_encomiendaEnvio($data);
@@ -89,9 +88,9 @@ public function __construct(){
 
 	}
 
-   }
+}
 
-	public function encomiendaModificar_get(){
+public function encomiendaModificar_get(){
 
 	$data = $this->get();
 	$enco=$this->Encomienda_model->get_encomiendaModificar($data);
@@ -118,10 +117,9 @@ public function __construct(){
 
 	}
 
-   }
+}
 
-
-	public function encomienda_get(){
+public function encomienda_get(){
 
 	$enco=$this->Encomienda_model->get_encomienda();
 
@@ -147,7 +145,7 @@ public function __construct(){
 
 	}
 	
-   }
+}
 
    public function encomiendas_post(){
 

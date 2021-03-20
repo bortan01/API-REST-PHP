@@ -5,6 +5,7 @@ class DetalleEncomienda_model extends CI_Model
 public $id_producto;
 public $id_encomienda;
 public $cantidad;
+public $prueba;
 
 
 public function get_detalle(array $data){
