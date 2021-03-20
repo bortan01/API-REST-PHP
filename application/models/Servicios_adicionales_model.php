@@ -123,7 +123,11 @@ class Servicios_adicionales_model extends CI_Model
         ///VAMOS A ACTUALIZAR UN REGISTRO
         $data["asientos_deshabilitados"] = isset($data["asientos_deshabilitados"]) ? $data["asientos_deshabilitados"]  : "";
         $data["asientos_dispobibles"]    = isset($data["asientos_dispobibles"])    ? $data["asientos_dispobibles"]     : "";
-        $data["fila_trasera"] = $data["fila_trasera"] == "true";
+        
+        if (isset ($data["fila_trasera"])) {
+            $data["fila_trasera"] = $data["fila_trasera"] == "true";
+            
+        }
 
         $campos = $this->verificar_camposEntrada($data);
         $this->db->where('id_servicios', $campos["id_servicios"]);

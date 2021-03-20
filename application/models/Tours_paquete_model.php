@@ -68,6 +68,7 @@ class Tours_paquete_model extends CI_Model
         $parametros = $this->verificar_camposEntrada($data);
 
         $tipo = isset($parametros['tipo']) ? $parametros['tipo'] : '';
+        // echo $tipo;
         switch ($tipo) {
             case 'paquete':
                 $this->db->where("(tipo='Paquete Nacional' OR tipo='Paquete Internacional')");
@@ -94,7 +95,7 @@ class Tours_paquete_model extends CI_Model
         if (isset($parametros['tipo']))  unset($parametros['tipo']);
 
         $this->db->order_by('id_tours', 'DESC');
-        $this->db->or_where($parametros);
+        $this->db->where($parametros);
 
         $query = $this->db->get($nombreTabla);
         $respuesta  = $query->result();
