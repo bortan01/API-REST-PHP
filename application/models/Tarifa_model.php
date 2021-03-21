@@ -77,10 +77,9 @@ public function modificar_tarifa($datos){
 }//fin metodo
 
 public function get_tarifa($data){
-
  	    $this->db->select('*');
         $this->db->from('tarifa');
-        //array('id_municipios'=>$data['id_municipios'])
+         $this->db->join('unidades_medidas', 'tarifa.id_unidad_medida=unidades_medidas.id_unidad','inner');
         $this->db->where($data);
         $query = $this->db->get();
  	
