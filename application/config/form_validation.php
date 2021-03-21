@@ -219,6 +219,9 @@ $config = array(
 	'producto_put' => array(
 		array('field' => 'nombre_producto'  ,'label' => 'Nombre del producto' , 'rules' => 'trim|required|min_length[4]|max_length[255]')
 	),
+	'unidad_put' => array(
+		array('field' => 'unidad_medida'  ,'label' => 'Nombre de la unidad' , 'rules' => 'trim|required|min_length[4]|max_length[255]')
+	),
 	'detalleEncomienda_put' => array(
 		array('field' => 'cantidad'  ,'label' => 'catidad' , 'rules' => 'required')
 	),
