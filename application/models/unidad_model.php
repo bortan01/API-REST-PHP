@@ -5,6 +5,13 @@ class unidad_model extends CI_Model
 public $id_unidad;
 public $unidad_medida;
 
+public function get_unidad(){
+    $this->db->select('*');
+    $this->db->from('unidades_medidas');
+    $query=$this->db->get();
+    return $query->result();
+}
+
 public function insertarUnidad($datos){
 			//insertar el registro
  		    $this->unidad_medida=$datos['unidad_medida'];

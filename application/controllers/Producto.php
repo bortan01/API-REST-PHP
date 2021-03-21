@@ -152,6 +152,30 @@ public function productos_get(){
 		}
 }//fin metodo
 
+//***************************AQUI LAS UNIDADES DE MEDIDA***********
+
+public function unidades_get(){
+
+	$unidad=$this->unidad_model->get_unidad();
+
+	if (isset($unidad)) {
+		$respuesta=array(
+			'err'=>FALSE,
+			'mensaje'=>'Registro Cargado correctamente',
+			'unidad'=>$unidad
+
+		);
+		$this->response($respuesta);
+	}else{
+		$respuesta=array(
+			'err'=>TRUE,
+			'mensaje'=>'Error al cargar los datos.'
+		);
+		$this->response($respuesta,REST_Controller::HTTP_NOT_FOUND);
+
+	}
+}//fin metodo
+
 public function unidad_post(){
 
 	    $data=$this->post();
