@@ -37,7 +37,6 @@ class vehiculo extends REST_Controller
 	//INSERTAR
 	public function vehiculo_post()
 	{
-
 		$data = $this->post();
 		$this->load->library('form_validation');
 		$this->form_validation->set_data($data);

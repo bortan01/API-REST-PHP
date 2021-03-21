@@ -97,6 +97,8 @@ class Vehiculo_model extends CI_Model
             $this->load->model('Imagen_model');
             $identificador = $this->db->insert_id();
             $this->Imagen_model->guardarGaleria("vehiculo",  $identificador);
+            //EN ESTE CASO NO GUARDARA UNA FOTO SI NO UN PDF
+            $this->Imagen_model->guardarImagen("comprobante_vehiculo",  $identificador);
             $respuesta = array(
                 'err' => FALSE,
                 'mensaje' => 'Registro insertado correctamente',

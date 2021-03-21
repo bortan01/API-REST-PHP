@@ -70,6 +70,9 @@ class Tours_paquete_model extends CI_Model
         $tipo = isset($parametros['tipo']) ? $parametros['tipo'] : '';
         // echo $tipo;
         switch ($tipo) {
+            case 'Allpaquete':
+                $this->db->where("(tipo='Paquete Nacional' OR tipo='Paquete Internacional' OR tipo='Paquete Privado')");
+                break;
             case 'paquete':
                 $this->db->where("(tipo='Paquete Nacional' OR tipo='Paquete Internacional')");
                 break;
@@ -124,7 +127,7 @@ class Tours_paquete_model extends CI_Model
             $respuestaGaleria =   $this->Imagen_model->obtenerGaleria($tipoFoto, $identificador);
             if ($respuestaGaleria == null) {
                 //por si no hay ninguna foto mandamos una por defecto
-                $tur->galeria = [];
+                $tur->galeria[] = "http://localhost/API-REST-PHP/uploads/viaje.jpg";
             } else {
                 $tur->galeria = $respuestaGaleria;
             }
