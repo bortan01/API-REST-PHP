@@ -5,14 +5,14 @@ class Encomienda_model extends CI_Model
 
 public $id_encomienda;
 public $id_usuario;
-public $direccion;
+public $ciudad_origen;
+public $codigo_postal_origen;
 public $estado;
-public $punto_referencia;
-public $punto_geografico;
+public $fecha;
 public $total_encomienda;
 public $total_comision;
 public $total_cliente;
-public $fecha;
+
 
 public function eliminar($datos){
 
