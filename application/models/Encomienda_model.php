@@ -125,7 +125,7 @@ public function get_encomiendaEnvio($data){
 }
 
 public function get_encomienda(){
-	$this->db->select('*');
+	$this->db->select('encomienda.id_encomienda,encomienda.id_usuario, encomienda.ciudad_origen,encomienda.codigo_postal_origen, usuario.nombre, DATE_FORMAT(encomienda.fecha, "%d-%m-%Y") as fecha');
     $this->db->from('encomienda');
     $this->db->join('usuario', 'usuario.id_cliente=encomienda.id_usuario','inner');
     $query=$this->db->get();

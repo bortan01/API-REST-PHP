@@ -109,7 +109,7 @@ public function get_formularios_llenos($id){
     return $query->result();
 }
 
-public function get_pregunta(){
+public function get_form(){
 
 
  	$query=$this->db->get('formulario_migratorio');

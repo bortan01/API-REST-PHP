@@ -107,7 +107,7 @@ public function formulariosLlenos_get(){
 
 public function formularios_get(){
 
-	$formulario=$this->FormularioMigratorio_model->get_pregunta();
+	$formulario=$this->FormularioMigratorio_model->get_form();
 
 	if (isset($formulario)) {
 		//quitar campos que no quiero
