@@ -95,15 +95,15 @@ public function encomiendaModificar_get(){
 
 	$data = $this->get();
 	$enco=$this->Encomienda_model->get_encomiendaModificar($data);
+	$destino=$this->Encomienda_model->get_encomiendaDestino($data);
 
 	if (isset($enco)) {
-		//quitar campos que no quiero
-		//unset($cliente->telefono1);
-		//sunset($cliente->telefono2);
+		
 		$respuesta=array(
 			'err'=>FALSE,
 			'mensaje'=>'Registro Cargado correctamente',
-			'Encomiendas'=>$enco
+			'Encomiendas'=>$enco,
+			'Detalles_destino'=>$destino
 
 		);
 		$this->response($respuesta);

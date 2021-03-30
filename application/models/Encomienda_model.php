@@ -141,6 +141,15 @@ public function get_encomiendaModificar(array $data){
     return $query->result();
 }
 
+//************para sacar los datos de destino
+public function get_encomiendaDestino(array $data){
+    $this->db->select('*');
+    $this->db->from('detalle_destino');
+    $this->db->where($data);
+    $query=$this->db->get();
+    return $query->result();
+}
+
 
   public function set_datos($data_cruda){
 
