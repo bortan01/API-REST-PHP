@@ -99,14 +99,14 @@ public function set_datos($data_cruda){
                     'err'          => TRUE,
                     'mensaje'      => 'Error al insertar ', $this->db->error_message(),
                     'error_number' => $this->db->error_number(),
-                    'serrvicio'      => null
+                    'detalle_encomienda'      => null
                 );
                 return $respuesta;
             } else {
                 $respuesta = array(
                     'err'          => FALSE,
                     'mensaje'      => 'Registro Guardado Exitosamente',
-                    //'servicio'   => $servicio
+                    'detalle_encomienda'   => $detalles
                 );
                 return $respuesta;
             }

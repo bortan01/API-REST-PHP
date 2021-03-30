@@ -10,6 +10,7 @@ public function __construct(){
 		$this->load->database();
 		$this->load->model('Encomienda_model');
 		$this->load->model('DetalleEncomienda_model');
+		$this->load->model('DetalleDestino_model');
 
 	}
 
@@ -168,7 +169,10 @@ public function encomienda_get(){
 		}else{
 			if (!empty($data["detalle_encomienda"])) {
                     $detalle = json_decode($data["detalle_encomienda"], true);
+                    $detalleDes=json_decode($data["detalle_destino"],true);
+
                     $this->DetalleEncomienda_model->guardarDetalle($detalle, $respuesta['id']);
+                    $this->DetalleDestino_model->guardarDetalleDestino($detalleDes, $respuesta['id']);
                 }
 		$this->response($respuesta); 	
 		}
