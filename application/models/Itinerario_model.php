@@ -59,7 +59,7 @@ class Itinerario_model extends CI_Model
                 );
                 return $respuesta;
             } else {
-                $this->id_itinerario = $this->db->insert_id();
+                // $this->id_itinerario = $this->db->insert_id();
                 $respuesta = array(
                     'err'          => FALSE,
                     'mensaje'      => 'Registro de tItinerario Guardado Exitosamente',

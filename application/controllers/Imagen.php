@@ -50,4 +50,13 @@ class Imagen extends REST_Controller
             $this->response($respuesta, REST_Controller::HTTP_BAD_REQUEST);
         }
     }
+    public function savePhotoPerfil_post()
+    {
+        $tipo = $_POST["tipo"];
+        $identificador = $_POST["identificador"];
+        $this->load->model('Imagen_model');
+        $this->Imagen_model->eliminarGaleria($tipo, $identificador);
+        $respuesta = $this->Imagen_model->guardarImagen($tipo, $identificador);
+        $this->response($respuesta, REST_Controller::HTTP_OK);
+    }
 }

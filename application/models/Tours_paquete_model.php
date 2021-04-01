@@ -309,7 +309,7 @@ class Tours_paquete_model extends CI_Model
             }
             $transporte->ocupados = $asientosOcupados;
         } else {
-            $transporte = [];
+            $transporte = null;
         }
         $respuesta = array(
             'nombre' => $nombreTurX,

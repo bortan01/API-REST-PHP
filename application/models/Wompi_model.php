@@ -11,56 +11,66 @@ class Wompi_model extends CI_Model
 {
     public function obtenerToken()
     {
-        // $this->load->model('Credenciales_model');
-        // $curl = curl_init();
-        // //ESTE EES UN CERTIFICADO SSD PARA PERMITIRNOS HACER LA PETICION
-        // $certificate = "C:\wamp\cacert.pem";
-        // curl_setopt($curl, CURLOPT_CAINFO, $certificate);
-        // curl_setopt($curl, CURLOPT_CAPATH, $certificate);
-
-        // $headers[] = "content-type: application/x-www-form-urlencoded";
-        // $fieds = [
-        //     "grant_type"   => $this->Credenciales_model->grant_type,
-        //     "client_id"    => $this->Credenciales_model->client_id,
-        //     "client_secret" => $this->Credenciales_model->client_secret,
-        //     "audience"     => $this->Credenciales_model->audience,
-        // ];
-        // $fields_string = http_build_query($fieds);
-
-        // curl_setopt_array($curl, array(
-        //     CURLOPT_URL            => "https://id.wompi.sv/connect/token",
-        //     CURLOPT_RETURNTRANSFER => true,
-        //     CURLOPT_ENCODING       => "",
-        //     CURLOPT_MAXREDIRS      => 10,
-        //     CURLOPT_TIMEOUT        => 30,
-        //     CURLOPT_HTTP_VERSION   => CURL_HTTP_VERSION_1_1,
-        //     CURLOPT_CUSTOMREQUEST  => "POST",
-        //     CURLOPT_SSL_VERIFYHOST => false,
-        //     CURLOPT_SSL_VERIFYPEER => false,
-        //     CURLOPT_POSTFIELDS     => $fields_string,
-        //     CURLOPT_HTTPHEADER     => $headers,
-        // ));
-
-        // $token = curl_exec($curl);
-        // curl_close($curl);
         $this->load->model('Credenciales_model');
+        $curl = curl_init();
+        //ESTE EES UN CERTIFICADO SSD PARA PERMITIRNOS HACER LA PETICION
+        $certificate = "C:\wamp\cacert.pem";
+        curl_setopt($curl, CURLOPT_CAINFO, $certificate);
+        curl_setopt($curl, CURLOPT_CAPATH, $certificate);
+
+        $headers[] = "content-type: application/x-www-form-urlencoded";
         $fieds = [
             "grant_type"   => $this->Credenciales_model->grant_type,
             "client_id"    => $this->Credenciales_model->client_id,
             "client_secret" => $this->Credenciales_model->client_secret,
-            "audience"     => $this->Credenciales_model->audience
+            "audience"     => $this->Credenciales_model->audience,
         ];
-        $myClient = new Client(['headers' => ['content-type' => 'application/x-www-form-urlencoded']]);
-        $response = $myClient->request('POST', 'https://id.wompi.sv/connect/token', ["form_params" => $fieds]);
+        $fields_string = http_build_query($fieds);
 
-        $token =  json_decode($response->getBody());
+        curl_setopt_array($curl, array(
+            CURLOPT_URL            => "https://id.wompi.sv/connect/token",
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_ENCODING       => "",
+            CURLOPT_MAXREDIRS      => 10,
+            CURLOPT_TIMEOUT        => 30,
+            CURLOPT_HTTP_VERSION   => CURL_HTTP_VERSION_1_1,
+            CURLOPT_CUSTOMREQUEST  => "POST",
+            CURLOPT_SSL_VERIFYHOST => false,
+            CURLOPT_SSL_VERIFYPEER => false,
+            CURLOPT_POSTFIELDS     => $fields_string,
+            CURLOPT_HTTPHEADER     => $headers,
+        ));
 
-        if (isset($token->error)) {
+        $token = curl_exec($curl);
+
+
+        curl_close($curl);
+
+        if (isset($token["error"])) {
             //NO HAY TOKEN
             return FALSE;
         } else {
-            return $token;
+            return json_decode($token);
         }
+        // **************************************************************//
+        // $this->load->model('Credenciales_model');
+        // $fieds = [
+        //     "grant_type"   => $this->Credenciales_model->grant_type,
+        //     "client_id"    => $this->Credenciales_model->client_id,
+        //     "client_secret" => $this->Credenciales_model->client_secret,
+        //     "audience"     => $this->Credenciales_model->audience
+        // ];
+        // $myClient = new Client(['headers' => ['content-type' => 'application/x-www-form-urlencoded']]);
+        // $response = $myClient->request('POST', 'https://id.wompi.sv/connect/token', ["form_params" => $fieds]);
+
+        // $token =  json_decode($response->getBody());
+
+        // if (isset($token->error)) {
+        //     //NO HAY TOKEN
+        //     return FALSE;
+        // } else {
+        //     return $token;
+        // }
     }
 
     public function crearEnlacePago($monto, $nombreProducto, $descripcion, $imagen, $webHook)
@@ -87,7 +97,7 @@ class Wompi_model extends CI_Model
                           "urlImagenProducto": "' . $imagen . '"
                         },
                         "configuracion": {
-                          "esMontoEditable": true,
+                          "esMontoEditable": false,
                           "esCantidadEditable": false,
                           "cantidadPorDefecto": 1,
                           "urlRedirect": "https://www.facebook.com/martineztours99",
