@@ -12,6 +12,10 @@ class Detalle_vehiculo_model extends CI_Model
     public $direccionRecogida_detalle;
     public $direccionDevolucion_detalle;
     public $fechaHora_detalle;
+    public $fechaDevolucion;
+    public $horaDevolucion;
+    public $porcentajeMora;
+    public $totalDevolucion;
     public $activo_detalle=TRUE;
 
     public function verificar_camposEntrada($dataCruda)
