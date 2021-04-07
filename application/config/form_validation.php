@@ -284,5 +284,15 @@ $config = array(
 		array('field' => 'descripcionProducto'    ,'label' => 'descripcion'           , 'rules' => 'trim|required'),
 		array('field' => 'cantidad_asientos'       ,'label' => 'cantidad de asientos'  , 'rules' => 'trim|required|integer'),
 	),
+	'insertarPromociones' => array(
+		array('field' => 'idaerolineaFK'            ,'label' => 'id aerolinea'        , 'rules' => 'trim|required|integer'),
+		array('field' => 'idclaseFK'                ,'label' => 'id clase'            , 'rules' => 'trim|required|integer'),
+		array('field' => 'nombre_promocion'         ,'label' => 'nombre promosion'    , 'rules' => 'trim|required'),
+		array('field' => 'pais_promocion'           ,'label' => 'pais'                , 'rules' => 'trim|required'),
+		array('field' => 'lugarSalida_promocion'    ,'label' => 'lugar de salida'     , 'rules' => 'trim|required'),
+		array('field' => 'precio_promocion'         ,'label' => 'precio'              , 'rules' => 'trim|required|numeric'),
+		array('field' => 'descripcion_promocion'    ,'label' => 'descripcion'         , 'rules' => 'trim|required'),
+		array('field' => 'fechaDisponible_promocion','label' => 'fecha disponible'    , 'rules' => 'trim|required'),
+	),
 	
 );
