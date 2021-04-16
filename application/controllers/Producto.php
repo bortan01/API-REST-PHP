@@ -98,6 +98,7 @@ public function productosTabla_get(){
 public function productos_get(){
 
 	$product=$this->Producto_model->get_producto();
+	$comision=$this->Producto_model->get_comision();
 
 	if (isset($product)) {
 		//quitar campos que no quiero
@@ -106,7 +107,8 @@ public function productos_get(){
 		$respuesta=array(
 			'err'=>FALSE,
 			'mensaje'=>'Registro Cargado correctamente',
-			'product'=>$product
+			'product'=>$product,
+			'comision'=>$comision
 
 		);
 		$this->response($respuesta);

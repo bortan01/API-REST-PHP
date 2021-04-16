@@ -132,6 +132,14 @@ public function get_producto(){
     return $query->result();
 }
 
+//para la comision
+public function get_comision(){
+    $this->db->select('*');
+    $this->db->from('comision');
+    $query=$this->db->get();
+    return $query->result();
+}
+
 
 public function set_datos($data_cruda){
     	 $objeto =array();
