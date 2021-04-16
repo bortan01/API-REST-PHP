@@ -43,8 +43,11 @@ public function updateEncomienda_post(){
 
 		}else{
 			if (!empty($data["detalle_encomienda"])) {
-                    $detalle = json_decode($data["detalle_encomienda"], true);
-                    $this->DetalleEncomienda_model-> modificarDetalle($detalle, $respuesta['id']);
+              $detalle = json_decode($data["detalle_encomienda"], true);
+              $detalleDes=json_decode($data["detalle_destino"],true);
+
+              $this->DetalleEncomienda_model-> modificarDetalle($detalle, $respuesta['id']);
+              $this->DetalleDestino_model->modificarDetalleDestino($detalleDes, $respuesta['id']);
                 }
 		$this->response($respuesta); 	
 		}

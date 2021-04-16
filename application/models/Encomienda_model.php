@@ -64,7 +64,7 @@ public function modificar_encomienda($datos){
                 'err'          => TRUE,
                 'mensaje'      => 'Error al insertar ', $this->db->error_message(),
                 'error_number' => $this->db->error_number(),
-                'turPaquete'   => null
+                'Encomienda'   => null
             );
             return $respuesta;
         } else {
