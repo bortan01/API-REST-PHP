@@ -118,6 +118,7 @@ public function get_productoTabla(){
     $this->db->select('*');
     $this->db->from('producto');
     $this->db->join('tarifa', 'tarifa.id_producto=producto.id_producto','inner');
+     $this->db->join('unidades_medidas', 'unidades_medidas.id_unidad=tarifa.id_unidad_medida','inner');
     $query=$this->db->get();
     return $query->result();
 }
