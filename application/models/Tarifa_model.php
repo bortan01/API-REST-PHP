@@ -46,7 +46,7 @@ public function eliminar($datos){
 
 public function modificar_tarifa($datos){
 		$this->db->set(array('tarifa'=>$datos['tarifa'],
-			                 'unidades_medidas'=>$datos['unidades_medidas']
+			                 'id_unidad_medida'=>$datos['id_unidad_medida']
 	                  ));
  		$this->db->where('id_producto',$datos["id_producto"]);
         $hecho=$this->db->update('tarifa');
