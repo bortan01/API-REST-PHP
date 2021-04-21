@@ -61,7 +61,7 @@ public function __construct(){
 
 			$respuesta=array(
 				'err'=>TRUE,
-				'mensaje'=>'Hay errores en el envio de la informacion',
+				'mensaje'=>'Hay errores para registrar la informacion',
 				'errores'=>$this->form_validation->get_errores_arreglo()
 			);
 			$this->response($respuesta, REST_Controller::HTTP_BAD_REQUEST); 

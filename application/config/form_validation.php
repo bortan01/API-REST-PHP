@@ -23,9 +23,7 @@ $config = array(
 		array('field' => 'puertas'        , 'label' => 'Puertas'            , 'rules' => 'trim|required|min_length[1]|max_length[255]'),
 		array('field' => 'pasajeros'      , 'label' => 'Pasajeros'          , 'rules' => 'trim|required|min_length[1]|max_length[255]'),
 		array('field' => 'precio_diario'  , 'label' => 'Precio Diario'      , 'rules' => 'trim|required|min_length[1]|max_length[255]'),
-		array('field' => 'descripcion'    , 'label' => 'Descripción'        , 'rules' => 'trim|required|min_length[2]|max_length[255]'),
-		array('field' => 'detalles'       , 'label' => 'Detalles'           , 'rules' => 'trim|required|min_length[2]|max_length[255]'),
-		array('field' => 'kilometraje'    , 'label' => 'Kilometraje'        , 'rules' => 'trim|required|min_length[2]|max_length[255]'),
+		array('field' => 'kilometraje'    , 'label' => 'Kilometraje'        , 'rules' => 'trim|required|min_length[1]|max_length[255]'),
 		array('field' => 'tipoCombustible', 'label' => 'Tipo de Combustible', 'rules' => 'trim|required|min_length[2]|max_length[255]')		
 	),
 	'marca_put' => array(
@@ -287,7 +285,7 @@ $config = array(
 	'insertarPromociones' => array(
 		array('field' => 'idaerolineaFK'            ,'label' => 'id aerolinea'        , 'rules' => 'trim|required|integer'),
 		array('field' => 'idclaseFK'                ,'label' => 'id clase'            , 'rules' => 'trim|required|integer'),
-		array('field' => 'nombre_promocion'         ,'label' => 'nombre promosion'    , 'rules' => 'trim|required'),
+		array('field' => 'nombre_promocion'         ,'label' => 'nombre promocion'    , 'rules' => 'trim|required'),
 		array('field' => 'pais_promocion'           ,'label' => 'pais'                , 'rules' => 'trim|required'),
 		array('field' => 'lugarSalida_promocion'    ,'label' => 'lugar de salida'     , 'rules' => 'trim|required'),
 		array('field' => 'precio_promocion'         ,'label' => 'precio'              , 'rules' => 'trim|required|numeric'),

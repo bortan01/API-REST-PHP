@@ -43,40 +43,51 @@ class Promocion_model extends CI_Model
             return $this; 
         }
 
-        public function insert(){
-            
-           $query=$this->db->get_where('promocion_vuelo',array('nombre_promocion'=>$this->nombre_promocion));
-           $promo=$query->row();
-   
-               if (isset($promo)) {
-               $respuesta=array(
-                   'err'=>TRUE,
-                   'mensaje'=>'Promocion fue registrada'
-               );
-               return $respuesta;
-               }
-   
-               //insertar el registro
-               $hecho=$this->db->insert('promocion_vuelo',$this);
-   
-               if ($hecho) {
-                   #insertado
-                   $respuesta=array(
-                       'err'=>FALSE,
-                       'mensaje'=>'Registro insertado correctamente',
-                       'promocion_id'=>$this->db->insert_id()
-                   );
-               }else{
-                   //error
-                   $respuesta=array(
-                       'err'=>TRUE,
-                       'mensaje'=>'Error al insertar',
-                       'error'=>$this->db->_error_message(),
-                       'error_num'=>$this->db->_error_number()
-                   );
-               }
+        public function insert()
+    {
+
+        $query = $this->db->get_where('promocion_vuelo', array('idpromocion_vuelo' => $this->idpromocion_vuelo));
+        $carrito = $query->row();
+
+        if (isset($carrito)) {
+
+            $respuesta = array(
+                'err' => TRUE,
+                'mensaje' => 'Promocion fue registrada'
+            );
             return $respuesta;
         }
+
+        //insertar el registro
+        $hecho = $this->db->insert('promocion_vuelo', $this);
+
+        if ($hecho) {
+            #insertado
+            $this->load->model('Imagen_model');
+            $identificador = $this->db->insert_id();
+            $this->Imagen_model->guardarGaleria("promocion_vuelo",  $identificador);
+            //EN ESTE CASO NO GUARDARA UNA FOTO SI NO UN PDF
+            $this->Imagen_model->guardarImagen("promociones_vuelo",  $identificador);
+            $respuesta = array(
+                'err' => FALSE,
+                'mensaje' => 'Registro insertado correctamente',
+                'promo_id' => $this->db->insert_id()
+            );
+        } else {
+            //error
+            $this->load->model('Imagen_model');
+            $identificador = $this->db->insert_id();
+            ///ESTO ES PARA GUARDAR UNA IMAGEN INDIVIDUAL Y UNA GALERIA
+            $this->Imagen_model->guardarGaleria("promocion_vuelo", $identificador);
+            $respuesta = array(
+                'err' => TRUE,
+                'mensaje' => 'Error al insertar',
+                'error' => $this->db->_error_message(),
+                'error_num' => $this->db->_error_number()
+            );
+        }
+        return $respuesta;
+    }
     //MODIFICAR
     public function editar($data)
     {
