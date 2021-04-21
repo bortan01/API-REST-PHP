@@ -169,26 +169,34 @@ public function get_encomiendaDestino(array $data){
 
  		$nombreTabla = "encomienda";
         $insert = $this->db->insert($nombreTabla, $datos);
-        if (!$insert) {
-            //NO GUARDO 
-            $respuesta = array(
-                'err'          => TRUE,
-                'mensaje'      => 'Error al insertar ', $this->db->error_message(),
-                'error_number' => $this->db->error_number(),
-                'turPaquete'   => null
-            );
-            return $respuesta;
-        } else {
+
+
+        if ($insert) {
+            #insertado
+            $this->load->model('Imagen_model');
             $identificador = $this->db->insert_id();
-           
+            $this->Imagen_model->guardarGaleria("encomienda",  $identificador);
+            //EN ESTE CASO NO GUARDARA UNA FOTO SI NO UN PDF
+            $this->Imagen_model->guardarImagen("comprobante_encomienda",  $identificador);
             $respuesta = array(
-                'err'          => FALSE,
-                'mensaje'      => 'Registro Guardado Exitosamente',
-                'id'           => $identificador,
-                'encomienda'   => $datos
+                'err' => FALSE,
+                'mensaje' => 'Registro insertado correctamente',
+                'encomienda_id' => $this->db->insert_id()
             );
-            return $respuesta;
+        } else {
+            //error
+            $this->load->model('Imagen_model');
+            $identificador = $this->db->insert_id();
+            ///ESTO ES PARA GUARDAR UNA IMAGEN INDIVIDUAL Y UNA GALERIA
+            $this->Imagen_model->guardarGaleria("encomienda", $identificador);
+            $respuesta = array(
+                'err' => TRUE,
+                'mensaje' => 'Error al insertar',
+                'error' => $this->db->_error_message(),
+                'error_num' => $this->db->_error_number()
+            );
         }
+        return $respuesta;
 
  	}//fin de insertar la pregunta
 
