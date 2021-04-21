@@ -67,7 +67,7 @@ class Promocion_model extends CI_Model
             $identificador = $this->db->insert_id();
             $this->Imagen_model->guardarGaleria("promocion_vuelo",  $identificador);
             //EN ESTE CASO NO GUARDARA UNA FOTO SI NO UN PDF
-            $this->Imagen_model->guardarImagen("promociones_vuelo",  $identificador);
+            $this->Imagen_model->guardarImagen("comprobante_promociones",  $identificador);
             $respuesta = array(
                 'err' => FALSE,
                 'mensaje' => 'Registro insertado correctamente',

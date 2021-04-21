@@ -174,8 +174,8 @@ public function encomienda_get(){
                     $detalle = json_decode($data["detalle_encomienda"], true);
                     $detalleDes=json_decode($data["detalle_destino"],true);
 
-                    $this->DetalleEncomienda_model->guardarDetalle($detalle, $respuesta['id']);
-                    $this->DetalleDestino_model->guardarDetalleDestino($detalleDes, $respuesta['id']);
+                    $this->DetalleEncomienda_model->guardarDetalle($detalle, $respuesta['encomienda_id']);
+                    $this->DetalleDestino_model->guardarDetalleDestino($detalleDes, $respuesta['encomienda_id']);
                 }
 		$this->response($respuesta); 	
 		}
