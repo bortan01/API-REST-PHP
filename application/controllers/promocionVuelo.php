@@ -111,4 +111,29 @@ public function __construct(){
             }
         }
     }
+
+	public function Promoimagen_get()
+	{
+		$data = $this->get();
+		$promo=$this->Promocion_model->get_promocion($data);
+
+		if (isset($promo)) {
+
+			$respuesta = array(
+				'err' => FALSE,
+				'mensaje' => 'Registro Cargado correctamente',
+				'promociones' => $promo
+
+			);
+			$this->response($respuesta, REST_Controller::HTTP_OK);
+		} else {
+			$respuesta = array(
+				'err' => TRUE,
+				'mensaje' => 'Error al cargar los datos.',
+				'promociones' => null
+
+			);
+			$this->response($respuesta, REST_Controller::HTTP_NOT_FOUND);
+		}
+	}
 }
