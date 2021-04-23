@@ -284,8 +284,13 @@ $config = array(
 	),
 	
 	'insertarPromociones_put' => array(
-		array('field' => 'nombre_promocion'     , 'label' => 'nombre de promocion' , 'rules' => 'trim|required|min_length[6]|max_length[255]'),
-		array('field' => 'pais_promocion'       , 'label' => 'pais de promocion'   , 'rules' => 'trim|required|min_length[8]|max_length[255]'),
+		array('field' => 'nombre_promocion'         , 'label' => 'nombre de promocion' , 'rules' => 'trim|required|min_length[6]|max_length[255]'),
+		array('field' => 'pais_promocion'           , 'label' => 'pais de promocion'   , 'rules' => 'trim|required|min_length[6]|max_length[255]'),
+		array('field' => 'lugarSalida_promocion'    , 'label' => 'lugar de salida'     , 'rules' => 'trim|required|min_length[6]|max_length[255]'),
+		array('field' => 'precio_promocion'         , 'label' => 'falta asignar precio', 'rules' => 'trim|required|min_length[1]|max_length[255]'),
+		array('field' => 'fechaDisponible_promocion', 'label' => 'Sleccione fecha'     , 'rules' => 'trim|required|min_length[6]|max_length[255]'),
+		array('field' => 'idaerolineaFK'            , 'label' => 'seleccione aerolinea', 'rules' => 'trim|required|min_length[1]|max_length[255]'),
+		array('field' => 'idclaseFK'                , 'label' => 'Seleccion clase'     , 'rules' => 'trim|required|min_length[1]|max_length[255]'),
 		
 	),
 	

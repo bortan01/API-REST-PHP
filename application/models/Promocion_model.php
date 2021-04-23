@@ -29,14 +29,21 @@ class Promocion_model extends CI_Model
         $respuesta = $query->result();
         $this->load->model('Imagen_model');
         foreach ($respuesta as $row) {
-           
+            
             $identificador = $row->idpromocion_vuelo;
-            $respuestaFoto =   $this->Imagen_model->obtenerImagen('promociones', $identificador);
+            $respuestaFoto =   $this->Imagen_model->obtenerImagenUnica('promociones', $identificador);
             if ($respuestaFoto == null) {
                 //por si no hay ninguna foto mandamos una por defecto
-                $row->foto = [];
+                $row->foto = "http://localhost/API-REST-PHP/uploads/viaje.png";
             } else {
                 $row->foto = $respuestaFoto;
+            }
+            $respuestaGaleria =   $this->Imagen_model->obtenerGaleria('promociones', $identificador);
+            if ($respuestaGaleria == null) {
+                //por si no hay ninguna foto mandamos una por defecto
+                $row->galeria = [];
+            } else {
+                $row->galeria = $respuestaGaleria;
             }
         }
         return $respuesta;
