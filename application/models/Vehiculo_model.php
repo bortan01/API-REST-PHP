@@ -32,7 +32,7 @@ class Vehiculo_model extends CI_Model
         $this->db->join('marca_vehiculo', 'modelo.id_marca = marca_vehiculo.id_marca');
         $this->db->join('categoria', 'vehiculo.idcategoria=categoria.idcategoria');
         $this->db->join('usuario', 'vehiculo.id_rentaCarFK = usuario.id_cliente');
-        
+
         $this->db->where($parametros);
         $this->db->where_in('vehiculo.activo', 1);
         $query = $this->db->get();
@@ -58,6 +58,52 @@ class Vehiculo_model extends CI_Model
             }
         }
         return $respuesta;
+    }
+    public function get_vehiculoForApp(array $data)
+    {
+        $this->db->select('*');
+        $this->db->from('vehiculo');
+        $this->db->join('transmisionvehiculo', 'vehiculo.id_transmicionFK=transmisionvehiculo.idtransmicion');
+        $this->db->join('modelo', 'vehiculo.idmodelo = modelo.idmodelo');
+        $this->db->join('marca_vehiculo', 'modelo.id_marca = marca_vehiculo.id_marca');
+        $this->db->join('categoria', 'vehiculo.idcategoria=categoria.idcategoria');
+        $this->db->join('usuario', 'vehiculo.id_rentaCarFK=usuario.id_cliente');
+
+        if (isset($data['idCategoria']) && !empty($data['idCategoria'])) {
+            $this->db->where('vehiculo.idcategoria', $data['idCategoria']);
+        }
+
+
+        $this->db->where('vehiculo.activo', 1);
+        $query = $this->db->get();
+
+        $respuesta = $query->result();
+        $this->load->model('Imagen_model');
+        foreach ($respuesta as $row) {
+            $row->opc_avanzadas =   explode(",", $row->opc_avanzadas);
+            $identificador = $row->idvehiculo;
+            $respuestaFoto =   $this->Imagen_model->obtenerImagenUnica('vehiculo', $identificador);
+            if ($respuestaFoto == null) {
+                //por si no hay ninguna foto mandamos una por defecto
+                $row->foto = "http://localhost/API-REST-PHP/uploads/auto.png";
+            } else {
+                $row->foto = $respuestaFoto;
+            }
+            $respuestaGaleria =   $this->Imagen_model->obtenerGaleria('vehiculo', $identificador);
+            if ($respuestaGaleria == null) {
+                //por si no hay ninguna foto mandamos una por defecto
+                $row->galeria = [];
+            } else {
+                $row->galeria = $respuestaGaleria;
+            }
+        }
+        return $respuesta;
+    }
+    public function get_opciones()
+    {
+        $this->db->select('*');
+        $this->db->from('servicios_opc');
+        return $this->db->get()->result();
     }
     public function set_datos($data_cruda)
     {
