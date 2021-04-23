@@ -32,7 +32,7 @@ public function updateEnvios_post(){
 
 }//fin de metodo
 	//************rama get todas**/***************************
-	public function detalleEnvio_get(){
+public function detalleEnvio_get(){
 
 	$data = $this->get();
 	$detalle=$this->DetalleEnvio_model->get_detallesEnvio($data);

@@ -7,7 +7,6 @@ public $id_detalle_envio;
 public $id_encomienda;
 public $fecha;
 public $hora;
-public $lugar;
 public $descripcion;
 
 public function eliminar($datos){
