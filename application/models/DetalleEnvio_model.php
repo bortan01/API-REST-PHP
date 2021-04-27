@@ -100,6 +100,40 @@ public function get_detallesEnvio($data){
         return $objeto;
  	}//fin de capitalizar los datos segun el modelo y campos correctos de la base
 
+public function entregarDetalle($datos){
+
+		$this->db->set(array('estado'=>'Entregado'));
+ 		$this->db->where('id_encomienda',$datos["id_encomienda"]);
+ 		$this->db->update('encomienda');
+
+ 		$hecho=$this->db->insert('detalle_envio',$datos);
+
+
+			if ($hecho) {
+				#insertado
+				$respuesta=array(
+					'err'=>FALSE,
+					'mensaje'=>'Encomienda Entregada correctamente',
+					'Detalle_id'=>$this->db->insert_id(),
+					'datos'=>$datos
+				);
+			}else{
+				//error
+
+				$respuesta=array(
+					'err'=>TRUE,
+					'mensaje'=>'Error al insertar',
+					'error'=>$this->db->_error_message(),
+					'error_num'=>$this->db->_error_number()
+				);
+			
+			}
+
+
+
+ 		return $respuesta;
+ 	}
+
  	public function insertarDetalle($datos){
 
  	

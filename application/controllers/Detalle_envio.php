@@ -61,6 +61,21 @@ public function detalleEnvio_get(){
 
    }
 
+public function entregar_post(){
+
+		$data=$this->post();
+
+        $respuesta=$this->DetalleEnvio_model->entregarDetalle($data); 
+
+		if ($respuesta['err']) {
+
+		$this->response($respuesta, REST_Controller::HTTP_BAD_REQUEST); 	
+
+		}else{
+		$this->response($respuesta); 	
+		}
+	}
+
 public function detalleEnvios_post(){
 
 		$data=$this->post();
