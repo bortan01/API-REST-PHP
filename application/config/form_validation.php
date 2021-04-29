@@ -293,5 +293,12 @@ $config = array(
 		array('field' => 'idclaseFK'                , 'label' => 'Seleccion clase'     , 'rules' => 'trim|required|min_length[1]|max_length[255]'),
 		
 	),
+
+	'bitacora_put' => array(
+		array('field' => 'idusuario'         , 'label' => 'falta usuario'        , 'rules' => 'trim|required|min_length[1]|max_length[255]'),
+		array('field' => 'hora_bitacora'     , 'label' => 'hora'                 , 'rules' => 'trim|required|min_length[2]|max_length[255]'),
+		array('field' => 'fecha_bitacora'    , 'label' => 'fecha'                , 'rules' => 'trim|required|min_length[2]|max_length[255]'),
+		array('field' => 'detalle_bitacora'  , 'label' => 'falta asignar detalle', 'rules' => 'trim|required|min_length[2]|max_length[255]'),
+	),
 	
 );
