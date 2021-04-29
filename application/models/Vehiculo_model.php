@@ -105,6 +105,12 @@ class Vehiculo_model extends CI_Model
         $this->db->from('servicios_opc');
         return $this->db->get()->result();
     }
+    public function get_modelo()
+    {
+        $this->db->select('*');
+        $this->db->from('modelo');
+        return $this->db->get()->result();
+    }
     public function set_datos($data_cruda)
     {
 
