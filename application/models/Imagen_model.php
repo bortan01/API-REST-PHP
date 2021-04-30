@@ -50,10 +50,12 @@ class Imagen_model extends CI_Model
             $this->db->insert('galeria', $this);
 
             $respuesta = array(
-                'err'   => FALSE,
+                'err'     => FALSE,
                 'mensaje' => "Imagen subida exitosamente",
                 'nombre'  => $nombre,
                 'path'    => $path,
+                'id_foto' => $this->db->insert_id(),
+
             );
             return $respuesta;
         }

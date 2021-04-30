@@ -14,8 +14,7 @@ class Imagen extends REST_Controller
     {
         $tipo = $_POST["tipo"];
         $identificador = $_POST["identificador"];
-        $this->Imagen_model->guardarImagen($tipo, $identificador);
-        $respuesta = array();
+        $respuesta =  $this->Imagen_model->guardarImagen($tipo, $identificador);
         $this->response($respuesta, REST_Controller::HTTP_OK);
     }
 

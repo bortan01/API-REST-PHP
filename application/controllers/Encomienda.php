@@ -189,6 +189,37 @@ public function encomienda_get(){
 		}
 	}
 
+	public function show_get()
+	{
+		$data = $this->get();
+		$enco = $this->Encomienda_model->get_encomiendaForApp($data);
+
+		if (isset($enco)) {
+
+			
+			foreach ($enco as  $value) {
+				$informacionDestino =  $this->Encomienda_model->get_detalleDestinoForApp($value->id_encomienda);
+				$value->destino = $informacionDestino;
+			}
+
+			$respuesta = array(
+				'err' => FALSE,
+				'mensaje' => 'Registro Cargado correctamente',
+				'Encomiendas' => $enco,
+
+
+			);
+			$this->response($respuesta);
+		} else {
+			$respuesta = array(
+				'err' => TRUE,
+				'mensaje' => 'Error al cargar los datos.',
+				'Encomiendas' => null
+
+			);
+			$this->response($respuesta, REST_Controller::HTTP_NOT_FOUND);
+		}
+	}
 
 
 }

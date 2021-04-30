@@ -243,4 +243,22 @@ public function get_encomiendaDestino(array $data){
         }
         return $objeto;
     }
+    
+    public function get_encomiendaForApp(array $data){
+        $this->db->select('encomienda.id_encomienda,encomienda.id_usuario, encomienda.ciudad_origen,encomienda.codigo_postal_origen, encomienda.fecha as fecha,encomienda.estado,total_cliente');
+        $this->db->from('encomienda');
+        $this->db->join('usuario', 'usuario.id_cliente=encomienda.id_usuario','inner');
+        $this->db->where($data);
+        $this->db->order_by('id_encomienda', 'desc');
+        $query=$this->db->get();
+        return $query->result();
+    }
+
+    public function get_detalleDestinoForApp(string $id){
+        $this->db->select('*');
+        $this->db->from('detalle_destino');
+        $this->db->where('id_encomienda', $id);
+        $query=$this->db->get();
+        return $query->row();
+    }
 }
