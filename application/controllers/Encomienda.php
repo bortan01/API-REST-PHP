@@ -125,29 +125,26 @@ public function encomiendaModificar_get(){
 
 public function encomienda_get(){
 
-	$enco=$this->Encomienda_model->get_encomienda();
+	$data = $this->get();
+		$enco = $this->Encomienda_model->get_encomienda($data);
 
-	if (isset($enco)) {
-		//quitar campos que no quiero
-		//unset($cliente->telefono1);
-		//sunset($cliente->telefono2);
-		$respuesta=array(
-			'err'=>FALSE,
-			'mensaje'=>'Registro Cargado correctamente',
-			'Encomiendas'=>$enco
+		if (isset($enco)) {
+			$respuesta = array(
+				'err' => FALSE,
+				'mensaje' => 'Registro Cargado correctamente',
+				'Encomiendas' => $enco
 
-		);
-		$this->response($respuesta);
-	}else{
-		$respuesta=array(
-			'err'=>TRUE,
-			'mensaje'=>'Error al cargar los datos.',
-			'Encomiendas'=>null
+			);
+			$this->response($respuesta, REST_Controller::HTTP_OK);
+		} else {
+			$respuesta = array(
+				'err' => TRUE,
+				'mensaje' => 'Error al cargar los datos.',
+				'Encomiendas' => null
 
-		);
-		$this->response($respuesta,REST_Controller::HTTP_NOT_FOUND);
-
-	}
+			);
+			$this->response($respuesta, REST_Controller::HTTP_NOT_FOUND);
+		}
 	
 }
 

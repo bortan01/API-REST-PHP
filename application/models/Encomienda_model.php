@@ -124,12 +124,41 @@ public function get_encomiendaEnvio($data){
     return $query->result();
 }
 
-public function get_encomienda(){
-	$this->db->select('encomienda.id_encomienda,encomienda.id_usuario, encomienda.ciudad_origen,encomienda.codigo_postal_origen, usuario.nombre, DATE_FORMAT(encomienda.fecha, "%d-%m-%Y") as fecha,encomienda.estado');
-    $this->db->from('encomienda');
-    $this->db->join('usuario', 'usuario.id_cliente=encomienda.id_usuario','inner');
-    $query=$this->db->get();
-    return $query->result();
+public function get_encomienda(array $data){
+
+    $parametros = $this->verificar_camposEntrada($data);
+        
+    $this->db->select('*');
+        $this->db->from('encomienda');
+        $this->db->join('usuario', 'usuario.id_cliente=encomienda.id_usuario');
+        $this->db->where($parametros);
+       
+        $query = $this->db->get();
+
+	//$this->db->select('encomienda.id_encomienda,encomienda.id_usuario, encomienda.ciudad_origen,encomienda.codigo_postal_origen, usuario.nombre, DATE_FORMAT(encomienda.fecha, "%d-%m-%Y") as fecha,encomienda.estado');
+
+    $respuesta = $query->result();
+    $this->load->model('Imagen_model');
+    foreach ($respuesta as $row) {
+        
+        $identificador = $row->id_encomienda;
+        $respuestaFoto =   $this->Imagen_model->obtenerImagenUnica('encomienda', $identificador);
+        if ($respuestaFoto == null) {
+            //por si no hay ninguna foto mandamos una por defecto
+            $row->foto = "http://localhost/API-REST-PHP/uploads/viaje.png";
+        } else {
+            $row->foto = $respuestaFoto;
+        }
+        $respuestaGaleria =   $this->Imagen_model->obtenerGaleria('encomienda', $identificador);
+        if ($respuestaGaleria == null) {
+            //por si no hay ninguna foto mandamos una por defecto
+            $row->galeria = [];
+        } else {
+            $row->galeria = $respuestaGaleria;
+        }
+    }
+    return $respuesta;
+   // return $query->result();
 }
 
 public function get_encomiendaModificar(array $data){
@@ -200,4 +229,18 @@ public function get_encomiendaDestino(array $data){
 
  	}//fin de insertar la pregunta
 
+
+       //VERIFICAR DATOS
+    public function verificar_camposEntrada($dataCruda)
+    {
+        $objeto = array();
+        ///quitar campos no existentes
+        foreach ($dataCruda as $nombre_campo => $valor_campo) {
+            # para verificar si la propiedad existe..
+            if (property_exists('Encomienda_model', $nombre_campo)) {
+                $objeto[$nombre_campo] = $valor_campo;
+            }
+        }
+        return $objeto;
+    }
 }
