@@ -18,7 +18,7 @@ class TurPaquete extends REST_Controller
         $data = $this->post();
         $this->load->library("form_validation");
         $this->form_validation->set_data($data);
-              //corremos las reglas de validacion
+        //corremos las reglas de validacion
         if ($this->form_validation->run('insertarTurPaquete')) {
             //VERIFICAMOS QUE TODOS LOS PARAMETROS ESTEN BIEN
             $turPaquete = $this->Tours_paquete_model->verificar_camposEntrada($data);
@@ -142,5 +142,17 @@ class TurPaquete extends REST_Controller
         $data = $this->get();
         $respuesta =  $this->Tours_paquete_model->obtenerInfoAdicional($data);
         $this->response($respuesta, REST_Controller::HTTP_OK);
+    }
+
+    public function showInfoReserva_get()
+    {
+        $data = $this->get();
+        $respuesta =  $this->Tours_paquete_model->obtenerInfoReserva($data);
+
+        if ($respuesta['err']) {
+            $this->response($respuesta, REST_Controller::HTTP_BAD_REQUEST);
+        } else {
+            $this->response($respuesta, REST_Controller::HTTP_OK);
+        }
     }
 }

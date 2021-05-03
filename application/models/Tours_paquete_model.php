@@ -426,10 +426,85 @@ class Tours_paquete_model extends CI_Model
             return $respuesta;
         }
     }
+
+    public function obtenerInfoReserva(array $data)
+    {
+
+
+        $this->db->select('id_cliente, id_tours, nombreTours, asientos_seleccionados, label_asiento, cantidad_asientos, start, end, lugar_salida, incluye, no_incluye, requisitos, descripcion_tur, fecha_reserva, formaPagoUtilizada, monto, descripcionProducto, resultadoTransaccion, tipo');
+        $this->db->from('usuario');
+        $this->db->join('detalle_tour', 'id_cliente');
+        $this->db->join('tours_paquete', 'id_tours');
+        $this->db->join('reserva_tour', 'id_detalle');
+        $this->db->where($data);
+
+
+        $query = $this->db->get();
+        $infoReserva = $query->result();
+
+        if ($query->conn_id->error == '') {
+            foreach ($infoReserva as  $value) {
+                $value->descripcionWeb = nl2br($value->descripcion_tur);
+                $value->transporte =  $this->obtenerTransporte($value->id_tours);
+
+
+                $value->incluye                = json_decode($value->incluye, true);
+                $value->no_incluye             = json_decode($value->no_incluye, true);
+                $value->requisitos             = json_decode($value->requisitos, true);
+                $value->lugar_salida           = json_decode($value->lugar_salida, true);
+                $value->asientos_seleccionados = explode(',', $value->asientos_seleccionados);
+
+
+                $respuestaFoto =   $this->Imagen_model->obtenerImagenUnica($value->tipo, $value->id_tours);
+                if ($respuestaFoto == null) {
+                    //por si no hay ninguna foto mandamos una por defecto
+                    $value->foto = "http://localhost/API-REST-PHP/uploads/viaje.jpg";
+                } else {
+                    $value->foto = $respuestaFoto;
+                }
+
+
+                $respuestaGaleria =   $this->Imagen_model->obtenerGaleria($value->tipo, $value->id_tours);
+                if ($respuestaGaleria == null) {
+                    //por si no hay ninguna foto mandamos una por defecto
+                    $value->galeria[] = "http://localhost/API-REST-PHP/uploads/viaje.jpg";
+                } else {
+                    $value->galeria = $respuestaGaleria;
+                }
+            }
+
+            $respuesta = array(
+                'err'              => FALSE,
+                'mensaje'          => 'Datos Cargados Exitosamente',
+                'reservas'         => $infoReserva
+            );
+
+            return $respuesta;
+        } else {
+            $respuesta = array(
+                'err'              => TRUE,
+                'mensaje'          => 'Error al Cargar Datos',
+                'reservas'         =>  null
+            );
+        }
+    }
+
+
     public function combertirFecha($fecha)
     {
         //PRIMERA PARTE ES COMO NOS MANDAN EL STRING (d/m/Y)
         //EL SEGUNDO ES EL NUEVO FORMATO AL QUE LO VAMOS A PASAR  (Y-m-d)
         return DateTime::createFromFormat('d/m/Y', $fecha)->format('Y-m-d');
+    }
+
+    public function obtenerTransporte($idTour)
+    {
+        $this->db->select('filas, asiento_derecho, asiento_izquierdo, fila_trasera, id_tours, id_tipo_servicio');
+        $this->db->from('detalle_servicio');
+        $this->db->join('servicios_adicionales', 'id_servicios');
+        $this->db->where('id_tipo_servicio', '2');
+        $this->db->where('id_tours', $idTour);
+
+        return $this->db->get()->row();
     }
 }
