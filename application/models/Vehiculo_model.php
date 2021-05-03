@@ -61,6 +61,7 @@ class Vehiculo_model extends CI_Model
     }
     public function get_vehiculoForApp(array $data)
     {
+        $this->load->model('Imagen_model');
         $this->db->select('*');
         $this->db->from('vehiculo');
         $this->db->join('transmisionvehiculo', 'vehiculo.id_transmicionFK=transmisionvehiculo.idtransmicion');
@@ -78,7 +79,6 @@ class Vehiculo_model extends CI_Model
         $query = $this->db->get();
 
         $respuesta = $query->result();
-        $this->load->model('Imagen_model');
         foreach ($respuesta as $row) {
             $row->opc_avanzadas =   explode(",", $row->opc_avanzadas);
             $identificador = $row->idvehiculo;
@@ -245,6 +245,7 @@ class Vehiculo_model extends CI_Model
     {
         $parametros = $this->verificar_camposEntrada($data);
 
+        $this->load->model('Imagen_model');
         $this->db->select('*');
         $this->db->from('vehiculo');
         $this->db->join('transmisionvehiculo', 'vehiculo.id_transmicionFK=transmisionvehiculo.idtransmicion');
@@ -257,7 +258,6 @@ class Vehiculo_model extends CI_Model
         $query = $this->db->get();
 
         $respuesta = $query->result();
-        $this->load->model('Imagen_model');
         foreach ($respuesta as $row) {
             $row->opc_avanzadas =   explode(",", $row->opc_avanzadas);
             $identificador = $row->idvehiculo;
@@ -267,6 +267,67 @@ class Vehiculo_model extends CI_Model
                 $row->foto = [];
             } else {
                 $row->foto = $respuestaFoto;
+            }
+        }
+        return $respuesta;
+    }
+
+    public function obtenerHistorial()
+    {
+        $this->load->model('Imagen_model');
+
+        $this->db->select('
+                        idvehiculo,
+                        usuario.id_cliente,
+                        fecha_reserva,
+                        resultadoTransaccion,
+                        monto,
+                        nombre_detalle,
+                        direccionRecogida_detalle,
+                        direccionDevolucion_detalle,
+                        fechaDevolucion,
+                        horaDevolucion,
+                        totalDevolucion,
+                        puertas,
+                        pasajeros,
+                        precio_diario,
+                        descripcion,
+                        detalles,
+                        anio,
+                        modelo,
+                        transmision,
+                        nombre_categoria,
+                        opc_avanzadas
+        ');
+        $this->db->from('vehiculo');
+        $this->db->join('detalle_vehiculo', 'detalle_vehiculo.id_vehiculo = vehiculo.idvehiculo');
+        $this->db->join('usuario', 'id_cliente');
+        $this->db->join('modelo', 'idmodelo');
+        $this->db->join('reserva_vehiculo', 'id_detalle');
+        $this->db->join('transmisionvehiculo', 'vehiculo.id_transmicionFK = transmisionvehiculo.idtransmicion');
+        $this->db->join('categoria', 'idcategoria');
+
+        // $this->db->where($parametros);
+
+        $query     = $this->db->get();
+        $respuesta = $query->result();
+
+        foreach ($respuesta as $row) {
+            $row->opc_avanzadas =   explode(",", $row->opc_avanzadas);
+            $identificador = $row->idvehiculo;
+            $respuestaFoto =   $this->Imagen_model->obtenerImagenUnica('vehiculo', $identificador);
+            if ($respuestaFoto == null) {
+                //por si no hay ninguna foto mandamos una por defecto
+                $row->foto = "http://localhost/API-REST-PHP/uploads/auto.png";
+            } else {
+                $row->foto = $respuestaFoto;
+            }
+            $respuestaGaleria =   $this->Imagen_model->obtenerGaleria('vehiculo', $identificador);
+            if ($respuestaGaleria == null) {
+                //por si no hay ninguna foto mandamos una por defecto
+                $row->galeria = [];
+            } else {
+                $row->galeria = $respuestaGaleria;
             }
         }
         return $respuesta;

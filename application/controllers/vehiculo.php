@@ -161,4 +161,27 @@ class vehiculo extends REST_Controller
 			$this->response($respuesta, REST_Controller::HTTP_NOT_FOUND);
 		}
 	}
+
+	public function historial_get()
+	{
+		// $data                = $this->get();
+		$historial               = $this->Vehiculo_model->obtenerHistorial();
+
+		if (isset($historial)) {
+			$respuesta = array(
+				'err'             => FALSE,
+				'mensaje'         => 'Registro Cargado correctamente',
+				'historialAutos'  => $historial,
+			);
+			$this->response($respuesta, REST_Controller::HTTP_OK);
+		} else {
+			$respuesta = array(
+				'err'            => TRUE,
+				'mensaje'        => 'Error al cargar los datos.',
+				'historialAutos' => null
+
+			);
+			$this->response($respuesta, REST_Controller::HTTP_NOT_FOUND);
+		}
+	}
 }
