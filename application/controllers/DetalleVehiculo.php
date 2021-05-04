@@ -12,6 +12,7 @@ class DetalleVehiculo extends REST_Controller
         $this->load->model("Detalle_vehiculo_model");
         $this->load->model("ReservaVehiculo_model");
         $this->load->model('Wompi_model');
+        $this->load->model('ServiciosVehiculos_model');
 
     }
 
@@ -51,7 +52,14 @@ class DetalleVehiculo extends REST_Controller
                 $respuesta = $this->ReservaVehiculo_model->guardar($reseraVehiculo);
                 if ($respuesta['err']) {
                     $this->response($respuesta, REST_Controller::HTTP_BAD_REQUEST);
+
                 } else {
+                    if (!empty($data["detalle_servicios"])) {
+                        $detalle = json_decode($data["detalle_servicios"], true);
+                        
+    
+                        $this->ServiciosVehiculos_model->guardarDetalle($detalle, $respuesta['id_detalle_vehiculo']);
+                         }
                     $this->response($respuesta, REST_Controller::HTTP_OK);
                 }
             }

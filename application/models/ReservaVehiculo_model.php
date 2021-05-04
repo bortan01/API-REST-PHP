@@ -48,7 +48,8 @@ class ReservaVehiculo_model extends CI_Model
 
             $respuesta = array(
                 'err' => FALSE,
-                'mensaje' => 'Registro Guardado Exitosamente'
+                'mensaje' => 'Registro Guardado Exitosamente',
+                'id_detalle_vehiculo'      => $this->db->insert_id()
             );
             return $respuesta;
         }
