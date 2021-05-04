@@ -16,6 +16,9 @@ class Detalle_vehiculo_model extends CI_Model
     public $horaDevolucion;
     public $porcentajeMora;
     public $totalDevolucion;
+    public $servicio_adicional;
+    public $costo_servicio;
+    public $cantidad_servicio;
     public $activo_detalle=TRUE;
 
     public function verificar_camposEntrada($dataCruda)
