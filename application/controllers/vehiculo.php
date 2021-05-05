@@ -164,21 +164,21 @@ class vehiculo extends REST_Controller
 
 	public function historial_get()
 	{
-		// $data                = $this->get();
-		$historial               = $this->Vehiculo_model->obtenerHistorial();
+		$data                = $this->get();
+		$historial               = $this->Vehiculo_model->obtenerHistorial($data);
 
 		if (isset($historial)) {
 			$respuesta = array(
 				'err'             => FALSE,
 				'mensaje'         => 'Registro Cargado correctamente',
-				'historialAutos'  => $historial,
+				'historialDetalles'  => $historial,
 			);
 			$this->response($respuesta, REST_Controller::HTTP_OK);
 		} else {
 			$respuesta = array(
 				'err'            => TRUE,
 				'mensaje'        => 'Error al cargar los datos.',
-				'historialAutos' => null
+				'historialDetalles' => null
 
 			);
 			$this->response($respuesta, REST_Controller::HTTP_NOT_FOUND);

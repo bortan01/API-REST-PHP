@@ -111,6 +111,14 @@ class Vehiculo_model extends CI_Model
         $this->db->from('modelo');
         return $this->db->get()->result();
     }
+
+    public function get_opcionesByClient($id_detalle)
+    {
+        $this->db->select('*');
+        $this->db->from('detalle_serviciosVehiculo');
+        $this->db->where('id_detalle', $id_detalle);
+        return $this->db->get()->result();
+    }
     public function set_datos($data_cruda)
     {
 
@@ -272,13 +280,14 @@ class Vehiculo_model extends CI_Model
         return $respuesta;
     }
 
-    public function obtenerHistorial()
+    public function obtenerHistorial(array $parametros)
     {
         $this->load->model('Imagen_model');
 
         $this->db->select('
                         idvehiculo,
                         usuario.id_cliente,
+                        id_detalle,
                         fecha_reserva,
                         resultadoTransaccion,
                         monto,
@@ -297,7 +306,9 @@ class Vehiculo_model extends CI_Model
                         modelo,
                         transmision,
                         nombre_categoria,
-                        opc_avanzadas
+                        opc_avanzadas,
+                        tipoCombustible
+                        
         ');
         $this->db->from('vehiculo');
         $this->db->join('detalle_vehiculo', 'detalle_vehiculo.id_vehiculo = vehiculo.idvehiculo');
@@ -307,27 +318,28 @@ class Vehiculo_model extends CI_Model
         $this->db->join('transmisionvehiculo', 'vehiculo.id_transmicionFK = transmisionvehiculo.idtransmicion');
         $this->db->join('categoria', 'idcategoria');
 
-        // $this->db->where($parametros);
+        $this->db->where($parametros);
 
         $query     = $this->db->get();
         $respuesta = $query->result();
 
-        foreach ($respuesta as $row) {
-            $row->opc_avanzadas =   explode(",", $row->opc_avanzadas);
-            $identificador = $row->idvehiculo;
+        foreach ($respuesta as $vehiculo) {
+            $vehiculo->opc_avanzadas =   explode(",", $vehiculo->opc_avanzadas);
+            $identificador = $vehiculo->idvehiculo;
+            $vehiculo->servicios = $this->get_opcionesByClient($vehiculo->id_detalle);
             $respuestaFoto =   $this->Imagen_model->obtenerImagenUnica('vehiculo', $identificador);
             if ($respuestaFoto == null) {
                 //por si no hay ninguna foto mandamos una por defecto
-                $row->foto = "http://localhost/API-REST-PHP/uploads/auto.png";
+                $vehiculo->foto = "http://localhost/API-REST-PHP/uploads/auto.png";
             } else {
-                $row->foto = $respuestaFoto;
+                $vehiculo->foto = $respuestaFoto;
             }
             $respuestaGaleria =   $this->Imagen_model->obtenerGaleria('vehiculo', $identificador);
             if ($respuestaGaleria == null) {
                 //por si no hay ninguna foto mandamos una por defecto
-                $row->galeria = [];
+                $vehiculo->galeria = [];
             } else {
-                $row->galeria = $respuestaGaleria;
+                $vehiculo->galeria = $respuestaGaleria;
             }
         }
         return $respuesta;
