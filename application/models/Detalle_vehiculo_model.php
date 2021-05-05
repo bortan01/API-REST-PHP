@@ -53,7 +53,7 @@ class Detalle_vehiculo_model extends CI_Model
             $respuesta = array(
                 'err'             => FALSE,
                 'mensaje'         => 'Registro Guardado Exitosamente',
-                'id_detalle_vehiculo'      => $this->db->insert_id()
+                'id_detalle_vehiculo' => $this->db->insert_id()
             );
             return $respuesta;
         }

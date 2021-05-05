@@ -57,8 +57,7 @@ class DetalleVehiculo extends REST_Controller
                     if (!empty($data["detalle_servicios"])) {
                         $detalle = json_decode($data["detalle_servicios"], true);
                         
-    
-                        $this->ServiciosVehiculos_model->guardarDetalle($detalle, $respuesta['id_detalle_vehiculo']);
+                        $this->ServiciosVehiculos_model->guardarDetalle($detalle,$idDetalle);
                          }
                     $this->response($respuesta, REST_Controller::HTTP_OK);
                 }
