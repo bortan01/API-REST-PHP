@@ -155,4 +155,15 @@ class TurPaquete extends REST_Controller
             $this->response($respuesta, REST_Controller::HTTP_OK);
         }
     }
+
+    public function cotizacion_post()
+    {
+        $data = $this->post();
+        $respuesta =  $this->Tours_paquete_model->guardarCotizacion($data);
+        if ($respuesta['err']) {
+            $this->response($respuesta, REST_Controller::HTTP_BAD_REQUEST);
+        } else {
+            $this->response($respuesta, REST_Controller::HTTP_OK);
+        }
+    }
 }

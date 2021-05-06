@@ -507,4 +507,30 @@ class Tours_paquete_model extends CI_Model
 
         return $this->db->get()->row();
     }
+
+    public function guardarCotizacion(array $data)
+    {
+        $nombreTabla = 'cotizar_tourpaquete';
+        $insert = $this->db->insert($nombreTabla, $data);
+
+        if (!$insert) {
+            //NO GUARDO 
+            $respuesta = array(
+                'err'          => TRUE,
+                'mensaje'      => 'Error al insertar ', $this->db->error_message(),
+                'cotizacion'   => null
+            );
+            return $respuesta;
+        } else {
+            $identificador = $this->db->insert_id();
+            $data['idCotizar'] = $identificador;
+
+            $respuesta = array(
+                'err'          => FALSE,
+                'mensaje'      => 'Registro Guardado Exitosamente',
+                'cotizacion'   => $data
+            );
+            return $respuesta;
+        }
+    }
 }
