@@ -13,6 +13,9 @@ class CotizarVehiculo_model extends CI_Model
     public $direccion_devolucion;
     public $fechaDevolucion;
     public $HoraDevolucion;
+    public $descuentosCotizacion;
+    public $totalCotizacion;
+    public $respuestaCotizacion;
     public $activo = TRUE;
     
     public function get_cotizar(array $data){
@@ -22,6 +25,7 @@ class CotizarVehiculo_model extends CI_Model
         $this->db->select('*');
         $this->db->from('cotizarvehiculo');
         $this->db->join('usuario', 'cotizarvehiculo.id_usuario = usuario.id_cliente');
+        $this->db->join('modelo', 'cotizarvehiculo.modelo = modelo.idmodelo');
         $this->db->where($parametros);
         $this->db->where_in('cotizarvehiculo.activo',1);
         $query=$this->db->get();
