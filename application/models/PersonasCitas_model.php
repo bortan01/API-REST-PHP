@@ -5,6 +5,7 @@ class PersonasCitas_model extends CI_Model
 //public $id_persona;
 public $id_cita;
 public $nombres_personas;
+public $pasaporte_personas;
 
 public function get_personas($id){
 
@@ -99,18 +100,18 @@ public function modificarPersona($id_cita,$input,$asistiran){
 
 }//modificarPersonas
 
-public function insertarPersonas($cita,$personas){
+public function insertarPersonas($cita,$personas,$pasaporte_personas){
 
-	$cuantos=count($personas);
+	$cuantos=count($personas);//nombre de las personas
 
 	$this->load->model('FormularioMigratorio_model');
 	$this->FormularioMigratorio_model->insertarRespuestaPersonas($cita,$personas);
 	
-	for ($i=0; $i < $cuantos ; $i++) { 
+	for ($i=0; $i < $cuantos ; $i++) {
 		# code...
 		$this->id_cita=$cita;
-		
 	    $this->nombres_personas=$personas[$i];
+	    $this->pasaporte_personas=$pasaporte_personas[$i];
 	    $hecho=$this->db->insert('personas_cita',$this);
 	   }
 

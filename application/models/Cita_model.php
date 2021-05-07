@@ -266,7 +266,7 @@ public function modificar_cita($id_cita,$fecha,$compania,$input,$asistiran,$hora
     }	//else pollo
 }//function
 
-public function insertCita($id_cliente,$asitencia,$personas,$motivo,$color,$textColor,$start,$fecha,$hora,$pasaporte){
+public function insertCita($id_cliente,$asitencia,$personas,$motivo,$color,$textColor,$start,$fecha,$hora,$pasaporte,$pasaporte_personas){
 		//insertar el registro
 		$horas_validas= array(
 						0 =>'8:00 AM',
@@ -323,7 +323,7 @@ public function insertCita($id_cliente,$asitencia,$personas,$motivo,$color,$text
 			if ($personas !=NULL) {
 				# code...
 			$cita=$this->db->insert_id();
-			$this->PersonasCitas_model->insertarPersonas($cita,$personas);
+			$this->PersonasCitas_model->insertarPersonas($cita,$personas,$pasaporte_personas);
 			}
 		    //}
 			if ($hecho) {

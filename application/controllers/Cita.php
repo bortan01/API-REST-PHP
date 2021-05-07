@@ -185,14 +185,24 @@ public function citas_post(){
 			//$this->response('Todo bien');
 		//$cita=$this->Cita_model->set_datos($data);
 		$id_cliente=$data["id_cliente"];
+
 		$asistencia=$data["asistencia"];
+
 		if (isset($data['asistiran'])) {
 			# code...
 			$personas=$data['asistiran'];
 		}else{
 			$personas=NULL;
 		}
-		
+		//para el pasaporte de las personas
+		if (isset($data["pasaporte_personas"])) {
+			# code...
+			$pasaporte_personas=$data["pasaporte_personas"];
+		}else{
+			$pasaporte_personas=NULL;
+		}
+		//*********fin de los pasaporte
+
 		$motivo=$data["title"].': '.$data["usuario"];
 		$color="#007bff";
 		$textColor="#FFFFFF";
@@ -204,7 +214,7 @@ public function citas_post(){
 		$hora=$data["start"];
 		$pasaporte=$data["pasaporte"];
 
-		$respuesta=$this->Cita_model->insertCita($id_cliente,$asistencia,$personas,$motivo,$color,$textColor,$start,$fecha,$hora,$pasaporte); 
+		$respuesta=$this->Cita_model->insertCita($id_cliente,$asistencia,$personas,$motivo,$color,$textColor,$start,$fecha,$hora,$pasaporte,$pasaporte_personas); 
 
 		if ($respuesta['err']) {
 
