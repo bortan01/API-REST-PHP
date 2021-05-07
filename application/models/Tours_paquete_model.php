@@ -533,4 +533,44 @@ class Tours_paquete_model extends CI_Model
             return $respuesta;
         }
     }
+    public function obtenerCotizaciones(array $parametros = array())
+    {
+
+        $this->db->select('*');
+        $this->db->from('cotizar_tourpaquete');
+        $this->db->join('usuario', 'id_cliente');
+        $this->db->order_by('idCotizar', 'ASC');
+        $this->db->where( 'visto', $parametros['visto']);
+        $query = $this->db->get();
+        $cotizaciones  = $query->result();
+
+
+        return $cotizaciones;
+    }
+
+    public function responderCotizacion(array $campos = array())
+    {
+        $nombreTabla = 'cotizar_tourpaquete';
+        $this->db->where('idCotizar', $campos["idCotizar"]);
+        $hecho = $this->db->update($nombreTabla, $campos);
+        if ($hecho) {
+            ///LOGRO ACTUALIZAR 
+            $respuesta = array(
+                'err'     => FALSE,
+                'mensaje' => 'Registro Actualizado Exitosamente',
+                'viaje' => $campos
+
+            );
+            return $respuesta;
+        } else {
+            //NO GUARDO
+            $respuesta = array(
+                'err' => TRUE,
+                'mensaje' => 'Error al actualizar ', $this->db->error_message(),
+                'error_number' => $this->db->error_number(),
+                'viaje' => null
+            );
+            return $respuesta;
+        }
+    }
 }
