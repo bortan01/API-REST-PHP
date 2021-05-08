@@ -98,4 +98,18 @@ class Itinerario extends REST_Controller
       }
     }
   }
+
+
+
+  public function itinerarioForApp_get()
+  {
+    $data = $this->get();
+
+    $respuesta = $this->Itinerario_model->itinerarioForApp($data);
+    if ($respuesta['err']) {
+      $this->response($respuesta, REST_Controller::HTTP_BAD_REQUEST);
+    } else {
+      $this->response($respuesta, REST_Controller::HTTP_OK);
+    }
+  }
 }

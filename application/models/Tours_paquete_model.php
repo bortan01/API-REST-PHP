@@ -572,5 +572,22 @@ class Tours_paquete_model extends CI_Model
             );
             return $respuesta;
         }
+
+        
+    }
+    public function obtenerRespuestas(array $campos = array())
+    {
+        $nombreTabla = 'cotizar_tourpaquete';
+        $this->db->where('id_cliente', $campos["id_cliente"]);
+        $query = $this->db->get($nombreTabla);
+        $cotizaciones = $query->result();
+        if ($cotizaciones) {
+            ///LOGRO ACTUALIZAR 
+            $respuesta = array(
+                'err'          => FALSE,
+                'cotizaciones' => $cotizaciones
+            );
+            return $respuesta;
+        } 
     }
 }

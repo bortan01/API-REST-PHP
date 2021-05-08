@@ -248,4 +248,22 @@ class Itinerario_model extends CI_Model
         //este es un objeto tipo cliente model
         return $objeto;
     }
+
+
+
+    public function itinerarioForApp(array $data)
+    {
+        try {
+
+            $this->db->select('*');
+            $this->db->from("itinerario");
+            $this->db->order_by('start');
+            $this->db->where("id_tours", $data["id_tours"]);
+            $query = $this->db->get();
+            $itinerarioSeleccionado = $query->result();
+            return array('err' => FALSE,  'evento' => $itinerarioSeleccionado);
+        } catch (Exception $e) {
+            return array('err' => TRUE, 'evento' => null, 'mensaje' => $e->getMessage());
+        }
+    }
 }
