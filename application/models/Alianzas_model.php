@@ -4,8 +4,8 @@ class Alianzas_model extends CI_Model
 {
     public $idalianza;
     public $nombre_alianza;
-    public $sitioWeb;
-    public $telefonoContacto;
+    public $sitioWeb_alianza;
+    public $telefonoContacto_alianza;
     public $activo = TRUE;
 
     
