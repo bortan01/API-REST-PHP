@@ -74,6 +74,24 @@ public function updateCita_post(){
 
 		//*******problema input
 		}else{ $asistiran=NULL;}
+
+		//***PARA LOS PASAPORTES QUE CAPTURAMOS
+		//como siempre me trae un valor por ser el input que espera un valor
+		if (isset($data["pasaporte_personas"])) {
+			# cuando el input este disable true
+
+		    if (array_filter($data["pasaporte_personas"])) {
+			# code...
+		    $pasaporte_personas=$data["pasaporte_personas"];
+		    }else{
+		    
+			$pasaporte_personas=NULL;
+		   }
+
+		//*******problema input
+		}else{ $pasaporte_personas=NULL;}
+
+		//****FIN DE LOS PASAPORTES
 		
 		//son los datos que manda el input simple que tiene los nombres cargados de las
 		//personas que asistiran
@@ -98,7 +116,7 @@ public function updateCita_post(){
 		$hora=$data["start"];
 
 		//$verificar=$this->Cita_model->set_datos($data);
-        $respuesta=$this->Cita_model->modificar_cita($id_cita,$fecha,$compania,$input,$asistiran,$hora,$inputPas,$start);
+        $respuesta=$this->Cita_model->modificar_cita($id_cita,$fecha,$compania,$input,$asistiran,$hora,$inputPas,$pasaporte_personas,$start);
 
         if ($respuesta['err']) {
         	# code...
