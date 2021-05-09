@@ -129,7 +129,7 @@ public function formularioModificar($id){
     $respuestas=$this->db->update('cita');
     return $respuestas;
 }
-public function modificar_cita($id_cita,$fecha,$compania,$input,$asistiran,$hora){
+public function modificar_cita($id_cita,$fecha,$compania,$input,$asistiran,$hora,$inputPas){
 		//$this->db->set($datos);
 		$horas_validas= array(
 						0 =>'8:00 AM',
@@ -173,7 +173,7 @@ public function modificar_cita($id_cita,$fecha,$compania,$input,$asistiran,$hora
         $this->db->where('id_cita',$id_cita);
         $hecho=$this->db->update('cita');
 
-        $this->PersonasCitas_model->modificarPersona($id_cita,$input,$asistiran);
+        $this->PersonasCitas_model->modificarPersona($id_cita,$input,$asistiran,$inputPas);
 
  		if ($hecho) {
 				#borrado

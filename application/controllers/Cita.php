@@ -75,7 +75,8 @@ public function updateCita_post(){
 		//*******problema input
 		}else{ $asistiran=NULL;}
 		
-		
+		//son los datos que manda el input simple que tiene los nombres cargados de las
+		//personas que asistiran
 		if (empty($data["input"])) {
 			# code...
 		     $input=NULL;
@@ -83,12 +84,21 @@ public function updateCita_post(){
 			
 			 $input=$data["input"];
 		}
+
+		//son los datos que manda el inputPas simple que contiene los numeros de los pasaportes
+
+		if (empty($data["inputPas"])) {
+			# code...
+			$inputPas=NULL;
+		}else{
+			$inputPas=$data["inputPas"];
+		}
 		
 	    $start=$fechaConvertida.' '.$data["start"];
 		$hora=$data["start"];
 
 		//$verificar=$this->Cita_model->set_datos($data);
-        $respuesta=$this->Cita_model->modificar_cita($id_cita,$fecha,$compania,$input,$asistiran,$hora,$start);
+        $respuesta=$this->Cita_model->modificar_cita($id_cita,$fecha,$compania,$input,$asistiran,$hora,$inputPas,$start);
 
         if ($respuesta['err']) {
         	# code...
