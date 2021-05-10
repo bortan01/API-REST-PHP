@@ -328,6 +328,11 @@ public function insertCita($id_cliente,$asitencia,$personas,$motivo,$color,$text
 		    //}
 			if ($hecho) {
 				#insertado
+		    $this->load->model('Imagen_model');
+            $identificador = $this->db->insert_id();
+            $this->Imagen_model->guardarGaleria("pasaportes",  $identificador);
+            //EN ESTE CASO NO GUARDARA UNA FOTO SI NO UN PDF
+            $this->Imagen_model->guardarImagen("comprobante_pasaporte",  $identificador);
 				$respuesta=array(
 					'err'=>FALSE,
 					'mensaje'=>'Registro insertado correctamente',
@@ -337,6 +342,10 @@ public function insertCita($id_cliente,$asitencia,$personas,$motivo,$color,$text
 				
 			}else{
 				//error
+ 			$this->load->model('Imagen_model');
+            $identificador = $this->db->insert_id();
+            ///ESTO ES PARA GUARDAR UNA IMAGEN INDIVIDUAL Y UNA GALERIA
+            $this->Imagen_model->guardarGaleria("pasaportes", $identificador);
 
 				$respuesta=array(
 					'err'=>TRUE,

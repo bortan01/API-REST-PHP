@@ -148,7 +148,7 @@ public function encomienda_get(){
 	
 }
 
-   public function encomiendas_post(){
+public function encomiendas_post(){
 
 		$data=$this->post();
 		//print_r($data);
