@@ -36,6 +36,7 @@ public function modificarPersona($id_cita,$input,$asistiran,$inputPas,$pasaporte
 		//$this->cantidad_personas=$nuevos;
 		
 	    $this->nombres_personas=$input[$i];
+	    $this->pasaporte_personas=$inputPas[$i];
 	    $hecho=$this->db->insert('personas_cita',$this);
 	    }//for
 
@@ -69,6 +70,7 @@ public function modificarPersona($id_cita,$input,$asistiran,$inputPas,$pasaporte
 		$this->id_cita=$id_cita;
 		//$this->cantidad_personas=$modificar;
 		$this->nombres_personas=$asistiran[$i];
+		$this->pasaporte_personas=$pasaporte_personas[$i];
         $hecho=$this->db->insert('personas_cita',$this);
         
 	   }//for
@@ -99,73 +101,6 @@ public function modificarPersona($id_cita,$input,$asistiran,$inputPas,$pasaporte
 
 	  //CODIGO PARA INSERTAR LOS PASAPORTES COMO SON CAPTURADOS DE DIFERENTES ARRAY
 	    // VARIABLES $inputPas y $pasaporte_personas
-	if ($inputPas!=NULL) {// SI ES NULL NO ARA NADA PORQ NO TRAE DATOS PARA EVITAR PROCEDIMIENTOS
-		# code...
-		$nuevosPas=count($inputPas);
-		for ($i=0; $i < $nuevosPas ; $i++) { 
-		# code...
-		$this->id_cita=$id_cita;
-		//$this->cantidad_personas=$nuevos;
-		
-	    $this->pasaporte_personas=$inputPas[$i];
-	    $hecho=$this->db->insert('personas_cita',$this);
-	    }//for
-
-	     if ($hecho) {
-				#actualizado
-				$respuesta=array(
-					'err'=>FALSE,
-					'mensaje'=>'Actualizado'
-				);
-			}else{
-
-				$respuesta=array(
-					'err'=>TRUE,
-					'mensaje'=>'Error'
-				);
-
-			}
-	}else{
-
-		$respuesta=array(
-					'err'=>TRUE,
-					'mensaje'=>'Error al insertar'
-				);
-	}
-	
-	if($pasaporte_personas!=NULL){
-	$modificarPas=count($pasaporte_personas);
-	for ($i=0; $i <$modificarPas ; $i++) { 
-		# code...
-
-		$this->id_cita=$id_cita;
-		//$this->cantidad_personas=$modificar;
-		$this->pasaporte_personas=$pasaporte_personas[$i];
-        $hecho=$this->db->insert('personas_cita',$this);
-        
-	   }//for
-
-	   if ($hecho) {
-				#actualizado
-				$respuesta=array(
-					'err'=>FALSE,
-					'mensaje'=>'Actualizado'
-				);
-			}else{
-
-				$respuesta=array(
-					'err'=>TRUE,
-					'mensaje'=>'Error'
-				);
-
-			}
-
-	}else {
-		$respuesta=array(
-					'err'=>TRUE,
-					'mensaje'=>'Error al insertar'
-				);
-	}
 
 	
 
