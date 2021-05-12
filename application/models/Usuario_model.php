@@ -134,10 +134,38 @@ class Usuario_model extends CI_Model
                     $row->foto = $respuestaFoto;
                 }
             }
+            $administrador = $this->getAdminByChat();
 
-            return array('err' => FALSE, 'usuarios' => $result);
+            return array('err' => FALSE, 'usuarios' => $result, 'administrador' => $administrador);
         } catch (Exception $e) {
             return array('err' => TRUE, 'mensaje' => $e->getMessage());
+        }
+    }
+
+    public function getAdminByChat()
+    {
+        try {
+
+            $nombreTabla = "usuario";
+            $this->db->where('nivel', 'ADMINISTRADOR');
+
+            $query = $this->db->get($nombreTabla);
+            $result = $query->row();
+
+            if ($result != null) {
+                $identificador = $result->id_cliente;
+                $respuestaFoto =   $this->Imagen_model->obtenerImagenUnica("usuario_perfil", $identificador);
+                if ($respuestaFoto == null) {
+                    //por si no hay ninguna foto mandamos una por defecto
+                    $result->foto = "http://localhost/API-REST-PHP/uploads/avatar.png";
+                } else {
+                    $result->foto = $respuestaFoto;
+                }
+                return  $result;
+            }
+            return null;
+        } catch (Exception $e) {
+            return null;
         }
     }
 
@@ -176,16 +204,18 @@ class Usuario_model extends CI_Model
         $this->db->where($where);
         $this->db->limit(1);
         $query = $this->db->get('chat_record');
-        $result  = $query->result();
+        $result  = $query->row();
 
-        $ar = [];
-        $ar['user_1_uuid'] = $user_1_uuid;
-        $ar['user_2_uuid'] = $user_2_uuid;
-
-        if (count($result) == 1) {
-            $ar['chat_uuid'] = $result[0]->chat_uuid;
-            return array('status' => 200, 'message' => $ar);
+        //RETORNAREMOS INFO  CHAT
+        $infoChat = [];
+        $infoChat['user_1_uuid'] = $user_1_uuid;
+        $infoChat['user_2_uuid'] = $user_2_uuid;
+        //VERIFICAMOS SI YA EXISTEM CHATS ENTRE LOS DOS USUARIO
+        if ($result != null) {
+            $infoChat['chat_uuid'] = $result->chat_uuid;
+            return $infoChat;
         } else {
+            //SI NO EEXISTE CREAMOS LA RELACION
             $chat_uuid = date("HisYmd");
             $data = array(
                 'chat_uuid'   => $chat_uuid,
@@ -194,10 +224,8 @@ class Usuario_model extends CI_Model
             );
 
             $this->db->insert('chat_record', $data);
-
-            $ar['chat_uuid'] = $chat_uuid;
-
-            return array('status' => 200, 'message' => $ar);
+            $infoChat['chat_uuid'] = $chat_uuid;
+            return $infoChat;
         }
     }
     public function logout()

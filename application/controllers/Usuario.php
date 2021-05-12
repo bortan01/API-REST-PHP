@@ -63,6 +63,7 @@ class Usuario extends REST_Controller
                 if ($dataUsuario['err']) {
                     $this->response($dataUsuario, REST_Controller::HTTP_BAD_REQUEST);
                 } else {
+
                     $respuesta['id_cliente'] =  $dataUsuario["id_cliente"];
                     $respuesta['nombre'] =  $dataUsuario["nombre"];
                     $respuesta['correo'] =  $dataUsuario["correo"];
@@ -98,8 +99,15 @@ class Usuario extends REST_Controller
     public function obtenerChat_post()
     {
         $data = $this->post();
-
-        $user1 = $data["user_1"];
+        if (isset($data["user_1"])) {
+            $user1 = $data["user_1"];
+        } else {
+            $admin = $this->Usuario_model->getAdminByChat();
+            if ($admin  == null) {
+                $this->response(array('mensaje' =>  'no  hay administrador'), REST_Controller::HTTP_BAD_REQUEST);
+            }
+            $user1 = $admin->uuid;
+        }
         $user2 = $data["user_2"];
         $respuesta =  $this->Usuario_model->createChatRecord($user1, $user2);
         $this->response($respuesta, REST_Controller::HTTP_OK);
@@ -264,5 +272,4 @@ class Usuario extends REST_Controller
             $this->response($respuesta, REST_Controller::HTTP_BAD_REQUEST);
         }
     }
-   
 }

@@ -28,6 +28,7 @@ class CotizarVehiculo_model extends CI_Model
         $this->db->join('modelo', 'cotizarvehiculo.modelo = modelo.idmodelo');
         $this->db->where($parametros);
         $this->db->where_in('cotizarvehiculo.activo',1);
+        $this->db->order_by('idcotizarVehiculo', 'desc');
         $query=$this->db->get();
 
         $respuesta = $query->result();
