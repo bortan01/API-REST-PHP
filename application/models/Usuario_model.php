@@ -417,6 +417,7 @@ class Usuario_model extends CI_Model
         $this->db->join('usuario', 'encomienda.id_usuario = usuario.id_cliente');
         $this->db->join('detalle_encomienda', 'detalle_encomienda.id_encomienda = encomienda.id_encomienda');
         $this->db->join('producto', 'detalle_encomienda.id_producto = producto.id_producto');
+        $this->db->join('detalle_destino', 'detalle_destino.id_encomienda = encomienda.id_encomienda');
         $this->db->where($parametros);
        
         $query = $this->db->get();
