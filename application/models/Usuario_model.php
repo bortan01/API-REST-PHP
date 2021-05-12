@@ -373,4 +373,56 @@ class Usuario_model extends CI_Model
             return $respuesta;
         }
     }
+
+    public function get_datosUsuario(array $data){
+
+        $parametros = $this->verificar_camposEntrada($data);
+
+        $this->db->select('*');
+        $this->db->from('usuario' );
+        $this->db->where($parametros);
+       
+        $query = $this->db->get();
+
+        return $query->result();
+
+    }
+
+    public function get_cotizacionesRealizadas(array $data){
+
+        $parametros = $this->verificar_camposEntrada($data);
+
+        $this->db->select('*');
+        $this->db->from('usuario' );
+        //$this->db->from('detalle_vehiculo' );
+        //$this->db->join('usuario', 'detalle_vehiculo.id_cliente = usuario.id_cliente');
+        //$this->db->join('vehiculo', 'detalle_vehiculo.id_vehiculo = vehiculo.idvehiculo');
+        //$this->db->join('modelo', 'vehiculo.idmodelo = modelo.idmodelo');
+        $this->db->join('cotizarvehiculo', 'cotizarvehiculo.id_usuario = usuario.id_cliente');
+        $this->db->join('modelo', 'cotizarvehiculo.modelo = modelo.idmodelo');
+        $this->db->where($parametros);
+       
+        $query = $this->db->get();
+
+        return $query->result();
+
+    }
+
+    public function get_encomiendasRealizadas(array $data){
+
+        $parametros = $this->verificar_camposEntrada($data);
+
+        $this->db->select('*');
+        $this->db->from('encomienda' );
+        $this->db->join('usuario', 'encomienda.id_usuario = usuario.id_cliente');
+        $this->db->join('detalle_encomienda', 'detalle_encomienda.id_encomienda = encomienda.id_encomienda');
+        $this->db->join('producto', 'detalle_encomienda.id_producto = producto.id_producto');
+        $this->db->where($parametros);
+       
+        $query = $this->db->get();
+
+        return $query->result();
+
+    }
+
 }

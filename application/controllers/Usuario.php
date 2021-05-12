@@ -272,4 +272,82 @@ class Usuario extends REST_Controller
             $this->response($respuesta, REST_Controller::HTTP_BAD_REQUEST);
         }
     }
+
+    public function datosUsuario_get(){
+
+        $data = $this->get();
+        $usuario=$this->Usuario_model->get_datosUsuario($data);
+    
+        if (isset($usuario)) {
+            
+            $respuesta=array(
+                'err'=>FALSE,
+                'mensaje'=>'Registro Cargado correctamente',
+                'servicios'=>$usuario
+    
+            );
+            $this->response($respuesta,REST_Controller::HTTP_OK);
+        }else{
+            $respuesta=array(
+                'err'=>TRUE,
+                'mensaje'=>'Error al cargar los datos.',
+                'servicios'=>null
+    
+            );
+            $this->response($respuesta,REST_Controller::HTTP_NOT_FOUND);
+    
+        }
+    }
+    
+    public function cotizacionesRealizadas_get(){
+    
+        $data = $this->get();
+        $serAdquiridos=$this->Usuario_model->get_cotizacionesRealizadas($data);
+    
+        if (isset($serAdquiridos)) {
+            
+            $respuesta=array(
+                'err'=>FALSE,
+                'mensaje'=>'Registro Cargado correctamente',
+                'servicios'=>$serAdquiridos
+    
+            );
+            $this->response($respuesta,REST_Controller::HTTP_OK);
+        }else{
+            $respuesta=array(
+                'err'=>TRUE,
+                'mensaje'=>'Error al cargar los datos.',
+                'servicios'=>null
+    
+            );
+            $this->response($respuesta,REST_Controller::HTTP_NOT_FOUND);
+    
+        }
+    }
+
+    public function encomiendasRealizadas_get(){
+    
+        $data = $this->get();
+        $serAdquiridos=$this->Usuario_model->get_encomiendasRealizadas($data);
+    
+        if (isset($serAdquiridos)) {
+            
+            $respuesta=array(
+                'err'=>FALSE,
+                'mensaje'=>'Registro Cargado correctamente',
+                'servicios'=>$serAdquiridos
+    
+            );
+            $this->response($respuesta,REST_Controller::HTTP_OK);
+        }else{
+            $respuesta=array(
+                'err'=>TRUE,
+                'mensaje'=>'Error al cargar los datos.',
+                'servicios'=>null
+    
+            );
+            $this->response($respuesta,REST_Controller::HTTP_NOT_FOUND);
+    
+        }
+    }
 }
