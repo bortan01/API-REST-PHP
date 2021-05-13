@@ -426,4 +426,23 @@ class Usuario_model extends CI_Model
 
     }
 
+    public function get_vehiculosAlquilados(array $data){
+
+        $parametros = $this->verificar_camposEntrada($data);
+        $otra=$data['id_cliente'];
+       // $where=explode('=',$parametros);
+
+        $this->db->select('*');
+        $this->db->from('detalle_vehiculo' );
+        $this->db->join('usuario', 'detalle_vehiculo.id_cliente = usuario.id_cliente');
+        $this->db->join('vehiculo', 'detalle_vehiculo.id_vehiculo = vehiculo.idvehiculo');
+        $this->db->join('modelo', 'vehiculo.idmodelo = modelo.idmodelo');
+        $this->db->where('usuario.id_cliente',$otra);
+       
+        $query = $this->db->get();
+
+        return $query->result();
+
+    }
+
 }

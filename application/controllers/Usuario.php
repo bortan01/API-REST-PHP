@@ -350,4 +350,31 @@ class Usuario extends REST_Controller
     
         }
     }
+
+
+    public function vehiculosAlquilados_get(){
+    
+        $data = $this->get();
+        $serAdquiridos=$this->Usuario_model->get_vehiculosAlquilados($data);
+    
+        if (isset($serAdquiridos)) {
+            
+            $respuesta=array(
+                'err'=>FALSE,
+                'mensaje'=>'Registro Cargado correctamente',
+                'servicios'=>$serAdquiridos
+    
+            );
+            $this->response($respuesta,REST_Controller::HTTP_OK);
+        }else{
+            $respuesta=array(
+                'err'=>TRUE,
+                'mensaje'=>'Error al cargar los datos.',
+                'servicios'=>null
+    
+            );
+            $this->response($respuesta,REST_Controller::HTTP_NOT_FOUND);
+    
+        }
+    }
 }
