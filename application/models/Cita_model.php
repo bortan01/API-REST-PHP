@@ -408,7 +408,6 @@ public function get_citasFormulario(){
  	//$this->db->where(array('estado_cita'=>1));
     $query=$this->db->get();
     return $query->result();
-
 }
 
 public function get_citas(){
@@ -435,5 +434,48 @@ public function get_citas(){
 
  	
 
+	 //VERIFICAR DATOS
+	 public function verificar_camposEntrada($dataCruda)
+	 {
+		 $objeto = array();
+		 ///quitar campos no existentes
+		 foreach ($dataCruda as $nombre_campo => $valor_campo) {
+			 # para verificar si la propiedad existe..
+			 if (property_exists('Cita_model', $nombre_campo)) {
+				 $objeto[$nombre_campo] = $valor_campo;
+			 }
+		 }
+		 return $objeto;
+	 }
 
+	 public function getPasaportes(array $data)
+	 {
+		 $parametros = $this->verificar_camposEntrada($data);
+ 
+		 $this->load->model('Imagen_model');
+		 $this->db->select('*');
+		 $this->db->select('cita.id_cita,usuario.nombre,DATE_FORMAT(cita.fecha, "%d-%m-%Y") as fecha,cita.hora');
+		 $this->db->from('cita');
+		 $this->db->join('usuario', 'usuario.id_cliente=cita.id_cliente','inner');
+		  $this->db->where(array('estado_cita'=>0));
+
+		 $this->db->where($parametros);
+		
+		 $query = $this->db->get();
+ 
+		 $respuesta = $query->result();
+		 foreach ($respuesta as $row) {
+			
+			 $identificador = $row->id_cita;
+			 $respuestaFoto =   $this->Imagen_model->obtenerImagen('pasaportes', $identificador);
+			 if ($respuestaFoto == null) {
+				 //por si no hay ninguna foto mandamos una por defecto
+				 $row->foto = [];
+			 } else {
+				 $row->foto = $respuestaFoto;
+			 }
+		 }
+		 return $respuesta;
+	 }
+ 
 }

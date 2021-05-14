@@ -270,7 +270,30 @@ public function citas_post(){
 
 }
 
-		
+public function pasaportes_get()
+{
+	$data = $this->get();
+	$cita = $this->Cita_model->getPasaportes($data);
+
+	if (isset($cita)) {
+
+		$respuesta = array(
+			'err' => FALSE,
+			'mensaje' => 'Registro Cargado correctamente',
+			'citas' => $cita
+
+		);
+		$this->response($respuesta, REST_Controller::HTTP_OK);
+	} else {
+		$respuesta = array(
+			'err' => TRUE,
+			'mensaje' => 'Error al cargar los datos.',
+			'citas' => null
+
+		);
+		$this->response($respuesta, REST_Controller::HTTP_NOT_FOUND);
+	}
+}	
 
 }
 
