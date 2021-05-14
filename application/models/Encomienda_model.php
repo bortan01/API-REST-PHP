@@ -138,6 +138,7 @@ public function get_encomienda(array $data){
 	//$this->db->select('encomienda.id_encomienda,encomienda.id_usuario, encomienda.ciudad_origen,encomienda.codigo_postal_origen, usuario.nombre, DATE_FORMAT(encomienda.fecha, "%d-%m-%Y") as fecha,encomienda.estado');
 
     $respuesta = $query->result();
+    
     $this->load->model('Imagen_model');
     foreach ($respuesta as $row) {
         

@@ -106,7 +106,32 @@ public function get_formularios_llenos($id){
  	$this->db->where(array('formulario_migratorio.id_cita'=>$id));
     $query=$this->db->get();
 
-    return $query->result();
+    //return $query->result();
+
+    $respuesta = $query->result();
+
+     $this->load->model('Imagen_model');
+    foreach ($respuesta as $row) {
+        
+        $identificador = $row->id_cita;
+        $respuestaFoto =   $this->Imagen_model->obtenerImagenUnica('pasaportes', $identificador);
+        if ($respuestaFoto == null) {
+            //por si no hay ninguna foto mandamos una por defecto
+            $row->foto = "http://localhost/API-REST-PHP/uploads/viaje.png";
+        } else {
+            $row->foto = $respuestaFoto;
+        }
+        $respuestaGaleria =   $this->Imagen_model->obtenerGaleria('pasaportes', $identificador);
+        if ($respuestaGaleria == null) {
+            //por si no hay ninguna foto mandamos una por defecto
+            $row->galeria = [];
+        } else {
+            $row->galeria = $respuestaGaleria;
+        }
+    }
+
+    return $respuesta;
+
 }
 
 public function get_form(){
