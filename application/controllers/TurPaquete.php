@@ -192,4 +192,10 @@ class TurPaquete extends REST_Controller
             $this->response($respuesta, REST_Controller::HTTP_OK);
         }
     }
+    public function analitica_get()
+    {
+        $data = $this->get();
+        $respuesta =  $this->Tours_paquete_model->obtenerAnalitica($data);
+        $this->response($respuesta, REST_Controller::HTTP_OK);
+    }
 }

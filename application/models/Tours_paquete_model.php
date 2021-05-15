@@ -256,7 +256,6 @@ class Tours_paquete_model extends CI_Model
         $requisitos = [];
         $lugar_salida = [];
         $promociones = [];
-        $nombreTur  = "";
         $start = "";
         $end = "";
         $precio = "";
@@ -499,13 +498,22 @@ class Tours_paquete_model extends CI_Model
 
     public function obtenerTransporte($idTour)
     {
-        $this->db->select('filas, asiento_derecho, asiento_izquierdo, fila_trasera, id_tours, id_tipo_servicio');
+        $this->db->select('filas, 
+                           asiento_derecho, 
+                           asiento_izquierdo, 
+                           fila_trasera, 
+                           id_tours, 
+                           id_tipo_servicio,
+                           asientos_deshabilitados
+                        ');
         $this->db->from('detalle_servicio');
         $this->db->join('servicios_adicionales', 'id_servicios');
         $this->db->where('id_tipo_servicio', '2');
         $this->db->where('id_tours', $idTour);
 
-        return $this->db->get()->row();
+        $respuesta = $this->db->get()->row();
+        $respuesta->asientos_deshabilitados =  explode(',', $respuesta->asientos_deshabilitados);
+        return $respuesta;
     }
 
     public function guardarCotizacion(array $data)
@@ -540,7 +548,7 @@ class Tours_paquete_model extends CI_Model
         $this->db->from('cotizar_tourpaquete');
         $this->db->join('usuario', 'id_cliente');
         $this->db->order_by('idCotizar', 'ASC');
-        $this->db->where( 'visto', $parametros['visto']);
+        $this->db->where('visto', $parametros['visto']);
         $query = $this->db->get();
         $cotizaciones  = $query->result();
 
@@ -572,8 +580,6 @@ class Tours_paquete_model extends CI_Model
             );
             return $respuesta;
         }
-
-        
     }
     public function obtenerRespuestas(array $campos = array())
     {
@@ -588,6 +594,79 @@ class Tours_paquete_model extends CI_Model
                 'cotizaciones' => $cotizaciones
             );
             return $respuesta;
-        } 
+        }
+    }
+    public function obtenerAnalitica(array $data)
+    {
+
+
+        $this->db->select('id_cliente,
+                           id_tours,
+                           nombre,
+                           nombreTours,
+                           asientos_seleccionados,
+                           label_asiento,
+                           cantidad_asientos,
+                           start,
+                           end,
+                           requisitos,
+                           fecha_reserva,
+                           formaPagoUtilizada,
+                           monto,
+                           descripcionProducto,
+                           resultadoTransaccion,
+                           tipo');
+        $this->db->from('usuario');
+        $this->db->join('detalle_tour', 'id_cliente');
+        $this->db->join('tours_paquete', 'id_tours');
+        $this->db->join('reserva_tour', 'id_detalle');
+        $this->db->where($data);
+
+
+        $query = $this->db->get();
+        $infoReserva = $query->result();
+        $transporte =  $this->obtenerTransporte($data["id_tours"]);
+        $asientosOcupados = [];
+        $total = 0;
+        $nombre = '';
+        $start = '';
+        $end = '';
+        
+
+        if ($query->conn_id->error == '') {
+            foreach ($infoReserva as  $value) {
+                $total                  += $value->monto;
+                $nombre                  = $value->nombreTours;
+                $start                   = $value->start;
+                $end                     = $value->end;
+                $value->requisitos       = json_decode($value->requisitos, true);
+                $listaAsientos           = explode(',', $value->asientos_seleccionados);
+                foreach ($listaAsientos as $asiento) {
+
+                    array_push($asientosOcupados, $asiento);
+                }
+            }
+
+            $respuesta = array(
+                'err'              => FALSE,
+                'mensaje'          => 'Datos Cargados Exitosamente',
+                'nombre'           => $nombre,
+                'total'            => $total,
+                'start'            => $start,
+                'end'              => $end,
+                'reservas'         => $infoReserva,
+                'transporte'       => $transporte,
+                'ocupados'         => $asientosOcupados
+            );
+
+            return $respuesta;
+        } else {
+            $respuesta = array(
+                'err'              => TRUE,
+                'mensaje'          => 'Error al Cargar Datos',
+                'reservas'         =>  null,
+                'transporte'       =>  null
+            );
+        }
     }
 }
