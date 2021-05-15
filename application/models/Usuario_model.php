@@ -445,4 +445,22 @@ class Usuario_model extends CI_Model
 
     }
 
+    public function get_toursAdquiridos(array $data){
+
+        $parametros = $this->verificar_camposEntrada($data);
+        $aux=$data['id_cliente'];
+       // $where=explode('=',$parametros);
+
+        $this->db->select('*');
+        $this->db->from('detalle_tour' );
+        $this->db->join('usuario', 'detalle_tour.id_cliente = usuario.id_cliente');
+        $this->db->join('tours_paquete', 'detalle_tour.id_tours = tours_paquete.id_tours');
+        $this->db->where('usuario.id_cliente',$aux);
+       
+        //WHERE tours_paquete.tipo="Tour Nacional" || tours_paquete.tipo="Tour Internacional"
+        $query = $this->db->get();
+        return $query->result();
+
+    }
+
 }
