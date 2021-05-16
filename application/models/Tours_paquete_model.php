@@ -145,7 +145,6 @@ class Tours_paquete_model extends CI_Model
         $requisitos = [];
         $lugar_salida = [];
         $promociones = [];
-        $nombreTur  = "";
         $start = "";
         $end = "";
         $precio = "";
@@ -623,19 +622,23 @@ class Tours_paquete_model extends CI_Model
         $this->db->where($data);
 
 
-        $query = $this->db->get();
-        $infoReserva = $query->result();
-        $transporte =  $this->obtenerTransporte($data["id_tours"]);
+        $query            = $this->db->get();
+        $infoReserva      = $query->result();
+        $transporte       = $this->obtenerTransporte($data["id_tours"]);
+        $sitios           = $this->obtenerSitios($data["id_tours"]);
+        $servicios        = $this->obtenerServicios($data["id_tours"]);
         $asientosOcupados = [];
-        $total = 0;
-        $nombre = '';
-        $start = '';
-        $end = '';
-        
+        $totalIngresos    = 0;
+        $totalPasajeros   = 0;
+        $nombre           = '';
+        $start            = '';
+        $end              = '';
+
 
         if ($query->conn_id->error == '') {
             foreach ($infoReserva as  $value) {
-                $total                  += $value->monto;
+                $totalIngresos          += $value->monto;
+                $totalPasajeros         += $value->cantidad_asientos;
                 $nombre                  = $value->nombreTours;
                 $start                   = $value->start;
                 $end                     = $value->end;
@@ -651,10 +654,13 @@ class Tours_paquete_model extends CI_Model
                 'err'              => FALSE,
                 'mensaje'          => 'Datos Cargados Exitosamente',
                 'nombre'           => $nombre,
-                'total'            => $total,
+                'totalIngresos'    => $totalIngresos,
                 'start'            => $start,
                 'end'              => $end,
+                'tatalPasajeros'   => $totalPasajeros,
                 'reservas'         => $infoReserva,
+                'sitios'           => $sitios,
+                'servicios'        => $servicios,
                 'transporte'       => $transporte,
                 'ocupados'         => $asientosOcupados
             );
@@ -668,5 +674,25 @@ class Tours_paquete_model extends CI_Model
                 'transporte'       =>  null
             );
         }
+    }
+    public function obtenerServicios(String $parametros)
+    {
+        $this->db->select('id_servicios,costo,por_usuario,nombre_servicio');
+        $this->db->from("detalle_servicio");
+        $this->db->join('servicios_adicionales', 'id_servicios');
+        $this->db->where('id_tours', $parametros);
+        $query = $this->db->get();
+        $servicios  = $query->result();
+        return $servicios;
+    }
+    public function obtenerSitios(String $parametros)
+    {
+        $this->db->select('id_sitio_turistico,costo,por_usuario,nombre_sitio');
+        $this->db->from("itinerario");
+        $this->db->join('sitio_turistico', 'id_sitio_turistico');
+        $this->db->where('id_tours', $parametros);
+        $query = $this->db->get();
+        $sitios  = $query->result();
+        return $sitios;
     }
 }
