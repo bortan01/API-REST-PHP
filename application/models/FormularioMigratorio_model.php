@@ -294,12 +294,44 @@ if ($conteo2>0) {
     
 
 }
+//para modificar los id de cita en el formulario migratorio
+public function modificar_idformulario($row,$cita){
+		$this->db->set(array('id_cita'=>$cita));
+ 		$this->db->where('id_cita',$row);
+
+ 		$hecho=$this->db->update('formulario_migratorio');
+
+ 		if ($hecho) {
+				#borrado
+				$respuesta=array(
+					'err'=>FALSE,
+					'mensaje'=>'Registro actualizado correctamente',
+					'Categorias'=>$datos
+				);
+
+			
+
+			}else{
+				//error
+
+				$respuesta=array(
+					'err'=>TRUE,
+					'mensaje'=>'Error al actualizar',
+					'error'=>$this->db->_error_message(),
+					'error_num'=>$this->db->_error_number()
+				);
+			
+			}
+ 		return $respuesta;
+}//fin metodo
+
 
 public function insertarRespuestaPersonas($cita,$personas){
 	$this->db->select('id_pregunta');
     $this->db->from('pregunta');
     $this->db->where(array('pregunta'=>'Cuantas personas viajan con usted'));
     $pregunta1=$this->db->get();
+
     $row = $pregunta1->row('id_pregunta');
 
     $this->db->select('id_pregunta');
@@ -316,7 +348,7 @@ public function insertarRespuestaPersonas($cita,$personas){
 
     $this->db->insert('formulario_migratorio',$this);
 
-    for ($i=0; $i < $cantidad_personas ; $i++) { 
+    for ($i=0; $i < $cantidad_personas-1 ; $i++) { 
     	# code...
     	$this->id_pregunta = $row2;
     	$this->id_cita = $cita;

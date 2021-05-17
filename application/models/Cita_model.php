@@ -323,7 +323,7 @@ public function insertCita($id_cliente,$asitencia,$personas,$motivo,$color,$text
 			if ($personas !=NULL) {
 				# code...
 			$cita=$this->db->insert_id();
-			$this->PersonasCitas_model->insertarPersonas($cita,$personas,$pasaporte_personas);
+			$this->PersonasCitas_model->insertarPersonas($id_cliente,$cita,$personas,$pasaporte_personas);
 			}
 		    //}
 			if ($hecho) {
