@@ -457,6 +457,7 @@ public function get_citas(){
 		 $this->db->select('cita.id_cita,usuario.nombre,DATE_FORMAT(cita.fecha, "%d-%m-%Y") as fecha,cita.hora');
 		 $this->db->from('cita');
 		 $this->db->join('usuario', 'usuario.id_cliente=cita.id_cliente','inner');
+		 //$this->db->join('formulario_migratorio','formulario_migratorio.id_cita=cita.id_cita','inner');
 		  $this->db->where(array('estado_cita'=>0));
 
 		 $this->db->where($parametros);

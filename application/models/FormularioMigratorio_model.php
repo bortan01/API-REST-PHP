@@ -7,6 +7,7 @@ class FormularioMigratorio_model extends CI_Model
 	public $id_pregunta;
 	public $id_cita;
 	public $respuesta;
+	public $identificador_persona;
 
 public function usuarioForm($data){
 
@@ -296,6 +297,16 @@ if ($conteo2>0) {
 }
 //para modificar los id de cita en el formulario migratorio
 public function modificar_idformulario($row,$cita){
+
+		//vamos a actualizar el estado de la cita y color
+		$this->db->set(array('estado'=>0,'color'=>'#FF0040'));
+ 		$this->db->where('id_cita',$cita);
+		$this->db->update('cita');//NUEVA CITA
+
+		$this->db->set(array('estado'=>1));
+ 		$this->db->where('id_cita',$row);
+		$this->db->update('cita');//la cita anterior
+		//*****************************
 		$this->db->set(array('id_cita'=>$cita));
  		$this->db->where('id_cita',$row);
 
@@ -342,9 +353,10 @@ public function insertarRespuestaPersonas($cita,$personas){
 
     $cantidad_personas = count($personas);
 
-    $this->id_pregunta = $row;
-    $this->id_cita = $cita;
-    $this->respuesta = $cantidad_personas;
+    $this->id_pregunta            = $row;
+    $this->id_cita                = $cita;
+    $this->respuesta              = $cantidad_personas;
+    $this->identificador_persona  = $cita;
 
     $this->db->insert('formulario_migratorio',$this);
 
@@ -369,9 +381,10 @@ public function insertarFormularios($id_cita,$id_pregunta,$respuestas,$mas_respu
 
 		for ($pivote=0; $pivote < $recorrer1 ; $pivote++) { 
 		# code...
-		$this->id_cita=$id_cita;
-		$this->id_pregunta=$id_pregunta1[$pivote];
-		$this->respuesta=$respuestas1[$pivote];
+		$this->id_cita               = $id_cita;
+		$this->id_pregunta           = $id_pregunta1[$pivote];
+		$this->respuesta             = $respuestas1[$pivote];
+		$this->identificador_persona = $id_cita;
 		//insertar el registro
 	     $this->db->insert('formulario_migratorio',$this);
 	     }
@@ -384,9 +397,9 @@ public function insertarFormularios($id_cita,$id_pregunta,$respuestas,$mas_respu
 
 	 for ($index=0; $index < $contar ; $index++) { 
 		# code...
-		$this->id_cita=$id_cita;
-		$this->id_pregunta=$mas_id[$index];
-		$this->respuesta=$mas_respuesta[$index];
+		$this->id_cita               = $id_cita;
+		$this->id_pregunta           = $mas_id[$index];
+		$this->respuesta             = $mas_respuesta[$index];
 		//insertar el registro
 	    $this->db->insert('formulario_migratorio',$this);
 

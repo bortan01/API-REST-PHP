@@ -116,7 +116,7 @@ public function insertarPersonas($id_cliente,$cita,$personas,$pasaporte_personas
      $cliente_esta = $query_esta->row();//si ya esta el cliete
 
      if (!isset($cliente_esta)) {
-     	# si no el id cliente se ejecutara el siguiente codigo
+     	# si no esta el id cliente se ejecutara el siguiente codigo
 
 	$cuantos=count($personas);//nombre de las personas
 
@@ -164,7 +164,7 @@ public function insertarPersonas($id_cliente,$cita,$personas,$pasaporte_personas
          //BORRAMOS A LAS PERSONAS ANTERIORES
       	$this->db->where('identificador_persona',$row);
         $this->db->delete('formulario_migratorio');
-    //***************
+        //***************
          $cuantos=count($personas);//nombre de las personas
 
 	     $this->load->model('FormularioMigratorio_model');
