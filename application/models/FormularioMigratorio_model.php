@@ -299,11 +299,11 @@ if ($conteo2>0) {
 public function modificar_idformulario($row,$cita){
 
 		//vamos a actualizar el estado de la cita y color
-		$this->db->set(array('estado'=>0,'color'=>'#FF0040'));
+		$this->db->set(array('estado_cita'=>0,'color'=>'#FF0040'));
  		$this->db->where('id_cita',$cita);
 		$this->db->update('cita');//NUEVA CITA
 
-		$this->db->set(array('estado'=>1));
+		$this->db->set(array('estado_cita'=>1));
  		$this->db->where('id_cita',$row);
 		$this->db->update('cita');//la cita anterior
 		//*****************************
