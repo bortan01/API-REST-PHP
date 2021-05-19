@@ -463,4 +463,22 @@ class Usuario_model extends CI_Model
 
     }
 
+    public function get_vuelosCotizaciones(array $data){
+
+        $parametros = $this->verificar_camposEntrada($data);
+        $aux=$data['id_cliente'];
+
+       $this->db->select('*');
+       $this->db->from('cotizacion_vuelo');
+       $this->db->join('aerolinea', 'cotizacion_vuelo.idaerolinea = aerolinea.idaerolinea');
+       $this->db->join('alianza', 'aerolinea.idalianza = alianza.idalianza');
+       $this->db->join('tipo_clase', 'cotizacion_vuelo.idclase = tipo_clase.idclase');
+       $this->db->join('tipo_viaje', 'cotizacion_vuelo.idtipo_viaje = tipo_viaje.idtipo_viaje');
+       $this->db->join('usuario', 'cotizacion_vuelo.id_cliente = usuario.id_cliente');
+
+       $this->db->where('usuario.id_cliente',$aux);
+        $query = $this->db->get();
+        return $query->result();
+
+    }
 }

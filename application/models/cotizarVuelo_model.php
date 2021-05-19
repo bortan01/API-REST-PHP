@@ -8,8 +8,8 @@ class cotizarVuelo_model extends CI_Model
     public $idaerolinea;
     public $idclase;
     public $idtipo_viaje;
-    public $total;
-    public $descuentos;
+    public $total=0;
+    public $descuentos=0;
     public $ciudad_partida;
     public $fechaPartida;
     public $HoraPartida;
