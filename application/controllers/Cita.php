@@ -216,14 +216,14 @@ public function citas_post(){
 
 		$asistencia=$data["asistencia"];
 
-		if (isset($data['asistiran'])) {
+		if (array_filter($data['asistiran'])) {
 			# code...
 			$personas=$data['asistiran'];
 		}else{
 			$personas=NULL;
 		}
 		//para el pasaporte de las personas
-		if (isset($data["pasaporte_personas"])) {
+		if (array_filter($data["pasaporte_personas"])) {
 			# code...
 			$pasaporte_personas=$data["pasaporte_personas"];
 		}else{

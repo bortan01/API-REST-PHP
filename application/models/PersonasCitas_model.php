@@ -117,7 +117,8 @@ public function insertarPersonas($id_cliente,$cita,$personas,$pasaporte_personas
 
      if (!isset($cliente_esta)) {
      	# si no esta el id cliente se ejecutara el siguiente codigo
-
+     if ($personas!=NULL) {
+     	# para que no me limite de entrar ha este metodo
 	$cuantos=count($personas);//nombre de las personas
 
 	$this->load->model('FormularioMigratorio_model');
@@ -150,6 +151,15 @@ public function insertarPersonas($id_cliente,$cita,$personas,$pasaporte_personas
 			
 			}
         return $respuesta;
+      }else{
+
+      	$respuesta=array(
+					'err'=>FALSE,
+					'mensaje'=>'No traes personas a la asesoria'
+				);
+      	return $respuesta;
+
+      }
     }else{
 
     	//si el cliente ya esta en la tabla cita pero ya tomo una asesoria 
@@ -165,21 +175,25 @@ public function insertarPersonas($id_cliente,$cita,$personas,$pasaporte_personas
       	$this->db->where('identificador_persona',$row);
         $this->db->delete('formulario_migratorio');
         //***************
-         $cuantos=count($personas);//nombre de las personas
 
-	     $this->load->model('FormularioMigratorio_model');
-	     $this->FormularioMigratorio_model->insertarRespuestaPersonas($cita,$personas);
-	     //cambiar el id de la cita a las respuesta del formulario
+        //cambiar el id de la cita a las respuesta del formulario
 	     //esto nos ayudara a que una nueva cita de ese cliente pero la misma informacion
 	     $this->FormularioMigratorio_model->modificar_idformulario($row,$cita);
-	
+
+       
+
+        if ($personas!=NULL) {
+		# como es null las personas pero si ya ha tomado una asesoria
+         $cuantos=count($personas);//nombre de las personas
+	    $this->load->model('FormularioMigratorio_model');
+	    $this->FormularioMigratorio_model->insertarRespuestaPersonas($cita,$personas);
 	    for ($i=0; $i < $cuantos-1 ; $i++) {
 		# code...
 		$this->id_cita=$cita;
 	    $this->nombres_personas=$personas[$i];
 	    $this->pasaporte_personas=$pasaporte_personas[$i];
 	    $hecho=$this->db->insert('personas_cita',$this);
-	     }
+	    }//for
 
 			if ($hecho) {
 				#insertado
@@ -200,6 +214,12 @@ public function insertarPersonas($id_cliente,$cita,$personas,$pasaporte_personas
 				);
 			
 			}
+		}else{
+			$respuesta=array(
+					'err'=>FALSE,
+					'mensaje'=>'Exito cambios correctos'
+				);
+		}
         return $respuesta;
 
     }
