@@ -26,6 +26,8 @@ class CotizarVehiculo_model extends CI_Model
         $this->db->from('cotizarvehiculo');
         $this->db->join('usuario', 'cotizarvehiculo.id_usuario = usuario.id_cliente');
         $this->db->join('modelo', 'cotizarvehiculo.modelo = modelo.idmodelo');
+        $this->db->select('DATE_FORMAT(cotizarvehiculo.fechaRecogida,"%d-%m-%Y") as fechaRecogida');
+        $this->db->select('DATE_FORMAT(cotizarvehiculo.fechaDevolucion,"%d-%m-%Y") as fechaDevolucion');
         $this->db->where($parametros);
         $this->db->where_in('cotizarvehiculo.activo',1);
         $this->db->order_by('idcotizarVehiculo', 'desc');

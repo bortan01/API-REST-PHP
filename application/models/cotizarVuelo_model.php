@@ -34,8 +34,8 @@ class cotizarVuelo_model extends CI_Model
         $this->db->join('tipo_clase', 'cotizacion_vuelo.idclase = tipo_clase.idclase');
         $this->db->join('tipo_viaje', 'cotizacion_vuelo.idtipo_viaje = tipo_viaje.idtipo_viaje');
         $this->db->join('usuario', 'cotizacion_vuelo.id_cliente = usuario.id_cliente');
-
-
+        $this->db->select('DATE_FORMAT(cotizacion_vuelo.fechaPartida,"%d-%m-%Y") as fechaPartida');
+        $this->db->select('DATE_FORMAT(cotizacion_vuelo.fechaLlegada,"%d-%m-%Y") as fechaLlegada');
         $this->db->where($parametros);
         $this->db->where_in('cotizacion_vuelo.activo',1);
         $query=$this->db->get();

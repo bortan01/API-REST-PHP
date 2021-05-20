@@ -400,6 +400,8 @@ class Usuario_model extends CI_Model
         //$this->db->join('modelo', 'vehiculo.idmodelo = modelo.idmodelo');
         $this->db->join('cotizarvehiculo', 'cotizarvehiculo.id_usuario = usuario.id_cliente');
         $this->db->join('modelo', 'cotizarvehiculo.modelo = modelo.idmodelo');
+        $this->db->select('DATE_FORMAT(cotizarvehiculo.fechaRecogida,"%d-%m-%Y") as fechaRecogida');
+        $this->db->select('DATE_FORMAT(cotizarvehiculo.fechaDevolucion,"%d-%m-%Y") as fechaDevolucion');
         $this->db->where($parametros);
        
         $query = $this->db->get();
@@ -437,8 +439,9 @@ class Usuario_model extends CI_Model
         $this->db->join('usuario', 'detalle_vehiculo.id_cliente = usuario.id_cliente');
         $this->db->join('vehiculo', 'detalle_vehiculo.id_vehiculo = vehiculo.idvehiculo');
         $this->db->join('modelo', 'vehiculo.idmodelo = modelo.idmodelo');
+        
         $this->db->where('usuario.id_cliente',$otra);
-       
+    
         $query = $this->db->get();
 
         return $query->result();
@@ -475,7 +478,8 @@ class Usuario_model extends CI_Model
        $this->db->join('tipo_clase', 'cotizacion_vuelo.idclase = tipo_clase.idclase');
        $this->db->join('tipo_viaje', 'cotizacion_vuelo.idtipo_viaje = tipo_viaje.idtipo_viaje');
        $this->db->join('usuario', 'cotizacion_vuelo.id_cliente = usuario.id_cliente');
-
+       $this->db->select('DATE_FORMAT(cotizacion_vuelo.fechaPartida,"%d-%m-%Y") as fechaPartida');
+       $this->db->select('DATE_FORMAT(cotizacion_vuelo.fechaLlegada,"%d-%m-%Y") as fechaLlegada');
        $this->db->where('usuario.id_cliente',$aux);
         $query = $this->db->get();
         return $query->result();

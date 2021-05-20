@@ -20,7 +20,7 @@ class Mantenimiento_model extends CI_Model
         $this->db->join('marca_vehiculo', 'modelo.id_marca = marca_vehiculo.id_marca');
         $this->db->join('vehiculo', 'vehiculo.idmodelo = modelo.idmodelo');
         $this->db->join('mantenimiento', 'mantenimiento.id_vehiculoFK = vehiculo.idvehiculo');
-        
+        $this->db->select('DATE_FORMAT(mantenimiento.fecha_mantenimiento,"%d-%m-%Y") as fecha_mantenimiento');
         $this->db->where($parametros);//id_mantenimeto=1
         $this->db->where_in('mantenimiento.activo_mantenimiento',1);
         $query=$this->db->get();
