@@ -22,7 +22,7 @@ public function existSioNo($data){
 			$respuesta=array(
 				'err'=>TRUE,
 				'mensaje'=>'La cita no existe',
-				'existe'=>$data
+				'existe'=>$cita
 			);
 			return $respuesta;
 			}else{

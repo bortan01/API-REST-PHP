@@ -384,7 +384,6 @@ public function insertarFormularios($id_cita,$id_pregunta,$respuestas,$mas_respu
 		$this->id_cita               = $id_cita;
 		$this->id_pregunta           = $id_pregunta1[$pivote];
 		$this->respuesta             = $respuestas1[$pivote];
-		$this->identificador_persona = $id_cita;
 		//insertar el registro
 	     $this->db->insert('formulario_migratorio',$this);
 	     }

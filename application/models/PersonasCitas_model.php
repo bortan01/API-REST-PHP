@@ -111,10 +111,10 @@ public function modificarPersona($id_cita,$input,$asistiran,$inputPas,$pasaporte
 
 public function insertarPersonas($id_cliente,$cita,$personas,$pasaporte_personas){
 	//no mas llega esta informacion pregunto esta el cliente registrado en la tabla citas
-	 $query_esta   = $this->db->where(array('id_cliente'=>$id_cliente) );
+	 $query_esta   = $this->db->where(array('id_cliente'=>$id_cliente,'color'=>'#FF0040') );
 	 $query_esta   = $this->db->get('cita');
      $cliente_esta = $query_esta->row();//si ya esta el cliete
-
+     var_dump(!isset($cliente_esta));
      if (!isset($cliente_esta)) {
      	# si no esta el id cliente se ejecutara el siguiente codigo
      if ($personas!=NULL) {
