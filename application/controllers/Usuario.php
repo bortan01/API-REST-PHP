@@ -252,6 +252,7 @@ class Usuario extends REST_Controller
     {
         $data = $this->put();
         // $data['ultimaConexion'] = DateTime::createFromFormat('d/m/Y',  new DateTime())->format('Y-m-d');
+        date_default_timezone_set('America/El_Salvador');
         $data['ultimaConexion'] = date("Y-m-d h:i:s");
         $this->load->library("form_validation");
         $this->form_validation->set_data($data);
@@ -272,6 +273,8 @@ class Usuario extends REST_Controller
             $this->response($respuesta, REST_Controller::HTTP_BAD_REQUEST);
         }
     }
+
+
 
     public function datosUsuario_get(){
 
@@ -428,5 +431,14 @@ class Usuario extends REST_Controller
             $this->response($respuesta,REST_Controller::HTTP_NOT_FOUND);
     
         }
+    }
+    public function obtenerAdminByChat_get()
+    {
+        $respuesta =  $this->Usuario_model->getAdminByChat();
+
+        if ($respuesta  == null) {
+            $this->response(array('mensaje' => 'no se encontro administrador'), REST_Controller::HTTP_BAD_REQUEST);
+        }
+        $this->response($respuesta, REST_Controller::HTTP_OK);
     }
 }

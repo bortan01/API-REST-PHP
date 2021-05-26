@@ -65,6 +65,7 @@ class Firebase_model extends CI_Model
         try {
             $auth = $this->firebase->createAuth();
             $signInResult = $auth->signInWithEmailAndPassword($email, $clearTextPassword);
+           
 
             $data = $signInResult->data();
             $uid = $data['localId'];
