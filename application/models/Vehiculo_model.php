@@ -317,8 +317,8 @@ class Vehiculo_model extends CI_Model
         $this->db->join('reserva_vehiculo', 'id_detalle');
         $this->db->join('transmisionvehiculo', 'vehiculo.id_transmicionFK = transmisionvehiculo.idtransmicion');
         $this->db->join('categoria', 'idcategoria');
-
-        $this->db->where($parametros);
+       
+        $this->db->where('id_cliente',$parametros['id_cliente']);
 
         $query     = $this->db->get();
         $respuesta = $query->result();
