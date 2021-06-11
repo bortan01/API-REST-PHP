@@ -260,6 +260,7 @@ class Tours_paquete_model extends CI_Model
         $precio = "";
         $cupos_disponibles = "";
         $descripcion_tur = "";
+        $nombreTurX ="";
 
         //INFORMACION GENERAL DE TUR O PAQUETE
         $this->db->select('descripcion_tur,incluye,no_incluye,requisitos,lugar_salida, promociones,cupos_disponibles,nombreTours,start,end,precio', "descripcion_tur");
