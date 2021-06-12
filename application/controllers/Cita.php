@@ -200,6 +200,26 @@ public function cita_get(){
 
 	}
 }
+//***********visualizar citas pagina web
+public function citaWeb_get(){
+	$data=$this->get();
+	$citaWeb=$this->Cita_model->get_citasWeb($data);
+
+	if (isset($citaWeb)) {
+		
+		$this->response($citaWeb);
+	}else{
+		$respuesta=array(
+			'err'=>TRUE,
+			'mensaje'=>'Error al cargar los datos.',
+			'citas'=>null
+
+		);
+		$this->response($respuesta,REST_Controller::HTTP_NOT_FOUND);
+
+	}
+}
+//**********************
 
 
 public function citas_post(){

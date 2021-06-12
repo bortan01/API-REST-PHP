@@ -419,6 +419,23 @@ public function get_citas(){
     return $query->result();
 }
 
+//*********citas pagina web
+public function get_citasWeb($data){
+
+	$parametros = $this->verificar_camposEntrada($data);
+	$where=$parametros['id_cliente']; 
+
+
+ 	$this->db->select('*');
+    $this->db->from('cita');
+ 	$this->db->join('usuario', 'usuario.id_cliente=cita.id_cliente','inner');
+ 	$this->db->where('cita.id_cliente',$where);
+    $query=$this->db->get();
+    return $query->result();
+}
+
+//*********************
+
     public function set_datos($data_cruda){
     	 $objeto =array();
         ///par aquitar campos no existentes
