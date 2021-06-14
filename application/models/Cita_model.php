@@ -315,6 +315,17 @@ public function insertCita($id_cliente,$asitencia,$personas,$motivo,$color,$text
 			$this->hora=$hora;
 			$this->pasaporte=$pasaporte;
 
+
+			//ANTES DE INSERTAR NECESITO ESTE ID
+			//vamos a extraer el id de la cita con que se registro la primera vez
+            $this->db->select('id_cita,fecha');
+         	$this->db->from('cita');
+         	$this->db->where('id_cliente',$id_cliente);
+         	$this->db->order_by('id_cita', 'DESC');
+         	$id_citaExistente=$this->db->get();
+         	$row = $id_citaExistente->row('id_cita');
+			////************************
+
 			$this->load->model('PersonasCitas_model');
 			
 			//for ($i=0; $i <$cuantos ; $i++) {
@@ -323,7 +334,7 @@ public function insertCita($id_cliente,$asitencia,$personas,$motivo,$color,$text
 			//if ($personas !=NULL) {
 				# code...
 			$cita=$this->db->insert_id();
-			$this->PersonasCitas_model->insertarPersonas($id_cliente,$cita,$personas,$pasaporte_personas);
+			$this->PersonasCitas_model->insertarPersonas($id_cliente,$cita,$personas,$pasaporte_personas,$row);
 			//}
 		    //}
 			if ($hecho) {

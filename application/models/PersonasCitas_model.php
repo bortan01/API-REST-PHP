@@ -109,7 +109,7 @@ public function modificarPersona($id_cita,$input,$asistiran,$inputPas,$pasaporte
 
 }//modificarPersonas
 
-public function insertarPersonas($id_cliente,$cita,$personas,$pasaporte_personas){
+public function insertarPersonas($id_cliente,$cita,$personas,$pasaporte_personas,$row){
 	//no mas llega esta informacion pregunto esta el cliente registrado en la tabla citas
 	 $query_esta   = $this->db->where(array('id_cliente'=>$id_cliente,'color'=>'#FF0040') );
 	 $query_esta   = $this->db->get('cita');
@@ -164,17 +164,16 @@ public function insertarPersonas($id_cliente,$cita,$personas,$pasaporte_personas
       }
     }else{
 
-    	//si el cliente ya esta en la tabla cita pero ya tomo una asesoria 
-
-         //vamos a extraer el id de la cita con que se registro la primera vez
-         $this->db->select('id_cita');
-         $this->db->from('cita');
-         $this->db->where(array('id_cliente'=>$id_cliente));
-         $id_citaExistente=$this->db->get();
-         $row = $id_citaExistente->row('id_cita');
+    	//si el cliente ya esta en la tabla cita pero ya tomo una asesoria
+    	/*
+    	 $this->db->select('main.*'); 
+     $this->db->from("ci_table main"); 
+     $this->db->order_by("main.id", "DESC"); 
+     return $this->db->get()->result(); 
+    	*/
          
-          var_dump($row);
-          die();
+          var_dump('aqi estoy'.$row);
+          //die();
          //********************
          //BORRAMOS A LAS PERSONAS ANTERIORES
       	$this->db->where('identificador_persona',$row);
