@@ -113,8 +113,10 @@ public function insertarPersonas($id_cliente,$cita,$personas,$pasaporte_personas
 	//no mas llega esta informacion pregunto esta el cliente registrado en la tabla citas
 	 $query_esta   = $this->db->where(array('id_cliente'=>$id_cliente,'color'=>'#FF0040') );
 	 $query_esta   = $this->db->get('cita');
-     $cliente_esta = $query_esta->row();//si ya esta el cliete
-     var_dump(!isset($cliente_esta));
+      $cliente_esta = $query_esta->row();//si ya esta el cliete
+
+    // var_dump(!isset($cliente_esta));
+
      if (!isset($cliente_esta)) {
      	# si no esta el id cliente se ejecutara el siguiente codigo
      if ($personas!=NULL) {
@@ -170,13 +172,14 @@ public function insertarPersonas($id_cliente,$cita,$personas,$pasaporte_personas
          $this->db->where(array('id_cliente'=>$id_cliente));
          $id_citaExistente=$this->db->get();
          $row = $id_citaExistente->row('id_cita');
+         
+          var_dump($row);
+          die();
          //********************
          //BORRAMOS A LAS PERSONAS ANTERIORES
       	$this->db->where('identificador_persona',$row);
-        $this->db->delete('formulario_migratorio');
-        //***************
-        var_dump($cita);
-        var_dump($row);
+         $this->db->delete('formulario_migratorio');
+         //***************
         //cambiar el id de la cita a las respuesta del formulario
 	     //esto nos ayudara a que una nueva cita de ese cliente pero la misma informacion
          $this->load->model('FormularioMigratorio_model');

@@ -19,8 +19,9 @@ class CotizarVehiculo_model extends CI_Model
     public $activo = TRUE;
     
     public function get_cotizar(array $data){
-
-
+//aqui saco todas las cotizaciones de 1 persona, asi sale mas facil mostrar los datos en elreporte//
+///porque solo accede a la consulta
+//eso estaba analizando
         $parametros = $this->verificar_camposEntrada($data);
         $this->db->select('*');
         $this->db->from('cotizarvehiculo');
