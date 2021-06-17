@@ -98,7 +98,22 @@ public function modificar_formulario($datos){
 			}
  		return $respuesta;
 }//fin metodo
+//para el reporte no quiero hacer otra api reutilizo
+public function clienteFormulario($id){
 
+	$this->db->select('id_cliente');
+    $this->db->from('cita');
+    $this->db->where(array('id_cita'=>$id));
+    $id=$this->db->get();
+    $row = $id->row('id_cliente');
+
+    $this->db->select('*');
+    $this->db->from('usuario');
+    $this->db->where(array('id_cliente'=>$row));
+    $res=$this->db->get();
+    return $res->result();
+}
+//fin para el reporte
 public function get_formularios_llenos($id){
 	$this->db->select('*');
     $this->db->from('pregunta');

@@ -75,13 +75,13 @@ public function updateFormulario_post(){
 		}
 
 }//fin de metodo
-
+ 
 public function formulariosLlenos_get(){
 
 	$id =$this->uri->segment(3);
-	$opciones=$this->Pregunta_model->get_opciones();
-	$formulario=$this->FormularioMigratorio_model->get_formularios_llenos($id);
-
+	$opciones       = $this->Pregunta_model->get_opciones();
+	$formulario     = $this->FormularioMigratorio_model->get_formularios_llenos($id);
+	$clienteReporte = $this->FormularioMigratorio_model->clienteFormulario($id);
 	if (isset($formulario)) {
 		//quitar campos que no quiero
 		//unset($cliente->telefono1);
@@ -90,7 +90,8 @@ public function formulariosLlenos_get(){
 			'err'=>FALSE,
 			'mensaje'=>'Registro Cargado correctamente',
 			'formulario'=>$formulario,
-			'opciones'=>$opciones
+			'opciones'=>$opciones, 
+			'cliente'=>$clienteReporte
 
 		);
 		$this->response($respuesta);
