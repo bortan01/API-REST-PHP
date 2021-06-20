@@ -321,8 +321,36 @@ public function updateCerrada_post(){
 
 	 }
 
+  
 	}
 	//**********fin de actualizar
+	//para el REPORTE el servicio rest
+	public function reporteMigratorio_get(){
+		$todasRamas = $this->Rama_model->get_rama();
+		$pregunta=$this->Pregunta_model->get_pregunta();
+
+	if (isset($pregunta)) {
+		//quitar campos que no quiero
+		//unset($cita->motivo);
+		//unset($cliente->telefono2);
+		$respuesta=array('err'=>FALSE,
+						 'mensaje'=>'Registros cargados correctamente',
+						  'preguntas'=>$pregunta,
+						  'ramas'=>$todasRamas);
+
+		$this->response($respuesta);
+	}else{
+		$respuesta=array(
+			'err'=>TRUE,
+			'mensaje'=>'Error al cargar los datos.',
+			'citas'=>null
+
+		);
+		$this->response($respuesta,REST_Controller::HTTP_NOT_FOUND);
+
+	}
+	}
+	//fin de para el reporte
 	//************rama get**/***************************
 	public function ramita_get(){
 		$rama=$this->Rama_model->get_rama();
