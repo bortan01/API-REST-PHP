@@ -11,6 +11,7 @@ public function __construct(){
 		$this->load->model('Cita_model');
 		$this->load->model('Pregunta_model');
 		$this->load->model('FormularioMigratorio_model');
+		$this->load->model('Rama_model');
 
 	}
 
@@ -81,6 +82,7 @@ public function formulariosLlenos_get(){
 	$id =$this->uri->segment(3);
 	$opciones       = $this->Pregunta_model->get_opciones();
 	$formulario     = $this->FormularioMigratorio_model->get_formularios_llenos($id);
+	$ramas = $this->Rama_model->get_rama();
 	$clienteReporte = $this->FormularioMigratorio_model->clienteFormulario($id);
 	if (isset($formulario)) {
 		//quitar campos que no quiero
@@ -91,8 +93,8 @@ public function formulariosLlenos_get(){
 			'mensaje'=>'Registro Cargado correctamente',
 			'formulario'=>$formulario,
 			'opciones'=>$opciones, 
-			'cliente'=>$clienteReporte
-
+			'cliente'=>$clienteReporte,
+			'ramas'=>$ramas
 		);
 		$this->response($respuesta);
 	}else{
