@@ -12,31 +12,29 @@ public function __construct(){
 	}
 
 	public function bitacora_get(){
-
 		$data = $this->get();
-		$detalles=$this->Bitacora_model->get_bitacora($data);
-	
-		if (isset($detalles)) {
-			
-			$respuesta=array(
-				'err'=>FALSE,
-				'mensaje'=>'Registro Cargado correctamente',
-				'bitacora'=>$detalles
-	
-			);
-			$this->response($respuesta,REST_Controller::HTTP_OK);
-		}else{
-			$respuesta=array(
-				'err'=>TRUE,
-				'mensaje'=>'Error al cargar los datos.',
-				'bitacora'=>null
-	
-			);
-			$this->response($respuesta,REST_Controller::HTTP_NOT_FOUND);
-	
-		}
+	    $clase=$this->Bitacora_model->get_bitacora($data);
+
+	if (isset($clase)) {
+		
+		$respuesta=array(
+			'err'=>FALSE,
+			'mensaje'=>'Registro Cargado correctamente',
+			'bitacora'=>$clase
+
+		);
+		$this->response($respuesta,REST_Controller::HTTP_OK);
+	}else{
+		$respuesta=array(
+			'err'=>TRUE,
+			'mensaje'=>'Error al cargar los datos.',
+			'bitacora'=>null
+
+		);
+		$this->response($respuesta,REST_Controller::HTTP_NOT_FOUND);
+
+	}
 }
-	
 	//INSERTAR
 	public function insertarBitacora_post(){
 
@@ -111,4 +109,6 @@ public function __construct(){
             }
         }
     }
+
+
 }

@@ -15,6 +15,8 @@ class Bitacora_model extends CI_Model
         $this->db->select('*');
         $this->db->from('bitacora');
         $this->db->join('usuario', 'bitacora.idusuario = usuario.id_cliente');
+        $this->db->select('DATE_FORMAT(bitacora.fecha_bitacora,"%d-%m-%Y") as fecha_bitacora');
+
         $this->db->where($parametros);
         $query = $this->db->get();
         return $query->result();
@@ -140,5 +142,8 @@ class Bitacora_model extends CI_Model
             return $respuesta;
         }
     }
+
+ 
+    
    
 }
