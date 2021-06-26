@@ -95,6 +95,55 @@ public function productosTabla_get(){
 	}
 }//fin metodo
 
+//productos activos
+public function productosActivos_get(){
+
+	$product=$this->Producto_model->get_productoActivo();
+	if (isset($product)) {
+		//quitar campos que no quiero
+		//unset($cliente->telefono1);
+		//sunset($cliente->telefono2);
+		$respuesta=array(
+			'err'=>FALSE,
+			'mensaje'=>'Productos Activos registrados',
+			'product'=>$product
+		);
+		$this->response($respuesta);
+	}else{
+		$respuesta=array(
+			'err'=>TRUE,
+			'mensaje'=>'Error al cargar los datos.'
+		);
+		$this->response($respuesta,REST_Controller::HTTP_NOT_FOUND);
+
+	}
+}//fin metodo
+//fin de productos activos
+//productos inactivos
+public function productosInactivos_get(){
+
+	$product=$this->Producto_model->get_productoInactivos();
+	if (isset($product)) {
+		//quitar campos que no quiero
+		//unset($cliente->telefono1);
+		//sunset($cliente->telefono2);
+		$respuesta=array(
+			'err'=>FALSE,
+			'mensaje'=>'Productos Inactivos registrados',
+			'product'=>$product
+		);
+		$this->response($respuesta);
+	}else{
+		$respuesta=array(
+			'err'=>TRUE,
+			'mensaje'=>'Error al cargar los datos.'
+		);
+		$this->response($respuesta,REST_Controller::HTTP_NOT_FOUND);
+
+	}
+}//fin metodo
+//fin de productos inactivos
+
 public function productos_get(){
 
 	$product=$this->Producto_model->get_producto();
