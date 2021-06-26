@@ -99,6 +99,7 @@ public function encomiendaModificar_get(){
 	$data = $this->get();
 	$enco=$this->Encomienda_model->get_encomiendaModificar($data);
 	$destino=$this->Encomienda_model->get_encomiendaDestino($data);
+	$detalle_encomienda= $this->DetalleEncomienda_model->get_detalle($data);
 
 	if (isset($enco)) {
 		
@@ -106,7 +107,8 @@ public function encomiendaModificar_get(){
 			'err'=>FALSE,
 			'mensaje'=>'Registro Cargado correctamente',
 			'Encomiendas'=>$enco,
-			'Detalles_destino'=>$destino
+			'Detalles_destino'=>$destino, 
+			'detalle'=>$detalle_encomienda
 
 		);
 		$this->response($respuesta);
