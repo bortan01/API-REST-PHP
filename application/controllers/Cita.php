@@ -57,72 +57,16 @@ public function updateCita_post(){
 		$data=$this->post();
 		//recogere los datos para pode concatenar
 		$id_cita=$data["id_cita"];
-
+		$compania=$data["asistencia"];
+        $personas=$data["asistiran"];
+		$pasaporte_personas=$data["pasaporte_personas"];
+		$cuantos=$data["cuantos"];
+		$hora = $data["start"];
 		$partes=explode("-",$data["fecha"]);
 		$fechaConvertida=$partes[2].'-'.$partes[1].'-'.$partes[0];
 		$fecha=$fechaConvertida;
 
-		$compania=$data["asistencia"];
-
-		//como siempre me trae un valor por ser el input que espera un valor
-		if (isset($data["asistiran"])) {
-			# cuando el input este disable true
-
-		    if (array_filter($data["asistiran"])) {
-			# code...
-		    $asistiran=$data["asistiran"];
-		    //$asistiran=NULL;
-			
-		    }else{
-		    //$asistiran=$data["asistiran"];
-			$asistiran=NULL;
-		   }
-
-		//*******problema input
-		}else{ $asistiran=NULL;}
-
-		//***PARA LOS PASAPORTES QUE CAPTURAMOS
-		//como siempre me trae un valor por ser el input que espera un valor
-		if (isset($data["pasaporte_personas"])) {
-			# cuando el input este disable true
-
-		    if (array_filter($data["pasaporte_personas"])) {
-			# code...
-		    $pasaporte_personas=$data["pasaporte_personas"];
-		    }else{
-		    
-			$pasaporte_personas=NULL;
-		   }
-
-		//*******problema input
-		}else{ $pasaporte_personas=NULL;}
-
-		//****FIN DE LOS PASAPORTES
-		
-		//son los datos que manda el input simple que tiene los nombres cargados de las
-		//personas que asistiran
-		if (empty($data["input"])) {
-			# code...
-		     $input=NULL;
-		}else{
-			
-			 $input=$data["input"];
-		}
-
-		//son los datos que manda el inputPas simple que contiene los numeros de los pasaportes
-
-		if (empty($data["inputPas"])) {
-			# code...
-			$inputPas=NULL;
-		}else{
-			$inputPas=$data["inputPas"];
-		}
-		
-	    $start=$fechaConvertida.' '.$data["start"];
-		$hora=$data["start"];
-
-		//$verificar=$this->Cita_model->set_datos($data);
-        $respuesta=$this->Cita_model->modificar_cita($id_cita,$fecha,$compania,$input,$asistiran,$hora,$inputPas,$pasaporte_personas,$start);
+       $respuesta=$this->Cita_model->modificar_cita($id_cita,$compania,$personas,$pasaporte_personas,$cuantos,$hora,$fecha);
 
         if ($respuesta['err']) {
         	# code...
@@ -130,8 +74,6 @@ public function updateCita_post(){
         }else{
         	$this->response($respuesta);
         }
-
-	    
 
 }//fin de metodo
 public function formularioMigratorioCitas_get(){

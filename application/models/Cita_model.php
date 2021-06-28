@@ -189,7 +189,7 @@ public function formularioModificar($id){
     $respuestas=$this->db->update('cita');
     return $respuestas;
 }
-public function modificar_cita($id_cita,$fecha,$compania,$input,$asistiran,$hora,$inputPas,$pasaporte_personas){
+public function modificar_cita($id_cita,$compania,$personas,$pasaporte_personas,$cuantos,$hora,$fecha){
 		//$this->db->set($datos);
 		$horas_validas= array(
 						0 =>'8:00 AM',
@@ -222,18 +222,19 @@ public function modificar_cita($id_cita,$fecha,$compania,$input,$asistiran,$hora
 
 	     if (isset($cita)) {
 
-	    $this->load->model('PersonasCitas_model');//cargo el modelo para actualizar en la otra tabla si es necesario
 		$datos=array(
 			'compania'=>$compania,
 			'start'=>$fecha.' '.$hora,
+			'personas_citas'=>$personas,
+			'pasaporte_personas'=>$pasaporte_personas,
 			'hora'=>$hora
 		);
 
 		$this->db->set($datos);
         $this->db->where('id_cita',$id_cita);
         $hecho=$this->db->update('cita');
-
-        $this->PersonasCitas_model->modificarPersona($id_cita,$input,$asistiran,$inputPas,$pasaporte_personas);
+        //modificar elformulario migratorio despues
+        //$this->PersonasCitas_model->modificarPersona($id_cita,$input,$asistiran,$inputPas,$pasaporte_personas);
 
  		if ($hecho) {
 				#borrado
