@@ -16,9 +16,25 @@ public $pasaporte;
 public $personas_citas;
 public $pasaporte_personas;
 
-public function existSioNo($data){
-	$query=$this->db->get_where('cita',array('id_cliente'=>$data['id_cliente']) );
-		$cita=$query->row();
+public function verCita($data){
+
+	$personas = []; 
+	$pasaportes = [];
+
+	$query=$this->db->get_where('cita',array('id_cita'=>$data['id_cita']) );
+	$cita=$query->row();
+	$result  = $query->result();
+
+	/*$this->db->select('*');
+    $this->db->from("cita");
+    $this->db->where('id_cliente',$data['id_cliente']);
+    $cita = $this->db->get();
+    $result  = $cita->result();*/
+
+        foreach ($result as $per) {
+            $personas =  json_decode($per->personas_citas, true);
+            $pasaportes =  json_decode($per->pasaporte_personas, true);
+        }
 
 			if (!isset($cita)) {
 			$respuesta=array(
@@ -31,7 +47,49 @@ public function existSioNo($data){
 				$respuesta=array(
 				'err'=>TRUE,
 				'mensaje'=>'Existe',
+				'existe'=>$cita,
+				'personas'=>$personas,
+				'pasaportes'=>$pasaportes
+			);
+			return $respuesta;
+			}
+
+}
+
+public function existSioNo($data){
+
+	$personas = []; 
+	$pasaportes = [];
+
+	$query=$this->db->get_where('cita',array('id_cliente'=>$data['id_cliente']) );
+	$cita=$query->row();
+	$result  = $query->result();
+
+	/*$this->db->select('*');
+    $this->db->from("cita");
+    $this->db->where('id_cliente',$data['id_cliente']);
+    $cita = $this->db->get();
+    $result  = $cita->result();*/
+
+        foreach ($result as $per) {
+            $personas =  json_decode($per->personas_citas, true);
+            $pasaportes =  json_decode($per->pasaporte_personas, true);
+        }
+
+			if (!isset($cita)) {
+			$respuesta=array(
+				'err'=>TRUE,
+				'mensaje'=>'La cita no existe',
 				'existe'=>$cita
+			);
+			return $respuesta;
+			}else{
+				$respuesta=array(
+				'err'=>TRUE,
+				'mensaje'=>'Existe',
+				'existe'=>$cita,
+				'personas'=>$personas,
+				'pasaportes'=>$pasaportes
 			);
 			return $respuesta;
 			}

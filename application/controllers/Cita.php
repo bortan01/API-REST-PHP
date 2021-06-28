@@ -20,6 +20,12 @@ public function verificarExist_get(){
 	 $this->response($respuesta);
 
 }
+
+public function verCita_get(){
+	 $data=$this->get(); 
+	 $respuesta=$this->Cita_model->verCita($data);
+	 $this->response($respuesta);
+}
 public function deleteCita_post(){
 
 	 $data=$this->post();
