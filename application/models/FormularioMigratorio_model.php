@@ -356,7 +356,7 @@ public function modificar_idformulario($row,$cita){
 }//fin metodo
 
 
-public function insertarRespuestaPersonas($cita,$personas){
+public function insertarRespuestaPersonas($cita,$personas,$cuantos){
 	$this->db->select('id_pregunta');
     $this->db->from('pregunta');
     $this->db->where(array('pregunta'=>'Cuantas personas viajan con usted'));
@@ -368,25 +368,22 @@ public function insertarRespuestaPersonas($cita,$personas){
     $this->db->from('pregunta');
     $this->db->where(array('pregunta'=>'Nombre de las personas'));
     $pregunta2=$this->db->get();
-     $row2 = $pregunta2->row('id_pregunta');
+    $row2 = $pregunta2->row('id_pregunta');
 
-    $cantidad_personas = count($personas);
-
+    //pregunta:Cuantas personas viajan con usted
     $this->id_pregunta            = $row;
     $this->id_cita                = $cita;
-    $this->respuesta              = $cantidad_personas;
+    $this->respuesta              = $cuantos;
     $this->identificador_persona  = $cita;
 
     $this->db->insert('formulario_migratorio',$this);
 
-    for ($i=0; $i < $cantidad_personas-1 ; $i++) { 
-    	# code...
-    	$this->id_pregunta = $row2;
-    	$this->id_cita = $cita;
-    	$this->respuesta = $personas[$i];
-    	$this->identificador_persona  = $cita;
-    	$this->db->insert('formulario_migratorio',$this);
-    }
+   //pregunta: Nombre de las personas
+    $this->id_pregunta = $row2;
+    $this->id_cita = $cita;
+    $this->respuesta = $personas;
+    $this->identificador_persona  = $cita;
+    $this->db->insert('formulario_migratorio',$this);
 
 }
 

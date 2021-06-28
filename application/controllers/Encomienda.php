@@ -11,6 +11,7 @@ public function __construct(){
 		$this->load->model('Encomienda_model');
 		$this->load->model('DetalleEncomienda_model');
 		$this->load->model('DetalleDestino_model');
+		$this->load->model('DetalleEnvio_model');
 
 	}
 
@@ -97,10 +98,10 @@ public function encomiendaActualizar_get(){
 public function encomiendaModificar_get(){
 
 	$data = $this->get();
-	$enco=$this->Encomienda_model->get_encomiendaModificar($data);
-	$destino=$this->Encomienda_model->get_encomiendaDestino($data);
-	$detalle_encomienda= $this->DetalleEncomienda_model->get_detalle($data);
-
+	$enco               = $this->Encomienda_model->get_encomiendaModificar($data);
+	$destino            = $this->Encomienda_model->get_encomiendaDestino($data);
+	$detalle_encomienda = $this->DetalleEncomienda_model->get_detalle($data);
+	$historial          = $this->DetalleEnvio_model->get_detallesEnvio($data);
 	if (isset($enco)) {
 		
 		$respuesta=array(
@@ -108,7 +109,8 @@ public function encomiendaModificar_get(){
 			'mensaje'=>'Registro Cargado correctamente',
 			'Encomiendas'=>$enco,
 			'Detalles_destino'=>$destino, 
-			'detalle'=>$detalle_encomienda
+			'detalle'=>$detalle_encomienda,
+			'historial'=>$historial
 
 		);
 		$this->response($respuesta);

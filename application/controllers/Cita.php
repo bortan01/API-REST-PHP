@@ -235,22 +235,8 @@ public function citas_post(){
 		$id_cliente=$data["id_cliente"];
 
 		$asistencia=$data["asistencia"];
-
-		if (array_filter($data['asistiran'])) {
-			# code...
-			$personas=$data['asistiran'];
-		}else{
-			$personas=NULL;
-		}
-		//para el pasaporte de las personas
-		if (array_filter($data["pasaporte_personas"])) {
-			# code...
-			$pasaporte_personas=$data["pasaporte_personas"];
-		}else{
-			$pasaporte_personas=NULL;
-		}
-		//*********fin de los pasaporte
-
+        $personas=$data['asistiran'];
+		$pasaporte_personas=$data["pasaporte_personas"];
 		$motivo=$data["title"].': '.$data["usuario"];
 		$color="#007bff";
 		$textColor="#FFFFFF";
@@ -261,8 +247,9 @@ public function citas_post(){
 		$fecha=$fechaConvertida;
 		$hora=$data["start"];
 		$pasaporte=$data["pasaporte"];
+		$cuantos= $data["cuantos"]; //personas que asisten a la cita
 
-		$respuesta=$this->Cita_model->insertCita($id_cliente,$asistencia,$personas,$motivo,$color,$textColor,$start,$fecha,$hora,$pasaporte,$pasaporte_personas); 
+		$respuesta=$this->Cita_model->insertCita($id_cliente,$asistencia,$personas,$motivo,$color,$textColor,$start,$fecha,$hora,$pasaporte,$pasaporte_personas,$cuantos); 
 
 		if ($respuesta['err']) {
 

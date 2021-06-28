@@ -13,6 +13,8 @@ public $start;
 public $fecha;
 public $hora;
 public $pasaporte;
+public $personas_citas;
+public $pasaporte_personas;
 
 public function existSioNo($data){
 	$query=$this->db->get_where('cita',array('id_cliente'=>$data['id_cliente']) );
@@ -266,7 +268,7 @@ public function modificar_cita($id_cita,$fecha,$compania,$input,$asistiran,$hora
     }	//else pollo
 }//function
 
-public function insertCita($id_cliente,$asitencia,$personas,$motivo,$color,$textColor,$start,$fecha,$hora,$pasaporte,$pasaporte_personas){
+public function insertCita($id_cliente,$asitencia,$personas,$motivo,$color,$textColor,$start,$fecha,$hora,$pasaporte,$pasaporte_personas,$cuantos){
 		//insertar el registro
 		$horas_validas= array(
 						0 =>'8:00 AM',
@@ -314,9 +316,11 @@ public function insertCita($id_cliente,$asitencia,$personas,$motivo,$color,$text
 			$this->fecha=$fecha;
 			$this->hora=$hora;
 			$this->pasaporte=$pasaporte;
+			$this->personas_citas=$personas; 
+			$this->pasaporte_personas=$pasaporte_personas;
 
-
-			//ANTES DE INSERTAR NECESITO ESTE ID
+		
+			/*//ANTES DE INSERTAR NECESITO ESTE ID  ESTO YA VEREMOS
 			//vamos a extraer el id de la cita con que se registro la primera vez
             $this->db->select('id_cita,fecha');
          	$this->db->from('cita');
@@ -325,8 +329,8 @@ public function insertCita($id_cliente,$asitencia,$personas,$motivo,$color,$text
          	$id_citaExistente=$this->db->get();
          	$row = $id_citaExistente->row('id_cita');
 			////************************
-
-			$this->load->model('PersonasCitas_model');
+			*/
+			/*$this->load->model('PersonasCitas_model');
 			
 			//for ($i=0; $i <$cuantos ; $i++) {
 			//$this->descripcion=$descripcion[$i];
@@ -336,7 +340,19 @@ public function insertCita($id_cliente,$asitencia,$personas,$motivo,$color,$text
 			$cita=$this->db->insert_id();
 			$this->PersonasCitas_model->insertarPersonas($id_cliente,$cita,$personas,$pasaporte_personas,$row);
 			//}
-		    //}
+		    //}*/
+		    if ($cuantos==0) {
+		    	// insertar citas sin personas
+		    $hecho=$this->db->insert('cita',$this);
+		    $cita=$this->db->insert_id();
+		    }else{
+		    //vamos a insertar las personas que son preguntas al formulario migratorio
+		    $hecho=$this->db->insert('cita',$this);
+		    $cita=$this->db->insert_id();
+		    $this->load->model('FormularioMigratorio_model');
+	        $this->FormularioMigratorio_model->insertarRespuestaPersonas($cita,$personas,$cuantos);
+		    }
+		    
 			if ($hecho) {
 				#insertado
 		    $this->load->model('Imagen_model');
@@ -348,7 +364,8 @@ public function insertCita($id_cliente,$asitencia,$personas,$motivo,$color,$text
 					'err'=>FALSE,
 					'mensaje'=>'Registro insertado correctamente',
 					'cita_id'=>$this->db->insert_id(),
-					'ver'=>$this
+					'ver'=>$this,
+					'cuantos'=>$cuantos
 				);
 				
 			}else{
