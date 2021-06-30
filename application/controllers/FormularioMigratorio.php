@@ -46,15 +46,27 @@ public function updateFormulario_post(){
 			//todo bien
 			//$this->response('Todo bien');
 		$id_cita=$data['id_cita'];
-		$id_pregunta=$data['id_pregunta'];
-		$respuestas=$data['respuesta'];
-		$mas_respuesta=$data['respuesta_mas'];
-		$mas_id=$data['id_pregunta_mas'];
+		
+		//***************//para los combobox
+		if (isset($data['id_pregunta'])) {
+			# code...
+			$id_pregunta=$data['id_pregunta'];
+		    $respuestas=$data['respuesta'];
+		}else{
+			$id_pregunta=NULL;
+		    $respuestas=NULL;	
+		}
+		
 		//para los input que solo es una pregunta
+		if (isset($data['id_pregunta1'])) {
 		$id_pregunta1=$data['id_pregunta1'];
 		$respuestas1=$data['respuesta1'];
+		}else{
+		$id_pregunta1=NULL;
+		$respuestas1=NULL;
+		}
 
-        $respuesta=$this->FormularioMigratorio_model->insertarActualizaciones($id_cita,$id_pregunta,$respuestas,$mas_respuesta,$mas_id,$id_pregunta1,$respuestas1); 
+        $respuesta=$this->FormularioMigratorio_model->insertarActualizaciones($id_cita,$id_pregunta,$respuestas,$id_pregunta1,$respuestas1,$data); 
 
 		if ($respuesta['err']) {
 
@@ -84,6 +96,10 @@ public function formulariosLlenos_get(){
 	$formulario     = $this->FormularioMigratorio_model->get_formularios_llenos($id);
 	$ramas = $this->Rama_model->get_rama();
 	$clienteReporte = $this->FormularioMigratorio_model->clienteFormulario($id);
+	$data=array('id_cita'=>$id);
+	$personas=$this->Cita_model->verCita($data);
+	$masRespuesta = $this->FormularioMigratorio_model->get_masRespuesta($id);
+	$preguntas_mas = $this->Pregunta_model->get_pregustasMas();
 	if (isset($formulario)) {
 		//quitar campos que no quiero
 		//unset($cliente->telefono1);
@@ -94,7 +110,10 @@ public function formulariosLlenos_get(){
 			'formulario'=>$formulario,
 			'opciones'=>$opciones, 
 			'cliente'=>$clienteReporte,
-			'ramas'=>$ramas
+			'ramas'=>$ramas,
+			'pesonas'=>$personas,
+			'mas'=>$masRespuesta,
+			'preguntas_mas'=>$preguntas_mas
 		);
 		$this->response($respuesta);
 	}else{
@@ -154,17 +173,6 @@ public function formulario_post(){
 		    $respuestas=NULL;	
 		}
 		
-		//para los input que tienen mas de una respuesta
-		if (isset($data['respuesta_mas'])) {
-			# code...
-		$mas_respuesta=$data['respuesta_mas'];
-		$mas_id=$data['id_pregunta_mas'];
-		}else{
-			$mas_respuesta=NULL;
-			$mas_id=NULL;
-		}
-		
-
 		//para los input que solo es una pregunta
 		if (isset($data['id_pregunta1'])) {
 		$id_pregunta1=$data['id_pregunta1'];
@@ -173,9 +181,9 @@ public function formulario_post(){
 		$id_pregunta1=NULL;
 		$respuestas1=NULL;
 		}
-		
+		//die();
 		$this->Cita_model->formularioModificar($id_cita);
-        $respuesta=$this->FormularioMigratorio_model->insertarFormularios($id_cita,$id_pregunta,$respuestas,$mas_respuesta,$mas_id,$id_pregunta1,$respuestas1); 
+        $respuesta=$this->FormularioMigratorio_model->insertarFormularios($id_cita,$id_pregunta,$respuestas,$id_pregunta1,$respuestas1,$data); 
 
 		if ($respuesta['err']) {
 

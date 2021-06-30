@@ -102,6 +102,16 @@ public function get_pregunta(){
     return $query->result();
  }
 
+ //preguntas con mas respuesta
+ public function get_pregustasMas(){
+	$this->db->select('*');
+    $this->db->from('pregunta');
+ 	$this->db->where(array('estado_pregunta'=>1,'mas_respuestas'=>'Si'));
+    $query=$this->db->get();
+    return $query->result();
+ }
+ //**************
+
  public function get_opciones(){
 		$this->db->select('*');
     $this->db->from('opciones_respuestas');
