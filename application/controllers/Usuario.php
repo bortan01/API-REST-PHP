@@ -253,7 +253,7 @@ class Usuario extends REST_Controller
         $data = $this->put();
         // $data['ultimaConexion'] = DateTime::createFromFormat('d/m/Y',  new DateTime())->format('Y-m-d');
         date_default_timezone_set('America/El_Salvador');
-        $data['ultimaConexion'] = date("Y-m-d h:i:s");
+        $data['ultimaConexion'] = date("Y-m-d H:i:s A");
         $this->load->library("form_validation");
         $this->form_validation->set_data($data);
         if (isset($data['uuid'])) {

@@ -133,9 +133,6 @@ class Tours_paquete_model extends CI_Model
             }
         }
 
-
-
-
         return $respuesta;
     }
     public function obtenerViajeEdit(array $parametros = array())
@@ -263,7 +260,7 @@ class Tours_paquete_model extends CI_Model
         $nombreTurX ="";
 
         //INFORMACION GENERAL DE TUR O PAQUETE
-        $this->db->select('descripcion_tur,incluye,no_incluye,requisitos,lugar_salida, promociones,cupos_disponibles,nombreTours,start,end,precio', "descripcion_tur");
+        $this->db->select('descripcion_tur,incluye,no_incluye,requisitos,lugar_salida, promociones,cupos_disponibles,nombreTours,start,end,precio,descripcion_tur');
         $this->db->from("tours_paquete");
         $this->db->where($parametros);
         $query = $this->db->get();
@@ -296,7 +293,7 @@ class Tours_paquete_model extends CI_Model
             $this->db->from("tours_paquete");
             $this->db->join('detalle_tour', 'id_tours');
             $this->db->join('reserva_tour', 'id_detalle');
-            $this->db->where(array('id_tours' => $parametros['id_tours']));
+            $this->db->where(array('id_tours' => $parametros['id_tours'], 'resultadoTransaccion' => 'ExitosaAprobada'));
             $query = $this->db->get();
 
             $asientosOcupados = [];
@@ -435,7 +432,7 @@ class Tours_paquete_model extends CI_Model
         $this->db->join('detalle_tour', 'id_cliente');
         $this->db->join('tours_paquete', 'id_tours');
         $this->db->join('reserva_tour', 'id_detalle');
-        $this->db->where($data);
+        $this->db->where("id_cliente", $data["id_cliente"]);
 
 
         $query = $this->db->get();
@@ -445,7 +442,7 @@ class Tours_paquete_model extends CI_Model
             foreach ($infoReserva as  $value) {
                 $value->descripcionWeb = nl2br($value->descripcion_tur);
                 $value->transporte =  $this->obtenerTransporte($value->id_tours);
-
+             
 
                 $value->incluye                = json_decode($value->incluye, true);
                 $value->no_incluye             = json_decode($value->no_incluye, true);
@@ -510,10 +507,13 @@ class Tours_paquete_model extends CI_Model
         $this->db->join('servicios_adicionales', 'id_servicios');
         $this->db->where('id_tipo_servicio', '2');
         $this->db->where('id_tours', $idTour);
-
         $respuesta = $this->db->get()->row();
-        $respuesta->asientos_deshabilitados =  explode(',', $respuesta->asientos_deshabilitados);
-        return $respuesta;
+       if ($respuesta == null) {
+            return null;
+        }
+       
+       $respuesta->asientos_deshabilitados =  explode(',', $respuesta->asientos_deshabilitados);
+       return $respuesta;
     }
 
     public function guardarCotizacion(array $data)
@@ -599,7 +599,7 @@ class Tours_paquete_model extends CI_Model
     public function obtenerAnalitica(array $data)
     {
 
-
+        $parametros = $this->verificar_camposEntrada($data);
         $this->db->select('id_cliente,
                            id_tours,
                            nombre,
@@ -620,7 +620,8 @@ class Tours_paquete_model extends CI_Model
         $this->db->join('detalle_tour', 'id_cliente');
         $this->db->join('tours_paquete', 'id_tours');
         $this->db->join('reserva_tour', 'id_detalle');
-        $this->db->where($data);
+        $this->db->where('resultadoTransaccion','ExitosaAprobada');
+        $this->db->where($parametros);
 
 
         $query            = $this->db->get();
