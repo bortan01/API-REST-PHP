@@ -233,9 +233,9 @@ public function modificar_cita($id_cita,$compania,$personas,$pasaporte_personas,
 		$this->db->set($datos);
         $this->db->where('id_cita',$id_cita);
         $hecho=$this->db->update('cita');
-        //modificar elformulario migratorio despues
-        //$this->PersonasCitas_model->modificarPersona($id_cita,$input,$asistiran,$inputPas,$pasaporte_personas);
-
+        //modificar el formulario migratorio despues
+        $this->load->model('FormularioMigratorio_model');
+      	 $this->FormularioMigratorio_model->modificarPersonaCambiosNombres($id_cita,$personas,$cuantos);
  		if ($hecho) {
 				#borrado
 				$respuesta=array(
@@ -275,18 +275,20 @@ public function modificar_cita($id_cita,$compania,$personas,$pasaporte_personas,
 			return $respuesta;
 		}
 
-		$this->load->model('PersonasCitas_model');//cargo el modelo para actualizar en la otra tabla si es necesario
 		$datos=array(
 			'compania'=>$compania,
 			'start'=>$fecha.' '.$hora,
+			'personas_citas'=>$personas,
+			'pasaporte_personas'=>$pasaporte_personas,
 			'hora'=>$hora
 		);
 
 		$this->db->set($datos);
         $this->db->where('id_cita',$id_cita);
         $hecho=$this->db->update('cita');
-
-        $this->PersonasCitas_model->modificarPersona($id_cita,$input,$asistiran);
+        //modificar el formulario migratorio despues
+        $this->load->model('FormularioMigratorio_model');
+      	 $this->FormularioMigratorio_model->modificarPersonaCambiosNombres($id_cita,$personas,$cuantos);
 
  		if ($hecho) {
 				#borrado

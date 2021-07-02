@@ -249,11 +249,13 @@ public function insertarActualizaciones($id_cita,$id_pregunta,$respuestas,$id_pr
 		$this->id_cita               = $id_cita;
 		$this->id_pregunta           = $row;
 		$this->respuesta             = $res1;
+		$this->identificador_persona = $id_cita;
 		//insertar el registro
-	     $this->db->insert('formulario_migratorio',$this);//fin de pregunta 1
-	     $this->id_cita               = $id_cita;
+	    $this->db->insert('formulario_migratorio',$this);//fin de pregunta 1
+	    $this->id_cita               = $id_cita;
 		$this->id_pregunta           = $row2;
 		$this->respuesta             = $res2;
+		$this->identificador_persona = $id_cita
 		//insertar el registro
 	     $this->db->insert('formulario_migratorio',$this);
 	//FIN DE PARA VOLVER A INSERTAR
@@ -320,10 +322,10 @@ public function insertarActualizaciones($id_cita,$id_pregunta,$respuestas,$id_pr
  		return $respuesta;
  	}//fin de insertar
 
-public function modificarPersonaCambiosNombres($cita,$input,$asistiran){
+public function modificarPersonaCambiosNombres($id_cita,$personas,$cuantos){
 
 	//BORRAMOS POR EL TIPO DE PROCEDIMIENTO
-	$this->db->where('id_cita',$cita);
+	$this->db->where('identificador_persona',$id_cita);
     $this->db->delete('formulario_migratorio');
 
 	//saco el id de la primera pregunta
@@ -341,56 +343,24 @@ public function modificarPersonaCambiosNombres($cita,$input,$asistiran){
     $pregunta2=$this->db->get();
     $row2 = $pregunta2->row('id_pregunta');
 
-    //cuento las personas para cambiar la cantidad
-    if ($input==NULL) {
-    	# code...
-    	$conteo2=0;
-    }else{
-    	 $conteo2 = count($input);
-    }
-    if ($asistiran==NULL) {
-    	# code...
-    	$conteo1=0;
-    }else{
-    $conteo1= count($asistiran);
-	}
-   
-    $cantidad_personas =($conteo1)+($conteo2);
-
-    $this->id_pregunta = $row;
-    $this->id_cita = $cita;
-    $this->respuesta = $cantidad_personas;
-
-    $this->db->insert('formulario_migratorio',$this);
-
-    if ($conteo1>0) {
-    	# code...
-    	for ($i=0; $i < $conteo1 ; $i++) { 
-    	# code...
-    	$this->id_pregunta = $row2;
-    	$this->id_cita = $cita;
-    	$this->respuesta = $asistiran[$i];
-
-    	$this->db->insert('formulario_migratorio',$this);
-       }//llave for
-    }
-
     
-if ($conteo2>0) {
-	# code...
-	for ($i=0; $i < $conteo2 ; $i++) { 
-    	# code...
-    	$this->id_pregunta = $row2;
-    	$this->id_cita = $cita;
-    	$this->respuesta = $input[$i];
+	//PARA VOLVER A INSERTAR LA PERSONAS QUE BORRE
+		$this->id_cita               = $id_cita;
+		$this->id_pregunta           = $row;
+		$this->respuesta             = $cuantos;
+		$this->identificador_persona = $id_cita;
+		//insertar el registro
+	    $this->db->insert('formulario_migratorio',$this);//fin de pregunta 1
+	    $this->id_cita               = $id_cita;
+		$this->id_pregunta           = $row2;
+		$this->respuesta             = $personas;
+		$this->identificador_persona = $id_cita;
+		//insertar el registro
+	     $this->db->insert('formulario_migratorio',$this);//fin de pregunta 2
 
-    	$this->db->insert('formulario_migratorio',$this);
-    }//llave del for
-}
-    
-
-}
+}//fin del metodo
 //para modificar los id de cita en el formulario migratorio
+
 public function modificar_idformulario($row,$cita){
 	//la cita anterior en estado 1 para que me traiga el id de la cita recien registrada
 	var_dump($row); 
