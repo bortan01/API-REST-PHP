@@ -88,4 +88,14 @@ class DetalleTour extends REST_Controller
         $respuesta = $this->Detalle_tour_model->obtenerDetalle($data);
         $this->response($respuesta, REST_Controller::HTTP_OK);
     }
+    public function updateChequeo_post()
+    {
+        $data = $this->post();
+        $respuesta = $this->Detalle_tour_model->actualizarChekeo($data);
+        if ($respuesta['err']) {
+            $this->response($respuesta, REST_Controller::HTTP_BAD_REQUEST);
+        } else {
+            $this->response($respuesta, REST_Controller::HTTP_OK);
+        }
+    }
 }

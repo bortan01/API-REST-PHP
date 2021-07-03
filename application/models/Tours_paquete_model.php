@@ -18,6 +18,7 @@ class Tours_paquete_model extends CI_Model
     public $estado;
     public $aprobado;
     public $tipo;
+        
 
 
     public function verificar_campos($dataCruda)
@@ -243,8 +244,6 @@ class Tours_paquete_model extends CI_Model
         $respuesta = array('sitiosTuristicos' => $sitiosTuristicos, 'serviciosAdicionales' => $servicosAdicionales);
         return $respuesta;
     }
-
-
     public function informacionViaje(array $parametros = array())
     {
         $incluye = [];
@@ -602,6 +601,7 @@ class Tours_paquete_model extends CI_Model
         $parametros = $this->verificar_camposEntrada($data);
         $this->db->select('id_cliente,
                            id_tours,
+                           id_detalle,
                            nombre,
                            nombreTours,
                            asientos_seleccionados,
@@ -615,6 +615,7 @@ class Tours_paquete_model extends CI_Model
                            monto,
                            descripcionProducto,
                            resultadoTransaccion,
+                           chequeo,
                            tipo');
         $this->db->from('usuario');
         $this->db->join('detalle_tour', 'id_cliente');
@@ -645,6 +646,7 @@ class Tours_paquete_model extends CI_Model
                 $start                   = $value->start;
                 $end                     = $value->end;
                 $value->requisitos       = json_decode($value->requisitos, true);
+                $value->chequeo          = json_decode($value->chequeo, true);
                 $listaAsientos           = explode(',', $value->asientos_seleccionados);
                 foreach ($listaAsientos as $asiento) {
 

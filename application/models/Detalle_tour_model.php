@@ -13,6 +13,7 @@ class Detalle_tour_model extends CI_Model
     public $urlEnlace;
     public $descripcionProducto;
     public $cantidad_asientos;
+    public $chequeo;
 
     public function verificar_camposEntrada($dataCruda)
     {
@@ -57,14 +58,14 @@ class Detalle_tour_model extends CI_Model
         $urlWebHook  = "https://api.christianmeza.com/ReservaVehiculo/save";
         // $foto        = $this->Imagen_model->obtenerImagenUnica("tours_paquete", $data["id_tours"]);
         $foto        = "https://seeklogo.com/images/R/republica-de-el-salvador-en-la-america-central-logo-E8163F8CF3-seeklogo.com.jpg";
-        
+
         if (!isset($foto)) {
             $foto = "https://seeklogo.com/images/R/republica-de-el-salvador-en-la-america-central-logo-E8163F8CF3-seeklogo.com.jpg";
         }
         $total       = $data["total"];
         $nombre      = $data["nombre_producto"];
-        $descripcion = nl2br ($data["descripcionProducto"] . '<br>'.  $data["descripcionTurPaquete"]) ;
-        $respuestaWompi = $this->Wompi_model->crearEnlacePagopPrueba($total,$nombre , $descripcion, $foto, $urlWebHook);
+        $descripcion = nl2br($data["descripcionProducto"] . '<br>' .  $data["descripcionTurPaquete"]);
+        $respuestaWompi = $this->Wompi_model->crearEnlacePagopPrueba($total, $nombre, $descripcion, $foto, $urlWebHook);
         if (!isset($respuestaWompi["idEnlace"])) {
             //HAY ERROR DE WOMPI
             $respuesta = array(
@@ -104,5 +105,28 @@ class Detalle_tour_model extends CI_Model
         $query = $this->db->get();
         $respuesta  = $query->result_array();
         return $respuesta;
+    }
+    public function actualizarChekeo($data)
+    {
+        $nombreTabla = "detalle_tour";
+        $this->db->set('chequeo', $data['chequeo']);
+        $this->db->where('id_detalle',  $data['id_detalle']);
+           $hecho = $this->db->update($nombreTabla);
+        if ($hecho) {
+            ///LOGRO ACTUALIZAR 
+            $respuesta = array(
+                'err'     => FALSE,
+                'mensaje' => 'Registro Guardado Exitosamente',
+            );
+            return $respuesta;
+        } else {
+            //NO GUARDO
+            $respuesta = array(
+                'err' => TRUE,
+                'mensaje' => 'Error al actualizar ', $this->db->error_message(),
+                'error_number' => $this->db->error_number()
+            );
+            return $respuesta;
+        }
     }
 }
