@@ -197,7 +197,7 @@ public function citas_post(){
 		$pasaporte=$data["pasaporte"];
 		$cuantos= $data["cuantos"]; //personas que asisten a la cita
 
-		$respuesta=$this->Cita_model->insertCita($id_cliente,$asistencia,$personas,$motivo,$color,$textColor,$start,$fecha,$hora,$pasaporte,$pasaporte_personas,$cuantos); 
+		$respuesta=$this->Cita_model->insertCita($id_cliente,$asistencia,$personas,$pasaporte_personas,$motivo,$color,$textColor,$start,$fecha,$hora,$pasaporte,$cuantos); 
 
 		if ($respuesta['err']) {
 

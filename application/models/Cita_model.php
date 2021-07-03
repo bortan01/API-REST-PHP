@@ -329,7 +329,7 @@ public function modificar_cita($id_cita,$compania,$personas,$pasaporte_personas,
     }	//else pollo
 }//function
 
-public function insertCita($id_cliente,$asitencia,$personas,$motivo,$color,$textColor,$start,$fecha,$hora,$pasaporte,$pasaporte_personas,$cuantos){
+public function insertCita($id_cliente,$asistencia,$personas,$pasaporte_personas,$motivo,$color,$textColor,$start,$fecha,$hora,$pasaporte,$cuantos){
 		//insertar el registro
 		$horas_validas= array(
 						0 =>'8:00 AM',
@@ -381,7 +381,7 @@ public function insertCita($id_cliente,$asitencia,$personas,$motivo,$color,$text
 			$this->pasaporte_personas=$pasaporte_personas;
 
 		
-			/*//ANTES DE INSERTAR NECESITO ESTE ID  ESTO YA VEREMOS
+			//ANTES DE INSERTAR NECESITO ESTE ID  ESTO YA VEREMOS
 			//vamos a extraer el id de la cita con que se registro la primera vez
             $this->db->select('id_cita,fecha');
          	$this->db->from('cita');
@@ -390,7 +390,7 @@ public function insertCita($id_cliente,$asitencia,$personas,$motivo,$color,$text
          	$id_citaExistente=$this->db->get();
          	$row = $id_citaExistente->row('id_cita');
 			////************************
-			*/
+			
 			/*$this->load->model('PersonasCitas_model');
 			
 			//for ($i=0; $i <$cuantos ; $i++) {
@@ -402,17 +402,12 @@ public function insertCita($id_cliente,$asitencia,$personas,$motivo,$color,$text
 			$this->PersonasCitas_model->insertarPersonas($id_cliente,$cita,$personas,$pasaporte_personas,$row);
 			//}
 		    //}*/
-		    if ($cuantos==0) {
-		    	// insertar citas sin personas
-		    $hecho=$this->db->insert('cita',$this);
-		    $cita=$this->db->insert_id();
-		    }else{
+		  
 		    //vamos a insertar las personas que son preguntas al formulario migratorio
 		    $hecho=$this->db->insert('cita',$this);
 		    $cita=$this->db->insert_id();
 		    $this->load->model('FormularioMigratorio_model');
-	        $this->FormularioMigratorio_model->insertarRespuestaPersonas($cita,$personas,$cuantos);
-		    }
+	        $this->FormularioMigratorio_model->insertarRespuestaPersonas($cita,$id_cliente,$personas,$cuantos,$row);
 		    
 			if ($hecho) {
 				#insertado

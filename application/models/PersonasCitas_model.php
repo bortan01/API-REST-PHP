@@ -176,6 +176,7 @@ public function insertarPersonas($id_cliente,$cita,$personas,$pasaporte_personas
           //die();
          //********************
          //BORRAMOS A LAS PERSONAS ANTERIORES
+      	
       	$this->db->where('identificador_persona',$row);
          $this->db->delete('formulario_migratorio');
          //***************

@@ -255,7 +255,7 @@ public function insertarActualizaciones($id_cita,$id_pregunta,$respuestas,$id_pr
 	    $this->id_cita               = $id_cita;
 		$this->id_pregunta           = $row2;
 		$this->respuesta             = $res2;
-		$this->identificador_persona = $id_cita
+		$this->identificador_persona = $id_cita;
 		//insertar el registro
 	     $this->db->insert('formulario_migratorio',$this);
 	//FIN DE PARA VOLVER A INSERTAR
@@ -406,7 +406,16 @@ public function modificar_idformulario($row,$cita){
 }//fin metodo
 
 
-public function insertarRespuestaPersonas($cita,$personas,$cuantos){
+public function insertarRespuestaPersonas($cita,$id_cliente,$personas,$cuantos,$roww){
+
+	//no mas llega esta informacion pregunto esta el cliente registrado en la tabla citas
+	 $query_esta   = $this->db->where(array('id_cliente'=>$id_cliente,'color'=>'#FF0040') );
+	 $query_esta   = $this->db->get('cita');
+     $cliente_esta = $query_esta->row();//si ya esta el cliete
+
+ if (!isset($cliente_esta)) {
+     	# si no esta el id cliente se ejecutara el siguiente codigo
+ 	if($cuantos !=0){
 	$this->db->select('id_pregunta');
     $this->db->from('pregunta');
     $this->db->where(array('pregunta'=>'Cuantas personas viajan con usted'));
@@ -426,6 +435,7 @@ public function insertarRespuestaPersonas($cita,$personas,$cuantos){
     $this->respuesta              = $cuantos;
     $this->identificador_persona  = $cita;
 
+
     $this->db->insert('formulario_migratorio',$this);
 
    //pregunta: Nombre de las personas
@@ -433,7 +443,85 @@ public function insertarRespuestaPersonas($cita,$personas,$cuantos){
     $this->id_cita = $cita;
     $this->respuesta = $personas;
     $this->identificador_persona  = $cita;
-    $this->db->insert('formulario_migratorio',$this);
+    $hecho = $this->db->insert('formulario_migratorio',$this);
+    if ($hecho) {
+				#insertado
+				$respuesta=array(
+					'err'=>FALSE,
+					'mensaje'=>'Registro insertado correctamente'
+				);
+			}else{
+				//error
+
+				$respuesta=array(
+					'err'=>TRUE,
+					'mensaje'=>'Error al insertar',
+					'error'=>$this->db->_error_message(),
+					'error_num'=>$this->db->_error_number()
+				);
+			
+			}//else hecho
+	}//if cuantos
+	}else{
+		//si el cliente esta
+
+		$this->db->where('identificador_persona',$roww);
+        $this->db->delete('formulario_migratorio');
+         //***************
+        //cambiar el id de la cita a las respuesta del formulario
+	     //esto nos ayudara a que una nueva cita de ese cliente pero la misma informacion
+	     $this->FormularioMigratorio_model->modificar_idformulario($roww,$cita);
+
+	      if($cuantos !=0){
+		$this->db->select('id_pregunta');
+    	$this->db->from('pregunta');
+    	$this->db->where(array('pregunta'=>'Cuantas personas viajan con usted'));
+    	$pregunta1=$this->db->get();
+
+    	$row = $pregunta1->row('id_pregunta');
+
+    	$this->db->select('id_pregunta');
+    	$this->db->from('pregunta');
+    	$this->db->where(array('pregunta'=>'Nombre de las personas'));
+    	$pregunta2=$this->db->get();
+    	$row2 = $pregunta2->row('id_pregunta');
+
+    	//pregunta:Cuantas personas viajan con usted
+    	$this->id_pregunta            = $row;
+    	$this->id_cita                = $cita;
+    	$this->respuesta              = $cuantos;
+    	$this->identificador_persona  = $cita;
+
+
+    	$this->db->insert('formulario_migratorio',$this);
+
+   		//pregunta: Nombre de las personas
+    	$this->id_pregunta = $row2;
+    	$this->id_cita = $cita;
+    	$this->respuesta = $personas;
+    	$this->identificador_persona  = $cita;
+    	$hecho=$this->db->insert('formulario_migratorio',$this);
+    	if ($hecho) {
+				#insertado
+				$respuesta=array(
+					'err'=>FALSE,
+					'mensaje'=>'Registro insertado correctamente'
+				);
+			}else{
+				//error
+
+				$respuesta=array(
+					'err'=>TRUE,
+					'mensaje'=>'Error al insertar',
+					'error'=>$this->db->_error_message(),
+					'error_num'=>$this->db->_error_number()
+				);
+			
+			}//else hecho
+		}//if cuantos
+	}//else cliente esta
+
+	return $respuesta;
 
 }
 
