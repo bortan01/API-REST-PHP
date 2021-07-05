@@ -112,4 +112,30 @@ public function __construct(){
 				}
 			}
 		}
+
+		public function mostrarCotizacion_get(){
+
+			$data = $this->get();
+			$cotizacion=$this->cotizarVuelo_model->get_mostrarCotizacion($data);
+	
+		if (isset($cotizacion)) {
+			
+			$respuesta=array(
+				'err'=>FALSE,
+				'mensaje'=>'Registro Cargado correctamente',
+				'informacion'=>$cotizacion
+	
+			);
+			$this->response($respuesta,REST_Controller::HTTP_OK);
+		}else{
+			$respuesta=array(
+				'err'=>TRUE,
+				'mensaje'=>'Error al cargar los datos.',
+				'informacion'=>null
+	
+			);
+			$this->response($respuesta,REST_Controller::HTTP_NOT_FOUND);
+	
+		}
+	}
 }
