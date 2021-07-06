@@ -307,7 +307,8 @@ class Vehiculo_model extends CI_Model
                         transmision,
                         nombre_categoria,
                         opc_avanzadas,
-                        tipoCombustible
+                        tipoCombustible,
+                        detalle_vehiculo.fechaHora_detalle
                         
         ');
         $this->db->from('vehiculo');
@@ -317,7 +318,8 @@ class Vehiculo_model extends CI_Model
         $this->db->join('reserva_vehiculo', 'id_detalle');
         $this->db->join('transmisionvehiculo', 'vehiculo.id_transmicionFK = transmisionvehiculo.idtransmicion');
         $this->db->join('categoria', 'idcategoria');
-       
+        $this->db->order_by('detalle_vehiculo.fechaHora_detalle', 'desc');
+
         $this->db->where('id_cliente',$parametros['id_cliente']);
 
         $query     = $this->db->get();

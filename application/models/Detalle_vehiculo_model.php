@@ -113,6 +113,8 @@ class Detalle_vehiculo_model extends CI_Model
             
             $this->db->where($parametros);
             $this->db->where_in('vehiculo.activo',2);
+            $this->db->order_by('detalle_vehiculo.fechaHora_detalle', 'desc');
+
             $query=$this->db->get();
     
             $z = $query->result();
