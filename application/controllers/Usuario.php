@@ -13,6 +13,8 @@ class Usuario extends REST_Controller
     }
     public function registroUser_post()
     {
+        // echo date("Hismd") ;
+        // die();
         $data = $this->post();
         $this->load->library('form_validation');
         $this->form_validation->set_data($data);

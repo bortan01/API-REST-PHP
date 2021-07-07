@@ -33,11 +33,16 @@ class Usuario_model extends CI_Model
         if ($usuarioFirebase["err"]) {
             return array("err" => TRUE, 'mensaje' => $usuarioFirebase["mensaje"]);
         } else {
+            date_default_timezone_set('America/El_Salvador');
             $nombreTabla              = "usuario";
             $miUser                   = $this->verificar_campos($data);
             $miUser->uuid             = $usuarioFirebase["uid"];
             $miUser->activo           = TRUE;
-            $miUser->ultimaConexion   = new DateTime();
+            $miUser->ultimaConexion   =  date("Y-m-d H:i:s A");
+            // CREAMOS UN ID RANDOM
+            $idRamdom = date("Hismd");
+            echo $idRamdom;
+            $miUser->id_cliente       = $idRamdom;
 
 
             $insert = $this->db->insert($nombreTabla, $miUser);
@@ -374,26 +379,27 @@ class Usuario_model extends CI_Model
         }
     }
 
-    public function get_datosUsuario(array $data){
+    public function get_datosUsuario(array $data)
+    {
 
         $parametros = $this->verificar_camposEntrada($data);
 
         $this->db->select('*');
-        $this->db->from('usuario' );
+        $this->db->from('usuario');
         $this->db->where($parametros);
-       
+
         $query = $this->db->get();
 
         return $query->result();
-
     }
 
-    public function get_cotizacionesRealizadas(array $data){
+    public function get_cotizacionesRealizadas(array $data)
+    {
 
         $parametros = $this->verificar_camposEntrada($data);
 
         $this->db->select('*');
-        $this->db->from('usuario' );
+        $this->db->from('usuario');
         //$this->db->from('detalle_vehiculo' );
         //$this->db->join('usuario', 'detalle_vehiculo.id_cliente = usuario.id_cliente');
         //$this->db->join('vehiculo', 'detalle_vehiculo.id_vehiculo = vehiculo.idvehiculo');
@@ -403,86 +409,85 @@ class Usuario_model extends CI_Model
         $this->db->select('DATE_FORMAT(cotizarvehiculo.fechaRecogida,"%d-%m-%Y") as fechaRecogida');
         $this->db->select('DATE_FORMAT(cotizarvehiculo.fechaDevolucion,"%d-%m-%Y") as fechaDevolucion');
         $this->db->where($parametros);
-       
+
         $query = $this->db->get();
 
         return $query->result();
-
     }
 
-    public function get_encomiendasRealizadas(array $data){
+    public function get_encomiendasRealizadas(array $data)
+    {
 
         $parametros = $this->verificar_camposEntrada($data);
 
         $this->db->select('*');
-        $this->db->from('encomienda' );
+        $this->db->from('encomienda');
         $this->db->join('usuario', 'encomienda.id_usuario = usuario.id_cliente');
         $this->db->join('detalle_encomienda', 'detalle_encomienda.id_encomienda = encomienda.id_encomienda');
         $this->db->join('producto', 'detalle_encomienda.id_producto = producto.id_producto');
         $this->db->join('detalle_destino', 'detalle_destino.id_encomienda = encomienda.id_encomienda');
         $this->db->where($parametros);
-       
+
         $query = $this->db->get();
 
         return $query->result();
-
     }
 
-    public function get_vehiculosAlquilados(array $data){
+    public function get_vehiculosAlquilados(array $data)
+    {
 
         $parametros = $this->verificar_camposEntrada($data);
-        $otra=$data['id_cliente'];
-       // $where=explode('=',$parametros);
+        $otra = $data['id_cliente'];
+        // $where=explode('=',$parametros);
 
         $this->db->select('*');
-        $this->db->from('detalle_vehiculo' );
+        $this->db->from('detalle_vehiculo');
         $this->db->join('usuario', 'detalle_vehiculo.id_cliente = usuario.id_cliente');
         $this->db->join('vehiculo', 'detalle_vehiculo.id_vehiculo = vehiculo.idvehiculo');
         $this->db->join('modelo', 'vehiculo.idmodelo = modelo.idmodelo');
-        
-        $this->db->where('usuario.id_cliente',$otra);
-    
+
+        $this->db->where('usuario.id_cliente', $otra);
+
         $query = $this->db->get();
 
         return $query->result();
-
     }
 
-    public function get_toursAdquiridos(array $data){
+    public function get_toursAdquiridos(array $data)
+    {
 
         $parametros = $this->verificar_camposEntrada($data);
-        $aux=$data['id_cliente'];
-       // $where=explode('=',$parametros);
+        $aux = $data['id_cliente'];
+        // $where=explode('=',$parametros);
 
         $this->db->select('*');
-        $this->db->from('detalle_tour' );
+        $this->db->from('detalle_tour');
         $this->db->join('usuario', 'detalle_tour.id_cliente = usuario.id_cliente');
         $this->db->join('tours_paquete', 'detalle_tour.id_tours = tours_paquete.id_tours');
-        $this->db->where('usuario.id_cliente',$aux);
-       
+        $this->db->where('usuario.id_cliente', $aux);
+
         //WHERE tours_paquete.tipo="Tour Nacional" || tours_paquete.tipo="Tour Internacional"
         $query = $this->db->get();
         return $query->result();
-
     }
 
-    public function get_vuelosCotizaciones(array $data){
+    public function get_vuelosCotizaciones(array $data)
+    {
 
         $parametros = $this->verificar_camposEntrada($data);
-        $aux=$data['id_cliente'];
+        $aux = $data['id_cliente'];
 
-       $this->db->select('*');
-       $this->db->from('cotizacion_vuelo');
-       $this->db->join('aerolinea', 'cotizacion_vuelo.idaerolinea = aerolinea.idaerolinea');
-       $this->db->join('alianza', 'aerolinea.idalianza = alianza.idalianza');
-       $this->db->join('tipo_clase', 'cotizacion_vuelo.idclase = tipo_clase.idclase');
-       $this->db->join('tipo_viaje', 'cotizacion_vuelo.idtipo_viaje = tipo_viaje.idtipo_viaje');
-       $this->db->join('usuario', 'cotizacion_vuelo.id_cliente = usuario.id_cliente');
-       $this->db->select('DATE_FORMAT(cotizacion_vuelo.fechaPartida,"%d-%m-%Y") as fechaPartida');
-       $this->db->select('DATE_FORMAT(cotizacion_vuelo.fechaLlegada,"%d-%m-%Y") as fechaLlegada');
-       $this->db->where('usuario.id_cliente',$aux);
+        $this->db->select('*');
+        $this->db->from('cotizacion_vuelo');
+        $this->db->join('aerolinea', 'cotizacion_vuelo.idaerolinea = aerolinea.idaerolinea');
+        $this->db->join('alianza', 'aerolinea.idalianza = alianza.idalianza');
+        $this->db->join('tipo_clase', 'cotizacion_vuelo.idclase = tipo_clase.idclase');
+        $this->db->join('tipo_viaje', 'cotizacion_vuelo.idtipo_viaje = tipo_viaje.idtipo_viaje');
+        $this->db->join('usuario', 'cotizacion_vuelo.id_cliente = usuario.id_cliente');
+        $this->db->select('DATE_FORMAT(cotizacion_vuelo.fechaPartida,"%d-%m-%Y") as fechaPartida');
+        $this->db->select('DATE_FORMAT(cotizacion_vuelo.fechaLlegada,"%d-%m-%Y") as fechaLlegada');
+        $this->db->where('usuario.id_cliente', $aux);
         $query = $this->db->get();
         return $query->result();
-
     }
 }
