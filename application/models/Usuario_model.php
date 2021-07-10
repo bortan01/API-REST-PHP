@@ -95,6 +95,7 @@ class Usuario_model extends CI_Model
 
     public function getUser(array $data = array())
     {
+        $this->load->model('Conf_model');
         try {
             $parametros = $this->Usuario_model->verificar_camposEntrada($data);
             $nombreTabla = "usuario";
@@ -107,7 +108,7 @@ class Usuario_model extends CI_Model
                 $respuestaFoto =   $this->Imagen_model->obtenerImagenUnica("usuario_perfil", $identificador);
                 if ($respuestaFoto == null) {
                     //por si no hay ninguna foto mandamos una por defecto
-                    $row->foto = "http://localhost/API-REST-PHP/uploads/avatar.png";
+                    $row->foto = $this->Conf_model->URL_SERVIDOR . "uploads/avatar.png";
                 } else {
                     $row->foto = $respuestaFoto;
                 }
@@ -121,7 +122,7 @@ class Usuario_model extends CI_Model
     public function getUserByChat()
     {
         try {
-
+            $this->load->model('Conf_model');
             $nombreTabla = "usuario";
             $this->db->where('nivel', 'CLIENTE');
             $this->db->order_by('ultimaConexion', 'DESC');
@@ -134,7 +135,7 @@ class Usuario_model extends CI_Model
                 $respuestaFoto =   $this->Imagen_model->obtenerImagenUnica("usuario_perfil", $identificador);
                 if ($respuestaFoto == null) {
                     //por si no hay ninguna foto mandamos una por defecto
-                    $row->foto = "http://localhost/API-REST-PHP/uploads/avatar.png";
+                    $row->foto = $this->Conf_model->URL_SERVIDOR . "uploads/avatar.png";
                 } else {
                     $row->foto = $respuestaFoto;
                 }
@@ -150,7 +151,7 @@ class Usuario_model extends CI_Model
     public function getAdminByChat()
     {
         try {
-
+            $this->load->model('Conf_model');
             $nombreTabla = "usuario";
             $this->db->where('nivel', 'ADMINISTRADOR');
 
@@ -162,7 +163,7 @@ class Usuario_model extends CI_Model
                 $respuestaFoto =   $this->Imagen_model->obtenerImagenUnica("usuario_perfil", $identificador);
                 if ($respuestaFoto == null) {
                     //por si no hay ninguna foto mandamos una por defecto
-                    $result->foto = "http://localhost/API-REST-PHP/uploads/avatar.png";
+                    $result->foto = $this->Conf_model->URL_SERVIDOR . "uploads/avatar.png";
                 } else {
                     $result->foto = $respuestaFoto;
                 }
@@ -178,6 +179,7 @@ class Usuario_model extends CI_Model
     public function getOneUser(array $data = array())
     {
         try {
+            $this->load->model('Conf_model');
             $parametros = $this->Usuario_model->verificar_camposEntrada($data);
             $nombreTabla = "usuario";
             $this->db->where($parametros);
@@ -190,7 +192,7 @@ class Usuario_model extends CI_Model
                 $respuestaFoto =   $this->Imagen_model->obtenerImagenUnica("usuario_perfil", $identificador);
                 if ($respuestaFoto == null) {
                     //por si no hay ninguna foto mandamos una por defecto
-                    $row["foto"] = "http://localhost/API-REST-PHP/uploads/avatar.png";
+                    $row["foto"] = $this->Conf_model->URL_SERVIDOR . "uploads/avatar.png";
                 } else {
                     $row["foto"] = $respuestaFoto;
                 }

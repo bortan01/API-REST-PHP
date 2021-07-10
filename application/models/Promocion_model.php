@@ -16,6 +16,7 @@ class Promocion_model extends CI_Model
 
     public function get_promocion(array $data){
 
+        $this->load->model('Conf_model');
         $parametros = $this->verificar_camposEntrada($data);
         //corregir consulta
         $this->db->select('*');
@@ -35,7 +36,7 @@ class Promocion_model extends CI_Model
             $respuestaFoto =   $this->Imagen_model->obtenerImagenUnica('promociones', $identificador);
             if ($respuestaFoto == null) {
                 //por si no hay ninguna foto mandamos una por defecto
-                $row->foto = "http://localhost/API-REST-PHP/uploads/viaje.png";
+                $row->foto = $this->Conf_model->URL_SERVIDOR."uploads/viaje.png";
             } else {
                 $row->foto = $respuestaFoto;
             }

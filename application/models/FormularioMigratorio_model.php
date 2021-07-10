@@ -132,6 +132,7 @@ public function get_masRespuesta($id){
 //fin para las respuesta que tienen mas input
 public function get_formularios_llenos($id){
 	
+	$this->load->model('Conf_model');
 	$this->db->select('*');
     $this->db->from('pregunta');
     $this->db->join('formulario_migratorio', 'pregunta.id_pregunta=formulario_migratorio.id_pregunta','inner');
@@ -151,7 +152,7 @@ public function get_formularios_llenos($id){
         $respuestaFoto =   $this->Imagen_model->obtenerImagenUnica('pasaportes', $identificador);
         if ($respuestaFoto == null) {
             //por si no hay ninguna foto mandamos una por defecto
-            $row->foto = "http://localhost/API-REST-PHP/uploads/viaje.png";
+            $row->foto = $this->Conf_model->URL_SERVIDOR."uploads/viaje.png";
         } else {
             $row->foto = $respuestaFoto;
         }

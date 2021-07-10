@@ -12,6 +12,7 @@ class Imagen_model extends CI_Model
     ///EN EL BODY DEBE DE RECIBIR UN PARAMETRO LLAMADO foto, DE TIPO FILE
     public function guardarImagen($tipo, $identificador, $activo = TRUE)
     {
+        $this->load->model('Conf_model');
         //si no existe las fotos solo retornamos
         if (!isset($_FILES['foto'])) {
             return;
@@ -19,7 +20,7 @@ class Imagen_model extends CI_Model
 
         //guardamos el nombre y lo separamos para obtener el formato
         $formato = explode(".", $_FILES['foto']['name'])[1];
-        $URL = "http://localhost/API-REST-PHP/uploads/";
+        $URL = $this->Conf_model->URL_SERVIDOR . "uploads/";
         $config['upload_path']   = './uploads/';
         $config['allowed_types'] = '*';
         $config['max_size']      = 10000;
@@ -63,7 +64,8 @@ class Imagen_model extends CI_Model
     //EN EL BODY DEBE DE RECIBIR UN PARAMETRO LLAMADO fotos[], DE TIPO FILE
     public function guardarGaleria($tipo, $identificador, $activo = TRUE)
     {
-        $URL = "http://localhost/API-REST-PHP/uploads/";
+        $this->load->model('Conf_model');
+        $URL = $this->Conf_model->URL_SERVIDOR."uploads/";
         if (!isset($_FILES['fotos'])) {
             $informacion_subida[] = array(
                 "error"   => TRUE,

@@ -23,6 +23,7 @@ class Vehiculo_model extends CI_Model
 
     public function get_vehiculo(array $data)
     {
+        $this->load->model('Conf_model');
         $parametros = $this->verificar_camposEntrada($data);
 
         $this->db->select('*');
@@ -45,7 +46,7 @@ class Vehiculo_model extends CI_Model
             $respuestaFoto =   $this->Imagen_model->obtenerImagenUnica('vehiculo', $identificador);
             if ($respuestaFoto == null) {
                 //por si no hay ninguna foto mandamos una por defecto
-                $row->foto = "http://localhost/API-REST-PHP/uploads/auto.png";
+                $row->foto = $this->Conf_model->URL_SERVIDOR . "uploads/auto.png";
             } else {
                 $row->foto = $respuestaFoto;
             }
@@ -61,6 +62,7 @@ class Vehiculo_model extends CI_Model
     }
     public function get_vehiculoForApp(array $data)
     {
+        $this->load->model('Conf_model');
         $this->load->model('Imagen_model');
         $this->db->select('*');
         $this->db->from('vehiculo');
@@ -85,7 +87,7 @@ class Vehiculo_model extends CI_Model
             $respuestaFoto =   $this->Imagen_model->obtenerImagenUnica('vehiculo', $identificador);
             if ($respuestaFoto == null) {
                 //por si no hay ninguna foto mandamos una por defecto
-                $row->foto = "http://localhost/API-REST-PHP/uploads/auto.png";
+                $row->foto = $this->Conf_model->URL_SERVIDOR . "uploads/auto.png";
             } else {
                 $row->foto = $respuestaFoto;
             }
@@ -283,6 +285,7 @@ class Vehiculo_model extends CI_Model
     public function obtenerHistorial(array $parametros)
     {
         $this->load->model('Imagen_model');
+        $this->load->model('Conf_model');
 
         $this->db->select('
                         idvehiculo,
@@ -320,7 +323,7 @@ class Vehiculo_model extends CI_Model
         $this->db->join('categoria', 'idcategoria');
         $this->db->order_by('detalle_vehiculo.fechaHora_detalle', 'desc');
 
-        $this->db->where('id_cliente',$parametros['id_cliente']);
+        $this->db->where('id_cliente', $parametros['id_cliente']);
 
         $query     = $this->db->get();
         $respuesta = $query->result();
@@ -332,7 +335,7 @@ class Vehiculo_model extends CI_Model
             $respuestaFoto =   $this->Imagen_model->obtenerImagenUnica('vehiculo', $identificador);
             if ($respuestaFoto == null) {
                 //por si no hay ninguna foto mandamos una por defecto
-                $vehiculo->foto = "http://localhost/API-REST-PHP/uploads/auto.png";
+                $vehiculo->foto = $this->Conf_model->URL_SERVIDOR . "uploads/auto.png";
             } else {
                 $vehiculo->foto = $respuestaFoto;
             }

@@ -18,7 +18,7 @@ class Tours_paquete_model extends CI_Model
     public $estado;
     public $aprobado;
     public $tipo;
-        
+
 
 
     public function verificar_campos($dataCruda)
@@ -65,6 +65,7 @@ class Tours_paquete_model extends CI_Model
     }
     public function obtenerViaje(array $data = array())
     {
+        $this->load->model('Conf_model');
         $nombreTabla = "tours_paquete";
         $parametros = $this->verificar_camposEntrada($data);
 
@@ -121,14 +122,14 @@ class Tours_paquete_model extends CI_Model
             $respuestaFoto =   $this->Imagen_model->obtenerImagenUnica($tipoFoto, $identificador);
             if ($respuestaFoto == null) {
                 //por si no hay ninguna foto mandamos una por defecto
-                $tur->foto = "http://localhost/API-REST-PHP/uploads/viaje.jpg";
+                $tur->foto = $this->Conf_model->URL_SERVIDOR . "uploads/viaje.jpg";
             } else {
                 $tur->foto = $respuestaFoto;
             }
             $respuestaGaleria =   $this->Imagen_model->obtenerGaleria($tipoFoto, $identificador);
             if ($respuestaGaleria == null) {
                 //por si no hay ninguna foto mandamos una por defecto
-                $tur->galeria[] = "http://localhost/API-REST-PHP/uploads/viaje.jpg";
+                $tur->galeria[] = $this->Conf_model->URL_SERVIDOR . "uploads/viaje.jpg";
             } else {
                 $tur->galeria = $respuestaGaleria;
             }
@@ -256,7 +257,7 @@ class Tours_paquete_model extends CI_Model
         $precio = "";
         $cupos_disponibles = "";
         $descripcion_tur = "";
-        $nombreTurX ="";
+        $nombreTurX = "";
 
         //INFORMACION GENERAL DE TUR O PAQUETE
         $this->db->select('descripcion_tur,incluye,no_incluye,requisitos,lugar_salida, promociones,cupos_disponibles,nombreTours,start,end,precio,descripcion_tur');
@@ -424,8 +425,7 @@ class Tours_paquete_model extends CI_Model
 
     public function obtenerInfoReserva(array $data)
     {
-
-
+        $this->load->model('Conf_model');
         $this->db->select('id_cliente, id_tours, nombreTours, asientos_seleccionados, label_asiento, cantidad_asientos, start, end, lugar_salida, incluye, no_incluye, requisitos, descripcion_tur, fecha_reserva, formaPagoUtilizada, monto, descripcionProducto, resultadoTransaccion, tipo');
         $this->db->from('usuario');
         $this->db->join('detalle_tour', 'id_cliente');
@@ -441,7 +441,7 @@ class Tours_paquete_model extends CI_Model
             foreach ($infoReserva as  $value) {
                 $value->descripcionWeb = nl2br($value->descripcion_tur);
                 $value->transporte =  $this->obtenerTransporte($value->id_tours);
-             
+
 
                 $value->incluye                = json_decode($value->incluye, true);
                 $value->no_incluye             = json_decode($value->no_incluye, true);
@@ -453,7 +453,7 @@ class Tours_paquete_model extends CI_Model
                 $respuestaFoto =   $this->Imagen_model->obtenerImagenUnica($value->tipo, $value->id_tours);
                 if ($respuestaFoto == null) {
                     //por si no hay ninguna foto mandamos una por defecto
-                    $value->foto = "http://localhost/API-REST-PHP/uploads/viaje.jpg";
+                    $value->foto = $this->Conf_model->URL_SERVIDOR . "uploads/viaje.jpg";
                 } else {
                     $value->foto = $respuestaFoto;
                 }
@@ -462,7 +462,7 @@ class Tours_paquete_model extends CI_Model
                 $respuestaGaleria =   $this->Imagen_model->obtenerGaleria($value->tipo, $value->id_tours);
                 if ($respuestaGaleria == null) {
                     //por si no hay ninguna foto mandamos una por defecto
-                    $value->galeria[] = "http://localhost/API-REST-PHP/uploads/viaje.jpg";
+                    $value->galeria[] = $this->Conf_model->URL_SERVIDOR . "uploads/viaje.jpg";
                 } else {
                     $value->galeria = $respuestaGaleria;
                 }
@@ -507,12 +507,12 @@ class Tours_paquete_model extends CI_Model
         $this->db->where('id_tipo_servicio', '2');
         $this->db->where('id_tours', $idTour);
         $respuesta = $this->db->get()->row();
-       if ($respuesta == null) {
+        if ($respuesta == null) {
             return null;
         }
-       
-       $respuesta->asientos_deshabilitados =  explode(',', $respuesta->asientos_deshabilitados);
-       return $respuesta;
+
+        $respuesta->asientos_deshabilitados =  explode(',', $respuesta->asientos_deshabilitados);
+        return $respuesta;
     }
 
     public function guardarCotizacion(array $data)
@@ -621,7 +621,7 @@ class Tours_paquete_model extends CI_Model
         $this->db->join('detalle_tour', 'id_cliente');
         $this->db->join('tours_paquete', 'id_tours');
         $this->db->join('reserva_tour', 'id_detalle');
-        $this->db->where('resultadoTransaccion','ExitosaAprobada');
+        $this->db->where('resultadoTransaccion', 'ExitosaAprobada');
         $this->db->where($parametros);
 
 

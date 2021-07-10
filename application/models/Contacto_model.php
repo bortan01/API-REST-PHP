@@ -56,6 +56,8 @@ class Contacto_model extends CI_Model
     }
     public function obtenerContacto(array $data = array())
     { 
+        // CARGAMOS ESTE MODELO PARA PODER ACCEDER A URL_SERVIDOR
+        $this->load->model('Conf_model');
         $nombreTabla = "contacto";
         $data["activo"] = TRUE;
         try {
@@ -78,7 +80,7 @@ class Contacto_model extends CI_Model
                     $respuestaFoto=   $this->Imagen_model->obtenerImagenUnica("contacto", $identificador);
                     if ($respuestaFoto == null) {
                         //por si no hay ninguna foto mandamos una por defecto
-                        $row->foto = "http://localhost/API-REST-PHP/uploads/avatar.png";
+                        $row->foto = $this->Conf_model->URL_SERVIDOR. "uploads/avatar.png";
                     }else{
                         $row->foto = $respuestaFoto;
                     }

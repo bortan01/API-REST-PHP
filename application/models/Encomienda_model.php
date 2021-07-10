@@ -125,6 +125,7 @@ public function get_encomiendaEnvio($data){
 }
 
 public function get_encomienda(array $data){
+    $this->load->model('Conf_model');
 
     $parametros = $this->verificar_camposEntrada($data);
         
@@ -146,7 +147,7 @@ public function get_encomienda(array $data){
         $respuestaFoto =   $this->Imagen_model->obtenerImagenUnica('encomienda', $identificador);
         if ($respuestaFoto == null) {
             //por si no hay ninguna foto mandamos una por defecto
-            $row->foto = "http://localhost/API-REST-PHP/uploads/viaje.png";
+            $row->foto = $this->Conf_model->URL_SERVIDOR ."uploads/viaje.png";
         } else {
             $row->foto = $respuestaFoto;
         }
