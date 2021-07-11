@@ -16,6 +16,35 @@ class Cita_model extends CI_Model
 	public $personas_citas;
 	public $pasaporte_personas;
 
+
+	public function ingresos($data){
+	//var_dump($data);
+
+	//die();
+	$this->db->select('*');
+    $this->db->from("cita");
+    $this->db->join('usuario', 'usuario.id_cliente=cita.id_cliente', 'inner');
+    $this->db->where('fecha >=',$data['fechaInicio']);
+    $this->db->where('fecha <=',$data['fechaFin']);
+    $ingresos = $this->db->get();
+    $result  = $ingresos->result();
+    $cuantos = count($result);
+    if ($cuantos > 0) {
+    	return $respuesta =  array(
+				'err' => FALSE,
+				'ingresos' => $result,
+				'cuantos'=>$cuantos
+			);
+    }else{
+    	return $respuesta =  array(
+				'err' => TRUE,
+				'ingresos' => $result,
+				'cuantos'=>$cuantos
+			);
+
+    }
+}
+
 	public function verCita($data)
 	{
 

@@ -50,6 +50,42 @@ public function eliminarEncomienda($datos){
  		return $respuesta;
 	}//fin metodo
 
+public function altaEncomienda($datos){
+
+        $query=$this->db->get_where('encomienda',array('id_encomienda'=>$datos["id_encomienda"]) );
+        $encomienda=$query->row();
+
+            if (!isset($encomienda)) {
+            $respuesta=array(
+                'err'=>TRUE,
+                'mensaje'=>'La encomienda no existe'
+            );
+            return $respuesta;
+            }
+        $this->db->set(array('estado'=> 'Enviado' ));
+        $this->db->where('id_encomienda',$datos["id_encomienda"]);
+        $hecho = $this->db->update('encomienda');
+        
+        if ($hecho) {
+                #borrado
+                $respuesta=array(
+                    'err'=>FALSE,
+                    'mensaje'=>'Registro dada de alta correctamente'
+                );
+            }else{
+                //error
+
+                $respuesta=array(
+                    'err'=>TRUE,
+                    'mensaje'=>'Error al eliminar',
+                    'error'=>$this->db->_error_message(),
+                    'error_num'=>$this->db->_error_number()
+                );
+            
+            }
+        return $respuesta;
+    }//fin metodo
+
 public function modificar_encomienda($datos){
 
 	$nombreTabla = "encomienda";

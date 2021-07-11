@@ -25,6 +25,17 @@ class Encomienda extends REST_Controller
 		$this->response($respuesta);
 	} //fin metodo
 
+	public function altaEnco_delete()
+	{
+
+		$data = $this->delete();
+		$verificar = $this->Encomienda_model->set_datos($data);
+		$respuesta = $this->Encomienda_model->altaEncomienda($verificar);
+
+		$this->response($respuesta);
+	} //fin metodo
+
+
 	public function updateEncomienda_post()
 	{
 

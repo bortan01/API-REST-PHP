@@ -12,6 +12,20 @@ class Cita extends REST_Controller
 		$this->load->model('Cita_model');
 		$this->load->model('Imagen_model');
 	}
+
+	public function ingresos_post(){
+		$data = $this->post();
+
+		$respuesta = $this->Cita_model->ingresos($data);
+
+		if ($respuesta['err']) {
+			# code...
+			$this->response($respuesta, REST_Controller::HTTP_BAD_REQUEST);
+		} else {
+			$this->response($respuesta);
+		}
+
+	}
 	public function verificarExist_get()
 	{
 
