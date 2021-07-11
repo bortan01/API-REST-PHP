@@ -15,12 +15,12 @@ class Encomienda extends REST_Controller
 		$this->load->model('DetalleEnvio_model');
 	}
 
-	public function deleteEncomienda_post()
+	public function deleteEncomienda_delete()
 	{
 
-		$data = $this->post();
+		$data = $this->delete();
 		$verificar = $this->Encomienda_model->set_datos($data);
-		$respuesta = $this->Encomienda_model->eliminar($verificar);
+		$respuesta = $this->Encomienda_model->eliminarEncomienda($verificar);
 
 		$this->response($respuesta);
 	} //fin metodo

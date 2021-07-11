@@ -14,7 +14,7 @@ public $total_comision;
 public $total_cliente;
 
 
-public function eliminar($datos){
+public function eliminarEncomienda($datos){
 
 		$query=$this->db->get_where('encomienda',array('id_encomienda'=>$datos["id_encomienda"]) );
 		$encomienda=$query->row();
@@ -26,16 +26,15 @@ public function eliminar($datos){
 			);
 			return $respuesta;
 			}
-
-		$this->db->where('id_encomienda',$datos["id_encomienda"]);
-
- 		$hecho=$this->db->delete('encomienda');
-
+        $this->db->set(array('estado'=> 'Inactivo' ));
+        $this->db->where('id_encomienda',$datos["id_encomienda"]);
+        $hecho = $this->db->update('encomienda');
+		
  		if ($hecho) {
 				#borrado
 				$respuesta=array(
 					'err'=>FALSE,
-					'mensaje'=>'Registro eliminado correctamente'
+					'mensaje'=>'Registro dado de baja correctamente'
 				);
 			}else{
 				//error
