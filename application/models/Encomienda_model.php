@@ -201,6 +201,7 @@ public function get_encomiendaDestino(array $data){
  		$nombreTabla = "encomienda";
         $insert = $this->db->insert($nombreTabla, $datos);
 
+        $id =  $this->db->insert_id();
 
         if ($insert) {
             #insertado
@@ -212,7 +213,7 @@ public function get_encomiendaDestino(array $data){
             $respuesta = array(
                 'err' => FALSE,
                 'mensaje' => 'Registro insertado correctamente',
-                'encomienda_id' => $this->db->insert_id()
+                'encomienda_id' => $id
             );
         } else {
             //error
