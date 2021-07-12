@@ -37,7 +37,7 @@ class Cita_model extends CI_Model
 			);
     }else{
     	return $respuesta =  array(
-				'err' => TRUE,
+				'err' => FALSE,
 				'ingresos' => $result,
 				'cuantos'=>$cuantos
 			);

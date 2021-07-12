@@ -13,8 +13,8 @@ class Cita extends REST_Controller
 		$this->load->model('Imagen_model');
 	}
 
-	public function ingresos_post(){
-		$data = $this->post();
+	public function ingresos_get(){
+		$data = $this->get();
 
 		$respuesta = $this->Cita_model->ingresos($data);
 
