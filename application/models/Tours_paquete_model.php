@@ -640,16 +640,17 @@ class Tours_paquete_model extends CI_Model
 
         if ($query->conn_id->error == '') {
             foreach ($infoReserva as  $value) {
-                $totalIngresos          += $value->monto;
-                $totalPasajeros         += $value->cantidad_asientos;
-                $nombre                  = $value->nombreTours;
-                $start                   = $value->start;
-                $end                     = $value->end;
-                $value->requisitos       = json_decode($value->requisitos, true);
-                $value->chequeo          = json_decode($value->chequeo, true);
-                $listaAsientos           = explode(',', $value->asientos_seleccionados);
+                $totalIngresos                += $value->monto;
+                $totalPasajeros               += $value->cantidad_asientos;
+                $nombre                       = $value->nombreTours;
+                $start                        = $value->start;
+                $end                          = $value->end;
+                $value->requisitos            = json_decode($value->requisitos, true);
+                $value->chequeo               = json_decode($value->chequeo, true);
+                $value->descripcionProducto   = nl2br($value->descripcionProducto);
+                $listaAsientos                = explode(',', $value->asientos_seleccionados);
+                
                 foreach ($listaAsientos as $asiento) {
-
                     array_push($asientosOcupados, $asiento);
                 }
             }

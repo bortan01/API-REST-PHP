@@ -69,9 +69,9 @@ class Servicios_adicionales_model extends CI_Model
     public function obtenerServicio(array $data = array())
     {
         $nombreTabla = "servicios_adicionales";
-        $data["servicios_adicionales.activo"] = TRUE;
         try {
             $parametros = $this->verificar_camposEntrada($data);
+            $parametros["servicios_adicionales.activo"] = TRUE;
 
             $this->db->select('*');
             $this->db->from($nombreTabla);

@@ -124,8 +124,8 @@ $config = array(
 
 	'insertarSitio' => array(
 		array('field' => 'nombre_sitio'        , 'label' => 'nombre'                 , 'rules' => 'trim|required'),
-		array('field' => 'longitud'            , 'label' => 'longiitud'              , 'rules' => 'trim|required|min_length[3]'),
-		array('field' => 'latitud'             , 'label' => 'latitud'                , 'rules' => 'trim|required|min_length[3]'),
+		// array('field' => 'longitud'            , 'label' => 'longiitud'              , 'rulews' => 'trim|required|min_length[3]'),
+		// array('field' => 'latitud'             , 'label' => 'latitud'                , 'rules' => 'trim|required|min_length[3]'),
 		array('field' => 'descripcion_sitio'   , 'label' => 'descripcion'            , 'rules' => 'trim|required|min_length[3]'),
 		array('field' => 'informacion_contacto', 'label' => 'informacion de contacto', 'rules' => 'trim|required'),
 		array('field' => 'id_tipo_sitio'       , 'label' => 'El tipo es necesario'   , 'rules' => 'trim|required'),

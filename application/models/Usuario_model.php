@@ -41,18 +41,15 @@ class Usuario_model extends CI_Model
             $miUser->ultimaConexion   =  date("Y-m-d H:i:s A");
             // CREAMOS UN ID RANDOM
             $idRamdom = date("Hismd");
-            echo $idRamdom;
             $miUser->id_cliente       = $idRamdom;
-
 
             $insert = $this->db->insert($nombreTabla, $miUser);
 
             if ($insert) {
-                $identificador = $this->db->insert_id();
                 //PARA GUARDAR GALERIA (LOS DUI)
-                $this->Imagen_model->guardarGaleria("usuario_documentos",  $identificador);
+                $this->Imagen_model->guardarGaleria("usuario_documentos",  $idRamdom);
                 //PARA GUARDAR LA FOTO DE PERFIL
-                $this->Imagen_model->guardarImagen("usuario_perfil",  $identificador);
+                $this->Imagen_model->guardarImagen("usuario_perfil",  $idRamdom);
                 return array('err' => FALSE,  'mensaje' => 'Cuenta Creada Exitosamente!');
             } else {
                 return array('err' => TRUE, 'mensaje' => $this->db->error_message());

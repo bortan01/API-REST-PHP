@@ -104,6 +104,10 @@ class Detalle_tour_model extends CI_Model
 
         $query = $this->db->get();
         $respuesta  = $query->result_array();
+
+        for ($i = 0; $i < count($respuesta); $i++) {
+            $respuesta[$i]["descripcionProductoWeb"] =  nl2br($respuesta[$i]["descripcionProducto"]);
+        }
         return $respuesta;
     }
     public function actualizarChekeo($data)
@@ -111,7 +115,7 @@ class Detalle_tour_model extends CI_Model
         $nombreTabla = "detalle_tour";
         $this->db->set('chequeo', $data['chequeo']);
         $this->db->where('id_detalle',  $data['id_detalle']);
-           $hecho = $this->db->update($nombreTabla);
+        $hecho = $this->db->update($nombreTabla);
         if ($hecho) {
             ///LOGRO ACTUALIZAR 
             $respuesta = array(

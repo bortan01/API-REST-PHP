@@ -39,7 +39,7 @@ class SitioTuristico_model extends CI_Model
             $campos['err'] = FALSE;
             $campos['mensaje'] = "Registro Guardado Exitosamente";
             $campos['id'] = $identificador;
-         
+
             return $campos;
         } else {
             //NO GUARDO
@@ -55,12 +55,27 @@ class SitioTuristico_model extends CI_Model
     public function obtenerSitio(array $data)
     {
         $parametros = $this->verificar_camposEntrada($data);
+        $parametros["sitio_turistico.estado"] = TRUE;
         try {
-            $this->db->select('id_sitio_turistico,id_contacto,sitio_turistico.nombre_sitio,precio_sitio,sitio_turistico.id_tipo_sitio,latitud,longitud,descripcion_sitio, contacto.nombre_contacto as contactoN,telefono,correo,tipo_sitio ');
+            $this->db->select('id_sitio_turistico,
+                               id_contacto,
+                               sitio_turistico.nombre_sitio,
+                               precio_sitio,
+                               sitio_turistico.id_tipo_sitio,
+                               latitud,
+                               longitud,
+                               descripcion_sitio,
+                               contacto.nombre_contacto as contactoN,
+                               telefono,
+                               correo,
+                               tipo_sitio,
+                               sitio_turistico.estado');
             $this->db->from("sitio_turistico");
             $this->db->join('contacto', 'sitio_turistico.informacion_contacto=contacto.id_contacto');
             $this->db->join('tipo_sitio', 'sitio_turistico.id_tipo_sitio=tipo_sitio.id_tipo_sitio');
             $this->db->where($parametros);
+
+
             // $this->db->where($parametros);
             $query = $this->db->get();
             $sitios  = $query->result();
