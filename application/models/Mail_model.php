@@ -27,7 +27,7 @@ class Mail_model extends CI_Model
          $mail->Username   = 'jmozalfaro@gmail.com';                     //SMTP username
          $mail->Password   = 'pliqgifjbddtfxdp';                               //SMTP password
          $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;            //Enable implicit TLS encryption
-         $mail->Port       = 25;                                    //TCP port to connect to; use 587 if you have set `SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS`
+         $mail->Port       = 587;                                    //TCP port to connect to; use 587 if you have set `SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS`
 
          //Recipients
          $mail->setFrom('from@example.com', 'Mailer');

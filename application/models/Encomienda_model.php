@@ -167,6 +167,7 @@ public function get_encomienda(array $data){
     $this->db->select('*');
         $this->db->from('encomienda');
         $this->db->join('usuario', 'usuario.id_cliente=encomienda.id_usuario');
+        $this->db->select('DATE_FORMAT(encomienda.fecha,"%d-%m-%Y") as fecha');
         $this->db->where($parametros);
        
         $query = $this->db->get();
