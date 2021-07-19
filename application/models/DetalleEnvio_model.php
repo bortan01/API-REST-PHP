@@ -80,6 +80,7 @@ public function get_detallesEnvio($data){
 
 	$this->db->select('*');
     $this->db->from('detalle_envio');
+     $this->db->select('DATE_FORMAT(detalle_envio.fecha,"%d-%m-%Y") as fecha');
     $this->db->where(array('id_encomienda'=>$data['id_encomienda']));
     $query=$this->db->get();
     return $query->result();
