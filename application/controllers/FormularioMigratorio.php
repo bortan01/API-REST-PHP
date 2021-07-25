@@ -18,9 +18,13 @@ class FormularioMigratorio extends REST_Controller
 	public function save_post()
 	{
 		$data = $this->post();
-		//aqui estoy me falta hacer la consulta para sacar el usuario 
-		$respuesta = $this->FormularioMigratorio_model->guardar($data);
-		$this->response($respuesta);
+		$AllQuestion = json_decode($data['AllQuestion'],  true);
+		$respuesta = $this->FormularioMigratorio_model->guardar($AllQuestion);
+		if ($respuesta['err']) {
+			$this->response($respuesta, REST_Controller::HTTP_BAD_REQUEST);
+		} else {
+			$this->response($respuesta, REST_Controller::HTTP_OK);
+		}
 	}
 
 	public function usuarioFormularios_get()

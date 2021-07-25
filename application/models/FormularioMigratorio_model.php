@@ -10,9 +10,33 @@ class FormularioMigratorio_model extends CI_Model
 	public $identificador_persona;
 
 
-	public function guardar($data)
+	public function guardar(array $preguntas)
 	{
-		
+		$nombreTabla = "formulario_migratorio";
+		if (count($preguntas) < 1) {
+			$respuesta = array(
+				'err'          => TRUE,
+				'mensaje'      => "NO SE INSERTO NINGUN REGISTRO",
+			);
+			return $respuesta;
+		} else {
+			$insert = $this->db->insert_batch($nombreTabla, $preguntas);
+			if (!$insert) {
+				//NO GUARDO
+				$respuesta = array(
+					'err'          => TRUE,
+					'mensaje'      => 'Error al insertar ', $this->db->error_message(),
+					'error_number' => $this->db->error_number(),
+				);
+				return $respuesta;
+			} else {
+				$respuesta = array(
+					'err'          => FALSE,
+					'mensaje'      => 'Registro Guardado Exitosamente',
+				);
+				return $respuesta;
+			}
+		}
 	}
 
 	public function usuarioForm($data)
