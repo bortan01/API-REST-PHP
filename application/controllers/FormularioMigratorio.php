@@ -26,6 +26,20 @@ class FormularioMigratorio extends REST_Controller
 			$this->response($respuesta, REST_Controller::HTTP_OK);
 		}
 	}
+	public function update_post()
+	{
+		$data = $this->post();
+		$AllQuestion = json_decode($data['AllQuestion'],  true);
+		// print_r($AllQuestion);
+		// die();
+
+		$respuesta = $this->FormularioMigratorio_model->actualizar($AllQuestion);
+		if ($respuesta['err']) {
+			$this->response($respuesta, REST_Controller::HTTP_BAD_REQUEST);
+		} else {
+			$this->response($respuesta, REST_Controller::HTTP_OK);
+		}
+	}
 
 	public function usuarioFormularios_get()
 	{

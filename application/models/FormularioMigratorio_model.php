@@ -38,6 +38,35 @@ class FormularioMigratorio_model extends CI_Model
 			}
 		}
 	}
+	
+	public function actualizar(array $preguntas)
+	{
+		$nombreTabla = "formulario_migratorio";
+		if (count($preguntas) < 1) {
+			$respuesta = array(
+				'err'          => TRUE,
+				'mensaje'      => "NO SE INSERTO NINGUN REGISTRO",
+			);
+			return $respuesta;
+		} else {
+			$insert = $this->db->update_batch($nombreTabla, $preguntas, 'id_formulario');
+			if (!$insert) {
+				//NO GUARDO
+				$respuesta = array(
+					'err'          => TRUE,
+					'mensaje'      => 'Error al insertar ', $this->db->error_message(),
+					'error_number' => $this->db->error_number(),
+				);
+				return $respuesta;
+			} else {
+				$respuesta = array(
+					'err'          => FALSE,
+					'mensaje'      => 'Registro Guardado Exitosamente',
+				);
+				return $respuesta;
+			}
+		}
+	}
 
 	public function usuarioForm($data)
 	{

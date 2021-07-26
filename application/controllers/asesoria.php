@@ -4,7 +4,8 @@ require APPPATH . '/libraries/REST_Controller.php';
 class Asesoria extends REST_Controller
 {
 
-public function __construct(){
+	public function __construct()
+	{
 		//constructor del padre
 		parent::__construct();
 		$this->load->database();
@@ -15,403 +16,425 @@ public function __construct(){
 
 	}
 
-//--------------tabla(preguntas)--para las preguntas
+	//--------------tabla(preguntas)--para las preguntas
 
 	//************rama get todas**/***************************
-	public function preguntita_get(){
+	public function preguntita_get()
+	{
 
-	$pregunta=$this->Pregunta_model->get_pregunta();
-	$opciones=$this->Pregunta_model->get_opciones();
+		$pregunta = $this->Pregunta_model->get_pregunta();
+		$opciones = $this->Pregunta_model->get_opciones();
 
-	if (isset($pregunta)) {
-		//quitar campos que no quiero
-		//unset($cita->motivo);
-		//unset($cliente->telefono2);
-		$respuesta=array('err'=>FALSE,
-						 'mensaje'=>'Registros cargados correctamente',
-						  'preguntas'=>$pregunta,
-						  'opciones'=>$opciones);
+		if (isset($pregunta)) {
+			//quitar campos que no quiero
+			//unset($cita->motivo);
+			//unset($cliente->telefono2);
+			$respuesta = array(
+				'err' => FALSE,
+				'mensaje' => 'Registros cargados correctamente',
+				'preguntas' => $pregunta,
+				'opciones' => $opciones
+			);
 
-		$this->response($respuesta);
-	}else{
-		$respuesta=array(
-			'err'=>TRUE,
-			'mensaje'=>'Error al cargar los datos.',
-			'citas'=>null
+			$this->response($respuesta);
+		} else {
+			$respuesta = array(
+				'err' => TRUE,
+				'mensaje' => 'Error al cargar los datos.',
+				'citas' => null
 
-		);
-		$this->response($respuesta,REST_Controller::HTTP_NOT_FOUND);
-
+			);
+			$this->response($respuesta, REST_Controller::HTTP_NOT_FOUND);
+		}
 	}
-}
 
-public function abierta_get(){
+	public function respuestas_get()
+	{
 
-	$pregunta=$this->Pregunta_model->get_abierta();
+		$data = $this->get();
+		$pregunta = $this->Pregunta_model->get_respuesta($data['id_cita']);
+		$opciones = $this->Pregunta_model->get_opciones();
 
-	if (isset($pregunta)) {
-		//quitar campos que no quiero
-		//unset($cita->motivo);
-		//unset($cliente->telefono2);
-		$respuesta=array('err'=>FALSE,
-						 'mensaje'=>'Registros cargados correctamente',
-						  'preguntas'=>$pregunta);
-
-		$this->response($respuesta);
-	}else{
-		$respuesta=array(
-			'err'=>TRUE,
-			'mensaje'=>'Error al cargar los datos.',
-			'citas'=>null
-
-		);
-		$this->response($respuesta,REST_Controller::HTTP_NOT_FOUND);
-
+		if (isset($pregunta)) {
+			$respuesta = array(
+				'err' => FALSE,
+				'mensaje' => 'Registros cargados correctamente',
+				'preguntas' => $pregunta,
+				'opciones' => $opciones
+			);
+			$this->response($respuesta);
+		} else {
+			$respuesta = array(
+				'err' => TRUE,
+				'mensaje' => 'Error al cargar los datos.',
+				'citas' => null
+			);
+			$this->response($respuesta, REST_Controller::HTTP_NOT_FOUND);
+		}
 	}
-}
+	public function abierta_get()
+	{
 
-public function opcionesCerradas_get(){
-	$id_pregunta =$this->uri->segment(3);
-	$pregunta=$this->PreguntasCerradas_model->get_opciones($id_pregunta);
+		$pregunta = $this->Pregunta_model->get_abierta();
 
-	if (isset($pregunta)) {
-		//quitar campos que no quiero
-		//unset($cita->motivo);
-		//unset($cliente->telefono2);
-		$respuesta=array('err'=>FALSE,
-						 'mensaje'=>'Registros cargados correctamente',
-						  'preguntas'=>$pregunta);
+		if (isset($pregunta)) {
+			//quitar campos que no quiero
+			//unset($cita->motivo);
+			//unset($cliente->telefono2);
+			$respuesta = array(
+				'err' => FALSE,
+				'mensaje' => 'Registros cargados correctamente',
+				'preguntas' => $pregunta
+			);
 
-		$this->response($respuesta);
-	}else{
-		$respuesta=array(
-			'err'=>TRUE,
-			'mensaje'=>'Error al cargar los datos.',
-			'citas'=>null
+			$this->response($respuesta);
+		} else {
+			$respuesta = array(
+				'err' => TRUE,
+				'mensaje' => 'Error al cargar los datos.',
+				'citas' => null
 
-		);
-		$this->response($respuesta,REST_Controller::HTTP_NOT_FOUND);
-
+			);
+			$this->response($respuesta, REST_Controller::HTTP_NOT_FOUND);
+		}
 	}
-}
 
-public function cerradas_get(){
+	public function opcionesCerradas_get()
+	{
+		$id_pregunta = $this->uri->segment(3);
+		$pregunta = $this->PreguntasCerradas_model->get_opciones($id_pregunta);
 
-	$pregunta=$this->Pregunta_model->get_cerrada();
+		if (isset($pregunta)) {
+			//quitar campos que no quiero
+			//unset($cita->motivo);
+			//unset($cliente->telefono2);
+			$respuesta = array(
+				'err' => FALSE,
+				'mensaje' => 'Registros cargados correctamente',
+				'preguntas' => $pregunta
+			);
 
-	if (isset($pregunta)) {
-		//quitar campos que no quiero
-		//unset($cita->motivo);
-		//unset($cliente->telefono2);
-		$respuesta=array('err'=>FALSE,
-						 'mensaje'=>'Registros cargados correctamente',
-						  'preguntas'=>$pregunta);
+			$this->response($respuesta);
+		} else {
+			$respuesta = array(
+				'err' => TRUE,
+				'mensaje' => 'Error al cargar los datos.',
+				'citas' => null
 
-		$this->response($respuesta);
-	}else{
-		$respuesta=array(
-			'err'=>TRUE,
-			'mensaje'=>'Error al cargar los datos.',
-			'citas'=>null
-
-		);
-		$this->response($respuesta,REST_Controller::HTTP_NOT_FOUND);
-
+			);
+			$this->response($respuesta, REST_Controller::HTTP_NOT_FOUND);
+		}
 	}
-}
+
+	public function cerradas_get()
+	{
+
+		$pregunta = $this->Pregunta_model->get_cerrada();
+
+		if (isset($pregunta)) {
+			//quitar campos que no quiero
+			//unset($cita->motivo);
+			//unset($cliente->telefono2);
+			$respuesta = array(
+				'err' => FALSE,
+				'mensaje' => 'Registros cargados correctamente',
+				'preguntas' => $pregunta
+			);
+
+			$this->response($respuesta);
+		} else {
+			$respuesta = array(
+				'err' => TRUE,
+				'mensaje' => 'Error al cargar los datos.',
+				'citas' => null
+
+			);
+			$this->response($respuesta, REST_Controller::HTTP_NOT_FOUND);
+		}
+	}
 
 	//***********************fin de rama get //**************
-public function updateCerrada_post(){
-	    $data=$this->post();
+	public function updateCerrada_post()
+	{
+		$data = $this->post();
 		$this->load->library('form_validation');
-	    if ( $this->form_validation->run('pregunta_put') ) {
+		if ($this->form_validation->run('pregunta_put')) {
 
-	    $id=$data['id_pregunta'];
-		$pregunta=$data['pregunta'];
-		$id_rama=$data['id_rama'];
-		$opcion_respuesta=$data['opcion_respuesta'];
-		$cuantos=count($data['opcion_respuesta']);
+			$id = $data['id_pregunta'];
+			$pregunta = $data['pregunta'];
+			$id_rama = $data['id_rama'];
+			$opcion_respuesta = $data['opcion_respuesta'];
+			$cuantos = count($data['opcion_respuesta']);
 
-		$respuesta=$this->Pregunta_model->actualizar($id,$pregunta,$id_rama,$opcion_respuesta,$cuantos); 
+			$respuesta = $this->Pregunta_model->actualizar($id, $pregunta, $id_rama, $opcion_respuesta, $cuantos);
 
-		if ($respuesta['err']) {
+			if ($respuesta['err']) {
 
-			/*$respuesta=array(
+				/*$respuesta=array(
 				'err'=>TRUE,
 				'mensaje'=>'Hay errores en el envio de la informacion'
 			);*/
 
-		$this->response($respuesta, REST_Controller::HTTP_BAD_REQUEST); 	
-
-		}else{
-		$this->response($respuesta); 	
-		}
-
-	  }else{
-	  	$respuesta=array(
-				'err'=>TRUE,
-				'mensaje'=>'Hay errores en el envio de la informacion',
-				'errores'=>$this->form_validation->get_errores_arreglo()
+				$this->response($respuesta, REST_Controller::HTTP_BAD_REQUEST);
+			} else {
+				$this->response($respuesta);
+			}
+		} else {
+			$respuesta = array(
+				'err' => TRUE,
+				'mensaje' => 'Hay errores en el envio de la informacion',
+				'errores' => $this->form_validation->get_errores_arreglo()
 			);
 			$this->response($respuesta, REST_Controller::HTTP_BAD_REQUEST);
-	  }
-
-}
-
-	//********************INSERTAR**************************
-	public function cerrada_post(){
-		$data=$this->post();
-		$this->load->library('form_validation');
-	    if ( $this->form_validation->run('pregunta_put') ) {
-		$pregunta=$data['pregunta'];
-		$id_rama=$data['id_rama'];
-		$opcion=$data['opcion'];
-		$opcion_respuesta=$data['opcion_respuesta'];
-		$cuantos=count($data['opcion_respuesta']);
-
-		$respuesta=$this->Pregunta_model->insertarCerrada($pregunta,$id_rama,$opcion,$opcion_respuesta,$cuantos); 
-
-		if ($respuesta['err']) {
-
-			/*$respuesta=array(
-				'err'=>TRUE,
-				'mensaje'=>'Hay errores en el envio de la informacion'
-			);*/
-
-		$this->response($respuesta, REST_Controller::HTTP_BAD_REQUEST); 	
-
-		}else{
-		$this->response($respuesta); 	
 		}
-
-	  }else{
-	  	$respuesta=array(
-				'err'=>TRUE,
-				'mensaje'=>'Hay errores en el envio de la informacion',
-				'errores'=>$this->form_validation->get_errores_arreglo()
-			);
-			$this->response($respuesta, REST_Controller::HTTP_BAD_REQUEST);
-	  }
-
 	}
 
-	public function preguntaAutomatica_post(){
-   	$respuesta=$this->Pregunta_model->pregunta_auto();
-
-   	if ($respuesta['err']) {
-   		# code...
-   		$this->response($respuesta);
-   	}else{
-   		$this->response($respuesta);
-   	}
-   }
-
-	public function preguntita_post(){
-
-		$data=$this->post();
+	//********************INSERTAR**************************
+	public function cerrada_post()
+	{
+		$data = $this->post();
 		$this->load->library('form_validation');
-		$this->form_validation->set_data ($data);
-		if ( $this->form_validation->run('pregunta_put') ) {
-			//todo bien
-			//$this->response('Todo bien');
-		$pregunta=$this->Pregunta_model->set_datos($data);
-		$respuesta=$pregunta->insertarPregunta(); 
+		if ($this->form_validation->run('pregunta_put')) {
+			$pregunta = $data['pregunta'];
+			$id_rama = $data['id_rama'];
+			$opcion = $data['opcion'];
+			$opcion_respuesta = $data['opcion_respuesta'];
+			$cuantos = count($data['opcion_respuesta']);
+
+			$respuesta = $this->Pregunta_model->insertarCerrada($pregunta, $id_rama, $opcion, $opcion_respuesta, $cuantos);
+
+			if ($respuesta['err']) {
+
+				/*$respuesta=array(
+				'err'=>TRUE,
+				'mensaje'=>'Hay errores en el envio de la informacion'
+			);*/
+
+				$this->response($respuesta, REST_Controller::HTTP_BAD_REQUEST);
+			} else {
+				$this->response($respuesta);
+			}
+		} else {
+			$respuesta = array(
+				'err' => TRUE,
+				'mensaje' => 'Hay errores en el envio de la informacion',
+				'errores' => $this->form_validation->get_errores_arreglo()
+			);
+			$this->response($respuesta, REST_Controller::HTTP_BAD_REQUEST);
+		}
+	}
+
+	public function preguntaAutomatica_post()
+	{
+		$respuesta = $this->Pregunta_model->pregunta_auto();
 
 		if ($respuesta['err']) {
-
-		$this->response($respuesta, REST_Controller::HTTP_BAD_REQUEST); 	
-
-		}else{
-		$this->response($respuesta); 	
+			# code...
+			$this->response($respuesta);
+		} else {
+			$this->response($respuesta);
 		}
+	}
 
-		}else{
+	public function preguntita_post()
+	{
+
+		$data = $this->post();
+		$this->load->library('form_validation');
+		$this->form_validation->set_data($data);
+		if ($this->form_validation->run('pregunta_put')) {
+			//todo bien
+			//$this->response('Todo bien');
+			$pregunta = $this->Pregunta_model->set_datos($data);
+			$respuesta = $pregunta->insertarPregunta();
+
+			if ($respuesta['err']) {
+
+				$this->response($respuesta, REST_Controller::HTTP_BAD_REQUEST);
+			} else {
+				$this->response($respuesta);
+			}
+		} else {
 			//algo mal
 
-			$respuesta=array(
-				'err'=>TRUE,
-				'mensaje'=>'Hay errores en el envio de la informacion',
-				'errores'=>$this->form_validation->get_errores_arreglo()
+			$respuesta = array(
+				'err' => TRUE,
+				'mensaje' => 'Hay errores en el envio de la informacion',
+				'errores' => $this->form_validation->get_errores_arreglo()
 			);
-			$this->response($respuesta, REST_Controller::HTTP_BAD_REQUEST); 
+			$this->response($respuesta, REST_Controller::HTTP_BAD_REQUEST);
 		}
 	}
 	//***********************
 
 	//*******para actualizar
-	public function updatePregunta_post(){
+	public function updatePregunta_post()
+	{
 
-		$data=$this->post();
+		$data = $this->post();
 
-		$verificar=$this->Pregunta_model->verificar_campos($data);
+		$verificar = $this->Pregunta_model->verificar_campos($data);
 
-       $respuesta=$this->Pregunta_model->modificar_pregunta($verificar);
+		$respuesta = $this->Pregunta_model->modificar_pregunta($verificar);
 
-	    if ($respuesta['err']) {
+		if ($respuesta['err']) {
 
-			$this->response($respuesta, REST_Controller::HTTP_BAD_REQUEST); 
-
-		}else{
-			 $this->response($respuesta);
-
-	 }
-
+			$this->response($respuesta, REST_Controller::HTTP_BAD_REQUEST);
+		} else {
+			$this->response($respuesta);
+		}
 	}
 	//**********fin de actualizar
 
 	//********para eliminar
-	 
-	 public function deletePregunta_delete(){
 
-	 $data=$this->delete();
-	 $verificar=$this->Pregunta_model->verificar_campos($data);
-     $respuesta=$this->Pregunta_model->eliminar($verificar);
+	public function deletePregunta_delete()
+	{
 
-      if ($respuesta['err']) {
+		$data = $this->delete();
+		$verificar = $this->Pregunta_model->verificar_campos($data);
+		$respuesta = $this->Pregunta_model->eliminar($verificar);
 
-			$this->response($respuesta, REST_Controller::HTTP_BAD_REQUEST); 
+		if ($respuesta['err']) {
 
-		}else{
-			 $this->response($respuesta);
-
-	 }
-
-	 }//fin metodo
+			$this->response($respuesta, REST_Controller::HTTP_BAD_REQUEST);
+		} else {
+			$this->response($respuesta);
+		}
+	} //fin metodo
 
 
-//----------------------fin de las preguntas
+	//----------------------fin de las preguntas
 
 
 
 	///------------tabla(rama)------------para las ramas de las preguntas de la asesoria/*******
 
-	 public function deleteRama_post(){
+	public function deleteRama_post()
+	{
 
-	 $data=$this->post();
-	 //$id_rama=$data["id_rama"];
-	  $verificar=$this->Rama_model->verificar_campos($data);
+		$data = $this->post();
+		//$id_rama=$data["id_rama"];
+		$verificar = $this->Rama_model->verificar_campos($data);
 
-	 $respuesta=$this->Rama_model->eliminar($verificar);
+		$respuesta = $this->Rama_model->eliminar($verificar);
 
-	 	  if ($respuesta['err']) {
+		if ($respuesta['err']) {
 
-			$this->response($respuesta, REST_Controller::HTTP_BAD_REQUEST); 
+			$this->response($respuesta, REST_Controller::HTTP_BAD_REQUEST);
+		} else {
+			$this->response($respuesta);
+		}
+	} //eliminar
 
-		}else{
-			 $this->response($respuesta);
+	//*******para actualizar
+	public function updateRama_post()
+	{
 
-	    }
-	 }//eliminar
+		$data = $this->post();
 
-	 //*******para actualizar
-	public function updateRama_post(){
+		$verificar = $this->Rama_model->verificar_campos($data);
 
-		$data=$this->post();
+		$respuesta = $this->Rama_model->modificar_rama($verificar);
 
-		$verificar=$this->Rama_model->verificar_campos($data);
+		if ($respuesta['err']) {
 
-       $respuesta=$this->Rama_model->modificar_rama($verificar);
-
-	   if ($respuesta['err']) {
-
-			$this->response($respuesta, REST_Controller::HTTP_BAD_REQUEST); 
-
-		}else{
-			 $this->response($respuesta);
-
-	 }
-
-  
+			$this->response($respuesta, REST_Controller::HTTP_BAD_REQUEST);
+		} else {
+			$this->response($respuesta);
+		}
 	}
 	//**********fin de actualizar
 	//para el REPORTE el servicio rest
-	public function reporteMigratorio_get(){
+	public function reporteMigratorio_get()
+	{
 		$todasRamas = $this->Rama_model->get_rama();
-		$pregunta=$this->Pregunta_model->get_pregunta();
+		$pregunta = $this->Pregunta_model->get_pregunta();
 
-	if (isset($pregunta)) {
-		//quitar campos que no quiero
-		//unset($cita->motivo);
-		//unset($cliente->telefono2);
-		$respuesta=array('err'=>FALSE,
-						 'mensaje'=>'Registros cargados correctamente',
-						  'preguntas'=>$pregunta,
-						  'ramas'=>$todasRamas);
+		if (isset($pregunta)) {
+			//quitar campos que no quiero
+			//unset($cita->motivo);
+			//unset($cliente->telefono2);
+			$respuesta = array(
+				'err' => FALSE,
+				'mensaje' => 'Registros cargados correctamente',
+				'preguntas' => $pregunta,
+				'ramas' => $todasRamas
+			);
 
-		$this->response($respuesta);
-	}else{
-		$respuesta=array(
-			'err'=>TRUE,
-			'mensaje'=>'Error al cargar los datos.',
-			'citas'=>null
+			$this->response($respuesta);
+		} else {
+			$respuesta = array(
+				'err' => TRUE,
+				'mensaje' => 'Error al cargar los datos.',
+				'citas' => null
 
-		);
-		$this->response($respuesta,REST_Controller::HTTP_NOT_FOUND);
-
-	}
+			);
+			$this->response($respuesta, REST_Controller::HTTP_NOT_FOUND);
+		}
 	}
 	//fin de para el reporte
 	//************rama get**/***************************
-	public function ramita_get(){
-		$rama=$this->Rama_model->get_rama();
+	public function ramita_get()
+	{
+		$rama = $this->Rama_model->get_rama();
 
-	if ($rama['err']) {
-		
-		$this->response($rama,REST_Controller::HTTP_OK);
-	}else{
-		
-		$this->response($rama,REST_Controller::HTTP_NOT_FOUND);
+		if ($rama['err']) {
 
+			$this->response($rama, REST_Controller::HTTP_OK);
+		} else {
+
+			$this->response($rama, REST_Controller::HTTP_NOT_FOUND);
+		}
 	}
-   }
 
 	//***********************fin de rama get //**************
 
 	//********************INSERTAR**************************
-   public function ramaAutomatica_post(){
-   	$respuesta=$this->Rama_model->rama_auto();
-
-   	if ($respuesta['err']) {
-   		# code...
-   		$this->response($respuesta);
-   	}else{
-   		$this->response($respuesta);
-   	}
-   }
-	public function ramitas_post(){
-
-		$data=$this->post();
-		$this->load->library('form_validation');
-		$this->form_validation->set_data ($data);
-
-		if ( $this->form_validation->run('rama_put') ) {
-			//todo bien
-			//$this->response('Todo bien');
-		$rama=$this->Rama_model->set_datos($data);
-
-		$respuesta=$rama->insert(); 
+	public function ramaAutomatica_post()
+	{
+		$respuesta = $this->Rama_model->rama_auto();
 
 		if ($respuesta['err']) {
-
-		$this->response($respuesta, REST_Controller::HTTP_BAD_REQUEST); 	
-
-		}else{
-		$this->response($respuesta); 	
+			# code...
+			$this->response($respuesta);
+		} else {
+			$this->response($respuesta);
 		}
+	}
+	public function ramitas_post()
+	{
 
-		}else{
+		$data = $this->post();
+		$this->load->library('form_validation');
+		$this->form_validation->set_data($data);
+
+		if ($this->form_validation->run('rama_put')) {
+			//todo bien
+			//$this->response('Todo bien');
+			$rama = $this->Rama_model->set_datos($data);
+
+			$respuesta = $rama->insert();
+
+			if ($respuesta['err']) {
+
+				$this->response($respuesta, REST_Controller::HTTP_BAD_REQUEST);
+			} else {
+				$this->response($respuesta);
+			}
+		} else {
 			//algo mal
 
-			$respuesta=array(
-				'err'=>TRUE,
-				'mensaje'=>'Hay errores en el envio de la informacion',
-				'errores'=>$this->form_validation->get_errores_arreglo()
+			$respuesta = array(
+				'err' => TRUE,
+				'mensaje' => 'Hay errores en el envio de la informacion',
+				'errores' => $this->form_validation->get_errores_arreglo()
 			);
-			$this->response($respuesta, REST_Controller::HTTP_BAD_REQUEST); 
+			$this->response($respuesta, REST_Controller::HTTP_BAD_REQUEST);
 		}
 	}
 	//***********************
-//----------------fin de los metodos de las ramas
+	//----------------fin de los metodos de las ramas
 
 
 }

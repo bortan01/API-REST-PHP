@@ -448,9 +448,7 @@ class Cita_model extends CI_Model
 							//error
 							$this->load->model('Imagen_model');
 							$identificador = $this->db->insert_id();
-							///ESTO ES PARA GUARDAR UNA IMAGEN INDIVIDUAL Y UNA GALERIA
-							$this->Imagen_model->guardarGaleria("pasaportes", $identificador);
-
+				
 							$respuesta = array(
 								'err' => TRUE,
 								'mensaje' => 'Error al insertar',

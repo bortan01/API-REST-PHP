@@ -35,7 +35,6 @@ class Cita extends REST_Controller
 		$respuesta = $this->Cita_model->existSioNo($data);
 		$this->response($respuesta);
 	}
-
 	public function verCita_get()
 	{
 		$data = $this->get();
@@ -44,13 +43,11 @@ class Cita extends REST_Controller
 	}
 	public function deleteCita_post()
 	{
-
 		$data = $this->post();
 		$verificar = $this->Cita_model->set_datos($data);
 		$respuesta = $this->Cita_model->eliminar($verificar);
 		$this->response($respuesta);
 	}
-
 	public function moverDias_post()
 	{
 		$data = $this->post();
@@ -68,7 +65,6 @@ class Cita extends REST_Controller
 			$this->response($ya);
 		}
 	}
-
 	public function updateCita_post()
 	{
 
@@ -119,7 +115,6 @@ class Cita extends REST_Controller
 			$this->response($respuesta, REST_Controller::HTTP_NOT_FOUND);
 		}
 	}
-
 	public function formularios_get()
 	{
 
@@ -143,7 +138,6 @@ class Cita extends REST_Controller
 			$this->response($respuesta, REST_Controller::HTTP_NOT_FOUND);
 		}
 	}
-
 	public function cita_get()
 	{
 
