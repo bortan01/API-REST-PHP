@@ -348,7 +348,7 @@ class Cita_model extends CI_Model
 		}	//else pollo
 	} //function
 
-	public function insertCita($id_cliente, $asistencia, $personas, $pasaporte_personas, $motivo, $color, $textColor, $start, $fecha, $hora, $pasaporte, $cuantos)
+	public function insertCita($id_cliente, $motivo, $color, $textColor, $start, $fecha, $hora)
 	{
 		//insertar el registro
 		$horas_validas = array(
@@ -390,16 +390,14 @@ class Cita_model extends CI_Model
 
 						$this->id_cita = $this->db->insert_id();
 						$this->id_cliente = $id_cliente;
-						$this->compania = $asistencia;
+						
 						$this->title = $motivo;
 						$this->textColor = "#FFFFFF";
 						$this->color = "#007bff";
 						$this->start = $start;
 						$this->fecha = $fecha;
 						$this->hora = $hora;
-						$this->pasaporte = $pasaporte;
-						$this->personas_citas = $personas;
-						$this->pasaporte_personas = $pasaporte_personas;
+						
 
 
 						//ANTES DE INSERTAR NECESITO ESTE ID  ESTO YA VEREMOS
@@ -412,17 +410,7 @@ class Cita_model extends CI_Model
 						$row = $id_citaExistente->row('id_cita');
 						////************************
 
-						/*$this->load->model('PersonasCitas_model');
-			
-			//for ($i=0; $i <$cuantos ; $i++) {
-			//$this->descripcion=$descripcion[$i];
-			$hecho=$this->db->insert('cita',$this);
-			//if ($personas !=NULL) {
-				# code...
-			$cita=$this->db->insert_id();
-			$this->PersonasCitas_model->insertarPersonas($id_cliente,$cita,$personas,$pasaporte_personas,$row);
-			//}
-		    //}*/
+						
 
 						//vamos a insertar las personas que son preguntas al formulario migratorio
 						$hecho = $this->db->insert('cita', $this);

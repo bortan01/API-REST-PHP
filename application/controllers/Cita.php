@@ -193,10 +193,7 @@ class Cita extends REST_Controller
 			//$this->response('Todo bien');
 			//$cita=$this->Cita_model->set_datos($data);
 			$id_cliente = $data["id_cliente"];
-
-			$asistencia = $data["asistencia"];
-			$personas = $data['asistiran'];
-			$pasaporte_personas = $data["pasaporte_personas"];
+			
 			$motivo = $data["title"] . ': ' . $data["usuario"];
 			$color = "#007bff";
 			$textColor = "#FFFFFF";
@@ -206,10 +203,8 @@ class Cita extends REST_Controller
 			$start = $fechaConvertida . ' ' . $data["start"];
 			$fecha = $fechaConvertida;
 			$hora = $data["start"];
-			$pasaporte = $data["pasaporte"];
-			$cuantos = $data["cuantos"]; //personas que asisten a la cita
 
-			$respuesta = $this->Cita_model->insertCita($id_cliente, $asistencia, $personas, $pasaporte_personas, $motivo, $color, $textColor, $start, $fecha, $hora, $pasaporte, $cuantos);
+			$respuesta = $this->Cita_model->insertCita($id_cliente, $motivo, $color, $textColor, $start, $fecha, $hora);
 
 			if ($respuesta['err']) {
 
