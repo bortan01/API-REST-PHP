@@ -5,16 +5,13 @@ class Cita_model extends CI_Model
 {
 	public $id_cita;
 	public $id_cliente;
-	public $compania;
 	public $title;
 	public $color;
 	public $textColor;
 	public $start;
 	public $fecha;
 	public $hora;
-	public $pasaporte;
-	public $personas_citas;
-	public $pasaporte_personas;
+	public $asistencia;
 
 
 	public function ingresos($data){
@@ -393,7 +390,6 @@ class Cita_model extends CI_Model
 						
 						$this->title = $motivo;
 						$this->textColor = "#FFFFFF";
-						$this->color = "#007bff";
 						$this->start = $start;
 						$this->fecha = $fecha;
 						$this->hora = $hora;
@@ -411,26 +407,19 @@ class Cita_model extends CI_Model
 						////************************
 
 						
-
-						//vamos a insertar las personas que son preguntas al formulario migratorio
+						
+						if ($row== null) {
+						$this->color = "#007bff";
+						$this->asistencia= 'Primera vez';
 						$hecho = $this->db->insert('cita', $this);
-						$cita = $this->db->insert_id();
-						$this->load->model('FormularioMigratorio_model');
-						$this->FormularioMigratorio_model->insertarRespuestaPersonas($cita, $id_cliente, $personas, $cuantos, $row);
-
 						if ($hecho) {
 							#insertado
-							$this->load->model('Imagen_model');
-							//$identificador = $this->db->insert_id();
-							$this->Imagen_model->guardarGaleria("pasaportes",  $cita);
-							//EN ESTE CASO NO GUARDARA UNA FOTO SI NO UN PDF
-							$this->Imagen_model->guardarImagen("comprobante_pasaporte",  $cita);
 							$respuesta = array(
 								'err' => FALSE,
-								'mensaje' => 'Registro insertado correctamente',
+								'mensaje' =>'Registro insertado correctamente',
 								'cita_id' => $this->db->insert_id(),
 								'ver' => $this,
-								'cuantos' => $cuantos
+								'row'=>$row 
 							);
 						} else {
 							//error
@@ -444,6 +433,33 @@ class Cita_model extends CI_Model
 								'error_num' => $this->db->_error_number()
 							);
 						}
+					  }else{
+					  	$this->color = "#FF0040";
+					  	$this->asistencia= 'Otra vez';
+						$hecho = $this->db->insert('cita', $this);
+					  	if ($hecho) {
+							#insertado
+							$respuesta = array(
+								'err' => FALSE,
+								'mensaje' =>'Registro insertado correctamente',
+								'cita_id' => $this->db->insert_id(),
+								'ver' => $this,
+								'row'=>$row 
+							);
+						} else {
+							//error
+							$this->load->model('Imagen_model');
+							$identificador = $this->db->insert_id();
+				
+							$respuesta = array(
+								'err' => TRUE,
+								'mensaje' => 'Error al insertar',
+								'error' => $this->db->_error_message(),
+								'error_num' => $this->db->_error_number()
+							);
+						}
+					  	///**********************fin 
+					  }
 
 						return $respuesta;
 					} else {

@@ -185,8 +185,7 @@ $config = array(
 
 	'citas_put' => array(
 		array('field' => 'fecha'       ,'label' => 'fecha'                    , 'rules' => 'trim|required|min_length[4]|max_length[255]'),
-		array('field' => 'id_cliente'  ,'label' => 'Seleccione el cliente'    , 'rules' => 'trim|required'),
-		array('field' => 'asistencia'  ,'label' => 'Seleccione la asistencia' , 'rules' => 'trim|required')
+		array('field' => 'id_cliente'  ,'label' => 'Seleccione el cliente'    , 'rules' => 'trim|required')
 
 	),
 
