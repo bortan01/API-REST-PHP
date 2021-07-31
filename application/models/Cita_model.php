@@ -489,7 +489,7 @@ class Cita_model extends CI_Model
 	public function get_citasFormulario()
 	{
 
-		$this->db->select('cita.id_cita,usuario.nombre');
+		$this->db->select('*');
 		$this->db->from('cita');
 		$this->db->join('usuario', 'usuario.id_cliente=cita.id_cliente', 'inner');
 		$this->db->where(array('fecha' => date("Y-m-d"), 'estado_cita' => 1));
