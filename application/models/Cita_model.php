@@ -85,23 +85,10 @@ class Cita_model extends CI_Model
 	public function existSioNo($data)
 	{
 
-		$personas = [];
-		$pasaportes = [];
-
 		$query = $this->db->get_where('cita', array('id_cliente' => $data['id_cliente']));
 		$cita = $query->row();
 		$result  = $query->result();
 
-		/*$this->db->select('*');
-    $this->db->from("cita");
-    $this->db->where('id_cliente',$data['id_cliente']);
-    $cita = $this->db->get();
-    $result  = $cita->result();*/
-
-		foreach ($result as $per) {
-			$personas =  json_decode($per->personas_citas, true);
-			$pasaportes =  json_decode($per->pasaporte_personas, true);
-		}
 
 		if (!isset($cita)) {
 			$respuesta = array(
@@ -114,9 +101,7 @@ class Cita_model extends CI_Model
 			$respuesta = array(
 				'err' => TRUE,
 				'mensaje' => 'Existe',
-				'existe' => $cita,
-				'personas' => $personas,
-				'pasaportes' => $pasaportes
+				'existe' => $cita
 			);
 			return $respuesta;
 		}

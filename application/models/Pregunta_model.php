@@ -7,6 +7,7 @@ class Pregunta_model extends CI_Model
 	public $pregunta;
 	public $opcion;
 	public $mas_respuestas;
+	public $tipo;
 	public $id_rama;
 
 
