@@ -71,22 +71,18 @@ class Cita extends REST_Controller
 		$data = $this->post();
 		//recogere los datos para pode concatenar
 		$id_cita = $data["id_cita"];
-		$compania = $data["asistencia"];
-		$personas = $data["asistiran"];
-		$pasaporte_personas = $data["pasaporte_personas"];
-		$cuantos = $data["cuantos"];
 		$hora = $data["start"];
 		$partes = explode("-", $data["fecha"]);
 		$fechaConvertida = $partes[2] . '-' . $partes[1] . '-' . $partes[0];
 		$fecha = $fechaConvertida;
 
-		$respuesta = $this->Cita_model->modificar_cita($id_cita, $compania, $personas, $pasaporte_personas, $cuantos, $hora, $fecha);
+		$respuesta = $this->Cita_model->modificar_cita($id_cita, $hora, $fecha);
 
 		if ($respuesta['err']) {
 			# code...
 			$this->response($respuesta, REST_Controller::HTTP_BAD_REQUEST);
 		} else {
-			$this->response($respuesta);
+			$this->response($respuesta, REST_Controller::HTTP_OK);
 		}
 	} //fin de metodo
 	public function formularioMigratorioCitas_get()

@@ -200,7 +200,7 @@ class Cita_model extends CI_Model
 		$respuestas = $this->db->update('cita');
 		return $respuestas;
 	}
-	public function modificar_cita($id_cita, $compania, $personas, $pasaporte_personas, $cuantos, $hora, $fecha)
+	public function modificar_cita($id_cita, $hora, $fecha)
 	{
 		//$this->db->set($datos);
 		$horas_validas = array(
@@ -233,22 +233,16 @@ class Cita_model extends CI_Model
 				$query = $this->db->get('cita');
 				$cita = $query->row(); //No modificara hora
 
-				if (isset($cita)) {
+				if (!isset($cita)) {
 
 					$datos = array(
-						'compania' => $compania,
 						'start' => $fecha . ' ' . $hora,
-						'personas_citas' => $personas,
-						'pasaporte_personas' => $pasaporte_personas,
 						'hora' => $hora
 					);
 
 					$this->db->set($datos);
 					$this->db->where('id_cita', $id_cita);
 					$hecho = $this->db->update('cita');
-					//modificar el formulario migratorio despues
-					$this->load->model('FormularioMigratorio_model');
-					$this->FormularioMigratorio_model->modificarPersonaCambiosNombres($id_cita, $personas, $cuantos);
 					if ($hecho) {
 						#borrado
 						$respuesta = array(
@@ -267,56 +261,14 @@ class Cita_model extends CI_Model
 						);
 					}
 					return $respuesta;
-				} else {
+				}else{
 
-					$query = $this->db->where(array('fecha' => $fecha, 'hora' => $hora));
-					$query = $this->db->get('cita');
-					$cita = $query->row(); //No modificara hora
-
-					if (isset($cita)) {
-						# code...
-						$respuesta = array(
-							'err' => TRUE,
-							'mensaje' => 'La hora ya esta ocupada!!'
-						);
-
-						return $respuesta;
-					}
-
-					$datos = array(
-						'compania' => $compania,
-						'start' => $fecha . ' ' . $hora,
-						'personas_citas' => $personas,
-						'pasaporte_personas' => $pasaporte_personas,
-						'hora' => $hora
-					);
-
-					$this->db->set($datos);
-					$this->db->where('id_cita', $id_cita);
-					$hecho = $this->db->update('cita');
-					//modificar el formulario migratorio despues
-					$this->load->model('FormularioMigratorio_model');
-					$this->FormularioMigratorio_model->modificarPersonaCambiosNombres($id_cita, $personas, $cuantos);
-
-					if ($hecho) {
-						#borrado
-						$respuesta = array(
-							'err' => FALSE,
-							'mensaje' => 'Registro actualizado correctamente',
-							'cita' => $datos
-						);
-					} else {
-						//error
-
-						$respuesta = array(
-							'err' => TRUE,
-							'mensaje' => 'Error al actualizar',
-							'error' => $this->db->_error_message(),
-							'error_num' => $this->db->_error_number()
-						);
-					}
+					$respuesta = array(
+					'err' => TRUE,
+					'mensaje' => 'Hora no valida, es la hora actual que posee!!'
+				);
 					return $respuesta;
-				} //ese del si no modifica fecha
+				}
 
 			} else {
 
