@@ -471,6 +471,7 @@ class Cita_model extends CI_Model
 		$this->db->select('*');
 		$this->db->from('cita');
 		$this->db->join('usuario', 'usuario.id_cliente=cita.id_cliente', 'inner');
+		$this->db->select('DATE_FORMAT(cita.fecha,"%d-%m-%Y") as fechaConver');
 		$this->db->where('cita.id_cliente', $where);
 		$query = $this->db->get();
 		return $query->result();
