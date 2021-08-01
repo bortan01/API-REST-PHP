@@ -133,13 +133,13 @@ $config = array(
 	
 	'insertarTurPaquete' => array(
 		array('field' => 'nombreTours'      ,'label' => 'Nombre del Viaje'    , 'rules' => 'trim|required'),
-		array('field' => 'start'            ,'label' => 'Fecha de Salida'     , 'rules' => 'trim|required'),
 		array('field' => 'descripcion_tur'  ,'label' => 'Descripcion'         , 'rules' => 'trim|required|min_length[3]'),
 		array('field' => 'estado'           ,'label' => 'Estado'              , 'rules' => 'trim|required'),
 		array('field' => 'tipo'             ,'label' => 'Tipo'                , 'rules' => 'trim|required'),
 		array('field' => 'aprobado'         ,'label' => 'Aprobacion'          , 'rules' => 'trim|required'),
 		array('field' => 'cupos_disponibles','label' => 'Cupos de Paquetes'   , 'rules' => 'trim|required|integer'),
 		array('field' => 'precio'           ,'label' => 'Precio'              , 'rules' => 'trim|required|numeric'),
+		// array('field' => 'start'            ,'label' => 'Fecha de Salida'     , 'rules' => 'trim|required'),
 		// array('field' => 'lugar_salida'     ,'label' => 'Lugar de salida'     , 'rules' => 'trim|required'),
 		// array('field' => 'no_incluye'       ,'label' => 'No Incluye'          , 'rules' => 'trim|required'),
 		// array('field' => 'requisitos'       ,'label' => 'Requisitos'          , 'rules' => 'trim|required'),

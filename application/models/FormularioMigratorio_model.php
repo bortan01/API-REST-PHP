@@ -15,7 +15,7 @@ class FormularioMigratorio_model extends CI_Model
 		$nombreTabla = "formulario_migratorio";
 		if (count($preguntas) < 1) {
 			$respuesta = array(
-				'err'          => TRUE,
+				'err'          => FALSE,
 				'mensaje'      => "NO SE INSERTO NINGUN REGISTRO",
 			);
 			return $respuesta;
@@ -38,26 +38,36 @@ class FormularioMigratorio_model extends CI_Model
 			}
 		}
 	}
-	
+
 	public function actualizar(array $preguntas)
 	{
 		$nombreTabla = "formulario_migratorio";
 		if (count($preguntas) < 1) {
 			$respuesta = array(
-				'err'          => TRUE,
+				'err'          => FALSE,
 				'mensaje'      => "NO SE INSERTO NINGUN REGISTRO",
 			);
 			return $respuesta;
 		} else {
 			$insert = $this->db->update_batch($nombreTabla, $preguntas, 'id_formulario');
+
 			if (!$insert) {
-				//NO GUARDO
-				$respuesta = array(
-					'err'          => TRUE,
-					'mensaje'      => 'Error al insertar ', $this->db->error_message(),
-					'error_number' => $this->db->error_number(),
-				);
-				return $respuesta;
+				//NO SE MODIFICO NINGUNA FILA
+				$error =  $this->db->error();
+				if ($error['code'] != 0) {
+					$respuesta = array(
+						'err'          => TRUE,
+						'mensaje'      => $error['message'],
+
+					);
+					return $respuesta;
+				} else {
+					$respuesta = array(
+						'err'          => FALSE,
+						'mensaje'      => 'Registro Guardado Exitosamente',
+					);
+					return $respuesta;
+				}
 			} else {
 				$respuesta = array(
 					'err'          => FALSE,

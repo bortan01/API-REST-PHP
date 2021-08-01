@@ -48,6 +48,63 @@ class TurPaquete extends REST_Controller
             $this->response($respuesta, REST_Controller::HTTP_BAD_REQUEST);
         }
     }
+    public function savePrivado_post()
+    {
+        $data = $this->post();
+        $this->load->library("form_validation");
+        $this->form_validation->set_data($data);
+        //corremos las reglas de validacion
+        if ($this->form_validation->run('insertarTurPaquete')) {
+            //VERIFICAMOS QUE TODOS LOS PARAMETROS ESTEN BIEN
+            $turPaquete = $this->Tours_paquete_model->verificar_camposEntrada($data);
+            $respuesta =  $this->Tours_paquete_model->guardar($turPaquete);
+
+
+            $idDetalle = date("His") . rand(1, 1000);
+            
+            $total = $respuesta['turPaquete']['cupos_disponibles'] *$respuesta['turPaquete']['precio'];
+            
+            $detalleReserva = [];
+            $detalleReserva['id_tours']               = $respuesta['id'];
+            $detalleReserva['id_cliente']             = $respuesta['id_cliente'];
+            $detalleReserva['asientos_seleccionados'] = $respuesta['NO_SELECCIONADO'];
+            $detalleReserva['label_asiento']          = $respuesta['NO_LABEL'];
+            $detalleReserva['nombre_producto']        = $respuesta['turPaquete']['nombreTours'];
+            $detalleReserva['cantidad_asientos']      = $respuesta['turPaquete']['cupos_disponibles'];
+            $detalleReserva['descripcionProducto']    = 'SIN DESCRIPCION';
+            $detalleReserva['total']                  = $total;
+            $detalleReserva['id_detalle']             = $idDetalle;
+         
+            
+
+            if ($respuesta['err']) {
+                $this->response($respuesta, REST_Controller::HTTP_BAD_REQUEST);
+            } else {
+                //SE GURDO EL TUR POR LO QUE YA TENEMOS EL ID PARA EL DETALLE
+                if (!empty($data["servicios"])) {
+                    $servicios = json_decode($data["servicios"], true);
+                    $this->detalle_servicio_model->guardar($servicios, $respuesta['id']);
+                }
+                if (!empty($data["sitios"])) {
+                    $itinerario = json_decode($data["sitios"], true);
+                    $this->Itinerario_model->guardar($itinerario, $respuesta['id']);
+                }
+
+                // VAMOS A GUARDAR LA RESERVA 
+
+                
+                $this->response($respuesta, REST_Controller::HTTP_OK);
+            }
+        } else {
+            //algo mal
+            $respuesta = array(
+                'err' => TRUE,
+                'mensaje' => 'har errores en el envio de informacion',
+                'errores' => $this->form_validation->get_errores_arreglo()
+            );
+            $this->response($respuesta, REST_Controller::HTTP_BAD_REQUEST);
+        }
+    }
     public function update_post()
     {
         $data = $this->post();

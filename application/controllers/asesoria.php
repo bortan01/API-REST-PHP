@@ -12,6 +12,7 @@ class Asesoria extends REST_Controller
 		$this->load->model('Rama_model');
 		$this->load->model('Pregunta_model');
 		$this->load->model('PreguntasCerradas_model');
+		$this->load->model('Imagen_model');
 		//$this->load->helper('utilidades');
 
 	}
@@ -50,17 +51,18 @@ class Asesoria extends REST_Controller
 
 	public function respuestas_get()
 	{
-
 		$data = $this->get();
-		$pregunta = $this->Pregunta_model->get_respuesta($data['id_cita']);
+		$pregunta = $this->Pregunta_model->get_respuesta($data['id_cliente']);
 		$opciones = $this->Pregunta_model->get_opciones();
+		$pasaportes = $this->Imagen_model->obtenerImagen('pasaportes', $data['id_cliente']);
 
 		if (isset($pregunta)) {
 			$respuesta = array(
-				'err' => FALSE,
-				'mensaje' => 'Registros cargados correctamente',
-				'preguntas' => $pregunta,
-				'opciones' => $opciones
+				'err'        => FALSE,
+				'mensaje'    => 'Registros cargados correctamente',
+				'preguntas'  => $pregunta,
+				'opciones'   => $opciones,
+				'pasaportes' => $pasaportes
 			);
 			$this->response($respuesta);
 		} else {

@@ -17,27 +17,38 @@ class FormularioMigratorio extends REST_Controller
 
 	public function save_post()
 	{
-		$data = $this->post();
-		$AllQuestion = json_decode($data['AllQuestion'],  true);
-		$respuesta = $this->FormularioMigratorio_model->guardar($AllQuestion);
+		$data         = $this->post();
+		$id_cita      = $data['id_cita'];
+
+		$AllQuestion  = json_decode($data['AllQuestion'],  true);
+		$respuesta    = $this->FormularioMigratorio_model->guardar($AllQuestion);
 		if ($respuesta['err']) {
 			$this->response($respuesta, REST_Controller::HTTP_BAD_REQUEST);
 		} else {
+			$this->Cita_model->formularioModificar($id_cita);
 			$this->response($respuesta, REST_Controller::HTTP_OK);
 		}
 	}
 	public function update_post()
 	{
 		$data = $this->post();
-		$AllQuestion = json_decode($data['AllQuestion'],  true);
+		$newQuestion = json_decode($data['newQuestion'],  true);
+		$oldQuestion = json_decode($data['oldQuestion'],  true);
 		// print_r($AllQuestion);
 		// die();
 
-		$respuesta = $this->FormularioMigratorio_model->actualizar($AllQuestion);
-		if ($respuesta['err']) {
-			$this->response($respuesta, REST_Controller::HTTP_BAD_REQUEST);
+		$respuestaGuardar    = $this->FormularioMigratorio_model->guardar($newQuestion);
+		if ($respuestaGuardar['err']) {
+			// si no pudo guardar las pregutnas nuevas enviamos el error
+			$this->response($respuestaGuardar, REST_Controller::HTTP_BAD_REQUEST);
 		} else {
-			$this->response($respuesta, REST_Controller::HTTP_OK);
+			// si puedo guardarlas procedemos a actualizar las antiguas
+			$respuestaActualizar = $this->FormularioMigratorio_model->actualizar($oldQuestion);
+			if ($respuestaActualizar['err']) {
+				$this->response($respuestaActualizar, REST_Controller::HTTP_BAD_REQUEST);
+			} else {
+				$this->response($respuestaActualizar, REST_Controller::HTTP_OK);
+			}
 		}
 	}
 

@@ -14,33 +14,33 @@ class Cita_model extends CI_Model
 	public $asistencia;
 
 
-	public function ingresos($data){
-	//var_dump($data);
+	public function ingresos($data)
+	{
+		//var_dump($data);
 
-	//die();
-	$this->db->select('*');
-    $this->db->from("cita");
-    $this->db->join('usuario', 'usuario.id_cliente=cita.id_cliente', 'inner');
-    $this->db->where('fecha >=',$data['fechaInicio']);
-    $this->db->where('fecha <=',$data['fechaFin']);
-    $ingresos = $this->db->get();
-    $result  = $ingresos->result();
-    $cuantos = count($result);
-    if ($cuantos > 0) {
-    	return $respuesta =  array(
+		//die();
+		$this->db->select('*');
+		$this->db->from("cita");
+		$this->db->join('usuario', 'usuario.id_cliente=cita.id_cliente', 'inner');
+		$this->db->where('fecha >=', $data['fechaInicio']);
+		$this->db->where('fecha <=', $data['fechaFin']);
+		$ingresos = $this->db->get();
+		$result  = $ingresos->result();
+		$cuantos = count($result);
+		if ($cuantos > 0) {
+			return $respuesta =  array(
 				'err' => FALSE,
 				'ingresos' => $result,
-				'cuantos'=>$cuantos
+				'cuantos' => $cuantos
 			);
-    }else{
-    	return $respuesta =  array(
+		} else {
+			return $respuesta =  array(
 				'err' => FALSE,
 				'ingresos' => $result,
-				'cuantos'=>$cuantos
+				'cuantos' => $cuantos
 			);
-
-    }
-}
+		}
+	}
 
 	public function verCita($data)
 	{
@@ -261,15 +261,14 @@ class Cita_model extends CI_Model
 						);
 					}
 					return $respuesta;
-				}else{
+				} else {
 
 					$respuesta = array(
-					'err' => TRUE,
-					'mensaje' => 'Hora no valida, es la hora actual que posee!!'
-				);
+						'err' => TRUE,
+						'mensaje' => 'Hora no valida, es la hora actual que posee!!'
+					);
 					return $respuesta;
 				}
-
 			} else {
 
 				$respuesta = array(
@@ -324,13 +323,13 @@ class Cita_model extends CI_Model
 
 						$this->id_cita = $this->db->insert_id();
 						$this->id_cliente = $id_cliente;
-						
+
 						$this->title = $motivo;
 						$this->textColor = "#FFFFFF";
 						$this->start = $start;
 						$this->fecha = $fecha;
 						$this->hora = $hora;
-						
+
 
 
 						//ANTES DE INSERTAR NECESITO ESTE ID  ESTO YA VEREMOS
@@ -343,60 +342,60 @@ class Cita_model extends CI_Model
 						$row = $id_citaExistente->row('id_cita');
 						////************************
 
-						
-						
-						if ($row== null) {
-						$this->color = "#007bff";
-						$this->asistencia= 'Primera vez';
-						$hecho = $this->db->insert('cita', $this);
-						if ($hecho) {
-							#insertado
-							$respuesta = array(
-								'err' => FALSE,
-								'mensaje' =>'Registro insertado correctamente',
-								'cita_id' => $this->db->insert_id(),
-								'ver' => $this,
-								'row'=>$row 
-							);
+
+
+						if ($row == null) {
+							$this->color = "#007bff";
+							$this->asistencia = 'Primera vez';
+							$hecho = $this->db->insert('cita', $this);
+							if ($hecho) {
+								#insertado
+								$respuesta = array(
+									'err' => FALSE,
+									'mensaje' => 'Registro insertado correctamente',
+									'cita_id' => $this->db->insert_id(),
+									'ver' => $this,
+									'row' => $row
+								);
+							} else {
+								//error
+								$this->load->model('Imagen_model');
+								$identificador = $this->db->insert_id();
+
+								$respuesta = array(
+									'err' => TRUE,
+									'mensaje' => 'Error al insertar',
+									'error' => $this->db->_error_message(),
+									'error_num' => $this->db->_error_number()
+								);
+							}
 						} else {
-							//error
-							$this->load->model('Imagen_model');
-							$identificador = $this->db->insert_id();
-				
-							$respuesta = array(
-								'err' => TRUE,
-								'mensaje' => 'Error al insertar',
-								'error' => $this->db->_error_message(),
-								'error_num' => $this->db->_error_number()
-							);
+							$this->color = "#FF0040";
+							$this->asistencia = 'Otra vez';
+							$hecho = $this->db->insert('cita', $this);
+							if ($hecho) {
+								#insertado
+								$respuesta = array(
+									'err' => FALSE,
+									'mensaje' => 'Registro insertado correctamente',
+									'cita_id' => $this->db->insert_id(),
+									'ver' => $this,
+									'row' => $row
+								);
+							} else {
+								//error
+								$this->load->model('Imagen_model');
+								$identificador = $this->db->insert_id();
+
+								$respuesta = array(
+									'err' => TRUE,
+									'mensaje' => 'Error al insertar',
+									'error' => $this->db->_error_message(),
+									'error_num' => $this->db->_error_number()
+								);
+							}
+							///**********************fin 
 						}
-					  }else{
-					  	$this->color = "#FF0040";
-					  	$this->asistencia= 'Otra vez';
-						$hecho = $this->db->insert('cita', $this);
-					  	if ($hecho) {
-							#insertado
-							$respuesta = array(
-								'err' => FALSE,
-								'mensaje' =>'Registro insertado correctamente',
-								'cita_id' => $this->db->insert_id(),
-								'ver' => $this,
-								'row'=>$row 
-							);
-						} else {
-							//error
-							$this->load->model('Imagen_model');
-							$identificador = $this->db->insert_id();
-				
-							$respuesta = array(
-								'err' => TRUE,
-								'mensaje' => 'Error al insertar',
-								'error' => $this->db->_error_message(),
-								'error_num' => $this->db->_error_number()
-							);
-						}
-					  	///**********************fin 
-					  }
 
 						return $respuesta;
 					} else {

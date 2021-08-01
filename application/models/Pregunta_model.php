@@ -100,7 +100,7 @@ class Pregunta_model extends CI_Model
 		return $query->result();
 	}
 
-	public function get_respuesta($id_cita)
+	public function get_respuesta($id_cliente)
 	{
 		$this->db->select('*');
 		$this->db->from('pregunta');
@@ -113,22 +113,24 @@ class Pregunta_model extends CI_Model
 			$this->db->select('*');
 			$this->db->from('formulario_migratorio');
 			$this->db->where('id_pregunta', $pregunta->id_pregunta);
-			$this->db->where('id_cita', $id_cita);
+			$this->db->where('id_cliente', $id_cliente);
 			$query = $this->db->get();
 			$result = $query->row();
 
-					$pregunta->id_formulario =  $result->id_formulario;
 			if ($pregunta->mas_respuestas == 'Si') {
-				$pregunta->respuesta =  json_decode($result->respuesta, true);
+				if ($result == null) {
+					$pregunta->respuesta =  json_decode('[""]', true);
+				} else {
+					$pregunta->id_formulario =  $result->id_formulario;
+					$pregunta->respuesta =  json_decode($result->respuesta, true);
+				}
 			} else {
-				$pregunta->respuesta =  $result->respuesta;
-			}
-
-			
-			if ($pregunta->tipo == 'date' && $pregunta->tipo != '') {
-				// var_dump($pregunta->tipo);
-
-				// $pregunta->respuesta = DateTime::createFromFormat('d/m/Y', $pregunta->respuesta)->format('Y-m-d');
+				if ($result == null) {
+					$pregunta->respuesta =  '';
+				} else {
+					$pregunta->id_formulario =  $result->id_formulario;
+					$pregunta->respuesta =  $result->respuesta;
+				}
 			}
 		}
 		return $listPreguntas;

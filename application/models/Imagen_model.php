@@ -65,7 +65,7 @@ class Imagen_model extends CI_Model
     public function guardarGaleria($tipo, $identificador, $activo = TRUE)
     {
         $this->load->model('Conf_model');
-        $URL = $this->Conf_model->URL_SERVIDOR."uploads/";
+        $URL = $this->Conf_model->URL_SERVIDOR . "uploads/";
         if (!isset($_FILES['fotos'])) {
             $informacion_subida[] = array(
                 "error"   => TRUE,
@@ -95,8 +95,9 @@ class Imagen_model extends CI_Model
                     $config['max_size']      = 2000;
                     $config['detect_mime']   = TRUE;
                     //GENERAMOS UN NOMBRE UNICO
-                    $config['file_name']     =  date("HisYmd") . rand(1, 100) . $_FILES['userfile']['name'][$i];
-
+                    $config['file_name']     =  date("HisYmd") . rand(1, 100) ;
+                    // print_r($_FILES['userfile']['name'][$i]);
+                    // die();
                     $this->load->library('upload', $config);
                     //EMPEZAMOS A GUARDAR LAS IMAGENES EN LA CARPETA 
                     if ($this->upload->do_upload('userfile')) {

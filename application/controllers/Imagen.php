@@ -17,7 +17,14 @@ class Imagen extends REST_Controller
         $respuesta =  $this->Imagen_model->guardarImagen($tipo, $identificador);
         $this->response($respuesta, REST_Controller::HTTP_OK);
     }
-
+    public function saveGaleria_post()
+    {
+        $data = $this->post();
+        $tipo = $data["tipo"];
+        $identificador = $data["identificador"];
+        $respuesta =  $this->Imagen_model->guardarGaleria($tipo, $identificador);
+        $this->response($respuesta, REST_Controller::HTTP_OK);
+    }
     public function delete_post()
     {
         $id = $_POST["key"];
