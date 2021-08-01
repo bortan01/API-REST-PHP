@@ -195,7 +195,7 @@ class Cita_model extends CI_Model
 	{
 		//aqui vamos a modificar el estado, cuando ya se aya llenado el formulario
 		//al cliente
-		$this->db->set(array('color' => '#FF0040', 'estado_cita' => 0));
+		$this->db->set(array('color' => '#FF0040', 'estado_cita' => 0, 'asistencia' => 'Multiples Ocaciones'));
 		$this->db->where('id_cita', $id);
 		$respuestas = $this->db->update('cita');
 		return $respuestas;
@@ -443,7 +443,7 @@ class Cita_model extends CI_Model
 		$this->db->select('*');
 		$this->db->from('cita');
 		$this->db->join('usuario', 'usuario.id_cliente=cita.id_cliente', 'inner');
-		$this->db->where(array('fecha' => date("Y-m-d"), 'estado_cita' => 1));
+		// $this->db->where(array('fecha' => date("Y-m-d"), 'estado_cita' => 1));
 		//$this->db->where(array('estado_cita'=>1));
 		$query = $this->db->get();
 		return $query->result();
