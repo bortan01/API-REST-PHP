@@ -91,7 +91,7 @@ class Tours_paquete_model extends CI_Model
             $dataDetalle['nombre_producto']        = $turPaquete['nombreTours'];
             $dataDetalle['total']                  = $turPaquete['precio'] * $turPaquete['cupos_disponibles'];
             $dataDetalle['cantidad_asientos']      = $turPaquete['cupos_disponibles'];
-            $dataDetalle['chequeo']                = $turPaquete['requisitos'];
+            $dataDetalle['chequeo']                = $this->crearChequeo($turPaquete['requisitos']);
             $dataDetalle['asientos_seleccionados'] = 'NO_SELECCIONADO';
             $dataDetalle['label_asiento']          = 'NO_LABEL';
             $dataDetalle['descripcionProducto']    = 'Reserva Completa';
@@ -768,5 +768,14 @@ class Tours_paquete_model extends CI_Model
         $query = $this->db->get();
         $sitios  = $query->result();
         return $sitios;
+    }
+    public function crearChequeo($requisitos)
+    {       
+        $listChequeo =  json_decode($requisitos, true);
+        $newList = [];
+        for ($i = 0; $i < count($listChequeo); $i++) {
+            array_push($newList, array('estado' => false, 'requisito' => $listChequeo[$i]));
+        }
+        return json_encode ($newList);
     }
 }
