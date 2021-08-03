@@ -63,6 +63,74 @@ class Tours_paquete_model extends CI_Model
             return $respuesta;
         }
     }
+    public function guardarTourPrivado(array $turPaquete)
+    {
+        $nombreTabla = "tours_paquete";
+
+        isset($turPaquete["start"]) &&  $turPaquete["start"] = $this->combertirFecha($turPaquete["start"]);
+        isset($turPaquete["end"]) &&   $turPaquete["end"] = $this->combertirFecha($turPaquete["end"]);
+        $insert = $this->db->insert($nombreTabla, $turPaquete);
+        if (!$insert) {
+            //NO GUARDO 
+            $respuesta = array(
+                'err'          => TRUE,
+                'mensaje'      => 'Error al insertar ', $this->db->error_message(),
+                'error_number' => $this->db->error_number(),
+                'turPaquete'   => null
+            );
+            return $respuesta;
+        } else {
+            $this->load->model('Imagen_model');
+            $identificador = $this->db->insert_id();
+            $tipoGaleria = $turPaquete['tipo'];
+            $this->Imagen_model->guardarGaleria($tipoGaleria, $identificador);
+
+            $dataDetalle                           = [];
+            $dataDetalle['id_cliente']             = '2036220712';
+            $dataDetalle['asientos_seleccionados'] = 'NO_SELECCIONADO';
+            $dataDetalle['label_asiento']          = 'NO_LABEL';
+            $dataDetalle['descripcionProducto']    = 'Reserva Completa';
+            $dataDetalle['id_tours']               = $identificador;
+            $dataDetalle['nombre_producto']        = $turPaquete['nombreTours'];
+            $dataDetalle['total']                  = $turPaquete['precio'] * $turPaquete['cupos_disponibles'];
+            $dataDetalle['cantidad_asientos']      = $turPaquete['cupos_disponibles'];
+
+            $respuestaDetalle = $this->guardarDetalle($dataDetalle);
+            $respuesta = array(
+                'err'          => FALSE,
+                'mensaje'      => 'Registro Guardado Exitosamente',
+                'id'           => $identificador,
+                'turPaquete'   => $turPaquete,
+                'data'         => $respuestaDetalle,
+            );
+            return $respuesta;
+        }
+    }
+    public function guardarDetalle($data)
+    {
+        $idDetalle = date("His") . rand(1, 1000);
+        $data['id_detalle'] = $idDetalle;
+        $respuestaDetalle     = $this->Detalle_tour_model->guardar($data);
+        if ($respuestaDetalle['err']) {
+            return $respuestaDetalle;
+        } else {
+            $reservaTur = [];
+            $reservaTur["IdTransaccion"]        = date("HisYmd") . rand(1, 1000);
+            $reservaTur["EnlacePago"]["Id"]     = $idDetalle;
+            $reservaTur["FechaTransaccion"]     = date("Y-m-d H:i:s");
+            $reservaTur["FormaPagoUtilizada"]   = 'Agencia';
+            $reservaTur["ResultadoTransaccion"] = 'ExitosaAprobada';
+            $reservaTur["Monto"]                = $data['total'];
+            $reservaTur["Cantidad"]             = 1;
+
+            $respuestaReserva = $this->ReservaTour_model->guardar($reservaTur);
+            if ($respuestaReserva['err']) {
+                return $respuestaReserva;
+            } else {
+                return $respuestaReserva;
+            }
+        }
+    }
     public function obtenerViaje(array $data = array())
     {
         $this->load->model('Conf_model');
@@ -649,7 +717,7 @@ class Tours_paquete_model extends CI_Model
                 $value->chequeo               = json_decode($value->chequeo, true);
                 $value->descripcionProducto   = nl2br($value->descripcionProducto);
                 $listaAsientos                = explode(',', $value->asientos_seleccionados);
-                
+
                 foreach ($listaAsientos as $asiento) {
                     array_push($asientosOcupados, $asiento);
                 }

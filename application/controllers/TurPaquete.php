@@ -11,6 +11,8 @@ class TurPaquete extends REST_Controller
         $this->load->model('Imagen_model');
         $this->load->model('Tours_paquete_model');
         $this->load->model('detalle_servicio_model');
+        $this->load->model('Detalle_tour_model');
+        $this->load->model('ReservaTour_model');
         $this->load->model('Itinerario_model');
     }
     public function save_post()
@@ -57,25 +59,7 @@ class TurPaquete extends REST_Controller
         if ($this->form_validation->run('insertarTurPaquete')) {
             //VERIFICAMOS QUE TODOS LOS PARAMETROS ESTEN BIEN
             $turPaquete = $this->Tours_paquete_model->verificar_camposEntrada($data);
-            $respuesta =  $this->Tours_paquete_model->guardar($turPaquete);
-
-
-            $idDetalle = date("His") . rand(1, 1000);
-            
-            $total = $respuesta['turPaquete']['cupos_disponibles'] *$respuesta['turPaquete']['precio'];
-            
-            $detalleReserva = [];
-            $detalleReserva['id_tours']               = $respuesta['id'];
-            $detalleReserva['id_cliente']             = $respuesta['id_cliente'];
-            $detalleReserva['asientos_seleccionados'] = $respuesta['NO_SELECCIONADO'];
-            $detalleReserva['label_asiento']          = $respuesta['NO_LABEL'];
-            $detalleReserva['nombre_producto']        = $respuesta['turPaquete']['nombreTours'];
-            $detalleReserva['cantidad_asientos']      = $respuesta['turPaquete']['cupos_disponibles'];
-            $detalleReserva['descripcionProducto']    = 'SIN DESCRIPCION';
-            $detalleReserva['total']                  = $total;
-            $detalleReserva['id_detalle']             = $idDetalle;
-         
-            
+            $respuesta =  $this->Tours_paquete_model->guardarTourPrivado($turPaquete);
 
             if ($respuesta['err']) {
                 $this->response($respuesta, REST_Controller::HTTP_BAD_REQUEST);
@@ -92,7 +76,7 @@ class TurPaquete extends REST_Controller
 
                 // VAMOS A GUARDAR LA RESERVA 
 
-                
+
                 $this->response($respuesta, REST_Controller::HTTP_OK);
             }
         } else {
