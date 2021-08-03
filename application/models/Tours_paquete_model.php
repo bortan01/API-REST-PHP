@@ -63,7 +63,7 @@ class Tours_paquete_model extends CI_Model
             return $respuesta;
         }
     }
-    public function guardarTourPrivado(array $turPaquete)
+    public function guardarTourPrivado(array $turPaquete, string $id_cliente)
     {
         $nombreTabla = "tours_paquete";
 
@@ -86,14 +86,15 @@ class Tours_paquete_model extends CI_Model
             $this->Imagen_model->guardarGaleria($tipoGaleria, $identificador);
 
             $dataDetalle                           = [];
-            $dataDetalle['id_cliente']             = '2036220712';
-            $dataDetalle['asientos_seleccionados'] = 'NO_SELECCIONADO';
-            $dataDetalle['label_asiento']          = 'NO_LABEL';
-            $dataDetalle['descripcionProducto']    = 'Reserva Completa';
+            $dataDetalle['id_cliente']             = $id_cliente;
             $dataDetalle['id_tours']               = $identificador;
             $dataDetalle['nombre_producto']        = $turPaquete['nombreTours'];
             $dataDetalle['total']                  = $turPaquete['precio'] * $turPaquete['cupos_disponibles'];
             $dataDetalle['cantidad_asientos']      = $turPaquete['cupos_disponibles'];
+            $dataDetalle['chequeo']                = $turPaquete['requisitos'];
+            $dataDetalle['asientos_seleccionados'] = 'NO_SELECCIONADO';
+            $dataDetalle['label_asiento']          = 'NO_LABEL';
+            $dataDetalle['descripcionProducto']    = 'Reserva Completa';
 
             $respuestaDetalle = $this->guardarDetalle($dataDetalle);
             $respuesta = array(

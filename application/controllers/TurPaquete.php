@@ -53,13 +53,14 @@ class TurPaquete extends REST_Controller
     public function savePrivado_post()
     {
         $data = $this->post();
+        $id_cliente = $data['id_cliente'];
         $this->load->library("form_validation");
         $this->form_validation->set_data($data);
         //corremos las reglas de validacion
         if ($this->form_validation->run('insertarTurPaquete')) {
             //VERIFICAMOS QUE TODOS LOS PARAMETROS ESTEN BIEN
             $turPaquete = $this->Tours_paquete_model->verificar_camposEntrada($data);
-            $respuesta =  $this->Tours_paquete_model->guardarTourPrivado($turPaquete);
+            $respuesta =  $this->Tours_paquete_model->guardarTourPrivado($turPaquete, $id_cliente);
 
             if ($respuesta['err']) {
                 $this->response($respuesta, REST_Controller::HTTP_BAD_REQUEST);
