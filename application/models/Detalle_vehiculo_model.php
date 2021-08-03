@@ -109,8 +109,10 @@ class Detalle_vehiculo_model extends CI_Model
             $this->db->from('detalle_vehiculo' );
             $this->db->join('usuario', 'detalle_vehiculo.id_cliente = usuario.id_cliente');
             $this->db->join('vehiculo', 'detalle_vehiculo.id_vehiculo = vehiculo.idvehiculo');
+            //$this->db->join('detalle_serviciosvehiculo', 'detalle_vehiculo.id_detalle = detalle_serviciosvehiculo.id_detalle');
             $this->db->join('modelo', 'vehiculo.idmodelo = modelo.idmodelo');
             
+          
             $this->db->where($parametros);
             $this->db->where_in('vehiculo.activo',2);
             $this->db->order_by('detalle_vehiculo.fechaHora_detalle', 'desc');
@@ -119,14 +121,22 @@ class Detalle_vehiculo_model extends CI_Model
     
             $z = $query->result();
 
+            $this->db->select('*');
+            $this->db->from('detalle_serviciosvehiculo' );        
+          
+            $this->db->where($parametros);
+           
+            $query2=$this->db->get();
+    
+            $z2 = $query2->result();
+
             $deetalleSeleccionado = $this->Utils_model->selectTabla($nombreTabla, $parametros);
-            ///usuario seleccionado es un array de clases genericas
 
             if (count($deetalleSeleccionado) < 1) {
                 $respuesta = array('err' => TRUE, 'mensaje' => 'No se encontro el detalle vehiculo');
                 return $respuesta;
             } else {
-                $respuesta = array('err' => FALSE, 'detalleVehiculo' => $z);
+                $respuesta = array('err' => FALSE, 'detalleVehiculo' => $z,'detalle_servicio'=>$z2);
                 return $respuesta;
             }
         } catch (Exception $e) {
