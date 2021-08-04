@@ -11,3 +11,4 @@ deployment:
     - /bin/cp -r application $DEPLOYPATH
     - /bin/cp -r system $DEPLOYPATH
     - /bin/cp -r uploads $DEPLOYPATH
+    - /bin/cp -r vendor $DEPLOYPATH
