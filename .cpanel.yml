@@ -1,7 +1,7 @@
 ---
 deployment:
   tasks:
-    - export DEPLOYPATH=/home/christi5/api.christianmeza.com/
+    - export DEPLOYPATH=/home/a147409/api/
     - /bin/cp index.php $DEPLOYPATH
     - /bin/cp composer.json $DEPLOYPATH
     - /bin/cp db.php $DEPLOYPATH
