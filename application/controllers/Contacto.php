@@ -1,6 +1,6 @@
 <?php
 defined('BASEPATH') or exit('No direct script access allowed');
-header('Access-Control-Allow-Origin: https://admin.tesistours.com/');
+header('Access-Control-Allow-Origin: https://admin.tesistours.com');
 require APPPATH . '/libraries/REST_Controller.php';
 class Contacto extends REST_Controller
 {
@@ -55,7 +55,7 @@ class Contacto extends REST_Controller
         $this->load->library("form_validation");
         $this->form_validation->set_data($data);
         if ($this->form_validation->run('ActualizarContacto')) {
-             
+
             $respuesta = $this->Contacto_model->editar($data);
             if ($respuesta['err']) {
                 $this->response($respuesta, REST_Controller::HTTP_BAD_REQUEST);
@@ -77,7 +77,7 @@ class Contacto extends REST_Controller
         $this->load->library("form_validation");
         $this->form_validation->set_data($data);
         if ($this->form_validation->run('EliminarContacto')) {
-             
+
             $respuesta = $this->Contacto_model->borrar($data);
             if ($respuesta['err']) {
                 $this->response($respuesta, REST_Controller::HTTP_BAD_REQUEST);
@@ -93,5 +93,4 @@ class Contacto extends REST_Controller
             $this->response($respuesta, REST_Controller::HTTP_BAD_REQUEST);
         }
     }
-   
 }

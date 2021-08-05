@@ -1,117 +1,116 @@
 <?php
 defined('BASEPATH') or exit('No direct script access allowed');
-header('Access-Control-Allow-Origin: https://admin.tesistours.com/');
+header('Access-Control-Allow-Origin: https://admin.tesistours.com');
 require APPPATH . '/libraries/REST_Controller.php';
 class lugarvehiculo extends REST_Controller
 {
 
-public function __construct(){
+	public function __construct()
+	{
 		//constructor del padre
 		parent::__construct();
 		$this->load->database();
 		$this->load->model('Lugar_model');
 	}
-	public function lugar_get(){
+	public function lugar_get()
+	{
 
-	$destino=$this->Lugar_model->get_lugar();
+		$destino = $this->Lugar_model->get_lugar();
 
-	if (isset($destino)) {
-		
-		$respuesta=array(
-			'err'=>FALSE,
-			'mensaje'=>'Registro Cargado correctamente',
-			'lugar'=>$destino
+		if (isset($destino)) {
 
-		);
-		$this->response($respuesta,REST_Controller::HTTP_OK);
-	}else{
-		$respuesta=array(
-			'err'=>TRUE,
-			'mensaje'=>'Error al cargar los datos.',
-			'lugar'=>null
+			$respuesta = array(
+				'err' => FALSE,
+				'mensaje' => 'Registro Cargado correctamente',
+				'lugar' => $destino
 
-		);
-		$this->response($respuesta,REST_Controller::HTTP_NOT_FOUND);
-
-	}
-}
-
-	
-	//INSERTAR
-	public function lugar_post(){
-
-		$data=$this->post();
-		$this->load->library('form_validation');
-		$this->form_validation->set_data ($data);
-
-		if ( $this->form_validation->run('lugar_put') ) {
-		
-		$destino=$this->Lugar_model->set_datos($data);
-
-		$respuesta=$destino->insert(); 
-
-		if ($respuesta['err']) {
-
-		$this->response($respuesta, REST_Controller::HTTP_BAD_REQUEST); 	
-
-		}else{
-		$this->response($respuesta); 	
-		}
-		}else{
-
-			$respuesta=array(
-				'err'=>TRUE,
-				'mensaje'=>'Hay errores en el envio de la informacion',
-				'errores'=>$this->form_validation->get_errores_arreglo()
 			);
-			$this->response($respuesta, REST_Controller::HTTP_BAD_REQUEST); 
+			$this->response($respuesta, REST_Controller::HTTP_OK);
+		} else {
+			$respuesta = array(
+				'err' => TRUE,
+				'mensaje' => 'Error al cargar los datos.',
+				'lugar' => null
+
+			);
+			$this->response($respuesta, REST_Controller::HTTP_NOT_FOUND);
+		}
+	}
+
+
+	//INSERTAR
+	public function lugar_post()
+	{
+
+		$data = $this->post();
+		$this->load->library('form_validation');
+		$this->form_validation->set_data($data);
+
+		if ($this->form_validation->run('lugar_put')) {
+
+			$destino = $this->Lugar_model->set_datos($data);
+
+			$respuesta = $destino->insert();
+
+			if ($respuesta['err']) {
+
+				$this->response($respuesta, REST_Controller::HTTP_BAD_REQUEST);
+			} else {
+				$this->response($respuesta);
+			}
+		} else {
+
+			$respuesta = array(
+				'err' => TRUE,
+				'mensaje' => 'Hay errores en el envio de la informacion',
+				'errores' => $this->form_validation->get_errores_arreglo()
+			);
+			$this->response($respuesta, REST_Controller::HTTP_BAD_REQUEST);
 		}
 	}
 
 	//MODIFICAR
-	public function actualizarLugar_put(){
+	public function actualizarLugar_put()
+	{
 
 		$data = $this->put();
-        if (!isset($data["idlugar_recog_dev"])) {
-            $respuesta = array('err' => TRUE, 'mensaje' => 'No se encontro ningun identificador del Lugar');
-            $this->response($respuesta, REST_Controller::HTTP_BAD_REQUEST);
-        } else {
-            try {
-                $respuesta = $this->Lugar_model->editar($data);
-                if ($respuesta['err']) {
-                    $this->response($respuesta, REST_Controller::HTTP_BAD_REQUEST);
-                } else {
-                    $this->response($respuesta, REST_Controller::HTTP_OK);
-                }
-            } catch (\Throwable $th) {
-                $respuesta = array('err' => TRUE, 'mensaje' => 'Error interno de servidor');
-            }
-        }
-	}
-
-		//ELIMINAR
-		public function eliminarLugar_delete()
-		{
-			$data = $this->delete();
-			if (!isset($data["idlugar_recog_dev"])) {
-				$respuesta = array('err' => TRUE, 'mensaje' => 'No se encontro ningun identificador del Lugar');
-				$this->response($respuesta, REST_Controller::HTTP_BAD_REQUEST);
-			} else {
-				$campos = array('idlugar_recog_dev' => $data["idlugar_recog_dev"], 'activo' => FALSE);
-				
-				try {
-					$respuesta = $this->Lugar_model->borrar($campos);
-					if ($respuesta['err']) {
-						$this->response($respuesta, REST_Controller::HTTP_BAD_REQUEST);
-					} else {
-						$this->response($respuesta, REST_Controller::HTTP_OK);
-					}
-					
-				} catch (\Throwable $th) {
-					$respuesta = array('err' => TRUE, 'mensaje' => 'Error interno de servidor');
+		if (!isset($data["idlugar_recog_dev"])) {
+			$respuesta = array('err' => TRUE, 'mensaje' => 'No se encontro ningun identificador del Lugar');
+			$this->response($respuesta, REST_Controller::HTTP_BAD_REQUEST);
+		} else {
+			try {
+				$respuesta = $this->Lugar_model->editar($data);
+				if ($respuesta['err']) {
+					$this->response($respuesta, REST_Controller::HTTP_BAD_REQUEST);
+				} else {
+					$this->response($respuesta, REST_Controller::HTTP_OK);
 				}
+			} catch (\Throwable $th) {
+				$respuesta = array('err' => TRUE, 'mensaje' => 'Error interno de servidor');
 			}
 		}
+	}
 
+	//ELIMINAR
+	public function eliminarLugar_delete()
+	{
+		$data = $this->delete();
+		if (!isset($data["idlugar_recog_dev"])) {
+			$respuesta = array('err' => TRUE, 'mensaje' => 'No se encontro ningun identificador del Lugar');
+			$this->response($respuesta, REST_Controller::HTTP_BAD_REQUEST);
+		} else {
+			$campos = array('idlugar_recog_dev' => $data["idlugar_recog_dev"], 'activo' => FALSE);
 
+			try {
+				$respuesta = $this->Lugar_model->borrar($campos);
+				if ($respuesta['err']) {
+					$this->response($respuesta, REST_Controller::HTTP_BAD_REQUEST);
+				} else {
+					$this->response($respuesta, REST_Controller::HTTP_OK);
+				}
+			} catch (\Throwable $th) {
+				$respuesta = array('err' => TRUE, 'mensaje' => 'Error interno de servidor');
+			}
+		}
+	}
 }

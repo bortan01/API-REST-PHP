@@ -1,6 +1,6 @@
 <?php
 defined('BASEPATH') or exit('No direct script access allowed');
-header('Access-Control-Allow-Origin: https://admin.tesistours.com/');
+header('Access-Control-Allow-Origin: https://admin.tesistours.com');
 require APPPATH . '/libraries/REST_Controller.php';
 class Encomienda extends REST_Controller
 {
@@ -12,7 +12,7 @@ class Encomienda extends REST_Controller
 		$this->load->database();
 		$this->load->model('Encomienda_model');
 		$this->load->model('DetalleEncomienda_model');
-		$this->load->model('DetalleDestino_model');		
+		$this->load->model('DetalleDestino_model');
 		$this->load->model('DetalleEnvio_model');
 	}
 

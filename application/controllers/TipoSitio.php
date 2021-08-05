@@ -1,6 +1,6 @@
 <?php
 defined('BASEPATH') or exit('No direct script access allowed');
-header('Access-Control-Allow-Origin: https://admin.tesistours.com/');
+header('Access-Control-Allow-Origin: https://admin.tesistours.com');
 require APPPATH . '/libraries/REST_Controller.php';
 class TipoSitio extends REST_Controller
 {
@@ -16,7 +16,7 @@ class TipoSitio extends REST_Controller
         $data = $this->post();
         $this->load->library("form_validation");
         $this->form_validation->set_data($data);
-          //corremos las reglas de validacion
+        //corremos las reglas de validacion
         if ($this->form_validation->run('insertarTipoSitio')) {
             //VERIFICAMOS QUE TODOS LOS PARAMETROS ESTEN BIEN
 
@@ -40,7 +40,7 @@ class TipoSitio extends REST_Controller
     {
         sleep(1);
         $data = $this->get();
-     
+
         $respuesta =  $this->TipoSitio_model->obtenerTipo($data);
         if ($respuesta['err']) {
             $this->response($respuesta, REST_Controller::HTTP_BAD_REQUEST);
@@ -49,9 +49,9 @@ class TipoSitio extends REST_Controller
         }
     }
     public function update_put()
-    
+
     {
-       
+
         $data = $this->put();
         ///VERIFICANDO SI EXISTE EL ID PRINCIPAL DE LA TABLA
         if (!isset($data["id_servicios"])) {

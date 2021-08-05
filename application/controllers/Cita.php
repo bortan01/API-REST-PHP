@@ -1,6 +1,6 @@
 <?php
 defined('BASEPATH') or exit('No direct script access allowed');
-header('Access-Control-Allow-Origin: https://admin.tesistours.com/');
+header('Access-Control-Allow-Origin: https://admin.tesistours.com');
 require APPPATH . '/libraries/REST_Controller.php';
 class Cita extends REST_Controller
 {
@@ -14,7 +14,8 @@ class Cita extends REST_Controller
 		$this->load->model('Imagen_model');
 	}
 
-	public function ingresos_get(){
+	public function ingresos_get()
+	{
 		$data = $this->get();
 
 		$respuesta = $this->Cita_model->ingresos($data);
@@ -25,7 +26,6 @@ class Cita extends REST_Controller
 		} else {
 			$this->response($respuesta);
 		}
-
 	}
 	public function verificarExist_get()
 	{
@@ -190,7 +190,7 @@ class Cita extends REST_Controller
 			//$this->response('Todo bien');
 			//$cita=$this->Cita_model->set_datos($data);
 			$id_cliente = $data["id_cliente"];
-			
+
 			$motivo = $data["title"] . ': ' . $data["usuario"];
 			$color = "#007bff";
 			$textColor = "#FFFFFF";

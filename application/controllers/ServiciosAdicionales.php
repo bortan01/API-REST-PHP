@@ -1,6 +1,6 @@
 <?php
 defined('BASEPATH') or exit('No direct script access allowed');
-header('Access-Control-Allow-Origin: https://admin.tesistours.com/');
+header('Access-Control-Allow-Origin: https://admin.tesistours.com');
 require APPPATH . '/libraries/REST_Controller.php';
 class ServiciosAdicionales extends REST_Controller
 {
@@ -13,7 +13,7 @@ class ServiciosAdicionales extends REST_Controller
     public function save_post()
     {
         $data = $this->post();
-    
+
         $this->load->library("form_validation");
         $this->form_validation->set_data($data);
 

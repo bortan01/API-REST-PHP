@@ -1,6 +1,6 @@
 <?php
 defined('BASEPATH') or exit('No direct script access allowed');
-header('Access-Control-Allow-Origin: https://admin.tesistours.com/');
+header('Access-Control-Allow-Origin: https://admin.tesistours.com');
 require APPPATH . '/libraries/REST_Controller.php';
 class ReservaTour extends REST_Controller
 {
@@ -13,7 +13,7 @@ class ReservaTour extends REST_Controller
         $this->load->model('ReservaTour_model');
     }
 
-    public function save_post() 
+    public function save_post()
     {
         $data = $this->post();
 
@@ -30,13 +30,11 @@ class ReservaTour extends REST_Controller
         $this->load->model('Firebase_model');
 
         $respuesta = $this->Firebase_model->EnviarNotificacion();
-        
+
         if (isset($respuesta['err'])) {
             $this->response($respuesta, REST_Controller::HTTP_BAD_REQUEST);
         } else {
             $this->response($respuesta, REST_Controller::HTTP_OK);
         }
     }
-
-    
 }

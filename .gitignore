@@ -37,3 +37,4 @@ info/*
 application/models/Credenciales_model.php
 push.json
 uploads.rar
+application/models/Conf_model.php

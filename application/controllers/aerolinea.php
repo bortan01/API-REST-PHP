@@ -1,116 +1,117 @@
 <?php
 defined('BASEPATH') or exit('No direct script access allowed');
-header('Access-Control-Allow-Origin: https://admin.tesistours.com/');
+header('Access-Control-Allow-Origin: https://admin.tesistours.com');
 require APPPATH . '/libraries/REST_Controller.php';
 class aerolinea extends REST_Controller
 {
 
-public function __construct(){
+	public function __construct()
+	{
 		//constructor del padre
 		parent::__construct();
 		$this->load->database();
 		$this->load->model('Aerolinea_model');
 	}
 
-	public function aerolinea_get(){
+	public function aerolinea_get()
+	{
 
 		$data = $this->get();
-		$aerolineas=$this->Aerolinea_model->get_aerolinea($data);
-	
+		$aerolineas = $this->Aerolinea_model->get_aerolinea($data);
+
 		if (isset($aerolineas)) {
-			
-			$respuesta=array(
-				'err'=>FALSE,
-				'mensaje'=>'Registro Cargado correctamente',
-				'aerolineas'=>$aerolineas
-	
+
+			$respuesta = array(
+				'err' => FALSE,
+				'mensaje' => 'Registro Cargado correctamente',
+				'aerolineas' => $aerolineas
+
 			);
-			$this->response($respuesta,REST_Controller::HTTP_OK);
-		}else{
-			$respuesta=array(
-				'err'=>TRUE,
-				'mensaje'=>'Error al cargar los datos.',
-				'aerolineas'=>null
-	
+			$this->response($respuesta, REST_Controller::HTTP_OK);
+		} else {
+			$respuesta = array(
+				'err' => TRUE,
+				'mensaje' => 'Error al cargar los datos.',
+				'aerolineas' => null
+
 			);
-			$this->response($respuesta,REST_Controller::HTTP_NOT_FOUND);
-	
+			$this->response($respuesta, REST_Controller::HTTP_NOT_FOUND);
 		}
-}
-	
+	}
+
 	//INSERTAR
-	public function aerolinea_post(){
+	public function aerolinea_post()
+	{
 
-		$data=$this->post();
+		$data = $this->post();
 		$this->load->library('form_validation');
-		$this->form_validation->set_data ($data);
+		$this->form_validation->set_data($data);
 
-		if ( $this->form_validation->run('aerolinea_put')) {
-		
-		$aerolineas=$this->Aerolinea_model->set_datos($data);
-   
-		$respuesta=$aerolineas->insert(); 
+		if ($this->form_validation->run('aerolinea_put')) {
 
-		if ($respuesta['err']) {
+			$aerolineas = $this->Aerolinea_model->set_datos($data);
 
-		$this->response($respuesta, REST_Controller::HTTP_BAD_REQUEST); 	
+			$respuesta = $aerolineas->insert();
 
-		}else{
-		$this->response($respuesta); 	
-		}
-		}else{
+			if ($respuesta['err']) {
 
-			$respuesta=array(
-				'err'=>TRUE,
-				'mensaje'=>'Hay errores en el envio de la informacion',
-				'errores'=>$this->form_validation->get_errores_arreglo()
+				$this->response($respuesta, REST_Controller::HTTP_BAD_REQUEST);
+			} else {
+				$this->response($respuesta);
+			}
+		} else {
+
+			$respuesta = array(
+				'err' => TRUE,
+				'mensaje' => 'Hay errores en el envio de la informacion',
+				'errores' => $this->form_validation->get_errores_arreglo()
 			);
-			$this->response($respuesta, REST_Controller::HTTP_BAD_REQUEST); 
+			$this->response($respuesta, REST_Controller::HTTP_BAD_REQUEST);
 		}
 	}
 	//MODIFICAR
-	public function actualizarAerolinea_put(){
+	public function actualizarAerolinea_put()
+	{
 
 		$data = $this->put();
-        if (!isset($data["idaerolinea"])) {
-            $respuesta = array('err' => TRUE, 'mensaje' => 'No se encontro ningun identificador de Aerolinea');
-            $this->response($respuesta, REST_Controller::HTTP_BAD_REQUEST);
-        } else {
-            try {
-                $respuesta = $this->Aerolinea_model->editar($data);
-                if ($respuesta['err']) {
-                    $this->response($respuesta, REST_Controller::HTTP_BAD_REQUEST);
-                } else {
-                    $this->response($respuesta, REST_Controller::HTTP_OK);
-                }
-            } catch (\Throwable $th) {
-                $respuesta = array('err' => TRUE, 'mensaje' => 'Error interno de servidor');
-            }
-        }
+		if (!isset($data["idaerolinea"])) {
+			$respuesta = array('err' => TRUE, 'mensaje' => 'No se encontro ningun identificador de Aerolinea');
+			$this->response($respuesta, REST_Controller::HTTP_BAD_REQUEST);
+		} else {
+			try {
+				$respuesta = $this->Aerolinea_model->editar($data);
+				if ($respuesta['err']) {
+					$this->response($respuesta, REST_Controller::HTTP_BAD_REQUEST);
+				} else {
+					$this->response($respuesta, REST_Controller::HTTP_OK);
+				}
+			} catch (\Throwable $th) {
+				$respuesta = array('err' => TRUE, 'mensaje' => 'Error interno de servidor');
+			}
+		}
 	}
 
 	//ELIMINAR
 	public function eliminarAerolinea_delete()
-    {
-        $data = $this->delete();
-        if (!isset($data["idaerolinea"])) {
-            $respuesta = array('err' => TRUE, 'mensaje' => 'No se encontro ningun identificador de Aerolinea');
-            $this->response($respuesta, REST_Controller::HTTP_BAD_REQUEST);
-        } else {
+	{
+		$data = $this->delete();
+		if (!isset($data["idaerolinea"])) {
+			$respuesta = array('err' => TRUE, 'mensaje' => 'No se encontro ningun identificador de Aerolinea');
+			$this->response($respuesta, REST_Controller::HTTP_BAD_REQUEST);
+		} else {
 			$campos = array('idaerolinea' => $data["idaerolinea"], 'activo' => FALSE);
 			//var_dump($campos);
 			//die();
-            try {
-                $respuesta = $this->Aerolinea_model->borrar($campos);
-                if ($respuesta['err']) {
-                    $this->response($respuesta, REST_Controller::HTTP_BAD_REQUEST);
-                } else {
-                    $this->response($respuesta, REST_Controller::HTTP_OK);
+			try {
+				$respuesta = $this->Aerolinea_model->borrar($campos);
+				if ($respuesta['err']) {
+					$this->response($respuesta, REST_Controller::HTTP_BAD_REQUEST);
+				} else {
+					$this->response($respuesta, REST_Controller::HTTP_OK);
 				}
-				
-            } catch (\Throwable $th) {
-                $respuesta = array('err' => TRUE, 'mensaje' => 'Error interno de servidor');
-            }
-        }
-    }
+			} catch (\Throwable $th) {
+				$respuesta = array('err' => TRUE, 'mensaje' => 'Error interno de servidor');
+			}
+		}
+	}
 }

@@ -1,6 +1,6 @@
 <?php
 defined('BASEPATH') or exit('No direct script access allowed');
-header('Access-Control-Allow-Origin: https://admin.tesistours.com/');
+header('Access-Control-Allow-Origin: https://admin.tesistours.com');
 require APPPATH . '/libraries/REST_Controller.php';
 class SitioTuristico extends REST_Controller
 {
@@ -56,8 +56,8 @@ class SitioTuristico extends REST_Controller
         $this->response($sitio, REST_Controller::HTTP_OK);
     }
     public function update_put()
-        {
-            $data = $this->put();
+    {
+        $data = $this->put();
         ///VERIFICANDO SI EXISTE EL ID PRINCIPAL DE LA TABLA
         if (!isset($data["id_sitio_turistico"])) {
             $respuesta = array('err' => TRUE, 'mensaje' => 'No se encontro nungun identificador');

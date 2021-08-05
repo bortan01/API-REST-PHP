@@ -1,6 +1,6 @@
 <?php
 defined('BASEPATH') or exit('No direct script access allowed');
-header('Access-Control-Allow-Origin: https://admin.tesistours.com/');
+header('Access-Control-Allow-Origin: https://admin.tesistours.com');
 require APPPATH . '/libraries/REST_Controller.php';
 class DetalleVehiculo extends REST_Controller
 {
@@ -14,7 +14,6 @@ class DetalleVehiculo extends REST_Controller
         $this->load->model("ReservaVehiculo_model");
         $this->load->model('Wompi_model');
         $this->load->model('ServiciosVehiculos_model');
-
     }
 
     public function saveByAgency_post()
@@ -22,7 +21,7 @@ class DetalleVehiculo extends REST_Controller
         $data = $this->post();
         $idDetalle = date("His") . rand(1, 1000);
         $data['id_detalle'] = $idDetalle;
-        
+
         //corremos las reglas de validacion
         $this->load->library("form_validation");
         $this->form_validation->set_data($data);
@@ -53,13 +52,12 @@ class DetalleVehiculo extends REST_Controller
                 $respuesta = $this->ReservaVehiculo_model->guardar($reseraVehiculo);
                 if ($respuesta['err']) {
                     $this->response($respuesta, REST_Controller::HTTP_BAD_REQUEST);
-
                 } else {
                     if (!empty($data["detalle_servicios"])) {
                         $detalle = json_decode($data["detalle_servicios"], true);
-                        
-                        $this->ServiciosVehiculos_model->guardarDetalle($detalle,$idDetalle);
-                         }
+
+                        $this->ServiciosVehiculos_model->guardarDetalle($detalle, $idDetalle);
+                    }
                     $this->response($respuesta, REST_Controller::HTTP_OK);
                 }
             }
@@ -100,26 +98,26 @@ class DetalleVehiculo extends REST_Controller
             $this->response($respuesta, REST_Controller::HTTP_OK);
         }
     }
-    
-//MODIFICAR
-public function actualizarDetalle_put(){
 
-    $data = $this->put();
-    if (!isset($data["id_detalle"])) {
-        $respuesta = array('err' => TRUE, 'mensaje' => 'No se encontro ningun identificador del Detalle');
-        $this->response($respuesta, REST_Controller::HTTP_BAD_REQUEST);
-    } else {
-        try {
-            $respuesta = $this->Detalle_vehiculo_model->editar($data);
-            if ($respuesta['err']) {
-                $this->response($respuesta, REST_Controller::HTTP_BAD_REQUEST);
-            } else {
-                $this->response($respuesta, REST_Controller::HTTP_OK);
+    //MODIFICAR
+    public function actualizarDetalle_put()
+    {
+
+        $data = $this->put();
+        if (!isset($data["id_detalle"])) {
+            $respuesta = array('err' => TRUE, 'mensaje' => 'No se encontro ningun identificador del Detalle');
+            $this->response($respuesta, REST_Controller::HTTP_BAD_REQUEST);
+        } else {
+            try {
+                $respuesta = $this->Detalle_vehiculo_model->editar($data);
+                if ($respuesta['err']) {
+                    $this->response($respuesta, REST_Controller::HTTP_BAD_REQUEST);
+                } else {
+                    $this->response($respuesta, REST_Controller::HTTP_OK);
+                }
+            } catch (\Throwable $th) {
+                $respuesta = array('err' => TRUE, 'mensaje' => 'Error interno de servidor');
             }
-        } catch (\Throwable $th) {
-            $respuesta = array('err' => TRUE, 'mensaje' => 'Error interno de servidor');
         }
     }
-}
-    
 }
