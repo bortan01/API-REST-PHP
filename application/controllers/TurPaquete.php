@@ -1,7 +1,13 @@
 <?php
 defined('BASEPATH') or exit('No direct script access allowed');
-header('Access-Control-Allow-Origin: https://admin.tesistours.com');
 require APPPATH . '/libraries/REST_Controller.php';
+$allowedOrigins = [
+    "https://admin.tesistours.com",
+    "https://tesistours.com"
+];
+if (isset($_SERVER["HTTP_ORIGIN"]) && in_array($_SERVER["HTTP_ORIGIN"], $allowedOrigins)) {
+    header("Access-Control-Allow-Origin: " . $_SERVER["HTTP_ORIGIN"]);
+}
 class TurPaquete extends REST_Controller
 {
 
@@ -11,7 +17,7 @@ class TurPaquete extends REST_Controller
         $this->load->database();
         $this->load->model('Imagen_model');
         $this->load->model('Tours_paquete_model');
-        $this->load->model('detalle_servicio_model');
+        // $this->load->model('detalle_servicio_model');
         $this->load->model('Detalle_tour_model');
         $this->load->model('ReservaTour_model');
         $this->load->model('Itinerario_model');

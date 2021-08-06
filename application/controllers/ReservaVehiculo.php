@@ -1,7 +1,13 @@
 <?php
 defined('BASEPATH') or exit('No direct script access allowed');
-header('Access-Control-Allow-Origin: https://admin.tesistours.com');
 require APPPATH . '/libraries/REST_Controller.php';
+$allowedOrigins = [
+    "https://admin.tesistours.com",
+    "https://tesistours.com"
+];
+if (isset($_SERVER["HTTP_ORIGIN"]) && in_array($_SERVER["HTTP_ORIGIN"], $allowedOrigins)) {
+    header("Access-Control-Allow-Origin: " . $_SERVER["HTTP_ORIGIN"]);
+}
 class ReservaVehiculo extends REST_Controller
 {
 

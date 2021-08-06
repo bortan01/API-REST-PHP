@@ -1,6 +1,12 @@
 <?php
 defined('BASEPATH') or exit('No direct script access allowed');
-header('Access-Control-Allow-Origin: https://admin.tesistours.com');
+$allowedOrigins = [
+    "https://admin.tesistours.com",
+    "https://tesistours.com"
+];
+if (isset($_SERVER["HTTP_ORIGIN"]) && in_array($_SERVER["HTTP_ORIGIN"], $allowedOrigins)) {
+    header("Access-Control-Allow-Origin: " . $_SERVER["HTTP_ORIGIN"]);
+}
 class Pruebasdb extends CI_CONTROLLER
 {
 
