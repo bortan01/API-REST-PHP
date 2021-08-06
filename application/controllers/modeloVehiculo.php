@@ -1,6 +1,7 @@
 <?php
 defined('BASEPATH') or exit('No direct script access allowed');
 require APPPATH . '/libraries/REST_Controller.php';
+header('Access-Control-Allow-Origin: https://admin.tesistours.com/');
 class modeloVehiculo extends REST_Controller
 {
 

@@ -1,5 +1,6 @@
 <?php
 defined('BASEPATH') or exit('No direct script access allowed');
+header('Access-Control-Allow-Origin: https://admin.tesistours.com/');
 require APPPATH . '/libraries/REST_Controller.php';
 class Usuario extends REST_Controller
 {
@@ -278,160 +279,160 @@ class Usuario extends REST_Controller
 
 
 
-    public function datosUsuario_get(){
+    public function datosUsuario_get()
+    {
 
         $data = $this->get();
-        $usuario=$this->Usuario_model->get_datosUsuario($data);
-    
+        $usuario = $this->Usuario_model->get_datosUsuario($data);
+
         if (isset($usuario)) {
-            
-            $respuesta=array(
-                'err'=>FALSE,
-                'mensaje'=>'Registro Cargado correctamente',
-                'servicios'=>$usuario
-    
+
+            $respuesta = array(
+                'err' => FALSE,
+                'mensaje' => 'Registro Cargado correctamente',
+                'servicios' => $usuario
+
             );
-            $this->response($respuesta,REST_Controller::HTTP_OK);
-        }else{
-            $respuesta=array(
-                'err'=>TRUE,
-                'mensaje'=>'Error al cargar los datos.',
-                'servicios'=>null
-    
+            $this->response($respuesta, REST_Controller::HTTP_OK);
+        } else {
+            $respuesta = array(
+                'err' => TRUE,
+                'mensaje' => 'Error al cargar los datos.',
+                'servicios' => null
+
             );
-            $this->response($respuesta,REST_Controller::HTTP_NOT_FOUND);
-    
-        }
-    }
-    
-    public function cotizacionesRealizadas_get(){
-    
-        $data = $this->get();
-        $serAdquiridos=$this->Usuario_model->get_cotizacionesRealizadas($data);
-    
-        if (isset($serAdquiridos)) {
-            
-            $respuesta=array(
-                'err'=>FALSE,
-                'mensaje'=>'Registro Cargado correctamente',
-                'servicios'=>$serAdquiridos
-    
-            );
-            $this->response($respuesta,REST_Controller::HTTP_OK);
-        }else{
-            $respuesta=array(
-                'err'=>TRUE,
-                'mensaje'=>'Error al cargar los datos.',
-                'servicios'=>null
-    
-            );
-            $this->response($respuesta,REST_Controller::HTTP_NOT_FOUND);
-    
+            $this->response($respuesta, REST_Controller::HTTP_NOT_FOUND);
         }
     }
 
-    public function encomiendasRealizadas_get(){
-    
+    public function cotizacionesRealizadas_get()
+    {
+
         $data = $this->get();
-        $serAdquiridos=$this->Usuario_model->get_encomiendasRealizadas($data);
-    
+        $serAdquiridos = $this->Usuario_model->get_cotizacionesRealizadas($data);
+
         if (isset($serAdquiridos)) {
-            
-            $respuesta=array(
-                'err'=>FALSE,
-                'mensaje'=>'Registro Cargado correctamente',
-                'servicios'=>$serAdquiridos
-    
+
+            $respuesta = array(
+                'err' => FALSE,
+                'mensaje' => 'Registro Cargado correctamente',
+                'servicios' => $serAdquiridos
+
             );
-            $this->response($respuesta,REST_Controller::HTTP_OK);
-        }else{
-            $respuesta=array(
-                'err'=>TRUE,
-                'mensaje'=>'Error al cargar los datos.',
-                'servicios'=>null
-    
+            $this->response($respuesta, REST_Controller::HTTP_OK);
+        } else {
+            $respuesta = array(
+                'err' => TRUE,
+                'mensaje' => 'Error al cargar los datos.',
+                'servicios' => null
+
             );
-            $this->response($respuesta,REST_Controller::HTTP_NOT_FOUND);
-    
+            $this->response($respuesta, REST_Controller::HTTP_NOT_FOUND);
+        }
+    }
+
+    public function encomiendasRealizadas_get()
+    {
+
+        $data = $this->get();
+        $serAdquiridos = $this->Usuario_model->get_encomiendasRealizadas($data);
+
+        if (isset($serAdquiridos)) {
+
+            $respuesta = array(
+                'err' => FALSE,
+                'mensaje' => 'Registro Cargado correctamente',
+                'servicios' => $serAdquiridos
+
+            );
+            $this->response($respuesta, REST_Controller::HTTP_OK);
+        } else {
+            $respuesta = array(
+                'err' => TRUE,
+                'mensaje' => 'Error al cargar los datos.',
+                'servicios' => null
+
+            );
+            $this->response($respuesta, REST_Controller::HTTP_NOT_FOUND);
         }
     }
 
 
-    public function vehiculosAlquilados_get(){
-    
+    public function vehiculosAlquilados_get()
+    {
+
         $data = $this->get();
-        $serAdquiridos=$this->Usuario_model->get_vehiculosAlquilados($data);
-    
+        $serAdquiridos = $this->Usuario_model->get_vehiculosAlquilados($data);
+
         if (isset($serAdquiridos)) {
-            
-            $respuesta=array(
-                'err'=>FALSE,
-                'mensaje'=>'Registro Cargado correctamente',
-                'servicios'=>$serAdquiridos
-    
+
+            $respuesta = array(
+                'err' => FALSE,
+                'mensaje' => 'Registro Cargado correctamente',
+                'servicios' => $serAdquiridos
+
             );
-            $this->response($respuesta,REST_Controller::HTTP_OK);
-        }else{
-            $respuesta=array(
-                'err'=>TRUE,
-                'mensaje'=>'Error al cargar los datos.',
-                'servicios'=>null
-    
+            $this->response($respuesta, REST_Controller::HTTP_OK);
+        } else {
+            $respuesta = array(
+                'err' => TRUE,
+                'mensaje' => 'Error al cargar los datos.',
+                'servicios' => null
+
             );
-            $this->response($respuesta,REST_Controller::HTTP_NOT_FOUND);
-    
+            $this->response($respuesta, REST_Controller::HTTP_NOT_FOUND);
         }
     }
 
-    public function toursAdquiridos_get(){
-    
+    public function toursAdquiridos_get()
+    {
+
         $data = $this->get();
-        $serAdquiridos=$this->Usuario_model->get_toursAdquiridos($data);
-    
+        $serAdquiridos = $this->Usuario_model->get_toursAdquiridos($data);
+
         if (isset($serAdquiridos)) {
-            
-            $respuesta=array(
-                'err'=>FALSE,
-                'mensaje'=>'Registro Cargado correctamente',
-                'servicios'=>$serAdquiridos
-    
+
+            $respuesta = array(
+                'err' => FALSE,
+                'mensaje' => 'Registro Cargado correctamente',
+                'servicios' => $serAdquiridos
+
             );
-            $this->response($respuesta,REST_Controller::HTTP_OK);
-        }else{
-            $respuesta=array(
-                'err'=>TRUE,
-                'mensaje'=>'Error al cargar los datos.',
-                'servicios'=>null
-    
+            $this->response($respuesta, REST_Controller::HTTP_OK);
+        } else {
+            $respuesta = array(
+                'err' => TRUE,
+                'mensaje' => 'Error al cargar los datos.',
+                'servicios' => null
+
             );
-            $this->response($respuesta,REST_Controller::HTTP_NOT_FOUND);
-    
+            $this->response($respuesta, REST_Controller::HTTP_NOT_FOUND);
         }
     }
 
-    public function vuelosCotizaciones_get(){
-    
+    public function vuelosCotizaciones_get()
+    {
+
         $data = $this->get();
-        $serAdquiridos=$this->Usuario_model->get_vuelosCotizaciones($data);
-    
+        $serAdquiridos = $this->Usuario_model->get_vuelosCotizaciones($data);
+
         if (isset($serAdquiridos)) {
-            
-            $respuesta=array(
-                'err'=>FALSE,
-                'mensaje'=>'Registro Cargado correctamente',
-                'servicios'=>$serAdquiridos
-    
+
+            $respuesta = array(
+                'err' => FALSE,
+                'mensaje' => 'Registro Cargado correctamente',
+                'servicios' => $serAdquiridos
+
             );
-            $this->response($respuesta,REST_Controller::HTTP_OK);
-        }else{
-            $respuesta=array(
-                'err'=>TRUE,
-                'mensaje'=>'Error al cargar los datos.',
-                'servicios'=>null
-    
+            $this->response($respuesta, REST_Controller::HTTP_OK);
+        } else {
+            $respuesta = array(
+                'err' => TRUE,
+                'mensaje' => 'Error al cargar los datos.',
+                'servicios' => null
+
             );
-            $this->response($respuesta,REST_Controller::HTTP_NOT_FOUND);
-    
+            $this->response($respuesta, REST_Controller::HTTP_NOT_FOUND);
         }
     }
     public function obtenerAdminByChat_get()
