@@ -1,6 +1,5 @@
 <?php
 defined('BASEPATH') or exit('No direct script access allowed');
-require APPPATH . '/libraries/REST_Controller.php';
 $allowedOrigins = [
 	"https://admin.tesistours.com",
 	"https://tesistours.com"
@@ -8,6 +7,7 @@ $allowedOrigins = [
 if (isset($_SERVER["HTTP_ORIGIN"]) && in_array($_SERVER["HTTP_ORIGIN"], $allowedOrigins)) {
 	header("Access-Control-Allow-Origin: " . $_SERVER["HTTP_ORIGIN"]);
 }
+require APPPATH . '/libraries/REST_Controller.php';
 class Caja extends REST_Controller
 {
 	public function __construct()

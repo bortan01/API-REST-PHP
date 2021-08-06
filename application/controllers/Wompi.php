@@ -1,6 +1,5 @@
 <?php
 defined('BASEPATH') or exit('No direct script access allowed');
-require APPPATH . '/libraries/REST_Controller.php';
 $allowedOrigins = [
     "https://admin.tesistours.com",
     "https://tesistours.com"
@@ -9,6 +8,7 @@ if (isset($_SERVER["HTTP_ORIGIN"]) && in_array($_SERVER["HTTP_ORIGIN"], $allowed
     header("Access-Control-Allow-Origin: " . $_SERVER["HTTP_ORIGIN"]);
 }
 require('./vendor/autoload.php');
+require APPPATH . '/libraries/REST_Controller.php';
 
 
 
