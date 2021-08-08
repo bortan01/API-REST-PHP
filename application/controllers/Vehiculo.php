@@ -93,6 +93,12 @@ class vehiculo extends REST_Controller
 			}
 		}
 	}
+	//MODIFICAR
+	public function actualizarVehiculo_options()
+	{
+		$respuesta = array('cualquierCosa' => TRUE);
+		$this->response($respuesta, REST_Controller::HTTP_OK);
+	}
 
 	//ELIMINAR
 	public function eliminarVehiculo_delete()

@@ -1,7 +1,7 @@
 ---
 deployment:
   tasks:
-    - export DEPLOYPATH=/home/a147409/api/
+    - export DEPLOYPATH=/home/a147409/admin/api/
     - /bin/cp index.php $DEPLOYPATH
     - /bin/cp favicon.ico $DEPLOYPATH
     - /bin/cp composer.json $DEPLOYPATH
