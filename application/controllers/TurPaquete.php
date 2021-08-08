@@ -17,7 +17,7 @@ class TurPaquete extends REST_Controller
         $this->load->database();
         $this->load->model('Imagen_model');
         $this->load->model('Tours_paquete_model');
-        // $this->load->model('detalle_servicio_model');
+        $this->load->model('detalle_servicio_model');
         $this->load->model('Detalle_tour_model');
         $this->load->model('ReservaTour_model');
         $this->load->model('Itinerario_model');
