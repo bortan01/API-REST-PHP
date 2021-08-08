@@ -17,30 +17,31 @@ class Promocion_model extends CI_Model
     public function get_promocion(array $data){
 
         $this->load->model('Conf_model');
-        $parametros = $this->verificar_camposEntrada($data);
+        $this->load->model('Imagen_model');
+      
         //corregir consulta
         $this->db->select('*');
         $this->db->from('promocion_vuelo');
         $this->db->join('aerolinea', 'promocion_vuelo.idaerolineaFK = aerolinea.idaerolinea');
         $this->db->join('tipo_clase', 'promocion_vuelo.idclaseFK = tipo_clase.idclase');
         $this->db->select('DATE_FORMAT(promocion_vuelo.fechaDisponible_promocion,"%d-%m-%Y") as fechaDisponible_promocion');
-        $this->db->where($parametros);
-        $this->db->where_in('promocion_vuelo.activo',1);
+      
+        $this->db->where('promocion_vuelo.activo',1);
         $query = $this->db->get();
 
         $respuesta = $query->result();
-        $this->load->model('Imagen_model');
+       
         foreach ($respuesta as $row) {
             
             $identificador = $row->idpromocion_vuelo;
-            $respuestaFoto =   $this->Imagen_model->obtenerImagenUnica('promociones', $identificador);
+            $respuestaFoto =   $this->Imagen_model->obtenerImagenUnica('promocion_vuelo', $identificador);
             if ($respuestaFoto == null) {
                 //por si no hay ninguna foto mandamos una por defecto
                 $row->foto = $this->Conf_model->URL_SERVIDOR."uploads/viaje.png";
             } else {
                 $row->foto = $respuestaFoto;
             }
-            $respuestaGaleria =   $this->Imagen_model->obtenerGaleria('promociones', $identificador);
+            $respuestaGaleria =   $this->Imagen_model->obtenerGaleria('promocion_vuelo', $identificador);
             if ($respuestaGaleria == null) {
                 //por si no hay ninguna foto mandamos una por defecto
                 $row->galeria = [];
