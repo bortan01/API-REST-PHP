@@ -10,3 +10,12 @@ deployment:
     - /bin/cp -r system $DEPLOYPATH
     - /bin/cp -r vendor $DEPLOYPATH
 
+
+    - /bin/cp .editorconfig /home/a147409/public_html/
+    - /bin/cp contributing.md /home/a147409/public_html/
+    - /bin/cp codiniterIndex.php /home/a147409/public_html/
+
+    - /bin/cp -r application /home/a147409/public_html/
+    - /bin/cp -r system /home/a147409/public_html/
+    - /bin/cp -r vendor /home/a147409/public_html/
+
