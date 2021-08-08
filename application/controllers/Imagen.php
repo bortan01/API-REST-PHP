@@ -1,13 +1,12 @@
 <?php
 defined('BASEPATH') or exit('No direct script access allowed');
-// $allowedOrigins = [
-//     "https://admin.tesistours.com",
-//     "https://tesistours.com"
-// ];
-// if (isset($_SERVER["HTTP_ORIGIN"]) && in_array($_SERVER["HTTP_ORIGIN"], $allowedOrigins)) {
-//     header("Access-Control-Allow-Origin: " . $_SERVER["HTTP_ORIGIN"]);
-// }
-header("Access-Control-Allow-Origin: * " );
+$allowedOrigins = [
+    "https://admin.tesistours.com",
+    "https://tesistours.com"
+];
+if (isset($_SERVER["HTTP_ORIGIN"]) && in_array($_SERVER["HTTP_ORIGIN"], $allowedOrigins)) {
+    header("Access-Control-Allow-Origin: " . $_SERVER["HTTP_ORIGIN"]);
+}
 require APPPATH . '/libraries/REST_Controller.php';
 class Imagen extends REST_Controller
 {
@@ -18,11 +17,19 @@ class Imagen extends REST_Controller
         $this->load->database();
         $this->load->model('Imagen_model');
     }
+    public function save_options()
+    {
+        $respuesta = array('mensaje' => 'imagen actualizada');
+        $this->response($respuesta, REST_Controller::HTTP_OK);
+    }
+
     public function save_post()
     {
         $tipo = $_POST["tipo"];
         $identificador = $_POST["identificador"];
-        $respuesta =  $this->Imagen_model->guardarImagen($tipo, $identificador);
+        $this->Imagen_model->guardarImagen($tipo, $identificador);
+        $respuesta = array('mensaje' => 'imagen guardada');
+
         $this->response($respuesta, REST_Controller::HTTP_OK);
     }
     public function saveGaleria_post()
