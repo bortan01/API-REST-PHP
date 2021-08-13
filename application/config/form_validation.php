@@ -69,19 +69,23 @@ $config = array(
 	),
 	'cotizar_put' => array(
 		array('field' => 'modelo'                , 'label' => 'Marca', 'rules' => 'trim|required|min_length[1]|max_length[255]'),
-		array('field' => 'anio'                , 'label' => 'Vehiculo', 'rules' => 'trim|required|min_length[2]|max_length[255]'),
-		array('field' => 'caracteristicas'     , 'label' => 'Vehiculo', 'rules' => 'trim|required|min_length[2]|max_length[255]'),
-		array('field' => 'direccion_recogida'  , 'label' => 'Vehiculo', 'rules' => 'trim|required|min_length[2]|max_length[255]'),
-		array('field' => 'fechaRecogida'   , 'label' => 'Vehiculo', 'rules' => 'trim|required|min_length[2]|max_length[255]'),
-		array('field' => 'direccion_devolucion', 'label' => 'Vehiculo', 'rules' => 'trim|required|min_length[2]|max_length[255]'),
-		array('field' => 'fechaDevolucion' , 'label' => 'Vehiculo', 'rules' => 'trim|required|min_length[2]|max_length[255]')
+		array('field' => 'anio'                  , 'label' => 'Año', 'rules' => 'trim|required|min_length[4]|max_length[255]'),
+		array('field' => 'caracteristicas'       , 'label' => 'Caracteristicas', 'rules' => 'trim|required|min_length[2]|max_length[255]'),
+		array('field' => 'direccion_recogida'    , 'label' => 'Dirección de Recodiga', 'rules' => 'trim|required|min_length[2]|max_length[255]'),
+		array('field' => 'fechaRecogida'         , 'label' => 'Fecha de Recogida', 'rules' => 'trim|required|min_length[2]|max_length[255]'),
+		array('field' => 'direccion_devolucion'  , 'label' => 'Dirección de Devolución', 'rules' => 'trim|required|min_length[2]|max_length[255]'),
+		array('field' => 'fechaDevolucion'       , 'label' => 'Fecha de Devolución', 'rules' => 'trim|required|min_length[2]|max_length[255]')
 	),
 	'aerolinea_put' => array(
 		array('field' => 'nombre_aerolinea', 'label' => 'Aerolinea', 'rules' => 'trim|required|min_length[2]|max_length[255]'),
-		array('field' => 'idalianza'       , 'label' => 'Alianza'  , 'rules' => 'trim|required|min_length[1]|max_length[255]')
+		array('field' => 'idalianza'       , 'label' => 'Alianza'  , 'rules' => 'trim|required|min_length[1]|max_length[255]'),
+		array('field' => 'sitioWeb', 'label' => 'Sitio Web de Aerolinea', 'rules' => 'trim|required|min_length[2]|max_length[255]'),
+		
 	),
 	'alianzas_put' => array(
-		array('field' => 'nombre_alianza', 'label' => 'Alianza', 'rules' => 'trim|required|min_length[2]|max_length[255]')
+		array('field' => 'nombre_alianza', 'label' => 'Alianza', 'rules' => 'trim|required|min_length[2]|max_length[255]'),
+		array('field' => 'sitioWeb_alianza', 'label' => 'Sitio Web', 'rules' => 'trim|required|min_length[2]|max_length[255]')
+	
 	),
 	'clases_put' => array(
 		array('field' => 'nombre_clase', 'label' => 'Clase'      , 'rules' => 'trim|required|min_length[2]|max_length[255]'),
