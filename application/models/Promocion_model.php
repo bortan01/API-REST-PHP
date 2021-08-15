@@ -19,13 +19,15 @@ class Promocion_model extends CI_Model
         $this->load->model('Conf_model');
         $this->load->model('Imagen_model');
       
-        //corregir consulta
+        $parametros = $this->verificar_camposEntrada($data);
+
         $this->db->select('*');
         $this->db->from('promocion_vuelo');
         $this->db->join('aerolinea', 'promocion_vuelo.idaerolineaFK = aerolinea.idaerolinea');
         $this->db->join('tipo_clase', 'promocion_vuelo.idclaseFK = tipo_clase.idclase');
         $this->db->select('DATE_FORMAT(promocion_vuelo.fechaDisponible_promocion,"%d-%m-%Y") as fechaDisponible_promocion');
-      
+        $this->db->where($parametros);
+
         $this->db->where('promocion_vuelo.activo',1);
         $query = $this->db->get();
 
