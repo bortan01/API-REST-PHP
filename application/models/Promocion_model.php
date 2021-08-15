@@ -27,6 +27,8 @@ class Promocion_model extends CI_Model
         $this->db->join('tipo_clase', 'promocion_vuelo.idclaseFK = tipo_clase.idclase');
         $this->db->select('DATE_FORMAT(promocion_vuelo.fechaDisponible_promocion,"%d-%m-%Y") as fechaDisponible_promocion');
         $this->db->where($parametros);
+        $this->db->where('fechaDisponible_promocion >=',  date('Y-m-d'));
+
 
         $this->db->where('promocion_vuelo.activo',1);
         $query = $this->db->get();
