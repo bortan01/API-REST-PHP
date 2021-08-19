@@ -135,6 +135,12 @@ class TurPaquete extends REST_Controller
         $respuesta =  $this->Tours_paquete_model->obtenerViaje($data);
         $this->response($respuesta, REST_Controller::HTTP_OK);
     }
+    public function showApp_get()
+    {
+        $data = $this->get();
+        $respuesta =  $this->Tours_paquete_model->obtenerViajeApp($data);
+        $this->response($respuesta, REST_Controller::HTTP_OK);
+    }
     public function showEdit_get()
     {
         $data = $this->get();

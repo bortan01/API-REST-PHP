@@ -206,6 +206,84 @@ class Tours_paquete_model extends CI_Model
 
         return $respuesta;
     }
+    public function obtenerViajeApp(array $data = array())
+    {
+        $this->load->model('Conf_model');
+        $nombreTabla = "tours_paquete";
+        $parametros = $this->verificar_camposEntrada($data);
+
+        $tipo = isset($parametros['tipo']) ? $parametros['tipo'] : '';
+        // echo $tipo;
+        switch ($tipo) {
+            case 'Allpaquete':
+                $this->db->where("(tipo='Paquete Nacional' OR tipo='Paquete Internacional' OR tipo='Paquete Privado')");
+                break;
+            case 'paquete':
+                $this->db->where("(tipo='Paquete Nacional' OR tipo='Paquete Internacional')");
+                break;
+            case 'tour':
+                $this->db->where("(tipo='Tour Nacional' OR tipo='Tour Internacional')");
+                break;
+            case 'Paquete Nacional':
+                $this->db->where('tipo', 'Paquete Nacional');
+                break;
+            case 'Paquete Internacional':
+                $this->db->where('tipo', 'Paquete Internacional');
+                break;
+            case 'Tour Nacional':
+                $this->db->where('tipo', 'Tour Nacional');
+                break;
+            case 'Tour Internacional':
+                $this->db->where('tipo', 'Tour Internacional');
+                break;
+            default:
+                # code...
+                break;
+        }
+        if (isset($parametros['tipo']))  unset($parametros['tipo']);
+
+        $this->db->order_by('id_tours', 'DESC');
+        $this->db->where($parametros);
+
+        $query = $this->db->get($nombreTabla);
+        $respuesta  = $query->result();
+        $this->load->model('Imagen_model');
+        foreach ($respuesta as $tur) {
+            ///CON LA FUNCIOIN EXPLOTE CREAMOS UN UN ARRAY A PARTIR DE UN STRING, EN ESTE CASO
+            //CADA ELEMENTO LLEGA HASTA DONDE APARECE UNA COMA
+            $tur->incluye      = json_decode($tur->incluye, true);
+            $tur->no_incluye   = json_decode($tur->no_incluye, true);
+            $tur->requisitos   = json_decode($tur->requisitos, true);
+            $tur->lugar_salida = json_decode($tur->lugar_salida, true);
+            $tur->promociones  = json_decode($tur->promociones, true);
+            $tur->descripcionForApp = ($tur->descripcion_tur);
+            $tur->descripcion_tur = nl2br($tur->descripcion_tur);
+
+            $identificador = $tur->id_tours;
+            $tipoFoto = $tur->tipo;
+            $respuestaFoto =   $this->Imagen_model->obtenerImagenUnica($tipoFoto, $identificador);
+            if ($respuestaFoto == null) {
+                //por si no hay ninguna foto mandamos una por defecto
+                $tur->foto = $this->Conf_model->URL_SERVIDOR . "uploads/viaje.jpg";
+            } else {
+                $tur->foto = $respuestaFoto;
+            }
+            $respuestaGaleria =   $this->Imagen_model->obtenerGaleria($tipoFoto, $identificador);
+            if ($respuestaGaleria == null) {
+                //por si no hay ninguna foto mandamos una por defecto
+                $tur->galeria[] = $this->Conf_model->URL_SERVIDOR . "uploads/viaje.jpg";
+            } else {
+                $tur->galeria = $respuestaGaleria;
+            }
+            // OBTENIDON LOS SITIOS TURISTICOS Y SERVICIOS ADICIONALES
+            $tur->transporte= $this->obtenerTransporteAndAsientos($tur->id_tours);
+            $infoAdicional = $this->obtenerInfoAdicional(array('id_tours' => $tur->id_tours));
+            $tur->sitiosTuristicos = $infoAdicional['sitiosTuristicos'];
+            $tur->serviciosAdicionales = $infoAdicional['serviciosAdicionales'];
+        }
+
+        return $respuesta;
+    }
     public function obtenerViajeEdit(array $parametros = array())
     {
         $incluye = [];
@@ -583,6 +661,36 @@ class Tours_paquete_model extends CI_Model
         $respuesta->asientos_deshabilitados =  explode(',', $respuesta->asientos_deshabilitados);
         return $respuesta;
     }
+    public function obtenerTransporteAndAsientos($id_tours)
+    {
+        $this->db->select('asientos_deshabilitados, nombre_servicio, fila_trasera,  asiento_derecho, asiento_izquierdo,filas');
+        $this->db->from("detalle_servicio");
+        $this->db->join('servicios_adicionales', 'id_servicios');
+        $this->db->where(array('id_tours' => $id_tours, 'id_tipo_servicio' => 2));
+        $query = $this->db->get();
+        //SI SE ENCONTRO EL VEHICULO ASOCIADO AL VIAJE, BUSCAREMOS LOS ASIENTOS QUE HAN SIDO RESERVADOS POR CLIENTES
+        if ($query->row(0)) {
+            $transporte = $query->row(0);
+            $this->db->select('asientos_seleccionados');
+            $this->db->from("tours_paquete");
+            $this->db->join('detalle_tour', 'id_tours');
+            $this->db->join('reserva_tour', 'id_detalle');
+            $this->db->where(array('id_tours' => $id_tours, 'resultadoTransaccion' => 'ExitosaAprobada'));
+            $query = $this->db->get();
+
+            $asientosOcupados = [];
+            foreach ($query->result() as $row) {
+                $seleccionados = explode(",", $row->asientos_seleccionados);
+                foreach ($seleccionados as $item) {
+                    array_push($asientosOcupados, $item);
+                }
+            }
+            $transporte->ocupados = $asientosOcupados;
+            return $transporte;
+        } else {
+            return null;
+        }
+    }
 
     public function guardarCotizacion(array $data)
     {
@@ -770,12 +878,12 @@ class Tours_paquete_model extends CI_Model
         return $sitios;
     }
     public function crearChequeo($requisitos)
-    {       
+    {
         $listChequeo =  json_decode($requisitos, true);
         $newList = [];
         for ($i = 0; $i < count($listChequeo); $i++) {
             array_push($newList, array('estado' => false, 'requisito' => $listChequeo[$i]));
         }
-        return json_encode ($newList);
+        return json_encode($newList);
     }
 }
