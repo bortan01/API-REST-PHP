@@ -198,7 +198,6 @@ class TurPaquete extends REST_Controller
         $respuesta =  $this->Tours_paquete_model->obtenerInfoAdicional($data);
         $this->response($respuesta, REST_Controller::HTTP_OK);
     }
-
     public function showInfoReserva_get()
     {
         $data = $this->get();
@@ -210,7 +209,6 @@ class TurPaquete extends REST_Controller
             $this->response($respuesta, REST_Controller::HTTP_OK);
         }
     }
-
     public function cotizacion_post()
     {
         $data = $this->post();

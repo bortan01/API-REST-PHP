@@ -1,10 +1,6 @@
 <?php
 defined('BASEPATH') or exit('No direct script access allowed');
 
-use GuzzleHttp\Psr7\Request;
-use function GuzzleHttp\Psr7\stream_for;
-use function GuzzleHttp\Psr7\uri_for;
-use GuzzleHttp\Psr7\Response;
 use GuzzleHttp\Client;
 
 class Wompi_model extends CI_Model
@@ -72,7 +68,6 @@ class Wompi_model extends CI_Model
         //     return $token;
         // }
     }
-
     public function crearEnlacePago($monto, $nombreProducto, $descripcion, $imagen, $webHook)
     {
         $this->load->model('Credenciales_model');

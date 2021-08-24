@@ -67,6 +67,33 @@ class Detalle_envio extends REST_Controller
 			$this->response($respuesta, REST_Controller::HTTP_NOT_FOUND);
 		}
 	}
+	public function show_get()
+	{
+
+		$data = $this->get();
+		$detalle = $this->DetalleEnvio_model->get_detallesEnvioApp($data);
+
+		if (isset($detalle)) {
+			//quitar campos que no quiero
+			//unset($cliente->telefono1);
+			//sunset($cliente->telefono2);
+			$respuesta = array(
+				'err' => FALSE,
+				'mensaje' => 'Registro Cargado correctamente',
+				'detalles' => $detalle
+
+			);
+			$this->response($respuesta);
+		} else {
+			$respuesta = array(
+				'err' => TRUE,
+				'mensaje' => 'Error al cargar los datos.',
+				'detalles' => null
+
+			);
+			$this->response($respuesta, REST_Controller::HTTP_NOT_FOUND);
+		}
+	}
 
 	public function entregar_post()
 	{

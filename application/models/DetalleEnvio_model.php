@@ -84,6 +84,14 @@ public function get_detallesEnvio($data){
     $this->db->where(array('id_encomienda'=>$data['id_encomienda']));
     $query=$this->db->get();
     return $query->result();
+}
+public function get_detallesEnvioApp($data){
+
+	$this->db->select('*');
+    $this->db->from('detalle_envio');
+    $this->db->where(array('id_encomienda'=>$data['id_encomienda']));
+    $query=$this->db->get();
+    return $query->result();
 
 }
 
