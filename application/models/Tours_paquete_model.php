@@ -257,7 +257,7 @@ class Tours_paquete_model extends CI_Model
             $tur->lugar_salida = json_decode($tur->lugar_salida, true);
             $tur->promociones  = json_decode($tur->promociones, true);
             $tur->descripcionForApp = ($tur->descripcion_tur);
-            $tur->descripcion_tur = nl2br($tur->descripcion_tur);
+            $tur->descripcion_tur = str_replace(array('\'', '"',  ';', '<', '>'), ' ', $tur->descripcion_tur);
 
             $identificador = $tur->id_tours;
             $tipoFoto = $tur->tipo;
@@ -276,7 +276,7 @@ class Tours_paquete_model extends CI_Model
                 $tur->galeria = $respuestaGaleria;
             }
             // OBTENIDON LOS SITIOS TURISTICOS Y SERVICIOS ADICIONALES
-            $tur->transporte= $this->obtenerTransporteAndAsientos($tur->id_tours);
+            $tur->transporte = $this->obtenerTransporteAndAsientos($tur->id_tours);
             $infoAdicional = $this->obtenerInfoAdicional(array('id_tours' => $tur->id_tours));
             $tur->sitiosTuristicos = $infoAdicional['sitiosTuristicos'];
             $tur->serviciosAdicionales = $infoAdicional['serviciosAdicionales'];

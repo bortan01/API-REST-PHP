@@ -53,19 +53,25 @@ class Detalle_tour_model extends CI_Model
     }
     public function guardarByCliente($data)
     {
+        // $respuesta = array(
+        //     'err'     => TRUE,
+        //     'mensaje' => $data,
+        // );
+        // return $respuesta;
+        
         $this->load->model('Wompi_model');
         $this->load->model('Imagen_model');
         $urlWebHook  = "https://api.christianmeza.com/ReservaVehiculo/save";
-        // $foto        = $this->Imagen_model->obtenerImagenUnica("tours_paquete", $data["id_tours"]);
-        $foto        = "https://seeklogo.com/images/R/republica-de-el-salvador-en-la-america-central-logo-E8163F8CF3-seeklogo.com.jpg";
+        $foto        = $this->Imagen_model->obtenerImagenUnica("tours_paquete", $data["id_tours"]);
+        // $foto        = "https://seeklogo.com/images/R/republica-de-el-salvador-en-la-america-central-logo-E8163F8CF3-seeklogo.com.jpg";
 
         if (!isset($foto)) {
             $foto = "https://seeklogo.com/images/R/republica-de-el-salvador-en-la-america-central-logo-E8163F8CF3-seeklogo.com.jpg";
         }
-        $total       = $data["total"];
-        $nombre      = $data["nombre_producto"];
-        $descripcion = nl2br($data["descripcionProducto"] . '<br>' .  $data["descripcionTurPaquete"]);
-        $respuestaWompi = $this->Wompi_model->crearEnlacePagopPrueba($total, $nombre, $descripcion, $foto, $urlWebHook);
+        $total          = $data["total"];
+        $nombre         = $data["nombre_producto"];
+        $descripcion    = nl2br($data["descripcionProducto"] . '<br>' .  $data["descripcionTurPaquete"]);
+        $respuestaWompi = $this->Wompi_model->crearEnlacePago($total, $nombre, $descripcion, $foto, $urlWebHook);
         if (!isset($respuestaWompi["idEnlace"])) {
             //HAY ERROR DE WOMPI
             $respuesta = array(

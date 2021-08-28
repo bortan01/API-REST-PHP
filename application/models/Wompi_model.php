@@ -115,7 +115,7 @@ class Wompi_model extends CI_Model
             ));
 
             $response = curl_exec($curl);
-            $err = curl_error($curl);
+           $err = curl_error($curl);
             curl_close($curl);
             if ($err) {
                 //ERROR DE cURL
@@ -123,7 +123,6 @@ class Wompi_model extends CI_Model
             } else {
 
                 $decodificada = json_decode($response, true);
-
                 if ($decodificada == null) {
                     //ERROR INTERNO DE WOMPI
                     return array('err' => "ERROR INTERNO DE WOMPI");
