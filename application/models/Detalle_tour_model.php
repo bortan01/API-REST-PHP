@@ -56,10 +56,8 @@ class Detalle_tour_model extends CI_Model
         $this->load->model('Wompi_model');
         $this->load->model('Imagen_model');
         $urlWebHook  = "https://tesistours.com/ReservaTour/save";
-        $foto        = $this->Imagen_model->obtenerImagenUnica("tours_paquete", $data["id_tours"]);
+        $foto        = $this->Imagen_model->obtenerImagenUnica($data["tipo"], $data["id_tours"]);
         // $foto        = "https://seeklogo.com/images/R/republica-de-el-salvador-en-la-america-central-logo-E8163F8CF3-seeklogo.com.jpg";
-        print_r($foto);
-        die();
         if (!isset($foto)) {
             $foto = "https://admin.tesistours.com/uploads/logo.png";
         }
