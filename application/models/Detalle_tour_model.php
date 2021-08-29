@@ -53,20 +53,15 @@ class Detalle_tour_model extends CI_Model
     }
     public function guardarByCliente($data)
     {
-        // $respuesta = array(
-        //     'err'     => TRUE,
-        //     'mensaje' => $data,
-        // );
-        // return $respuesta;
-        
         $this->load->model('Wompi_model');
         $this->load->model('Imagen_model');
-        $urlWebHook  = "https://api.christianmeza.com/ReservaVehiculo/save";
+        $urlWebHook  = "https://tesistours.com/ReservaTour/save";
         $foto        = $this->Imagen_model->obtenerImagenUnica("tours_paquete", $data["id_tours"]);
         // $foto        = "https://seeklogo.com/images/R/republica-de-el-salvador-en-la-america-central-logo-E8163F8CF3-seeklogo.com.jpg";
-
+        print_r($foto);
+        die();
         if (!isset($foto)) {
-            $foto = "https://seeklogo.com/images/R/republica-de-el-salvador-en-la-america-central-logo-E8163F8CF3-seeklogo.com.jpg";
+            $foto = "https://admin.tesistours.com/uploads/logo.png";
         }
         $total          = $data["total"];
         $nombre         = $data["nombre_producto"];

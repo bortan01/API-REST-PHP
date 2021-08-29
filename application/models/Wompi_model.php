@@ -95,8 +95,9 @@ class Wompi_model extends CI_Model
                           "esMontoEditable": false,
                           "esCantidadEditable": false,
                           "cantidadPorDefecto": 1,
-                          "urlRedirect": "https://www.facebook.com/martineztours99",
+                          "urlRedirect": "https://tesistours.com",
                           "emailsNotificacion": "fjmiranda009@gmail.com",
+                          "urlWebhook": "'.$webHook.'",
                           "notificarTransaccionCliente": true
                         }
                       }';
