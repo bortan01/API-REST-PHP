@@ -13,6 +13,7 @@ class Tours_paquete_model extends CI_Model
     public $requisitos;
     public $promociones;
     public $descripcion_tur;
+    public $cupos_originales;
     public $cupos_disponibles;
     public $nombre_encargado;
     public $estado;
@@ -296,9 +297,11 @@ class Tours_paquete_model extends CI_Model
         $precio = "";
         $cupos_disponibles = "";
         $descripcion_tur = "";
+        $tipo = "";
+        $cupos_originales = "0";
 
 
-        $this->db->select('id_servicios,costo,por_usuario,nombre_servicio');
+        $this->db->select('id_servicios,costo,por_usuario,nombre_servicio,id_tipo_servicio');
         $this->db->from("detalle_servicio");
         $this->db->join('servicios_adicionales', 'id_servicios');
         $this->db->where($parametros);
@@ -312,7 +315,22 @@ class Tours_paquete_model extends CI_Model
         $query = $this->db->get();
         $tur  = $query->result();
 
-        $this->db->select('descripcion_tur,incluye,no_incluye,requisitos,lugar_salida, promociones,cupos_disponibles,nombreTours,start,end,precio', "descripcion_tur");
+        $this->db->select('
+                            descripcion_tur,
+                            incluye,
+                            no_incluye,
+                            requisitos,
+                            lugar_salida,
+                            promociones,
+                            cupos_originales,
+                            cupos_disponibles,
+                            nombreTours,
+                            start,
+                            end,
+                            precio,
+                            descripcion_tur,
+                            tipo
+                         ');
         $this->db->from("tours_paquete");
         $this->db->where($parametros);
         $query = $this->db->get();
@@ -330,6 +348,8 @@ class Tours_paquete_model extends CI_Model
             $precio = $viaje->precio;
             $cupos_disponibles = $viaje->cupos_disponibles;
             $descripcion_tur = $viaje->descripcion_tur;
+            $tipo = $viaje->tipo;
+            $cupos_originales = $viaje->cupos_originales;
         }
 
         $respuesta = array(
@@ -338,6 +358,7 @@ class Tours_paquete_model extends CI_Model
             'end' => $end,
             'precio' => $precio,
             'cupos' => $cupos_disponibles,
+            'cupos_originales'  => $cupos_originales,
             'descripcion_tur' => $descripcion_tur,
             'incluye' => $incluye,
             'no_incluye' => $no_incluye,
@@ -346,7 +367,7 @@ class Tours_paquete_model extends CI_Model
             'promociones' => $promociones,
             'servicios' => $servicios,
             'turs' => $tur,
-
+            'tipo' => $tipo,
         );
 
         return $respuesta;
@@ -783,6 +804,7 @@ class Tours_paquete_model extends CI_Model
                            nombreTours,
                            asientos_seleccionados,
                            label_asiento,
+                           cupos_originales,
                            cantidad_asientos,
                            start,
                            end,
@@ -813,6 +835,7 @@ class Tours_paquete_model extends CI_Model
         $nombre           = '';
         $start            = '';
         $end              = '';
+        $cupos_originales = 0;
 
 
         if ($query->conn_id->error == '') {
@@ -822,6 +845,7 @@ class Tours_paquete_model extends CI_Model
                 $nombre                       = $value->nombreTours;
                 $start                        = $value->start;
                 $end                          = $value->end;
+                $cupos_originales             = $value->cupos_originales;
                 $value->requisitos            = json_decode($value->requisitos, true);
                 $value->chequeo               = json_decode($value->chequeo, true);
                 $value->descripcionProducto   = nl2br($value->descripcionProducto);
@@ -844,7 +868,8 @@ class Tours_paquete_model extends CI_Model
                 'sitios'           => $sitios,
                 'servicios'        => $servicios,
                 'transporte'       => $transporte,
-                'ocupados'         => $asientosOcupados
+                'ocupados'         => $asientosOcupados,
+                'cupos_originales' => $cupos_originales
             );
 
             return $respuesta;
