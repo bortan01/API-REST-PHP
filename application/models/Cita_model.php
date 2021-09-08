@@ -24,6 +24,7 @@ class Cita_model extends CI_Model
 		$this->db->join('usuario', 'usuario.id_cliente=cita.id_cliente', 'inner');
 		$this->db->where('fecha >=', $data['fechaInicio']);
 		$this->db->where('fecha <=', $data['fechaFin']);
+		$this->db->select('DATE_FORMAT(cita.fecha,"%d-%m-%Y") as fecha')
 		$ingresos = $this->db->get();
 		$result  = $ingresos->result();
 		$cuantos = count($result);
