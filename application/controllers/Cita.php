@@ -215,6 +215,7 @@ class Cita extends REST_Controller
 				'err'=>TRUE,
 				'mensaje'=>'Hay errores en el envio de la informacion'
 			);*/
+			
 
 				$this->response($respuesta, REST_Controller::HTTP_BAD_REQUEST);
 			} else {
