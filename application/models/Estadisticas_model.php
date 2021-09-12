@@ -9,13 +9,18 @@ class Estadisticas_model extends CI_Model
       $asesorias   = $this->get_ingresosAsesorias($star, $end);
       $vehiculos   = $this->get_ingresosVehiculos($star, $end);
       $encominedas = $this->get_ingresosEncomiendas($star, $end);
-      
+
       return array(
-         'tours'       => $viajes['tours'],
-         'paquetes'    => $viajes['paquetes'],
-         'asesorias'   => $asesorias,
-         'vehiculos'   => $vehiculos,
-         'encominedas' => $encominedas,
+         'ingresosTours'       => $viajes['ingresosTours'],
+         'ingresosPaquetes'    => $viajes['ingresosPaquetes'],
+         'ingresoAsesorias'    => $asesorias['ingresoAsesorias'],
+         'ingresoVehiculos'    => $vehiculos['ingresoVehiculos'],
+         'ingresoEncomiendas'  => $encominedas['ingresoEncomiendas'],
+         'tours'               => $viajes['tours'],
+         'paquetes'            => $viajes['paquetes'],
+         'asesorias'           => $asesorias['asesorias'],
+         'vehiculos'           => $vehiculos['vehiculos'],
+         'encomiendas'         => $encominedas['encomiendas'],
       );
    }
    public function get_ingresosTours($star,  $end)
@@ -31,59 +36,77 @@ class Estadisticas_model extends CI_Model
 
 
       $query = $this->db->get();
-      $listaCitas = $query->result();
+      $listaViajes = $query->result();
       $totalIngresosTours = 0;
       $totalIngresosPaquetes = 0;
+      $listaTours = array();
+      $listaPaquetes = array();
       if ($query->conn_id->error == '') {
-         foreach ($listaCitas as $index => $tours) {
-            if ($tours->tipo == 'Tour Nacional' || $tours->tipo == 'Tour Internacional') {
-               $totalIngresosTours += $tours->monto;
+         foreach ($listaViajes as $index => $viaje) {
+            if ($viaje->tipo == 'Tour Nacional' || $viaje->tipo == 'Tour Internacional') {
+               $totalIngresosTours += $viaje->monto;
+               array_push($listaTours, $viaje);
             } else {
-               $totalIngresosPaquetes += $tours->monto;
+               $totalIngresosPaquetes += $viaje->monto;
+               array_push($listaPaquetes, $viaje);
             }
          }
          // return $listaCitas;
-         return  array('tours' => $totalIngresosTours, 'paquetes' => $totalIngresosPaquetes);
+         return  array(
+            'ingresosTours'    => $totalIngresosTours,
+            'ingresosPaquetes' => $totalIngresosPaquetes,
+            'tours'            => $listaTours,
+            'paquetes'         => $listaPaquetes
+         );
       } else {
-         return  array('tours' => 0, 'paquetes' => 0);
+         return  array(
+            'ingresosTours'    => 0,
+            'ingresosPaquetes' => 0,
+            'tours'            => array(),
+            'paquetes'         => array()
+         );
       }
    }
    public function get_ingresosVehiculos($start, $end)
    {
       $this->db->select('*');
       $this->db->from('detalle_vehiculo');
+      $this->db->join('usuario', 'detalle_vehiculo.id_cliente = usuario.id_cliente');
+      $this->db->join('vehiculo', 'detalle_vehiculo.id_vehiculo = vehiculo.idvehiculo');
+      $this->db->join('modelo', 'vehiculo.idmodelo = modelo.idmodelo');
       $this->db->where('fechaDevolucion >=', $start);
       $this->db->where('fechaDevolucion <=', $end);
       $query = $this->db->get();
-      $listaReservas= $query->result();
+      $listaReservas = $query->result();
 
       $totalReservas = 0;
       if ($query->conn_id->error == '') {
          foreach ($listaReservas as $index => $reserva) {
             $totalReservas += $reserva->totalDevolucion;
          }
-         return  $totalReservas;
+         return  array('ingresoVehiculos' => $totalReservas, 'vehiculos' => $listaReservas);
       } else {
-         return  0;
+         return  array('ingresoVehiculos' => 0, 'vehiculos' => array());
       }
    }
    public function get_ingresosEncomiendas($star, $end)
    {
       $this->db->select('*');
       $this->db->from('encomienda');
+      $this->db->join('usuario', 'usuario.id_cliente = encomienda.id_usuario');
       $this->db->where('fecha >=', $star);
       $this->db->where('fecha <=', $end);
       $query = $this->db->get();
-      $listaEncomiendas= $query->result();
+      $listaEncomiendas = $query->result();
 
       $totalReservas = 0;
       if ($query->conn_id->error == '') {
          foreach ($listaEncomiendas as $index => $encomineda) {
             $totalReservas += $encomineda->total_cliente;
          }
-         return  $totalReservas;
+         return  array('ingresoEncomiendas' => $totalReservas, 'encomiendas' => $listaEncomiendas);
       } else {
-         return  0;
+         return  array('ingresoEncomiendas' => 0, 'encomiendas' => array());
       }
    }
    public function get_ingresosAsesorias($star, $end)
@@ -91,6 +114,7 @@ class Estadisticas_model extends CI_Model
 
       $this->db->select('*');
       $this->db->from('cita');
+      $this->db->join('usuario', 'id_cliente');
       $this->db->where('fecha >=', $star);
       $this->db->where('fecha <=', $end);
 
@@ -101,9 +125,9 @@ class Estadisticas_model extends CI_Model
          foreach ($listaCitas as $index => $cita) {
             $totalAsesorias += $cita->cobros;
          }
-         return  $totalAsesorias;
+         return  array('ingresoAsesorias' => $totalAsesorias, 'asesorias' => $listaCitas);
       } else {
-         return  0;
+         return  array('ingresoAsesorias' => 0, 'asesorias' => array());
       }
    }
 }
