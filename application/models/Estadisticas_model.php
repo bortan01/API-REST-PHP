@@ -26,7 +26,7 @@ class Estadisticas_model extends CI_Model
    public function get_ingresosTours($star,  $end)
    {
       $this->load->model('Conf_model');
-      $this->db->select('id_cliente, id_tours, nombreTours, asientos_seleccionados, label_asiento, cantidad_asientos, start, end, lugar_salida, incluye, no_incluye, requisitos, descripcion_tur, fecha_reserva, formaPagoUtilizada, monto, resultadoTransaccion, tipo');
+      $this->db->select('id_cliente, id_tours, nombreTours, asientos_seleccionados, label_asiento, cantidad_asientos, start, end, lugar_salida, incluye, no_incluye, requisitos, descripcion_tur, fecha_reserva, formaPagoUtilizada, monto, resultadoTransaccion, tipo,usuario.nombre as nombreUsuario');
       $this->db->from('usuario');
       $this->db->join('detalle_tour', 'id_cliente');
       $this->db->join('tours_paquete', 'id_tours');
