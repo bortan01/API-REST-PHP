@@ -31,6 +31,7 @@ class Estadisticas_model extends CI_Model
       $this->db->join('detalle_tour', 'id_cliente');
       $this->db->join('tours_paquete', 'id_tours');
       $this->db->join('reserva_tour', 'id_detalle');
+      $this->db->select('DATE_FORMAT(fecha_reserva,"%d-%m-%Y") as fecha_reserva');
       $this->db->where('fecha_reserva >=', $star);
       $this->db->where('fecha_reserva <=', $end);
 
@@ -74,6 +75,7 @@ class Estadisticas_model extends CI_Model
       $this->db->join('usuario', 'detalle_vehiculo.id_cliente = usuario.id_cliente');
       $this->db->join('vehiculo', 'detalle_vehiculo.id_vehiculo = vehiculo.idvehiculo');
       $this->db->join('modelo', 'vehiculo.idmodelo = modelo.idmodelo');
+      $this->db->select('DATE_FORMAT(fechaDevolucion,"%d-%m-%Y") as fechaDevolucion');
       $this->db->where('fechaDevolucion >=', $start);
       $this->db->where('fechaDevolucion <=', $end);
       $query = $this->db->get();
@@ -94,6 +96,7 @@ class Estadisticas_model extends CI_Model
       $this->db->select('*');
       $this->db->from('encomienda');
       $this->db->join('usuario', 'usuario.id_cliente = encomienda.id_usuario');
+      $this->db->select('DATE_FORMAT(fecha,"%d-%m-%Y") as fecha');
       $this->db->where('fecha >=', $star);
       $this->db->where('fecha <=', $end);
       $query = $this->db->get();
@@ -115,6 +118,7 @@ class Estadisticas_model extends CI_Model
       $this->db->select('*');
       $this->db->from('cita');
       $this->db->join('usuario', 'id_cliente');
+      $this->db->select('DATE_FORMAT(fecha,"%d-%m-%Y") as fecha');
       $this->db->where('fecha >=', $star);
       $this->db->where('fecha <=', $end);
 
