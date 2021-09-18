@@ -64,7 +64,8 @@ class Cita extends REST_Controller
 		$start = $data["fecha"] . ' ' . $data["start"];
 		$hora = $data["start"];
 		$ya = $this->Cita_model->mover($id_cita, $fecha, $start, $hora);
-
+		print_r($data);
+		die();
 		if ($ya['err']) {
 			# code...
 			$this->response($ya, REST_Controller::HTTP_BAD_REQUEST);
