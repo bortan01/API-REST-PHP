@@ -201,8 +201,6 @@ class Cita extends REST_Controller
 			$color = "#007bff";
 			$textColor = "#FFFFFF";
 			$partes = explode("-", $data["fecha"]);
-			print_r($data);
-			die();
 
 			$fechaConvertida = $partes[2] . '-' . $partes[1] . '-' . $partes[0];
 
