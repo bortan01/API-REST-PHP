@@ -135,6 +135,29 @@ class Pregunta_model extends CI_Model
 		}
 		return $listPreguntas;
 	}
+	public function get_reporte($id_cliente)
+	{
+		$this->db->select('*');
+		$this->db->from('ramas_preguntas');
+		$listaRamas = $this->db->get()->result();
+
+
+		foreach ($listaRamas as  $rama) {
+			$this->db->select('*');
+			$this->db->from('pregunta');
+			$this->db->join('formulario_migratorio', 'id_pregunta');
+			// $this->db->where('id_cliente', $id_cliente);
+			$this->db->where('id_rama', $rama->id_rama);
+
+		
+
+			$preguntas = $this->db->get()->result();
+			$rama->preguntas = $preguntas;
+			
+			
+		}
+		return $listaRamas;
+	}
 
 	//preguntas con mas respuesta
 	public function get_pregustasMas()

@@ -81,6 +81,29 @@ class Asesoria extends REST_Controller
 			$this->response($respuesta, REST_Controller::HTTP_NOT_FOUND);
 		}
 	}
+	public function reporte_get()
+	{
+		$data = $this->get();
+		$pregunta = $this->Pregunta_model->get_reporte($data['id_cliente']);
+
+
+		if (isset($pregunta)) {
+			$respuesta = array(
+				'err'        => FALSE,
+				'mensaje'    => 'Registros cargados correctamente',
+				'preguntas'  => $pregunta
+			
+			);
+			$this->response($respuesta);
+		} else {
+			$respuesta = array(
+				'err' => TRUE,
+				'mensaje' => 'Error al cargar los datos.',
+				'citas' => null
+			);
+			$this->response($respuesta, REST_Controller::HTTP_NOT_FOUND);
+		}
+	}
 	public function abierta_get()
 	{
 
