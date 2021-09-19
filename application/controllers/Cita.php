@@ -162,7 +162,7 @@ class Cita extends REST_Controller
 		}
 	}
 	//***********visualizar citas pagina web
-	public function citaWeb_get()
+	public function CitaWeb_get()
 	{
 		$data = $this->get();
 		$citaWeb = $this->Cita_model->get_citasWeb($data);
