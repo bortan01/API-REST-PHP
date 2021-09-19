@@ -61,11 +61,9 @@ class Cita extends REST_Controller
 		//recogere los datos para pode concatenar
 		$id_cita = $data["id_cita"];
 		$fecha = $data["fecha"];
-		$start = $data["fecha"] . ' ' . $data["start"];
-		$hora = $data["start"];
+		$start = $data["fecha"] . ' ' . $data["timeUpdate"];
+		$hora = $data["timeUpdate"];
 		$ya = $this->Cita_model->mover($id_cita, $fecha, $start, $hora);
-		print_r($data);
-		die();
 		if ($ya['err']) {
 			# code...
 			$this->response($ya, REST_Controller::HTTP_BAD_REQUEST);

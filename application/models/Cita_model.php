@@ -203,74 +203,45 @@ class Cita_model extends CI_Model
 	}
 	public function modificar_cita($id_cita, $hora, $fecha)
 	{
-		//$this->db->set($datos);
-		$horas_validas = array(
-			0 => '08:00',
-			1 => '09:00',
-			2 => '10:00',
-			3 => '11:00',
-			5 => '13:00',
-			6 => '14:00',
-			7 => '15:00'
-		);
-		$el_pollo = array(0 => '12:00');
+		$query = $this->db->where(array('fecha' => $fecha, 'hora' => $hora));
+		$query = $this->db->get('cita');
+		$cita = $query->row(); //No modificara hora
 
-		if (in_array($hora, $el_pollo)) {
-			# es la hora del pollo
-			$respuesta = array(
-				'err' => TRUE,
-				'mensaje' => 'Hora de almuerzo!!'
+		if (!isset($cita)) {
+
+			$datos = array(
+				'start' => $fecha . ' ' . $hora,
+				'hora' => $hora
 			);
 
-			return $respuesta;
-		} else {
-
-			//VAMOS A VERIFICAR QUE LA HORA QUE LLEGUE TENGA LA DIFERENCIA DE 1HR
-
-			# si esta dentro de las horas validas va ha pasar por el desorden de abajo
-
-
-			$query = $this->db->where(array('id_cita' => $id_cita, 'hora' => $hora));
-			$query = $this->db->get('cita');
-			$cita = $query->row(); //No modificara hora
-
-			if (!isset($cita)) {
-
-				$datos = array(
-					'start' => $fecha . ' ' . $hora,
-					'hora' => $hora
+			$this->db->set($datos);
+			$this->db->where('id_cita', $id_cita);
+			$hecho = $this->db->update('cita');
+			if ($hecho) {
+				#borrado
+				$respuesta = array(
+					'err' => FALSE,
+					'mensaje' => 'Registro actualizado correctamente',
+					'cita' => $datos
 				);
-
-				$this->db->set($datos);
-				$this->db->where('id_cita', $id_cita);
-				$hecho = $this->db->update('cita');
-				if ($hecho) {
-					#borrado
-					$respuesta = array(
-						'err' => FALSE,
-						'mensaje' => 'Registro actualizado correctamente',
-						'cita' => $datos
-					);
-				} else {
-					//error
-
-					$respuesta = array(
-						'err' => TRUE,
-						'mensaje' => 'Error al actualizar',
-						'error' => $this->db->_error_message(),
-						'error_num' => $this->db->_error_number()
-					);
-				}
-				return $respuesta;
 			} else {
+				//error
 
 				$respuesta = array(
 					'err' => TRUE,
-					'mensaje' => 'Hora no valida, es la hora actual que posee!!'
+					'mensaje' => 'Error al actualizar',
+					'error' => $this->db->_error_message(),
+					'error_num' => $this->db->_error_number()
 				);
-				return $respuesta;
 			}
-		}	//else pollo
+			return $respuesta;
+		} else {
+			$respuesta = array(
+				'err' => TRUE,
+				'mensaje' => 'La hora ya esta ocupada!!'
+			);
+			return $respuesta;
+		}
 	} //function
 
 	public function insertCita($id_cliente, $motivo, $color, $textColor, $start, $fecha, $hora)
