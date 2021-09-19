@@ -17,9 +17,16 @@ class Imagen extends REST_Controller
         $this->load->database();
         $this->load->model('Imagen_model');
     }
+    // para eviar el cross domine polyce
     public function save_options()
     {
-        $respuesta = array('mensaje' => 'imagen actualizada');
+        $respuesta = array('mensaje' => 'permiso otorgado');
+        $this->response($respuesta, REST_Controller::HTTP_OK);
+    }
+    // para eviar el cross domine polyce
+    public function delete_options()
+    {
+        $respuesta = array('mensaje' => 'permiso otorgado');
         $this->response($respuesta, REST_Controller::HTTP_OK);
     }
 
