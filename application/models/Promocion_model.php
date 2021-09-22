@@ -12,13 +12,14 @@ class Promocion_model extends CI_Model
     public $fechaDisponible_promocion;
     public $descripcion_promocion;
     public $activo = TRUE;
-    
 
-    public function get_promocion(array $data){
+
+    public function get_promocion(array $data)
+    {
 
         $this->load->model('Conf_model');
         $this->load->model('Imagen_model');
-      
+
         $parametros = $this->verificar_camposEntrada($data);
 
         $this->db->select('*');
@@ -30,22 +31,22 @@ class Promocion_model extends CI_Model
         $this->db->where('fechaDisponible_promocion >=',  date('Y-m-d'));
 
 
-        $this->db->where('promocion_vuelo.activo',1);
+        $this->db->where('promocion_vuelo.activo', 1);
         $query = $this->db->get();
 
         $respuesta = $query->result();
-       
+
         foreach ($respuesta as $row) {
-            
+
             $identificador = $row->idpromocion_vuelo;
-            $respuestaFoto =   $this->Imagen_model->obtenerImagenUnica('promocion_vuelo', $identificador);
+            $respuestaFoto =   $this->Imagen_model->obtenerImagenUnica('promociones', $identificador);
             if ($respuestaFoto == null) {
                 //por si no hay ninguna foto mandamos una por defecto
-                $row->foto = $this->Conf_model->URL_SERVIDOR."uploads/viaje.png";
+                $row->foto = $this->Conf_model->URL_SERVIDOR . "uploads/viaje.png";
             } else {
                 $row->foto = $respuestaFoto;
             }
-            $respuestaGaleria =   $this->Imagen_model->obtenerGaleria('promocion_vuelo', $identificador);
+            $respuestaGaleria =   $this->Imagen_model->obtenerGaleria('promociones', $identificador);
             if ($respuestaGaleria == null) {
                 //por si no hay ninguna foto mandamos una por defecto
                 $row->galeria = [];
@@ -54,22 +55,23 @@ class Promocion_model extends CI_Model
             }
         }
         return $respuesta;
-        }
+    }
 
 
 
-       public function set_datos( $data_cruda){
-   
-            foreach ($data_cruda as $nombre_campo => $valor_campo) {
-   
-            if (property_exists('Promocion_model',$nombre_campo)) {
-                $this->$nombre_campo=$valor_campo;            
+    public function set_datos($data_cruda)
+    {
+
+        foreach ($data_cruda as $nombre_campo => $valor_campo) {
+
+            if (property_exists('Promocion_model', $nombre_campo)) {
+                $this->$nombre_campo = $valor_campo;
             }
-            }
-            return $this; 
         }
+        return $this;
+    }
 
-        public function insert()
+    public function insert()
     {
 
         $query = $this->db->get_where('promocion_vuelo', array('idpromocion_vuelo' => $this->idpromocion_vuelo));
@@ -124,8 +126,7 @@ class Promocion_model extends CI_Model
         $this->db->where('idpromocion_vuelo', $campos["idpromocion_vuelo"]);
 
         $hecho = $this->db->update($nombreTabla, $campos);
-        if ($hecho) 
-        {
+        if ($hecho) {
             ///LOGRO ACTUALIZAR 
             $respuesta = array(
                 'err'     => FALSE,
@@ -134,9 +135,7 @@ class Promocion_model extends CI_Model
 
             );
             return $respuesta;
-        } 
-        else 
-        {
+        } else {
             //NO GUARDO
             $respuesta = array(
                 'err' => TRUE,
@@ -195,14 +194,14 @@ class Promocion_model extends CI_Model
         $this->db->join('aerolinea', 'promocion_vuelo.idaerolineaFK = aerolinea.idaerolinea');
         $this->db->join('tipo_clase', 'promocion_vuelo.idclaseFK = tipo_clase.idclase');
         $this->db->where($parametros);
-        $this->db->where_in('promocion_vuelo.activo',1);
+        $this->db->where_in('promocion_vuelo.activo', 1);
 
         $query = $this->db->get();
 
         $respuesta = $query->result();
         $this->load->model('Imagen_model');
         foreach ($respuesta as $row) {
-           
+
             $identificador = $row->idpromocion_vuelo;
             $respuestaFoto =   $this->Imagen_model->obtenerImagen('promociones', $identificador);
             if ($respuestaFoto == null) {
