@@ -58,6 +58,22 @@ class Promocion_model extends CI_Model
     }
 
 
+    public  function cotizar()
+    {
+        $aerolineas = $this->Aerolinea_model->get_aerolinea(array());
+        $clases = $this->Clases_model->get_clases(array());
+		$tiposViejes = $this->Viajes_model->get_viajes(array());
+		$condiciones = $this->infoAdicional_model->get_informacion(array());
+
+
+		return array(
+			'aerolineas'  => $aerolineas,
+            'clases'      => $clases,
+            'tiposViajes' => $tiposViejes,
+            'condiciones' => $condiciones
+		
+		);
+    }
 
     public function set_datos($data_cruda)
     {

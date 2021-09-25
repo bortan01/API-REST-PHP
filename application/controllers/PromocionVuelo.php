@@ -17,6 +17,13 @@ class promocionVuelo extends REST_Controller
 		parent::__construct();
 		$this->load->database();
 		$this->load->model('Promocion_model');
+		$this->load->model('Aerolinea_model');
+		$this->load->model('Clases_model');
+		$this->load->model('Viajes_model');
+		$this->load->model('infoAdicional_model');
+
+
+
 	}
 
 	public function promocion_get()
@@ -43,6 +50,13 @@ class promocionVuelo extends REST_Controller
 			);
 			$this->response($respuesta, REST_Controller::HTTP_NOT_FOUND);
 		}
+	}
+
+	public function cotizar_get()
+	{
+		$respuesta = $this->Promocion_model->cotizar(array());
+		$this->response($respuesta, REST_Controller::HTTP_OK);
+		
 	}
 
 	//INSERTAR
