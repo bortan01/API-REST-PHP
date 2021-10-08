@@ -206,8 +206,9 @@ class Cita extends REST_Controller
 			$start = $fechaConvertida . ' ' . $data["start"];
 			$fecha = $fechaConvertida;
 			$hora = $data["start"];
+			$dia =$data["dia"];
 
-			$respuesta = $this->Cita_model->insertCita($id_cliente, $motivo, $color, $textColor, $start, $fecha, $hora);
+			$respuesta = $this->Cita_model->insertCita($id_cliente, $motivo, $color, $textColor, $start, $fecha, $hora,$dia);
 
 			if ($respuesta['err']) {
 
