@@ -91,6 +91,20 @@ class Cita extends REST_Controller
 			$this->response($respuesta, REST_Controller::HTTP_OK);
 		}
 	} //fin de metodo
+	public function updateCobro_post()
+	{
+
+		//recogere los datos para pode concatenar
+		$data = $this->post();
+
+		$respuesta = $this->Cita_model->modificar_cobro($data);
+		if ($respuesta['err']) {
+			# code...
+			$this->response($respuesta, REST_Controller::HTTP_BAD_REQUEST);
+		} else {
+			$this->response($respuesta, REST_Controller::HTTP_OK);
+		}
+	}
 	public function formularioMigratorioCitas_get()
 	{
 
@@ -206,9 +220,9 @@ class Cita extends REST_Controller
 			$start = $fechaConvertida . ' ' . $data["start"];
 			$fecha = $fechaConvertida;
 			$hora = $data["start"];
-			$dia =$data["dia"];
+			$dia = $data["dia"];
 
-			$respuesta = $this->Cita_model->insertCita($id_cliente, $motivo, $color, $textColor, $start, $fecha, $hora,$dia);
+			$respuesta = $this->Cita_model->insertCita($id_cliente, $motivo, $color, $textColor, $start, $fecha, $hora, $dia);
 
 			if ($respuesta['err']) {
 

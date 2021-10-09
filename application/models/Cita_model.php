@@ -244,6 +244,30 @@ class Cita_model extends CI_Model
 		}
 	} //function
 
+	public function modificar_cobro ( $data)
+	{
+		$this->db->set($data);
+			$this->db->where('id_cita', $data["id_cita"]);
+			$hecho = $this->db->update('cita');
+			if ($hecho) {
+				#borrado
+				$respuesta = array(
+					'err' => FALSE,
+					'mensaje' => 'Registro actualizado correctamente',
+					'cita' => $data
+				);
+			} else {
+				//error
+				$respuesta = array(
+					'err' => TRUE,
+					'mensaje' => 'Error al actualizar',
+					'error' => $this->db->_error_message(),
+					'error_num' => $this->db->_error_number()
+				);
+			}
+			return $respuesta;
+	}
+
 	public function insertCita($id_cliente, $motivo, $color, $textColor, $start, $fecha, $hora,$dia)
 	{
 		//insertar el registro
