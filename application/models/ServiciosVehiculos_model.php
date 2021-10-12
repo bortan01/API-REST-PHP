@@ -39,7 +39,7 @@ public function set_datos($data_cruda){
 
  	public function guardarDetalle(array $detalles, string $id){
 
- 		$nombreTabla = "detalle_serviciosVehiculo";
+ 		$nombreTabla = "detalle_serviciosvehiculo";
 
         if (count($detalles) < 1) {
             $respuesta = array(
