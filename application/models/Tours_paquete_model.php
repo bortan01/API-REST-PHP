@@ -715,7 +715,7 @@ class Tours_paquete_model extends CI_Model
 
     public function guardarCotizacion(array $data)
     {
-        $nombreTabla = 'cotizar_tourpaquete';
+        $nombreTabla = 'cotizar_tourPaquete';
         $insert = $this->db->insert($nombreTabla, $data);
 
         if (!$insert) {
@@ -742,7 +742,7 @@ class Tours_paquete_model extends CI_Model
     {
 
         $this->db->select('*');
-        $this->db->from('cotizar_tourpaquete');
+        $this->db->from('cotizar_tourPaquete');
         $this->db->join('usuario', 'id_cliente');
         $this->db->order_by('idCotizar', 'ASC');
         $this->db->where('visto', $parametros['visto']);
@@ -755,7 +755,7 @@ class Tours_paquete_model extends CI_Model
 
     public function responderCotizacion(array $campos = array())
     {
-        $nombreTabla = 'cotizar_tourpaquete';
+        $nombreTabla = 'cotizar_tourPaquete';
         $this->db->where('idCotizar', $campos["idCotizar"]);
         $hecho = $this->db->update($nombreTabla, $campos);
         if ($hecho) {
@@ -780,7 +780,7 @@ class Tours_paquete_model extends CI_Model
     }
     public function obtenerRespuestas(array $campos = array())
     {
-        $nombreTabla = 'cotizar_tourpaquete';
+        $nombreTabla = 'cotizar_tourPaquete';
         $this->db->where('id_cliente', $campos["id_cliente"]);
         $query = $this->db->get($nombreTabla);
         $cotizaciones = $query->result();
