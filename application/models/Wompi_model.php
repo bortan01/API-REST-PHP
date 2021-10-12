@@ -131,7 +131,7 @@ class Wompi_model extends CI_Model
                     if (!isset($decodificada["idEnlace"])) {
                         //RESPUEESTA DE ERROR DE WOMPI
 
-                        return array('err' => "ERROR DE PETICION", 'res' => $decodificada);
+                        return array('err' => "ERROR DE PETICION 1", 'res' => $decodificada);
                     } else {
                         //TENEMOS NUESTRA RESPUETA CORRECTA DE WOMPI
                         return $decodificada;
@@ -213,7 +213,7 @@ class Wompi_model extends CI_Model
             } else {
                 if (!isset($decodificada["idEnlace"])) {
                     //RESPUEESTA DE ERROR DE WOMPI
-                    return array('err' => "ERROR DE PETICION");
+                    return array('err' => "ERROR DE PETICION 2");
                 } else {
                     //TENEMOS NUESTRA RESPUETA CORRECTA DE WOMPI
                     return $decodificada;
