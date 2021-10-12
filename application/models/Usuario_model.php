@@ -21,7 +21,7 @@ class Usuario_model extends CI_Model
     public $dui;
     public $activo;
     public $ultimaConexion;
-
+    public $mensajePendiente;
     public function __construct()
 
     {
@@ -39,6 +39,8 @@ class Usuario_model extends CI_Model
             $miUser->uuid             = $usuarioFirebase["uid"];
             $miUser->activo           = TRUE;
             $miUser->ultimaConexion   =  date("Y-m-d H:i:s A");
+            $miUser->mensajePendiente =  "Nuevo Cliente";
+
             // CREAMOS UN ID RANDOM
             $idRamdom = date("Hismd");
             $miUser->id_cliente       = $idRamdom;

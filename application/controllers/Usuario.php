@@ -81,7 +81,13 @@ class Usuario extends REST_Controller
                     $respuesta['fbToken'] =  $dataUsuario["fbToken"];
                     $respuesta['dui'] =  $dataUsuario["dui"];
                     $respuesta['foto'] =  $dataUsuario["foto"];
-                    $this->response($respuesta, REST_Controller::HTTP_OK);
+
+                    if ($dataUsuario['activo'] ==  1) {
+                        $this->response($respuesta, REST_Controller::HTTP_OK);
+                    } else {
+                        $respuesta  =  array("err" => TRUE, "mensaje" => "INVALID_EMAIL");
+                        $this->response($respuesta, REST_Controller::HTTP_BAD_REQUEST);
+                    }
                 }
             }
         }
