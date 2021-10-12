@@ -115,6 +115,7 @@ class Detalle_vehiculo_model extends CI_Model
           
             $this->db->where($parametros);
             $this->db->where_in('vehiculo.activo',2);
+            $this->db->where_in('activo_detalle',2);
             $this->db->order_by('detalle_vehiculo.fechaHora_detalle', 'desc');
 
             $query=$this->db->get();
@@ -155,6 +156,7 @@ class Detalle_vehiculo_model extends CI_Model
         ///VAMOS A ACTUALIZAR UN REGISTRO
         $campos = $this->Detalle_vehiculo_model->verificar_camposEntrada($data);
 
+        //$campos["activo_detalle"]=1;
         $this->db->where('idvehiculo', $data["idvehiculo"]);
         $this->db->update('vehiculo',array('kilometraje'=>$data['kilometraje'],
                                             'activo'=>1));
