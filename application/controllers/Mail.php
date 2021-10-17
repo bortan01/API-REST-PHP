@@ -21,14 +21,40 @@ class Mail extends REST_Controller
    //INSERTAR
    public function send_post()
    {
+      $bodyHTML ='
+      <h2>Hola,ZORRA FUNCIONA</h2>
+      <br>
+      <br>
+      <br>
+      Mensaje final';
+  
+  
+      $enviado = $this->Mail_model->metEnviar("titulo, del correo","estoy probando","juan.moz@ues.edu.sv","asuntox",$bodyHTML);
+  
+      if($enviado){
+         // echo ("enviado");
+         $respuesta=array(
+				'err'=>FALSE,
+				'mensaje'=>'Enviado'
+			);
+         $this->response($respuesta, REST_Controller::HTTP_OK);
+      }else{
+         // echo ("No se puede enviar el correo");
+         $respuesta=array(
+				'err'=>TRUE,
+				'mensaje'=>'No se puede enviar el correo'
+			);
+         $this->response($respuesta, REST_Controller::HTTP_BAD_REQUEST);
 
-      $data = $this->post();
+      }
+         ///****este este es codigo de boris */
+     /* $data = $this->post();
 
       $respuesta = $this->Mail_model->enviar($data);
       if ($respuesta['err']) {
          $this->response($respuesta, REST_Controller::HTTP_BAD_REQUEST);
       } else {
          $this->response($respuesta, REST_Controller::HTTP_OK);
-      }
+      }*/
    }
 }
