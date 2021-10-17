@@ -22,7 +22,7 @@ class Mail extends REST_Controller
    public function send_post()
    {
       $bodyHTML ='
-      <h2>Hola,ZORRA FUNCIONA</h2>
+      <h2>Hola,ZORRA FUNCIONA desde el hosting</h2>
       <br>
       <br>
       <br>
