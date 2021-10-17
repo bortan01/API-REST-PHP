@@ -52,7 +52,7 @@ class Usuario_model extends CI_Model
                 $this->Imagen_model->guardarGaleria("usuario_documentos",  $idRamdom);
                 //PARA GUARDAR LA FOTO DE PERFIL
                 $this->Imagen_model->guardarImagen("usuario_perfil",  $idRamdom);
-                return array('err' => FALSE,  'mensaje' => 'Cuenta Creada Exitosamente!');
+                return array('err' => FALSE,  'mensaje' => 'Cuenta Creada Exitosamente!. Hemos enviado un enlace de verificación a tu correo electrónico');
             } else {
                 return array('err' => TRUE, 'mensaje' => $this->db->error_message());
             }

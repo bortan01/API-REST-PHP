@@ -33,11 +33,14 @@ class Firebase_model extends CI_Model
             // $campos = ['displayName' => 'El Coco loco'];
             // $campos = ['nivel' => 'CLIENTE'];
             // $auth->setCustomUserClaims($uid, ['admin' => true, 'key1' => 'value1']);
+            // $campos = ['disabled' => true];
             // $auth->updateUser($uid, $campos);
-
+            
             //PARA ENVIAR CORREO ELECTRONICO DE VERIFICACION
-            //$user = $auth->getUser('some-uid');
-            //$auth->sendEmailVerificationLink($user);
+            // $user = $auth->getUser($uid);
+            
+            
+            $auth->sendEmailVerificationLink($user->email);
             return array("err" => FALSE, "uid" => $uid);
         } catch (AuthException $e) {
             return array("err" => TRUE, "mensaje" => $e->getMessage());
@@ -65,9 +68,10 @@ class Firebase_model extends CI_Model
         try {
             $auth = $this->firebase->createAuth();
             $signInResult = $auth->signInWithEmailAndPassword($email, $clearTextPassword);
-           
 
             $data = $signInResult->data();
+
+
             $uid = $data['localId'];
             $customToken =   $auth->createCustomToken($uid);
 
