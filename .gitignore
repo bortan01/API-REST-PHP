@@ -35,6 +35,7 @@ application/config/database.php
 uploads/
 info/*
 application/models/Credenciales_model.php
+application/models/Mail_model.php
 push.json
 uploads.rar
 application/models/Conf_model.php
