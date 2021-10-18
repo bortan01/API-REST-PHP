@@ -21,15 +21,20 @@ class Mail extends REST_Controller
 
    //SOLO PARA UN DESTINATARIO
    public function sendUno_post(){
-      $bodyHTML ='
+
+      $data = $this->post();
+
+      //print_r($data);
+		//die();
+      /*$bodyHTML ='
       <h2>Varios correos a la vez desde la BD</h2>
       <br>
       <br>
       <br>
-      Mensaje final';
+      Mensaje final';*/
   
   
-      $enviado = $this->Mail_model->metEnviarUno("titulo, del correo","estoy probando","juan.moz@ues.edu.sv","asuntox",$bodyHTML);
+      $enviado = $this->Mail_model->metEnviarUno($data['titulo'],"Juan","juan.moz@ues.edu.sv",$data['asunto'],$data['body']);
   
       if($enviado){
          // echo ("enviado");
@@ -62,15 +67,16 @@ class Mail extends REST_Controller
    //ESTA FUNCION ES PARA MAS DE UN DESTINATARIO
    public function send_post()
    {
-      $bodyHTML ='
+      $data = $this->post();
+     /* $bodyHTML ='
       <h2>Varios correos a la vez desde la BD</h2>
       <br>
       <br>
       <br>
-      Mensaje final';
+      Mensaje final';*/
   
   
-      $enviado = $this->Mail_model->metEnviar("titulo, del correo","estoy probando","juan.moz@ues.edu.sv","asuntox",$bodyHTML);
+      $enviado = $this->Mail_model->metEnviar($data['titulo'],"","juan.moz@ues.edu.sv",$data['asunto'],$data['body']);
   
       if($enviado){
          // echo ("enviado");
