@@ -57,7 +57,7 @@ class cotizarVuelo extends REST_Controller
 
 			$cotizar = $this->cotizarVuelo_model->set_datos($data);
 
-			$respuesta = $cotizar->insert();
+			$respuesta = $cotizar->insert($data);
 
 			if ($respuesta['err']) {
 

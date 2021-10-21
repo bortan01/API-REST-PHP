@@ -101,8 +101,18 @@ class Promocion_model extends CI_Model
             );
             return $respuesta;
         }
-
-        //insertar el registro
+        //*******CODIGO PARA LOS CORREOS */
+       /* $cuerpo="<h2>Promociòn: ".$this->nombre_promocion."</h2><br>
+        <h4>Para el pais de: ".$this->pais_promocion." con salida de 
+        ".$this->lugarSalida_promocion." con precio de: ".$this->precio_promocion.",
+         valido hasta: ".$this->fechaDisponible_promocion."
+         </h4><br><h4>Descripcion de Promociòn: ".$this->descripcion_promocion."
+         </h4><br>Visita nuestra pagina web: https://tesistours.com/<br>Tambien puedes descargar nuestra aplicación móvil<br>Att:<br>Martìnez T&T";
+       
+        $this->load->model('Mail_model');
+        $this->Mail_model->metEnviar($this->nombre_promocion,'Promociones de vuelos',$cuerpo);
+         //FIN DE CODIGO PARA LOS CORREOS
+        //insertar el registro*/
         $hecho = $this->db->insert('promocion_vuelo', $this);
 
         if ($hecho) {

@@ -62,7 +62,7 @@ class cotizarVuelo_model extends CI_Model
             return $this; 
         }
    
-        public function insert(){
+        public function insert($data){
            $query=$this->db->get_where('cotizacion_vuelo',array('id_cotizacion'=>$this->id_cotizacion) );
            $cotizar=$query->row();
    
@@ -73,8 +73,20 @@ class cotizarVuelo_model extends CI_Model
                );
                return $respuesta;
                }
-   
-               //insertar el registro
+              // print_r($data);
+               //die();
+               //para mandar el correo
+               $cuerpo="<h2>Realizó una cotización de vuelo con salida de: ".$this->ciudad_partida."</h2><br>
+               <h4>con llegada a: ".$this->ciudad_llegada." con fecha de partida de: 
+               ".$this->fechaPartida." con fecha probable de llegada: ".$this->fechaLlegada."
+               </h4><br><h4>Gracias por preferirnos ".$data['usuario'].", daremos pronta respuesta a tu cotizaciòn
+               </h4><br>Visita nuestra pagina web: https://tesistours.com/<br>Tambien puedes descargar nuestra aplicación móvil<br>Att:<br>Martìnez T&T";
+       
+               $this->load->model('Mail_model');
+               $this->Mail_model->metEnviarUno('Cotizaciòn de vuelo',$data['usuario'],'Cotizaciòn',$cuerpo,$this->id_cliente);
+               //fin de para mandar correo
+
+                //insertar el registro
                $hecho=$this->db->insert('cotizacion_vuelo',$this);
    
                if ($hecho) {
@@ -104,8 +116,23 @@ class cotizarVuelo_model extends CI_Model
 
         ///VAMOS A ACTUALIZAR UN REGISTRO
         $campos = $this->cotizarVuelo_model->verificar_camposEntrada($data);
-        $this->db->where('id_cotizacion', $campos["id_cotizacion"]);
+        
+        //print_r($data);
+       // die();
 
+       //para mandar el correo
+       $cuerpo="<h2>La cotización realizada con salida de: ".$data['ciudad_partida']."</h2><br>
+       <h4>con llegada a: ".$data['ciudad_llegada']." fue procesada con èxito con un precio de: 
+       $".$data['total']." con un descuento de: $".$data['descuentos']."
+       </h4><br><h4>Gracias por preferirnos, puedes verificar la respuesta a tu cotizaciòn nuestra pagina web: https://tesistours.com/
+       </h4><br>Tambien puedes descargar nuestra aplicación móvil<br>Att:<br>Martìnez T&T";
+
+       $this->load->model('Mail_model');
+       $this->Mail_model->metEnviarUno('Cotizaciòn de vuelo',$data['usuario'],'Respuesta a Cotizaciòn',$cuerpo,$data['id_cliente']);
+       //fin de para mandar correo
+
+       //actualizar
+       $this->db->where('id_cotizacion', $campos["id_cotizacion"]);
         $hecho = $this->db->update($nombreTabla, $campos);
         if ($hecho) 
         {
