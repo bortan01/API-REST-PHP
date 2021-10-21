@@ -103,7 +103,8 @@ class Tours_paquete_model extends CI_Model
                 'mensaje'      => 'Registro Guardado Exitosamente',
                 'id'           => $identificador,
                 'turPaquete'   => $turPaquete,
-                'data'         => $respuestaDetalle,
+                'data'         => $dataDetalle,
+                'id_cliente'   => $id_cliente 
             );
             return $respuesta;
         }
@@ -715,7 +716,7 @@ class Tours_paquete_model extends CI_Model
 
     public function guardarCotizacion(array $data)
     {
-        $nombreTabla = 'cotizar_tourPaquete';
+        $nombreTabla = 'cotizar_tourpaquete';
         $insert = $this->db->insert($nombreTabla, $data);
 
         if (!$insert) {

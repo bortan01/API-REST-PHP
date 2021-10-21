@@ -62,6 +62,20 @@ class cotizarVehiculo extends REST_Controller
 
 				$this->response($respuesta, REST_Controller::HTTP_BAD_REQUEST);
 			} else {
+			   // COTIZACION REALIZADA POR EL CLIENTE, ENVIAR EL CORREO A USUARIOS TIPO EMPLEADO
+				// INFORMACION CONTENIDA AL INTERIOR DE $data
+			   //{
+			   //		"id_usuario": "2036220712",
+			   //		"horaRecogida": "18:25:00",
+			   //		"horaDevolucion": "18:6:00",
+			   //		"fechaRecogida": "2021-10-21",
+			   //		"fechaDevolucion": "2021-10-29",
+			   //		"direccion_recogida": "SAN VICENTE",
+			   //		"direccion_devolucion": "AGENCIA MARTINEZ",
+			   //		"caracteristicas": "QUE TENGA. RUEDAS REDONDAS",
+			   //		"anio": "2012",
+			   //		"modelo": "1"
+			   // }
 				$this->response($respuesta);
 			}
 		} else {
@@ -88,6 +102,12 @@ class cotizarVehiculo extends REST_Controller
 				if ($respuesta['err']) {
 					$this->response($respuesta, REST_Controller::HTTP_BAD_REQUEST);
 				} else {
+					// ENVIAR CORREO DE RESPUESTA A CLIENTE UQE HIZO LA COTIZACION
+					// INFORMACION ALA INTERIOR DE $data
+					// "idcotizarVehiculo": "1",
+					// "descuentosCotizacion": "2",
+					// "totalCotizacion": "120",
+					// "respuestaCotizacion": "si tenemos carros con 4 ruedas
 					$this->response($respuesta, REST_Controller::HTTP_OK);
 				}
 			} catch (\Throwable $th) {

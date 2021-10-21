@@ -45,6 +45,32 @@ class TurPaquete extends REST_Controller
                     $itinerario = json_decode($data["sitios"], true);
                     $this->Itinerario_model->guardar($itinerario, $respuesta['id']);
                 }
+
+                // COLOCAR ACA ABAJO EL MENSAJE DE TOUR O PAQUETE PUBLICADO 
+                // PUEEDE SER UN TOUR O UN PAQUETE 
+                // CONTENIDO DE $respuesta
+                // "err": false,
+                // "mensaje": "Registro Guardado Exitosamente",
+                // "id": 13,
+                // "turPaquete": {
+                //     "nombreTours": "Vamos a canada Internacional",
+                //     "lugar_salida": "Parque cañas",
+                //     "precio": "4321000",
+                //     "incluye": "todo lo que quieras",
+                //     "no_incluye": "cosas sin valor",
+                //     "requisitos": "pasaporte",
+                //     "promociones": "cocos gratis",
+                //     "descripcion_tur": "un viaje espectacular",
+                //     "cupos_disponibles": "100",
+                //     "nombre_encargado": "Xabi Alosnso",
+                //     "estado": "1",
+                //     "tipo": "Tour Nacional",
+                //     "aprobado": "1",
+                //     "start": "2020-11-10",
+                //     "end": "2020-11-12"
+                // }
+                
+                
                 $this->response($respuesta, REST_Controller::HTTP_OK);
             }
         } else {
@@ -82,7 +108,41 @@ class TurPaquete extends REST_Controller
                     $this->Itinerario_model->guardar($itinerario, $respuesta['id']);
                 }
 
-                // VAMOS A GUARDAR LA RESERVA 
+                // ENVIAR CORREO DE CONFIRMACION SOLO AL CLIENTE QUE HIZO LA RESERVA
+                // CONTENIDO DE $respuesta
+                // {
+                //     "err": false,
+                //     "mensaje": "Registro Guardado Exitosamente",
+                //     "id": 16,
+                //     "turPaquete": {
+                //         "nombreTours": "vamos a timbutu",
+                //         "precio": "1",
+                //         "descripcion_tur": "asdjflkajsdflksajdlfa",
+                //         "no_incluye": "[\"otros no especificados\"]",
+                //         "requisitos": "[\"dui vigente\"]",
+                //         "incluye": "[\"entradas\"]",
+                //         "lugar_salida": "[\"San Vicente\"]",
+                //         "promociones": "[]",
+                //         "cupos_disponibles": "1",
+                //         "tipo": "Privado",
+                //         "start": "2020-11-10",
+                //         "end": "2020-11-12",
+                //         "estado": "1",
+                //         "aprobado": "1"
+                //     },
+                //     "data": {
+                //         "id_cliente": "2058460712",
+                //         "id_tours": 16,
+                //         "nombre_producto": "vamos a timbutu",
+                //         "total": 1,
+                //         "cantidad_asientos": "1",
+                //         "chequeo": "[{\"estado\":false,\"requisito\":\"dui vigente\"}]",
+                //         "asientos_seleccionados": "NO_SELECCIONADO",
+                //         "label_asiento": "NO_LABEL",
+                //         "descripcionProducto": "Reserva Completa"
+                //     },
+                //     "id_cliente": "2058460712"
+                // }
 
 
                 $this->response($respuesta, REST_Controller::HTTP_OK);
@@ -169,7 +229,6 @@ class TurPaquete extends REST_Controller
             }
         }
     }
-
     public function test_post()
     {
         $this->load->model('Imagen_model');
@@ -216,6 +275,15 @@ class TurPaquete extends REST_Controller
         if ($respuesta['err']) {
             $this->response($respuesta, REST_Controller::HTTP_BAD_REQUEST);
         } else {
+            // COTIZACION REALIZADA POR UN CLIENTE , ENVIAR CORREO A USUARIOS TIPO EMPLEADO
+            // INFORMACOPM AL INTERIOR DE $data
+            
+            // "id_cliente": "2023590712",
+            // "peticion": "un viaje a cancun con hotel incluido",
+            // "fechaPeticion": "2021-05-12",
+            // "visto": "0"
+         
+            
             $this->response($respuesta, REST_Controller::HTTP_OK);
         }
     }
@@ -232,6 +300,14 @@ class TurPaquete extends REST_Controller
         if ($respuesta['err']) {
             $this->response($respuesta, REST_Controller::HTTP_BAD_REQUEST);
         } else {
+            // enviar correo a cliente que hizo la cotizacion
+            // informacion contenida en $data
+            //{
+            //    "idCotizar": "3",
+            //    "respuesta": "si tenemos su tour yeah!!!",
+            //    "visto": "1"
+            //}
+            
             $this->response($respuesta, REST_Controller::HTTP_OK);
         }
     }

@@ -58,6 +58,20 @@ class DetalleTour extends REST_Controller
                 if ($respuesta['err']) {
                     $this->response($respuesta, REST_Controller::HTTP_BAD_REQUEST);
                 } else {
+                    // ENVIAR CORREO ELECTRONICO A PERSONA QUE HA REALIZADO LA RESERVA
+                    // INFORMACION QUE ESTA AL INTERIOR DE $data
+                    // {
+                    //     "id_tours": "4",
+                    //     "id_cliente": "2036220712",
+                    //     "asientos_seleccionados": "1_3,1_4",
+                    //     "label_asiento": "13,41",
+                    //     "nombre_producto": "Tur a  San lejos ",
+                    //     "total": "34234.294",
+                    //     "descripcionProducto": "descripcion completa ",
+                    //     "cantidad_asientos": "5",
+                    //     "id_detalle": "200741753"
+                    // }
+                    
                     $this->response($respuesta, REST_Controller::HTTP_OK);
                 }
             }
@@ -85,6 +99,20 @@ class DetalleTour extends REST_Controller
             if ($respuesta['err']) {
                 $this->response($respuesta, REST_Controller::HTTP_BAD_REQUEST);
             } else {
+                // ENVIAR CORREO ELECTRONICO A CLIENTE QUE HIZO LA RESERVA A TRAVEZ DE UN PAGO EN LINEA
+                // INFORMACION AL INTERIOR DE $data
+                // {
+                //     "id_tours": "11",
+                //     "id_cliente": "2046000712",
+                //     "asientos_seleccionados": "10_5,10_6,10_7",
+                //     "label_asiento": "53,54,55",
+                //     "nombre_producto": "TOURS CAYOS DE BELICE!!",
+                //     "total": "445",
+                //     "descripcionTurPaquete": "Hermoso tour a cayos debelice ven y distruta de este maravilloso viaje",
+                //     "cantidad_asientos": "2",
+                //     "descripcionProducto": "2 X Asiento(s) Normal $325.0 c/u, Sub Total $650.0  Total: $650.0 ",
+                //     "tipo": ""
+                // }
                 $this->response($respuesta, REST_Controller::HTTP_OK);
             }
         }

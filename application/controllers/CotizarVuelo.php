@@ -63,6 +63,26 @@ class cotizarVuelo extends REST_Controller
 
 				$this->response($respuesta, REST_Controller::HTTP_BAD_REQUEST);
 			} else {
+						// enviar correo electronico a usuarios tipo empleado
+				// informacion al interiror de $data 
+				// {
+				// 	"id_cliente": "2036220712",
+				// 	"ciudad_partida": "San Salvador",
+				// 	"fechaPartida": "2021-10-14",
+				// 	"HoraPartida": "17:47:00",
+				// 	"ciudad_llegada": "Cartago",
+				// 	"adultos": "1",
+				// 	"ninos": "2",
+				// 	"bebes": "3",
+				// 	"maletas": "4",
+				// 	"idaerolinea": "1",
+				// 	"idclase": "1",
+				// 	"idtipo_viaje": "2",
+				// 	"detallePasajero": "",
+				// 	"opc_avanzadas": " rrrff, ",
+				// 	"fechaLlegada": "2021-10-15",
+				// 	"HoraLlegada": "17:47:00"
+				// }
 				$this->response($respuesta);
 			}
 		} else {
@@ -90,6 +110,11 @@ class cotizarVuelo extends REST_Controller
 				if ($respuesta['err']) {
 					$this->response($respuesta, REST_Controller::HTTP_BAD_REQUEST);
 				} else {
+					// ENVIAR CORREO A CLIENTE QUE HIZO LA COTIZACION
+					// INFORMACION QUE VIENE EN $data 
+					// "id_cotizacion": "15",
+					// "descuentos": "2",
+					// "total": "120"
 					$this->response($respuesta, REST_Controller::HTTP_OK);
 				}
 			} catch (\Throwable $th) {
