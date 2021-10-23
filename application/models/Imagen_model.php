@@ -23,7 +23,7 @@ class Imagen_model extends CI_Model
         $URL = $this->Conf_model->URL_SERVIDOR . "uploads/";
         $config['upload_path']   = './uploads/';
         $config['allowed_types'] = '*';
-        $config['max_size']      = 10000;
+        $config['max_size']      = 2000000;
         $config['file_name']     = date("HisYmd") . rand(1, 100) . "." . $formato;
         $this->load->library('upload', $config);
 
