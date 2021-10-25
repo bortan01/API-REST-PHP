@@ -15,7 +15,7 @@ class CotizarVehiculo_model extends CI_Model
     public $HoraDevolucion;
     public $descuentosCotizacion=0;
     public $totalCotizacion=0;
-    public $respuestaCotizacion="";
+    public $respuestaCotizacion="Sin respuesta";
     public $activo = TRUE;
     
     public function get_cotizar(array $data){
