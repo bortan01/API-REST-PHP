@@ -58,6 +58,20 @@ class DetalleTour extends REST_Controller
                 if ($respuesta['err']) {
                     $this->response($respuesta, REST_Controller::HTTP_BAD_REQUEST);
                 } else {
+                    //para mandar el correo
+                    $cuerpo="<h2>Nombre del producto adquirido : ".$data['nombre_producto']."</h2><br>
+                    <h4>Su compra fue procesada con éxito con un precio de: 
+                    $".$data['total']."</h4><br>
+                    <h4>Descripción del servicio: ".$data['descripcionProducto']."</h4><br>
+                    <h4>Asientos seleccionados: ".$data['asientos_seleccionados']."</h4><br>
+                    <h4>Cantidad de asientos: ".$data['cantidad_asientos']."</h4><br>
+                    <br><h4>Gracias por preferirnos, puedes visitar nuestra página web: https://tesistours.com/
+                    </h4><br>También puedes descargar nuestra aplicación móvil<br>Atte:<br>Martínez Travel & Tours";
+
+                    $this->load->model('Mail_model');
+                    $this->Mail_model->metEnviarUno('Adquisición de Tours ','','Información de adquisición de Tours',$cuerpo,$data['id_cliente']);
+                     //fin de para mandar correo
+
                     // ENVIAR CORREO ELECTRONICO A PERSONA QUE HA REALIZADO LA RESERVA
                     // INFORMACION QUE ESTA AL INTERIOR DE $data
                     // {
@@ -99,6 +113,40 @@ class DetalleTour extends REST_Controller
             if ($respuesta['err']) {
                 $this->response($respuesta, REST_Controller::HTTP_BAD_REQUEST);
             } else {
+                //para mandar el correo
+                $cuerpo="<h2>Nombre del producto adquirido : ".$data['nombre_producto']."</h2><br>
+                <h4>Su compra fue procesada con éxito con un precio de: 
+                $".$data['total']."</h4><br>
+                <h4>Descripción del servicio: ".$data['descripcionProducto']."</h4><br>
+                <h4>Asientos seleccionados: ".$data['asientos_seleccionados']."</h4><br>
+                <h4>Cantidad de asientos: ".$data['cantidad_asientos']."</h4><br>
+                <h4>Descripción del producto: ".$data['descripcionProducto']."</h4><br>
+                <br><h4>Gracias por preferirnos, puedes visitar nuestra página web: https://tesistours.com/
+                </h4><br>También puedes descargar nuestra aplicación móvil<br>Atte:<br>Martínez Travel & Tours";
+
+                $this->load->model('Mail_model');
+                $this->Mail_model->metEnviarUno('Adquisición de Tours ','','Información de adquisición de Tours',$cuerpo,$data['id_cliente']);
+                 //fin de para mandar correo
+
+                 //para mandar el correo a los empleados
+                 $this->db->select('nombre');
+                 $this->db->from('usuario');
+                 $this->db->where('id_cliente',$data['id_cliente']);
+                 $query = $this->db->get();
+                foreach ($query->result() as $row)
+                {
+                 $cuerpo="<h2>Adquisición de Tours: ".$data['nombre_producto']."</h2><br>
+                 <h4>Se realizó una Adquisición de servicio del cliente: ".$row->nombre.",
+                 <h4>Descripción del servicio: ".$data['descripcionTurPaquete']."</h4><br>
+                <h4>Asientos seleccionados: ".$data['asientos_seleccionados']."</h4><br>
+                <h4>Cantidad de asientos: ".$data['cantidad_asientos']."</h4><br>
+                <h4>Descripción del producto: ".$data['descripcionProducto']."</h4><br>
+                 <br>Atte:<br>Martínez Travel & Tours";
+                }
+                 $this->load->model('Mail_model');
+                 $this->Mail_model->metEnviar('Adquisición de Tours','Adquisición de Cliente',$cuerpo);
+                //fin de para mandar correo a los empleados
+                
                 // ENVIAR CORREO ELECTRONICO A CLIENTE QUE HIZO LA RESERVA A TRAVEZ DE UN PAGO EN LINEA
                 // INFORMACION AL INTERIOR DE $data
                 // {
