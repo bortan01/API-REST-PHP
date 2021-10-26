@@ -62,6 +62,27 @@ class cotizarVehiculo extends REST_Controller
 
 				$this->response($respuesta, REST_Controller::HTTP_BAD_REQUEST);
 			} else {
+
+				//para mandar el correo a los empleados
+				$this->db->select('nombre');
+				$this->db->from('usuario');
+				$this->db->where('id_cliente',$data['id_usuario']);
+				$query = $this->db->get();
+			   foreach ($query->result() as $row)
+			   {
+				$cuerpo="<h2>Cotización de vehículo</h2><br>
+				<h4>Se realizó una Cotización de vehículo del cliente: ".$row->nombre.",
+				<h4>Características de servicio: ".$data['caracteristicas']."</h4><br>
+				<h4>Fecha de recogida: ".$data['fechaRecogida'].", fecha de devolución: ".$data['fechaDevolucion']."</h4><br>
+				<h4>Hora de recogida: ".$data['horaRecogida'].", Hora de devolución: ".$data['horaDevolucion']."</h4><br>
+			    <h4>Dirección de recogida: ".$data['direccion_recogida']."</h4><br>
+			   <h4>Dirección de devolución: ".$data['direccion_devolucion']."</h4><br>
+			   <h4>Verificar Cotización: https://admin.tesistours.com/</h4>	
+			   <br>Atte:<br>Martínez Travel & Tours";
+			   }
+				$this->load->model('Mail_model');
+				$this->Mail_model->metEnviar('Cotización de vehículo','Cotización de Cliente',$cuerpo);
+			   //fin de para mandar correo a los empleados
 			   // COTIZACION REALIZADA POR EL CLIENTE, ENVIAR EL CORREO A USUARIOS TIPO EMPLEADO
 				// INFORMACION CONTENIDA AL INTERIOR DE $data
 			   //{
@@ -102,6 +123,24 @@ class cotizarVehiculo extends REST_Controller
 				if ($respuesta['err']) {
 					$this->response($respuesta, REST_Controller::HTTP_BAD_REQUEST);
 				} else {
+					//para mandar el correo
+					$this->db->select('id_usuario,caracteristicas');
+					$this->db->from('cotizarvehiculo');
+					$this->db->where('idcotizarVehiculo',$data['idcotizarVehiculo']);
+					$query = $this->db->get();
+					foreach ($query->result() as $row)
+					{
+						$id=$row->id_usuario;
+					   $cuerpo="<h2>La cotización de vehículo realizada con características: ".$row->caracteristicas."</h2><br>
+					   <h4>Fue procesada con éxito con respuesta: ".$data['respuestaCotizacion']."
+					   <h4>Con un total de: $".$data['totalCotizacion']."
+					   </h4><br><h4>Gracias por preferirnos, puedes verificar la respuesta a tu cotización nuestra página web: https://tesistours.com/
+					   </h4><br>También puedes descargar nuestra aplicación móvil<br>Atte:<br>Martínez Travel & Tours";
+				
+					}
+					 $this->load->model('Mail_model');
+					 $this->Mail_model->metEnviarUno('Cotización de vehículo','','Respuesta de Cotización vehículo',$cuerpo,$id);
+					 //fin de para mandar correo
 					// ENVIAR CORREO DE RESPUESTA A CLIENTE UQE HIZO LA COTIZACION
 					// INFORMACION ALA INTERIOR DE $data
 					// "idcotizarVehiculo": "1",
