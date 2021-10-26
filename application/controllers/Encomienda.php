@@ -238,4 +238,53 @@ class Encomienda extends REST_Controller
 			$this->response($respuesta, REST_Controller::HTTP_NOT_FOUND);
 		}
 	}
+
+	public function municipioEnvio_get()
+	{
+
+		$enco = $this->Encomienda_model->get_municipioEnvio();
+
+		if (isset($enco)) {
+			$respuesta = array(
+				'err' => FALSE,
+				'mensaje' => 'Registro Cargado correctamente',
+				'municipio_envio' => $enco
+
+			);
+			$this->response($respuesta, REST_Controller::HTTP_OK);
+		} else {
+			$respuesta = array(
+				'err' => TRUE,
+				'mensaje' => 'Error al cargar los datos.',
+				'Encomiendas' => []
+
+			);
+			$this->response($respuesta, REST_Controller::HTTP_NOT_FOUND);
+		}
+	}
+
+	public function municipioEnvio_put()
+	{
+
+		$data = $this->put();
+		$respuesta = $this->Encomienda_model->actualizarCostoEnvio($data);
+
+		if ($respuesta['err']) {
+			$respuesta = array(
+				'err' => FALSE,
+				'mensaje' => 'Registro Cargado correctamente',
+				'municipio_envio' => $respuesta
+
+			);
+			$this->response($respuesta, REST_Controller::HTTP_OK);
+		} else {
+			$respuesta = array(
+				'err' => TRUE,
+				'mensaje' => 'Error al cargar los datos.',
+				'municipio_envio' => null
+
+			);
+			$this->response($respuesta, REST_Controller::HTTP_NOT_FOUND);
+		}
+	}
 }

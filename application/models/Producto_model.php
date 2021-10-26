@@ -164,6 +164,13 @@ public function get_comision(){
     $query=$this->db->get();
     return $query->result();
 }
+//para la comision
+public function get_municipios(){
+	$this->db->select('*');
+	$this->db->from('municipio_envio');
+	$query=$this->db->get();
+	return $query->result();
+}
 
 
 public function set_datos($data_cruda){
@@ -215,4 +222,3 @@ public function set_datos($data_cruda){
  		return $respuesta;
  	}//fin de insertar
 }
-
