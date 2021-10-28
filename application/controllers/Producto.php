@@ -153,6 +153,7 @@ class Producto extends REST_Controller
 
 		$product = $this->Producto_model->get_producto();
 		$comision = $this->Producto_model->get_comision();
+		$municipios = $this->Producto_model->get_municipios();
 
 		if (isset($product)) {
 			//quitar campos que no quiero
@@ -162,7 +163,8 @@ class Producto extends REST_Controller
 				'err' => FALSE,
 				'mensaje' => 'Registro Cargado correctamente',
 				'product' => $product,
-				'comision' => $comision
+				'comision' => $comision,
+				'municipios' => $municipios
 
 			);
 			$this->response($respuesta);
