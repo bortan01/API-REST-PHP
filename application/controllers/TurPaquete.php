@@ -21,6 +21,8 @@ class TurPaquete extends REST_Controller
         $this->load->model('Detalle_tour_model');
         $this->load->model('ReservaTour_model');
         $this->load->model('Itinerario_model');
+        $this->load->model('Conf_model');
+        $this->load->model('Mail_model');
     }
     public function save_post()
     {
@@ -113,10 +115,9 @@ class TurPaquete extends REST_Controller
              $cuerpo="<h2>Cotización de paquete: ".$data['nombreTours']."</h2><br>
              <h4>Tipo de paquete: ".$data['tipo']." fue procesada con éxito con un precio de: $".$data['precio'].".</h4><br>
               <h4>Descripción del paquete: ".$data['descripcion_tur']."</h4><br>
-             <h4>Gracias por preferirnos, visita nuestra página web: https://tesistours.com/
+             <h4>Gracias por preferirnos, visita nuestra página web: ".$this->Conf_model->PAGINA."
             </h4><br>También puedes descargar nuestra aplicación móvil<br>Atte:<br>Martínez Travel & Tours";
 
-             $this->load->model('Mail_model');
              $this->Mail_model->metEnviarUno('Cotización de paquete','','Cotización paquete privado',$cuerpo,$data['id_cliente']);
              //fin de para mandar correo
 
@@ -299,9 +300,11 @@ class TurPaquete extends REST_Controller
              $cuerpo="<h2>Cotización de paquete: ".$data['peticion']."</h2><br>
             <h4>Se realizó una cotización de un paquete del cliente: ".$row->nombre.", 
             pendiente de respuesta
-            </h4><br>Fecha de petición: ".$data['fechaPeticion']."<br>Atte:<br>Martínez Travel & Tours";
+            </h4><br>Fecha de petición: ".$data['fechaPeticion']."<br>
+			<h4>Verificar Cotización: ".$this->Conf_model->SISTEMA."</h4>	
+            <br>Atte:<br>Martínez Travel & Tours";
             }
-             $this->load->model('Mail_model');
+             
              $this->Mail_model->metEnviar('Cotización de paquete','Cotización de Cliente',$cuerpo);
              //fin de para mandar correo
             // COTIZACION REALIZADA POR UN CLIENTE , ENVIAR CORREO A USUARIOS TIPO EMPLEADO
@@ -339,11 +342,11 @@ class TurPaquete extends REST_Controller
                  $id=$row->id_cliente;
                 $cuerpo="<h2>La cotización de paquete realizada: ".$row->peticion."</h2><br>
                 <h4>Fue procesada con éxito con respuesta :".$data['respuesta']."
-                </h4><br><h4>Gracias por preferirnos, puedes verificar la respuesta a tu cotización nuestra página web: https://tesistours.com/
+                </h4><br><h4>Gracias por preferirnos, puedes verificar la respuesta a tu cotización nuestra página web: ".$this->Conf_model->PAGINA."
                 </h4><br>También puedes descargar nuestra aplicación móvil<br>Atte:<br>Martínez Travel & Tours";
          
              }
-              $this->load->model('Mail_model');
+            
               $this->Mail_model->metEnviarUno('Cotización de paquete','','Respuesta de Cotización paquete',$cuerpo,$id);
               //fin de para mandar correo
             // enviar correo a cliente que hizo la cotizacion

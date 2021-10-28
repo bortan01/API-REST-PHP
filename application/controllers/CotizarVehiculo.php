@@ -18,6 +18,8 @@ class cotizarVehiculo extends REST_Controller
 		$this->load->database();
 		$this->load->model('CotizarVehiculo_model');
 		$this->load->model('Conf_model');
+		$this->load->model('Mail_model');
+
 	}
 	public function cotizar_get()
 	{
@@ -81,7 +83,7 @@ class cotizarVehiculo extends REST_Controller
 			   <h4>Verificar Cotización: ".$this->Conf_model->SISTEMA."</h4>	
 			   <br>Atte:<br>Martínez Travel & Tours";
 			   }
-				$this->load->model('Mail_model');
+				
 				$this->Mail_model->metEnviar('Cotización de vehículo','Cotización de Cliente',$cuerpo);
 			   //fin de para mandar correo a los empleados
 			   // COTIZACION REALIZADA POR EL CLIENTE, ENVIAR EL CORREO A USUARIOS TIPO EMPLEADO
@@ -139,7 +141,7 @@ class cotizarVehiculo extends REST_Controller
 					   </h4><br>También puedes descargar nuestra aplicación móvil<br>Atte:<br>Martínez Travel & Tours";
 				
 					}
-					 $this->load->model('Mail_model');
+					
 					 $this->Mail_model->metEnviarUno('Cotización de vehículo','','Respuesta de Cotización vehículo',$cuerpo,$id);
 					 //fin de para mandar correo
 					// ENVIAR CORREO DE RESPUESTA A CLIENTE UQE HIZO LA COTIZACION
