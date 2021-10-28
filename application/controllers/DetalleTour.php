@@ -20,6 +20,8 @@ class DetalleTour extends REST_Controller
         $this->load->model("ReservaTour_model");
         $this->load->model("Tours_paquete_model");
         $this->load->model('Wompi_model');
+        $this->load->model('Conf_model');
+        $this->load->model('Mail_model');
     }
 
     public function saveByAgency_post()
@@ -65,10 +67,9 @@ class DetalleTour extends REST_Controller
                     <h4>Descripción del servicio: ".$data['descripcionProducto']."</h4><br>
                     <h4>Asientos seleccionados: ".$data['asientos_seleccionados']."</h4><br>
                     <h4>Cantidad de asientos: ".$data['cantidad_asientos']."</h4><br>
-                    <br><h4>Gracias por preferirnos, puedes visitar nuestra página web: https://tesistours.com/
+                    <br><h4>Gracias por preferirnos, puedes visitar nuestra página web: ".$this->Conf_model->PAGINA."
                     </h4><br>También puedes descargar nuestra aplicación móvil<br>Atte:<br>Martínez Travel & Tours";
 
-                    $this->load->model('Mail_model');
                     $this->Mail_model->metEnviarUno('Adquisición de Tours ','','Información de adquisición de Tours',$cuerpo,$data['id_cliente']);
                      //fin de para mandar correo
 
@@ -121,10 +122,9 @@ class DetalleTour extends REST_Controller
                 <h4>Asientos seleccionados: ".$data['asientos_seleccionados']."</h4><br>
                 <h4>Cantidad de asientos: ".$data['cantidad_asientos']."</h4><br>
                 <h4>Descripción del producto: ".$data['descripcionProducto']."</h4><br>
-                <br><h4>Gracias por preferirnos, puedes visitar nuestra página web: https://tesistours.com/
+                <br><h4>Gracias por preferirnos, puedes visitar nuestra página web: ".$this->Conf_model->PAGINA."
                 </h4><br>También puedes descargar nuestra aplicación móvil<br>Atte:<br>Martínez Travel & Tours";
 
-                $this->load->model('Mail_model');
                 $this->Mail_model->metEnviarUno('Adquisición de Tours ','','Información de adquisición de Tours',$cuerpo,$data['id_cliente']);
                  //fin de para mandar correo
 
@@ -141,9 +141,10 @@ class DetalleTour extends REST_Controller
                 <h4>Asientos seleccionados: ".$data['asientos_seleccionados']."</h4><br>
                 <h4>Cantidad de asientos: ".$data['cantidad_asientos']."</h4><br>
                 <h4>Descripción del producto: ".$data['descripcionProducto']."</h4><br>
+                <h4>Verificar Adquisición: ".$this->Conf_model->SISTEMA."</h4>
                  <br>Atte:<br>Martínez Travel & Tours";
                 }
-                 $this->load->model('Mail_model');
+                
                  $this->Mail_model->metEnviar('Adquisición de Tours','Adquisición de Cliente',$cuerpo);
                 //fin de para mandar correo a los empleados
                 

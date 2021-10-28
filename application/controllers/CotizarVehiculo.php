@@ -17,6 +17,7 @@ class cotizarVehiculo extends REST_Controller
 		parent::__construct();
 		$this->load->database();
 		$this->load->model('CotizarVehiculo_model');
+		$this->load->model('Conf_model');
 	}
 	public function cotizar_get()
 	{
@@ -77,7 +78,7 @@ class cotizarVehiculo extends REST_Controller
 				<h4>Hora de recogida: ".$data['horaRecogida'].", Hora de devolución: ".$data['horaDevolucion']."</h4><br>
 			    <h4>Dirección de recogida: ".$data['direccion_recogida']."</h4><br>
 			   <h4>Dirección de devolución: ".$data['direccion_devolucion']."</h4><br>
-			   <h4>Verificar Cotización: https://admin.tesistours.com/</h4>	
+			   <h4>Verificar Cotización: ".$this->Conf_model->SISTEMA."</h4>	
 			   <br>Atte:<br>Martínez Travel & Tours";
 			   }
 				$this->load->model('Mail_model');
@@ -134,7 +135,7 @@ class cotizarVehiculo extends REST_Controller
 					   $cuerpo="<h2>La cotización de vehículo realizada con características: ".$row->caracteristicas."</h2><br>
 					   <h4>Fue procesada con éxito con respuesta: ".$data['respuestaCotizacion']."
 					   <h4>Con un total de: $".$data['totalCotizacion']."
-					   </h4><br><h4>Gracias por preferirnos, puedes verificar la respuesta a tu cotización nuestra página web: https://tesistours.com/
+					   </h4><br><h4>Gracias por preferirnos, puedes verificar la respuesta a tu cotización nuestra página web: ".$this->Conf_model->PAGINA."
 					   </h4><br>También puedes descargar nuestra aplicación móvil<br>Atte:<br>Martínez Travel & Tours";
 				
 					}
