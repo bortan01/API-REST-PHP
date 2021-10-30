@@ -73,20 +73,7 @@ class cotizarVuelo_model extends CI_Model
                );
                return $respuesta;
                }
-              // print_r($data);
-               //die();
-               //para mandar el correo
-               $cuerpo="<h2>Realizó una cotización de vuelo con salida de: ".$this->ciudad_partida."</h2><br>
-               <h4>con llegada a: ".$this->ciudad_llegada." con fecha de partida de: 
-               ".$this->fechaPartida." con fecha probable de llegada: ".$this->fechaLlegada."
-               </h4><br><h4>Gracias por preferirnos ".$data['usuario'].", daremos pronta respuesta a tu cotización
-               </h4><br>Visita nuestra página web: https://tesistours.com/<br>También puedes descargar nuestra aplicación móvil<br>Atte:<br>Martínez Travel & Tours";
-       
-               $this->load->model('Mail_model');
-               $this->Mail_model->metEnviarUno('Cotización de vuelo',$data['usuario'],'Cotización',$cuerpo,$this->id_cliente);
-               //fin de para mandar correo
-
-                //insertar el registro
+            //insertar el registro
                $hecho=$this->db->insert('cotizacion_vuelo',$this);
    
                if ($hecho) {
@@ -119,17 +106,6 @@ class cotizarVuelo_model extends CI_Model
         
         //print_r($data);
        // die();
-
-       //para mandar el correo
-       $cuerpo="<h2>La cotización realizada con salida de: ".$data['ciudad_partida']."</h2><br>
-       <h4>con llegada a: ".$data['ciudad_llegada']." fue procesada con éxito con un precio de: 
-       $".$data['total']." con un descuento de: $".$data['descuentos']."
-       </h4><br><h4>Gracias por preferirnos, puedes verificar la respuesta a tu cotización nuestra página web: https://tesistours.com/
-       </h4><br>También puedes descargar nuestra aplicación móvil<br>Atte:<br>Martínez Travel & Tours";
-
-       $this->load->model('Mail_model');
-       $this->Mail_model->metEnviarUno('Cotización de vuelo',$data['usuario'],'Respuesta a Cotización',$cuerpo,$data['id_cliente']);
-       //fin de para mandar correo
 
        //actualizar
        $this->db->where('id_cotizacion', $campos["id_cotizacion"]);

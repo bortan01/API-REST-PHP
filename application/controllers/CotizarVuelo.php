@@ -17,6 +17,8 @@ class cotizarVuelo extends REST_Controller
 		parent::__construct();
 		$this->load->database();
 		$this->load->model('cotizarVuelo_model');
+		$this->load->model('Mail_model');
+		$this->load->model('Conf_model');
 	}
 	public function cotizar_get()
 	{
@@ -63,7 +65,25 @@ class cotizarVuelo extends REST_Controller
 
 				$this->response($respuesta, REST_Controller::HTTP_BAD_REQUEST);
 			} else {
-						// enviar correo electronico a usuarios tipo empleado
+
+				$this->db->select('nombre');
+				$this->db->from('usuario');
+				$this->db->where('id_cliente',$data['id_cliente']);
+				$query = $this->db->get();
+				foreach ($query->result() as $row)
+				{
+				 $cuerpo="<h2><h2>La cotización realizada con salida de: " . $data['ciudad_partida'] . "</h2><br>
+				<h4>con llegada a: " . $data['ciudad_llegada'] . " fue procesada con éxito por el cliente : ".$row->nombre."
+				con un precio de: $" . $data['total'] . " con un descuento de: $" . $data['descuentos'] ." pendiente de respuesta</h4>
+				<h4>Verificar Cotización: ".$this->Conf_model->SISTEMA."</h4>	
+				<br>Atte:<br>Martínez Travel & Tours";
+				}
+				 
+				 $this->Mail_model->metEnviar('Cotización de vuelo','Cotización de Cliente',$cuerpo);
+
+				//fin de para mandar correo
+
+				// enviar correo electronico a usuarios tipo empleado
 				// informacion al interiror de $data 
 				// {
 				// 	"id_cliente": "2036220712",
