@@ -71,8 +71,8 @@ class TurPaquete extends REST_Controller
                 //     "start": "2020-11-10",
                 //     "end": "2020-11-12"
                 // }
-                
-                
+
+
                 $this->response($respuesta, REST_Controller::HTTP_OK);
             }
         } else {
@@ -110,16 +110,16 @@ class TurPaquete extends REST_Controller
                     $this->Itinerario_model->guardar($itinerario, $respuesta['id']);
                 }
 
-                
-            //para mandar el correo
-             $cuerpo="<h2>Cotización de paquete: ".$data['nombreTours']."</h2><br>
-             <h4>Tipo de paquete: ".$data['tipo']." fue procesada con éxito con un precio de: $".$data['precio'].".</h4><br>
-              <h4>Descripción del paquete: ".$data['descripcion_tur']."</h4><br>
-             <h4>Gracias por preferirnos, visita nuestra página web: ".$this->Conf_model->PAGINA."
+
+                //para mandar el correo
+                $cuerpo = "<h2>Cotización de paquete: " . $data['nombreTours'] . "</h2><br>
+             <h4>Tipo de paquete: " . $data['tipo'] . " fue procesada con éxito con un precio de: $" . $data['precio'] . ".</h4><br>
+              <h4>Descripción del paquete: " . $data['descripcion_tur'] . "</h4><br>
+             <h4>Gracias por preferirnos, visita nuestra página web: " . $this->Conf_model->PAGINA . "
             </h4><br>También puedes descargar nuestra aplicación móvil<br>Atte:<br>Martínez Travel & Tours";
 
-             $this->Mail_model->metEnviarUno('Cotización de paquete','','Cotización paquete privado',$cuerpo,$data['id_cliente']);
-             //fin de para mandar correo
+                $this->Mail_model->metEnviarUno('Cotización de paquete', '', 'Cotización paquete privado', $cuerpo, $data['id_cliente']);
+                //fin de para mandar correo
 
 
                 // ENVIAR CORREO DE CONFIRMACION SOLO AL CLIENTE QUE HIZO LA RESERVA
@@ -290,32 +290,31 @@ class TurPaquete extends REST_Controller
             $this->response($respuesta, REST_Controller::HTTP_BAD_REQUEST);
         } else {
 
-             //para mandar el correo
+            //para mandar el correo
             $this->db->select('nombre');
-		    $this->db->from('usuario');
-		    $this->db->where('id_cliente',$data['id_cliente']);
-		    $query = $this->db->get();
-            foreach ($query->result() as $row)
-            {
-             $cuerpo="<h2>Cotización de paquete: ".$data['peticion']."</h2><br>
-            <h4>Se realizó una cotización de un paquete del cliente: ".$row->nombre.", 
+            $this->db->from('usuario');
+            $this->db->where('id_cliente', $data['id_cliente']);
+            $query = $this->db->get();
+            foreach ($query->result() as $row) {
+                $cuerpo = "<h2>Cotización de paquete: " . $data['peticion'] . "</h2><br>
+            <h4>Se realizó una cotización de un paquete del cliente: " . $row->nombre . ", 
             pendiente de respuesta
-            </h4><br>Fecha de petición: ".$data['fechaPeticion']."<br>
-			<h4>Verificar Cotización: ".$this->Conf_model->SISTEMA."</h4>	
+            </h4><br>Fecha de petición: " . $data['fechaPeticion'] . "<br>
+			<h4>Verificar Cotización: " . $this->Conf_model->SISTEMA . "</h4>	
             <br>Atte:<br>Martínez Travel & Tours";
             }
-             
-             $this->Mail_model->metEnviar('Cotización de paquete','Cotización de Cliente',$cuerpo);
-             //fin de para mandar correo
+
+            $this->Mail_model->metEnviar('Cotización de paquete', 'Cotización de Cliente', $cuerpo);
+            //fin de para mandar correo
             // COTIZACION REALIZADA POR UN CLIENTE , ENVIAR CORREO A USUARIOS TIPO EMPLEADO
             // INFORMACOPM AL INTERIOR DE $data
-            
+
             // "id_cliente": "2023590712",
             // "peticion": "un viaje a cancun con hotel incluido",
             // "fechaPeticion": "2021-05-12",
             // "visto": "0"
-         
-            
+
+
             $this->response($respuesta, REST_Controller::HTTP_OK);
         }
     }
@@ -332,23 +331,21 @@ class TurPaquete extends REST_Controller
         if ($respuesta['err']) {
             $this->response($respuesta, REST_Controller::HTTP_BAD_REQUEST);
         } else {
-             //para mandar el correo
-             $this->db->select('id_cliente,peticion');
-             $this->db->from('cotizar_tourpaquete');
-             $this->db->where('idCotizar',$data['idCotizar']);
-             $query = $this->db->get();
-             foreach ($query->result() as $row)
-             {
-                 $id=$row->id_cliente;
-                $cuerpo="<h2>La cotización de paquete realizada: ".$row->peticion."</h2><br>
-                <h4>Fue procesada con éxito con respuesta :".$data['respuesta']."
-                </h4><br><h4>Gracias por preferirnos, puedes verificar la respuesta a tu cotización nuestra página web: ".$this->Conf_model->PAGINA."
+            //para mandar el correo
+            $this->db->select('id_cliente,peticion');
+            $this->db->from('cotizar_tourpaquete');
+            $this->db->where('idCotizar', $data['idCotizar']);
+            $query = $this->db->get();
+            foreach ($query->result() as $row) {
+                $id = $row->id_cliente;
+                $cuerpo = "<h2>La cotización de paquete realizada: " . $row->peticion . "</h2><br>
+                <h4>Fue procesada con éxito con respuesta :" . $data['respuesta'] . "
+                </h4><br><h4>Gracias por preferirnos, puedes verificar la respuesta a tu cotización nuestra página web: " . $this->Conf_model->PAGINA . "
                 </h4><br>También puedes descargar nuestra aplicación móvil<br>Atte:<br>Martínez Travel & Tours";
-         
-             }
-            
-              $this->Mail_model->metEnviarUno('Cotización de paquete','','Respuesta de Cotización paquete',$cuerpo,$id);
-              //fin de para mandar correo
+            }
+
+            $this->Mail_model->metEnviarUno('Cotización de paquete', '', 'Respuesta de Cotización paquete', $cuerpo, $id);
+            //fin de para mandar correo
             // enviar correo a cliente que hizo la cotizacion
             // informacion contenida en $data
             //{
@@ -356,7 +353,7 @@ class TurPaquete extends REST_Controller
             //    "respuesta": "si tenemos su tour yeah!!!",
             //    "visto": "1"
             //}
-            
+
             $this->response($respuesta, REST_Controller::HTTP_OK);
         }
     }

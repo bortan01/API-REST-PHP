@@ -104,7 +104,7 @@ class Tours_paquete_model extends CI_Model
                 'id'           => $identificador,
                 'turPaquete'   => $turPaquete,
                 'data'         => $dataDetalle,
-                'id_cliente'   => $id_cliente 
+                'id_cliente'   => $id_cliente
             );
             return $respuesta;
         }
@@ -784,16 +784,24 @@ class Tours_paquete_model extends CI_Model
         $this->db->select('*');
         $nombreTabla = 'cotizar_tourpaquete';
         $this->db->select('DATE_FORMAT(cotizar_tourpaquete.fechaPeticion,"%d-%m-%Y") as fechaPeticion');
-        
+
         $this->db->where('id_cliente', $campos["id_cliente"]);
-        
+
         $query = $this->db->get($nombreTabla);
         $cotizaciones = $query->result();
+
         if ($cotizaciones) {
-            ///LOGRO ACTUALIZAR 
+            ///HAY  COTIZACIONES
             $respuesta = array(
                 'err'          => FALSE,
                 'cotizaciones' => $cotizaciones
+            );
+            return $respuesta;
+        } else {
+            ///NO COTIZACIONES
+            $respuesta = array(
+                'err'          => FALSE,
+                'cotizaciones' => []
             );
             return $respuesta;
         }
@@ -806,6 +814,8 @@ class Tours_paquete_model extends CI_Model
                            id_tours,
                            id_detalle,
                            nombre,
+                           celular,
+                           correo,
                            nombreTours,
                            asientos_seleccionados,
                            label_asiento,
