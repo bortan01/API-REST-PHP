@@ -73,8 +73,7 @@ class cotizarVuelo extends REST_Controller
 				foreach ($query->result() as $row)
 				{
 				 $cuerpo="<h2><h2>La cotización realizada con salida de: " . $data['ciudad_partida'] . "</h2><br>
-				<h4>con llegada a: " . $data['ciudad_llegada'] . " fue procesada con éxito por el cliente : ".$row->nombre."
-				con un precio de: $" . $data['total'] . " con un descuento de: $" . $data['descuentos'] ." pendiente de respuesta</h4>
+				<h4>con llegada a: " . $data['ciudad_llegada'] . " fue procesada con éxito por el cliente : ".$row->nombre.", pendiente de respuesta</h4>
 				<h4>Verificar Cotización: ".$this->Conf_model->SISTEMA."</h4>	
 				<br>Atte:<br>Martínez Travel & Tours";
 				}
@@ -130,6 +129,22 @@ class cotizarVuelo extends REST_Controller
 				if ($respuesta['err']) {
 					$this->response($respuesta, REST_Controller::HTTP_BAD_REQUEST);
 				} else {
+					 //para mandar el correo
+					 $this->db->select('*');
+					 $this->db->from('cotizacion_vuelo');
+					 $this->db->where('id_cotizacion',$data['id_cotizacion']);
+					 $query = $this->db->get();
+					 foreach ($query->result() as $row)
+					 {
+						 $id=$row->id_cliente;
+						 $cuerpo="<h2><h2>La cotización realizada con salida de: " . $row->ciudad_partida. "</h2><br>
+						 <h4>con llegada a: " . $row->ciudad_llegada . " fue procesada con éxito.
+						 Con un precio de: $" . $data['total'] . " con un descuento de: $" . $data['descuentos'] ."</h4>
+						 </h4><br><h4>Gracias por preferirnos, puedes verificar la respuesta a tu cotización nuestra página web: ".$this->Conf_model->PAGINA."
+						 </h4><br>También puedes descargar nuestra aplicación móvil<br>Atte:<br>Martínez Travel & Tours";
+					 }
+					
+					  $this->Mail_model->metEnviarUno('Cotización de Vuelo','','Respuesta Cotización de Vuelo',$cuerpo,$id);
 					// ENVIAR CORREO A CLIENTE QUE HIZO LA COTIZACION
 					// INFORMACION QUE VIENE EN $data 
 					// "id_cotizacion": "15",
