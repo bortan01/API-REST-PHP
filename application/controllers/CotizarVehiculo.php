@@ -65,7 +65,11 @@ class cotizarVehiculo extends REST_Controller
 
 				$this->response($respuesta, REST_Controller::HTTP_BAD_REQUEST);
 			} else {
-
+				//para formaterar las horas
+				$partes     = explode("-", $data["fechaRecogida"]);
+				$recogida   = $partes[2] . '-' . $partes[1] . '-' . $partes[0];
+				$part       = explode("-", $data["fechaRecogida"]);
+				$devolucion = $part[2] . '-' . $part[1] . '-' . $part[0];
 				//para mandar el correo a los empleados
 				$this->db->select('nombre');
 				$this->db->from('usuario');
@@ -76,7 +80,7 @@ class cotizarVehiculo extends REST_Controller
 				$cuerpo="<h2>Cotización de vehículo</h2><br>
 				<h4>Se realizó una Cotización de vehículo del cliente: ".$row->nombre.",
 				<h4>Características de servicio: ".$data['caracteristicas']."</h4><br>
-				<h4>Fecha de recogida: ".$data['fechaRecogida'].", fecha de devolución: ".$data['fechaDevolucion']."</h4><br>
+				<h4>Fecha de recogida: ".$recogida.", fecha de devolución: ".$devolucion."</h4><br>
 				<h4>Hora de recogida: ".$data['horaRecogida'].", Hora de devolución: ".$data['horaDevolucion']."</h4><br>
 			    <h4>Dirección de recogida: ".$data['direccion_recogida']."</h4><br>
 			   <h4>Dirección de devolución: ".$data['direccion_devolucion']."</h4><br>

@@ -290,16 +290,20 @@ class TurPaquete extends REST_Controller
             $this->response($respuesta, REST_Controller::HTTP_BAD_REQUEST);
         } else {
 
+            $partes = explode("-", $data["fechaPeticion"]);
+
+			$fechaConvertida = $partes[2] . '-' . $partes[1] . '-' . $partes[0];
+
             //para mandar el correo
             $this->db->select('nombre');
             $this->db->from('usuario');
             $this->db->where('id_cliente', $data['id_cliente']);
             $query = $this->db->get();
             foreach ($query->result() as $row) {
-                $cuerpo = "<h2>Cotización de paquete: " . $data['peticion'] . "</h2><br>
+            $cuerpo = "<h2>Cotización de paquete: " . $data['peticion'] . "</h2><br>
             <h4>Se realizó una cotización de un paquete del cliente: " . $row->nombre . ", 
             pendiente de respuesta
-            </h4><br>Fecha de petición: " . $data['fechaPeticion'] . "<br>
+            </h4><br>Fecha de petición: " . $fechaConvertida . "<br>
 			<h4>Verificar Cotización: " . $this->Conf_model->SISTEMA . "</h4>	
             <br>Atte:<br>Martínez Travel & Tours";
             }
