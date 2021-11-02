@@ -8,7 +8,7 @@ class Notification_model extends CI_Model
       $notificationsVuelo = $this->getCotizacionesVuelos();
       $cotizacionesPaquetes = $this->getCotizacionesPaquetes();
       $ultimasReservas = $this->getUltimasReservas();
-      $Allnotifications = $notificationsVehiculo +$notificationsVuelo+$cotizacionesPaquetes+$ultimasReservas;
+      $Allnotifications = $notificationsVehiculo + $notificationsVuelo + $cotizacionesPaquetes + $ultimasReservas;
 
       $data = array(
          'notificationsVehiculo' => $notificationsVehiculo,
@@ -68,8 +68,10 @@ class Notification_model extends CI_Model
 
    public function getUltimasReservas()
    {
-      $this->db->select('id_cliente,
+      $this->db->select('
+                           id_cliente,
                            id_tours,
+                           id_reserva,
                            id_detalle,
                            nombre,
                            nombreTours,
@@ -93,13 +95,74 @@ class Notification_model extends CI_Model
       $this->db->join('tours_paquete', 'id_tours');
       $this->db->join('reserva_tour', 'id_detalle');
       $this->db->where('resultadoTransaccion', 'ExitosaAprobada');
-      $this->db->where('
-               `fecha_reserva` > (
-                            SELECT `notificationTours` FROM `usuario` where `id_cliente`= 2019200712)
-               ', NULL, FALSE);
+      $this->db->where('visto', '0');
+
       // $this->db->where($parametros);
       $ultimasReservas =  $this->db->count_all_results();
       return $ultimasReservas;
+   }
+    public function getInfoUltimasReservas()
+   {
+      // $tipos =["Tour Nacional","Tour Internacional"];
+      $this->db->select('
+                           id_cliente,
+                           id_tours,
+                           id_reserva,
+                           id_detalle,
+                           nombre,
+                           nombreTours,
+                           asientos_seleccionados,
+                           label_asiento,
+                           cupos_originales,
+                           cantidad_asientos,
+                           start,
+                           end,
+                           requisitos,
+                           fecha_reserva,
+                           formaPagoUtilizada,
+                           monto,
+                           descripcionProducto,
+                           resultadoTransaccion,
+                           chequeo,
+                           tipo');
+
+      $this->db->from('usuario');
+      $this->db->join('detalle_tour', 'id_cliente');
+      $this->db->join('tours_paquete', 'id_tours');
+      $this->db->join('reserva_tour', 'id_detalle');
+      $this->db->where('resultadoTransaccion', 'ExitosaAprobada');
+      $this->db->where('visto', '0');
+      // $this->db->where_in('tipo', $tipos);
+
+      $query = $this->db->get();
+      return  $query->result();
+   }
+
+   public function actualizarReserva($data)
+   {
+
+      $data['visto'] =1 ;
+      $this->db->where('id_reserva', $data["id_reserva"]);
+      $hecho = $this->db->update('reserva_tour', $data);
+      if ($hecho) {
+         ///LOGRO ACTUALIZAR 
+         $respuesta = array(
+            'err'     => FALSE,
+            'mensaje' => 'Registro Actualizado Exitosamente',
+            'data' => $data
+
+         );
+         return $respuesta;
+      } else {
+         //NO GUARDO
+         $respuesta = array(
+            'err' => TRUE,
+            'mensaje' => 'Error al actualizar ', $this->db->error_message(),
+            'error_number' => $this->db->error_number(),
+            'usuario' => null
+         );
+         return $respuesta;
+      }
    }
    public function getFechaNotificacion($id_cliente)
    {

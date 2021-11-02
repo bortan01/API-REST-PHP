@@ -288,9 +288,6 @@ class Usuario extends REST_Controller
             $this->response($respuesta, REST_Controller::HTTP_BAD_REQUEST);
         }
     }
-
-
-
     public function datosUsuario_get()
     {
 
