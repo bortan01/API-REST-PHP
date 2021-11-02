@@ -244,31 +244,31 @@ class Cita_model extends CI_Model
 		}
 	} //function
 
-	public function modificar_cobro ( $data)
+	public function modificar_cobro($data)
 	{
 		$this->db->set($data);
-			$this->db->where('id_cita', $data["id_cita"]);
-			$hecho = $this->db->update('cita');
-			if ($hecho) {
-				#borrado
-				$respuesta = array(
-					'err' => FALSE,
-					'mensaje' => 'Registro actualizado correctamente',
-					'cita' => $data
-				);
-			} else {
-				//error
-				$respuesta = array(
-					'err' => TRUE,
-					'mensaje' => 'Error al actualizar',
-					'error' => $this->db->_error_message(),
-					'error_num' => $this->db->_error_number()
-				);
-			}
-			return $respuesta;
+		$this->db->where('id_cita', $data["id_cita"]);
+		$hecho = $this->db->update('cita');
+		if ($hecho) {
+			#borrado
+			$respuesta = array(
+				'err' => FALSE,
+				'mensaje' => 'Registro actualizado correctamente',
+				'cita' => $data
+			);
+		} else {
+			//error
+			$respuesta = array(
+				'err' => TRUE,
+				'mensaje' => 'Error al actualizar',
+				'error' => $this->db->_error_message(),
+				'error_num' => $this->db->_error_number()
+			);
+		}
+		return $respuesta;
 	}
 
-	public function insertCita($id_cliente, $motivo, $color, $textColor, $start, $fecha, $hora,$dia)
+	public function insertCita($id_cliente, $motivo, $color, $textColor, $start, $fecha, $hora, $dia)
 	{
 		//insertar el registro
 		$horas_validas = array(
@@ -279,130 +279,281 @@ class Cita_model extends CI_Model
 		);
 		$el_pollo = array(0 => '12:00 PM');
 
-		if ($dia=='sabado') {//$dia=='sabado'
-			if($hora=='08:00' || $hora=='09:00' || $hora=='10:00'|| $hora=='11:00'){
-				//codigo para insertar inicio
-				# si esta dentro de las horas validas va ha pasar por el desorden de abajo
-			$query = $this->db->where(array('fecha' => $fecha, 'id_cliente' => $id_cliente));
-			$query = $this->db->get('cita');
-			$cliente_el_mismo_dia = $query->row(); //si es el mismo cliente para el mismo dia
+		if ($dia == 'sabado') { //$dia=='sabado'
+			$actual = date("H:i");
+			$hora1 =  strtotime($actual);
+			$hora2 =  strtotime($hora);
+			$fechaActual = date("Y-m-d");
+			$fecha1 = strtotime($fechaActual);
+			$fecha2 = strtotime($fecha);
 
-			if (!isset($cliente_el_mismo_dia)) {
-				# -------
-				$query = $this->db->where(array('fecha' => $fecha, 'hora' => $hora));
-				$query = $this->db->get('cita');
-				$cita = $query->row(); //si ya esta esa hora con esa fecha
+			if ($fecha2 > $fecha1) {
+				//si es mayor no hay que validar las horas en el pasado
+				//si es menor o igual si
+				if ($hora == '08:00' || $hora == '09:00' || $hora == '10:00' || $hora == '11:00') {
+					//codigo para insertar inicio
+					# si esta dentro de las horas validas va ha pasar por el desorden de abajo
+					$query = $this->db->where(array('fecha' => $fecha, 'id_cliente' => $id_cliente));
+					$query = $this->db->get('cita');
+					$cliente_el_mismo_dia = $query->row(); //si es el mismo cliente para el mismo dia
 
-				if (!isset($cita)) {
+					if (!isset($cliente_el_mismo_dia)) {
+						# -------
+						$query = $this->db->where(array('fecha' => $fecha, 'hora' => $hora));
+						$query = $this->db->get('cita');
+						$cita = $query->row(); //si ya esta esa hora con esa fecha
+
+						if (!isset($cita)) {
 
 
-					$this->id_cita = $this->db->insert_id();
-					$this->id_cliente = $id_cliente;
+							$this->id_cita = $this->db->insert_id();
+							$this->id_cliente = $id_cliente;
 
-					$this->title = $motivo;
-					$this->textColor = "#FFFFFF";
-					$this->start = $start;
-					$this->fecha = $fecha;
-					$this->hora = $hora;
-
-
-
-					//ANTES DE INSERTAR NECESITO ESTE ID  ESTO YA VEREMOS
-					//vamos a extraer el id de la cita con que se registro la primera vez
-					$this->db->select('id_cita,fecha');
-					$this->db->from('cita');
-					$this->db->where('id_cliente', $id_cliente);
-					$this->db->order_by('id_cita', 'DESC');
-					$id_citaExistente = $this->db->get();
-					$row = $id_citaExistente->row('id_cita');
-					////************************
+							$this->title = $motivo;
+							$this->textColor = "#FFFFFF";
+							$this->start = $start;
+							$this->fecha = $fecha;
+							$this->hora = $hora;
 
 
 
-					if ($row == null) {
-						$this->color = "#007bff";
-						$this->asistencia = 'Primera vez';
-						$hecho = $this->db->insert('cita', $this);
-						if ($hecho) {
-							#insertado
-							$respuesta = array(
-								'err' => FALSE,
-								'mensaje' => 'Registro insertado correctamente',
-								'cita_id' => $this->db->insert_id(),
-								'ver' => $this,
-								'row' => $row
-							);
+							//ANTES DE INSERTAR NECESITO ESTE ID  ESTO YA VEREMOS
+							//vamos a extraer el id de la cita con que se registro la primera vez
+							$this->db->select('id_cita,fecha');
+							$this->db->from('cita');
+							$this->db->where('id_cliente', $id_cliente);
+							$this->db->order_by('id_cita', 'DESC');
+							$id_citaExistente = $this->db->get();
+							$row = $id_citaExistente->row('id_cita');
+							////************************
+
+
+
+							if ($row == null) {
+								$this->color = "#007bff";
+								$this->asistencia = 'Primera vez';
+								$hecho = $this->db->insert('cita', $this);
+								if ($hecho) {
+									#insertado
+									$respuesta = array(
+										'err' => FALSE,
+										'mensaje' => 'Registro insertado correctamente',
+										'cita_id' => $this->db->insert_id(),
+										'ver' => $this,
+										'row' => $row
+									);
+								} else {
+									//error
+									$this->load->model('Imagen_model');
+									$identificador = $this->db->insert_id();
+
+									$respuesta = array(
+										'err' => TRUE,
+										'mensaje' => 'Error al insertar',
+										'error' => $this->db->_error_message(),
+										'error_num' => $this->db->_error_number()
+									);
+								}
+							} else {
+								$this->color = "#FF0040";
+								$this->asistencia = 'Otra vez';
+								$hecho = $this->db->insert('cita', $this);
+								if ($hecho) {
+									#insertado
+									$respuesta = array(
+										'err' => FALSE,
+										'mensaje' => 'Registro insertado correctamente',
+										'cita_id' => $this->db->insert_id(),
+										'ver' => $this,
+										'row' => $row
+									);
+								} else {
+									//error
+									$this->load->model('Imagen_model');
+									$identificador = $this->db->insert_id();
+
+									$respuesta = array(
+										'err' => TRUE,
+										'mensaje' => 'Error al insertar',
+										'error' => $this->db->_error_message(),
+										'error_num' => $this->db->_error_number()
+									);
+								}
+								///**********************fin 
+							}
+
+							return $respuesta;
 						} else {
-							//error
-							$this->load->model('Imagen_model');
-							$identificador = $this->db->insert_id();
-
 							$respuesta = array(
 								'err' => TRUE,
-								'mensaje' => 'Error al insertar',
-								'error' => $this->db->_error_message(),
-								'error_num' => $this->db->_error_number()
+								'mensaje' => 'La hora ya esta ocupada'
 							);
-						}
+
+							return $respuesta;
+						} //fin else para la hora
 					} else {
-						$this->color = "#FF0040";
-						$this->asistencia = 'Otra vez';
-						$hecho = $this->db->insert('cita', $this);
-						if ($hecho) {
-							#insertado
-							$respuesta = array(
-								'err' => FALSE,
-								'mensaje' => 'Registro insertado correctamente',
-								'cita_id' => $this->db->insert_id(),
-								'ver' => $this,
-								'row' => $row
-							);
-						} else {
-							//error
-							$this->load->model('Imagen_model');
-							$identificador = $this->db->insert_id();
 
-							$respuesta = array(
-								'err' => TRUE,
-								'mensaje' => 'Error al insertar',
-								'error' => $this->db->_error_message(),
-								'error_num' => $this->db->_error_number()
-							);
-						}
-						///**********************fin 
-					}
+						$respuesta = array(
+							'err' => TRUE,
+							'mensaje' => 'No se puede registrar cita, el cliente ya tiene una para este dia'
+						);
 
-					return $respuesta;
+						return $respuesta;
+					} //fin else para el mismo cliene el mismo dia
+
+
+					//codigo para insertar fin
+
 				} else {
+					# para el dia sabado
 					$respuesta = array(
 						'err' => TRUE,
-						'mensaje' => 'La hora ya esta ocupada'
+						'mensaje' => 'Sabado se abre hasta medido dìa!!'
 					);
 
 					return $respuesta;
-				} //fin else para la hora
+				} //fin de else que valida hasta a medio dia el sabado
+
 			} else {
+				if ($hora2 >= $hora1) {
+					//para garantizar que la hora enviada es mayor que la actual
+					//$mayor = "es mayor la que mando";
 
-				$respuesta = array(
-					'err' => TRUE,
-					'mensaje' => 'No se puede registrar cita, el cliente ya tiene una para este dia'
-				);
+					if ($hora == '08:00' || $hora == '09:00' || $hora == '10:00' || $hora == '11:00') {
+						//codigo para insertar inicio
+						# si esta dentro de las horas validas va ha pasar por el desorden de abajo
+						$query = $this->db->where(array('fecha' => $fecha, 'id_cliente' => $id_cliente));
+						$query = $this->db->get('cita');
+						$cliente_el_mismo_dia = $query->row(); //si es el mismo cliente para el mismo dia
 
-				return $respuesta;
-			} //fin else para el mismo cliene el mismo dia
-				
+						if (!isset($cliente_el_mismo_dia)) {
+							# -------
+							$query = $this->db->where(array('fecha' => $fecha, 'hora' => $hora));
+							$query = $this->db->get('cita');
+							$cita = $query->row(); //si ya esta esa hora con esa fecha
 
-				//codigo para insertar fin
+							if (!isset($cita)) {
 
-			}else{
-				# para el dia sabado
-			$respuesta = array(
-				'err' => TRUE,
-				'mensaje' => 'Sabado se abre hasta medido dìa!!'
-			);
 
-			return $respuesta;
-			}
+								$this->id_cita = $this->db->insert_id();
+								$this->id_cliente = $id_cliente;
+
+								$this->title = $motivo;
+								$this->textColor = "#FFFFFF";
+								$this->start = $start;
+								$this->fecha = $fecha;
+								$this->hora = $hora;
+
+
+
+								//ANTES DE INSERTAR NECESITO ESTE ID  ESTO YA VEREMOS
+								//vamos a extraer el id de la cita con que se registro la primera vez
+								$this->db->select('id_cita,fecha');
+								$this->db->from('cita');
+								$this->db->where('id_cliente', $id_cliente);
+								$this->db->order_by('id_cita', 'DESC');
+								$id_citaExistente = $this->db->get();
+								$row = $id_citaExistente->row('id_cita');
+								////************************
+
+
+
+								if ($row == null) {
+									$this->color = "#007bff";
+									$this->asistencia = 'Primera vez';
+									$hecho = $this->db->insert('cita', $this);
+									if ($hecho) {
+										#insertado
+										$respuesta = array(
+											'err' => FALSE,
+											'mensaje' => 'Registro insertado correctamente',
+											'cita_id' => $this->db->insert_id(),
+											'ver' => $this,
+											'row' => $row
+										);
+									} else {
+										//error
+										$this->load->model('Imagen_model');
+										$identificador = $this->db->insert_id();
+
+										$respuesta = array(
+											'err' => TRUE,
+											'mensaje' => 'Error al insertar',
+											'error' => $this->db->_error_message(),
+											'error_num' => $this->db->_error_number()
+										);
+									}
+								} else {
+									$this->color = "#FF0040";
+									$this->asistencia = 'Otra vez';
+									$hecho = $this->db->insert('cita', $this);
+									if ($hecho) {
+										#insertado
+										$respuesta = array(
+											'err' => FALSE,
+											'mensaje' => 'Registro insertado correctamente',
+											'cita_id' => $this->db->insert_id(),
+											'ver' => $this,
+											'row' => $row
+										);
+									} else {
+										//error
+										$this->load->model('Imagen_model');
+										$identificador = $this->db->insert_id();
+
+										$respuesta = array(
+											'err' => TRUE,
+											'mensaje' => 'Error al insertar',
+											'error' => $this->db->_error_message(),
+											'error_num' => $this->db->_error_number()
+										);
+									}
+									///**********************fin 
+								}
+
+								return $respuesta;
+							} else {
+								$respuesta = array(
+									'err' => TRUE,
+									'mensaje' => 'La hora ya esta ocupada'
+								);
+
+								return $respuesta;
+							} //fin else para la hora
+						} else {
+
+							$respuesta = array(
+								'err' => TRUE,
+								'mensaje' => 'No se puede registrar cita, el cliente ya tiene una para este dia'
+							);
+
+							return $respuesta;
+						} //fin else para el mismo cliene el mismo dia
+
+
+						//codigo para insertar fin
+
+					} else {
+						# para el dia sabado
+						$respuesta = array(
+							'err' => TRUE,
+							'mensaje' => 'Sabado se abre hasta medido dìa!!'
+						);
+
+						return $respuesta;
+					} //fin de else que valida hasta a medio dia el sabado
+				} else {
+
+					$respuesta = array(
+						'err' => TRUE,
+						'mensaje' => 'No se puede registrar cita, con una hora en el pasado'
+					);
+
+					return $respuesta;
+				}
+			} //fin de else que valida la fecha
+
+
 		} else {
 
 			//VAMOS A VERIFICAR QUE LA HORA QUE LLEGUE TENGA LA DIFERENCIA DE 1HR
@@ -412,110 +563,239 @@ class Cita_model extends CI_Model
 			$query = $this->db->get('cita');
 			$cliente_el_mismo_dia = $query->row(); //si es el mismo cliente para el mismo dia
 
-			if (!isset($cliente_el_mismo_dia)) {
-				# -------
-				$query = $this->db->where(array('fecha' => $fecha, 'hora' => $hora));
-				$query = $this->db->get('cita');
-				$cita = $query->row(); //si ya esta esa hora con esa fecha
+			$actual = date("H:i");
+			$hora1 =  strtotime($actual);
+			$hora2 =  strtotime($hora);
 
-				if (!isset($cita)) {
+			$fechaActual = date("Y-m-d");
+			$fecha1 = strtotime($fechaActual);
+			$fecha2 = strtotime($fecha);
 
+			if ($fecha2 > $fecha1) {
+				//si es mayor no hay que validar las horas en el pasado
+				//si es menor o igual si
+				if (!isset($cliente_el_mismo_dia)) {
+					# -------
+					$query = $this->db->where(array('fecha' => $fecha, 'hora' => $hora));
+					$query = $this->db->get('cita');
+					$cita = $query->row(); //si ya esta esa hora con esa fecha
 
-					$this->id_cita = $this->db->insert_id();
-					$this->id_cliente = $id_cliente;
-
-					$this->title = $motivo;
-					$this->textColor = "#FFFFFF";
-					$this->start = $start;
-					$this->fecha = $fecha;
-					$this->hora = $hora;
-
-
-
-					//ANTES DE INSERTAR NECESITO ESTE ID  ESTO YA VEREMOS
-					//vamos a extraer el id de la cita con que se registro la primera vez
-					$this->db->select('id_cita,fecha');
-					$this->db->from('cita');
-					$this->db->where('id_cliente', $id_cliente);
-					$this->db->order_by('id_cita', 'DESC');
-					$id_citaExistente = $this->db->get();
-					$row = $id_citaExistente->row('id_cita');
-					////************************
+					if (!isset($cita)) {
 
 
+						$this->id_cita = $this->db->insert_id();
+						$this->id_cliente = $id_cliente;
 
-					if ($row == null) {
-						$this->color = "#007bff";
-						$this->asistencia = 'Primera vez';
-						$hecho = $this->db->insert('cita', $this);
-						if ($hecho) {
-							#insertado
-							$respuesta = array(
-								'err' => FALSE,
-								'mensaje' => 'Registro insertado correctamente  1111111',
-								'cita_id' => $this->db->insert_id(),
-								'ver' => $this,
-								'row' => $row
-							);
+						$this->title = $motivo;
+						$this->textColor = "#FFFFFF";
+						$this->start = $start;
+						$this->fecha = $fecha;
+						$this->hora = $hora;
+
+
+
+						//ANTES DE INSERTAR NECESITO ESTE ID  ESTO YA VEREMOS
+						//vamos a extraer el id de la cita con que se registro la primera vez
+						$this->db->select('id_cita,fecha');
+						$this->db->from('cita');
+						$this->db->where('id_cliente', $id_cliente);
+						$this->db->order_by('id_cita', 'DESC');
+						$id_citaExistente = $this->db->get();
+						$row = $id_citaExistente->row('id_cita');
+						////************************
+
+
+
+						if ($row == null) {
+							$this->color = "#007bff";
+							$this->asistencia = 'Primera vez';
+							$hecho = $this->db->insert('cita', $this);
+							if ($hecho) {
+								#insertado
+								$respuesta = array(
+									'err' => FALSE,
+									'mensaje' => 'Registro insertado correctamente  1111111',
+									'cita_id' => $this->db->insert_id(),
+									'ver' => $this,
+									'row' => $row
+								);
+							} else {
+								//error
+								$this->load->model('Imagen_model');
+								$identificador = $this->db->insert_id();
+
+								$respuesta = array(
+									'err' => TRUE,
+									'mensaje' => 'Error al insertar',
+									'error' => $this->db->_error_message(),
+									'error_num' => $this->db->_error_number()
+								);
+							}
 						} else {
-							//error
-							$this->load->model('Imagen_model');
-							$identificador = $this->db->insert_id();
+							$this->color = "#FF0040";
+							$this->asistencia = 'Otra vez';
+							$hecho = $this->db->insert('cita', $this);
+							if ($hecho) {
+								#insertado
+								$respuesta = array(
+									'err' => FALSE,
+									'mensaje' => 'Registro insertado correctamente',
+									'cita_id' => $this->db->insert_id(),
+									'ver' => $this,
+									'row' => $row
+								);
+							} else {
+								//error
+								$this->load->model('Imagen_model');
+								$identificador = $this->db->insert_id();
 
-							$respuesta = array(
-								'err' => TRUE,
-								'mensaje' => 'Error al insertar',
-								'error' => $this->db->_error_message(),
-								'error_num' => $this->db->_error_number()
-							);
+								$respuesta = array(
+									'err' => TRUE,
+									'mensaje' => 'Error al insertar',
+									'error' => $this->db->_error_message(),
+									'error_num' => $this->db->_error_number()
+								);
+							}
+							///**********************fin 
 						}
+
+						return $respuesta;
 					} else {
-						$this->color = "#FF0040";
-						$this->asistencia = 'Otra vez';
-						$hecho = $this->db->insert('cita', $this);
-						if ($hecho) {
-							#insertado
-							$respuesta = array(
-								'err' => FALSE,
-								'mensaje' => 'Registro insertado correctamente',
-								'cita_id' => $this->db->insert_id(),
-								'ver' => $this,
-								'row' => $row
-							);
-						} else {
-							//error
-							$this->load->model('Imagen_model');
-							$identificador = $this->db->insert_id();
+						$respuesta = array(
+							'err' => TRUE,
+							'mensaje' => 'La hora ya esta ocupada'
+						);
 
-							$respuesta = array(
-								'err' => TRUE,
-								'mensaje' => 'Error al insertar',
-								'error' => $this->db->_error_message(),
-								'error_num' => $this->db->_error_number()
-							);
-						}
-						///**********************fin 
-					}
-
-					return $respuesta;
+						return $respuesta;
+					} //fin else para la hora
 				} else {
+
 					$respuesta = array(
 						'err' => TRUE,
-						'mensaje' => 'La hora ya esta ocupada'
+						'mensaje' => 'No se puede registrar cita, el cliente ya tiene una para este dia'
 					);
 
 					return $respuesta;
-				} //fin else para la hora
+				} //fin else para el mismo cliene el mismo dia
+
 			} else {
+				if ($hora2 >= $hora1) {
+					//para garantizar que la hora enviada es mayor que la actual
+					//$mayor = "es mayor la que mando";
 
-				$respuesta = array(
-					'err' => TRUE,
-					'mensaje' => 'No se puede registrar cita, el cliente ya tiene una para este dia'
-				);
+					if (!isset($cliente_el_mismo_dia)) {
+						# -------
+						$query = $this->db->where(array('fecha' => $fecha, 'hora' => $hora));
+						$query = $this->db->get('cita');
+						$cita = $query->row(); //si ya esta esa hora con esa fecha
 
-				return $respuesta;
-			} //fin else para el mismo cliene el mismo dia
+						if (!isset($cita)) {
 
+
+							$this->id_cita = $this->db->insert_id();
+							$this->id_cliente = $id_cliente;
+
+							$this->title = $motivo;
+							$this->textColor = "#FFFFFF";
+							$this->start = $start;
+							$this->fecha = $fecha;
+							$this->hora = $hora;
+
+
+
+							//ANTES DE INSERTAR NECESITO ESTE ID  ESTO YA VEREMOS
+							//vamos a extraer el id de la cita con que se registro la primera vez
+							$this->db->select('id_cita,fecha');
+							$this->db->from('cita');
+							$this->db->where('id_cliente', $id_cliente);
+							$this->db->order_by('id_cita', 'DESC');
+							$id_citaExistente = $this->db->get();
+							$row = $id_citaExistente->row('id_cita');
+							////************************
+
+
+
+							if ($row == null) {
+								$this->color = "#007bff";
+								$this->asistencia = 'Primera vez';
+								$hecho = $this->db->insert('cita', $this);
+								if ($hecho) {
+									#insertado
+									$respuesta = array(
+										'err' => FALSE,
+										'mensaje' => 'Registro insertado correctamente  1111111',
+										'cita_id' => $this->db->insert_id(),
+										'ver' => $this,
+										'row' => $row
+									);
+								} else {
+									//error
+									$this->load->model('Imagen_model');
+									$identificador = $this->db->insert_id();
+
+									$respuesta = array(
+										'err' => TRUE,
+										'mensaje' => 'Error al insertar',
+										'error' => $this->db->_error_message(),
+										'error_num' => $this->db->_error_number()
+									);
+								}
+							} else {
+								$this->color = "#FF0040";
+								$this->asistencia = 'Otra vez';
+								$hecho = $this->db->insert('cita', $this);
+								if ($hecho) {
+									#insertado
+									$respuesta = array(
+										'err' => FALSE,
+										'mensaje' => 'Registro insertado correctamente',
+										'cita_id' => $this->db->insert_id(),
+										'ver' => $this,
+										'row' => $row
+									);
+								} else {
+									//error
+									$this->load->model('Imagen_model');
+									$identificador = $this->db->insert_id();
+
+									$respuesta = array(
+										'err' => TRUE,
+										'mensaje' => 'Error al insertar',
+										'error' => $this->db->_error_message(),
+										'error_num' => $this->db->_error_number()
+									);
+								}
+								///**********************fin 
+							}
+
+							return $respuesta;
+						} else {
+							$respuesta = array(
+								'err' => TRUE,
+								'mensaje' => 'La hora ya esta ocupada'
+							);
+
+							return $respuesta;
+						} //fin else para la hora
+					} else {
+
+						$respuesta = array(
+							'err' => TRUE,
+							'mensaje' => 'No se puede registrar cita, el cliente ya tiene una para este dia'
+						);
+
+						return $respuesta;
+					} //fin else para el mismo cliene el mismo dia
+				} else {
+
+					$respuesta = array(
+						'err' => TRUE,
+						'mensaje' => 'No se puede registrar cita, con una hora en el pasado'
+					);
+
+					return $respuesta;
+				}
+			}
 		}
 	} //fin de insertar la pregunta
 
