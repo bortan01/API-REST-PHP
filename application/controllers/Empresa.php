@@ -128,4 +128,25 @@ class Empresa extends REST_Controller
 			$this->response($respuesta, REST_Controller::HTTP_BAD_REQUEST);
 		}
 	}
+	public function backup_post()
+	{
+
+		$data = $this->post();
+		$this->load->dbutil();
+		$correlativo = date ("YmdS-His");
+		$config = array(
+			'format'=> 'zip',
+			'filename' => "respaldo_".$correlativo. '.sql',
+			'add_drop' => TRUE,
+			'add_insert' => TRUE,
+			'newline' => "\n",
+			'foreign_key_checks' => FALSE,
+		);
+		$backup =& $this->dbutil->backup($config);
+		$name_file = "respaldo_".$correlativo. ".zip";
+		$this->load->helper("download");
+		force_download($name_file, $backup);
+		
+		
+	}
 }
