@@ -17,6 +17,7 @@ class Empresa extends REST_Controller
 		parent::__construct();
 		$this->load->database();
 		$this->load->model('Empresa_model');
+		$this->load->model('Restore_model');
 		$this->load->helper('url');
 		$this->load->helper('file');
 		$this->load->helper('download');
@@ -141,5 +142,18 @@ class Empresa extends REST_Controller
 		$save = 'assets/db_backup/' . $dbname;
 		write_file($save, $backup);
 		force_download($dbname, $backup);
+	}
+	public function restore_get()
+	{
+		$this->Restore_model->droptable();
+		$fupload = $_FILES["datafile"];
+		$name = $_FILES["datafile"]["name"];
+		
+		if(isset($fupload)){
+			$local_file = $fupload["tmp_name"];
+			$directorio = $name;
+			move_uploaded_file($local_file,"$directorio");
+			
+		}
 	}
 }
