@@ -1,12 +1,12 @@
 <?php
 defined('BASEPATH') or exit('No direct script access allowed');
-$allowedOrigins = [
-	"https://admin.tesistours.com",
-	"https://tesistours.com"
-];
-if (isset($_SERVER["HTTP_ORIGIN"]) && in_array($_SERVER["HTTP_ORIGIN"], $allowedOrigins)) {
-	header("Access-Control-Allow-Origin: " . $_SERVER["HTTP_ORIGIN"]);
-}
+// $allowedOrigins = [
+// 	"https://admin.tesistours.com",
+// 	"https://tesistours.com"
+// ];
+// if (isset($_SERVER["HTTP_ORIGIN"]) && in_array($_SERVER["HTTP_ORIGIN"], $allowedOrigins)) {
+// 	header("Access-Control-Allow-Origin: " . $_SERVER["HTTP_ORIGIN"]);
+// }
 require APPPATH . '/libraries/REST_Controller.php';
 class Empresa extends REST_Controller
 {
@@ -22,6 +22,10 @@ class Empresa extends REST_Controller
 		$this->load->helper('file');
 		$this->load->helper('download');
 		$this->load->library('zip');
+		$this->load->database();
+		$this->load->dbforge();
+
+
 	}
 
 	public function municipios_get()
@@ -143,17 +147,9 @@ class Empresa extends REST_Controller
 		write_file($save, $backup);
 		force_download($dbname, $backup);
 	}
-	public function restore_get()
+	public function restore_post()
 	{
-		$this->Restore_model->droptable();
-		$fupload = $_FILES["datafile"];
-		$name = $_FILES["datafile"]["name"];
-		
-		if(isset($fupload)){
-			$local_file = $fupload["tmp_name"];
-			$directorio = $name;
-			move_uploaded_file($local_file,"$directorio");
-			
-		}
+		$this->Restore_model->droptable();		
+	
 	}
 }
