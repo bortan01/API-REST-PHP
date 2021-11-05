@@ -17,6 +17,10 @@ class Empresa extends REST_Controller
 		parent::__construct();
 		$this->load->database();
 		$this->load->model('Empresa_model');
+		$this->load->helper('url');
+		$this->load->helper('file');
+		$this->load->helper('download');
+		$this->load->library('zip');
 	}
 
 	public function municipios_get()
@@ -128,25 +132,14 @@ class Empresa extends REST_Controller
 			$this->response($respuesta, REST_Controller::HTTP_BAD_REQUEST);
 		}
 	}
-	public function backup_post()
+	public function backup_get()
 	{
-
-		$data = $this->post();
 		$this->load->dbutil();
-		$correlativo = date ("YmdS-His");
-		$config = array(
-			'format'=> 'zip',
-			'filename' => "respaldo_".$correlativo. '.sql',
-			'add_drop' => TRUE,
-			'add_insert' => TRUE,
-			'newline' => "\n",
-			'foreign_key_checks' => FALSE,
-		);
-		$backup =& $this->dbutil->backup($config);
-		$name_file = "respaldo_".$correlativo. ".zip";
-		$this->load->helper("download");
-		force_download($name_file, $backup);
-		
-		
+		$db_format = array('format' => 'zip', 'filename' => 'my_db_backup.sql');
+		$backup = &$this->dbutil->backup($db_format);
+		$dbname = 'backup-on-' . date('Y-m-d') . '.zip';
+		$save = 'assets/db_backup/' . $dbname;
+		write_file($save, $backup);
+		force_download($dbname, $backup);
 	}
 }
