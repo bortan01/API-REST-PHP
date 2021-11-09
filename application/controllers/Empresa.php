@@ -141,7 +141,7 @@ class Empresa extends REST_Controller
 	{
 		$this->load->dbutil();
 		$db_format = array('format' => 'zip', 'filename' => 'my_db_backup.sql');
-		$backup = &$this->dbutil->backup($db_format);
+		$backup = $this->dbutil->backup($db_format);
 		$dbname = 'backup-on-' . date('Y-m-d') . '.zip';
 		$save = 'assets/db_backup/' . $dbname;
 		write_file($save, $backup);
@@ -149,7 +149,25 @@ class Empresa extends REST_Controller
 	}
 	public function restore_post()
 	{
-		$this->Restore_model->droptable();		
+		$this->Restore_model->droptable();	
+		die();	
+		$fupload = $_FILES["datafile"];
+		$name = $_FILES["datafile"]["name"];
+		
+		if(isset($fupload)){
+			$local_file = $fupload["tmp_name"];
+			$directorio = "$name";
+			move_uploaded_file($local_file,"$directorio");
+			
+		}
+		$is_file = file_get_contents($directorio);
+		$string_query = trim($is_file, "\n;");
+		$array_query = explode(";", $string_query);
+
+		foreach ($array_query as $query) {
+			$this->db->query($query);
+		}
+		unlink($directorio);
 	
 	}
 }

@@ -1,13 +1,10 @@
 <?php
 
-use Google\CRC32\Table;
-
 defined('BASEPATH') or exit('No direct script access allowed');
 class Restore_model extends CI_Model
 {
    function droptable()
    {
-
       $this->dbforge->drop_table("galeria");
       $this->dbforge->drop_table("chat_record");
       $this->dbforge->drop_table("detalle_servicio");
