@@ -128,25 +128,7 @@ class DetalleTour extends REST_Controller
                 $this->Mail_model->metEnviarUno('Adquisición de Tours ','','Información de adquisición de Tours',$cuerpo,$data['id_cliente']);
                  //fin de para mandar correo
 
-                 //para mandar el correo a los empleados
-                 $this->db->select('nombre');
-                 $this->db->from('usuario');
-                 $this->db->where('id_cliente',$data['id_cliente']);
-                 $query = $this->db->get();
-                foreach ($query->result() as $row)
-                {
-                 $cuerpo="<h2>Adquisición de Tours: ".$data['nombre_producto']."</h2><br>
-                 <h4>Se realizó una Adquisición de servicio del cliente: ".$row->nombre.",
-                 <h4>Descripción del servicio: ".$data['descripcionTurPaquete']."</h4><br>
-                <h4>Asientos seleccionados: ".$data['asientos_seleccionados']."</h4><br>
-                <h4>Cantidad de asientos: ".$data['cantidad_asientos']."</h4><br>
-                <h4>Descripción del producto: ".$data['descripcionProducto']."</h4><br>
-                <h4>Verificar Adquisición: ".$this->Conf_model->SISTEMA."</h4>
-                 <br>Atte:<br>Martínez Travel & Tours";
-                }
-                
-                 $this->Mail_model->metEnviar('Adquisición de Tours','Adquisición de Cliente',$cuerpo);
-                //fin de para mandar correo a los empleados
+               
                 
                 // ENVIAR CORREO ELECTRONICO A CLIENTE QUE HIZO LA RESERVA A TRAVEZ DE UN PAGO EN LINEA
                 // INFORMACION AL INTERIOR DE $data
