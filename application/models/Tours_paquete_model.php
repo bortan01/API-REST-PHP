@@ -783,7 +783,7 @@ class Tours_paquete_model extends CI_Model
     {
         $this->db->select('*');
         $nombreTabla = 'cotizar_tourpaquete';
-        $this->db->select('DATE_FORMAT(cotizar_tourpaquete.fechaPeticion,"%d-%m-%Y") as fechaPeticion');
+        $this->db->select('DATE_FORMAT(cotizar_tourpaquete.fechaPeticion,"%d-%m-%Y") as fechaPeticionWeb');
 
         $this->db->where('id_cliente', $campos["id_cliente"]);
 
