@@ -117,7 +117,7 @@ class Vehiculo_model extends CI_Model
     public function get_opcionesByClient($id_detalle)
     {
         $this->db->select('*');
-        $this->db->from('detalle_serviciosVehiculo');
+        $this->db->from('detalle_serviciosvehiculo');
         $this->db->where('id_detalle', $id_detalle);
         return $this->db->get()->result();
     }
