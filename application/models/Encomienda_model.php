@@ -290,9 +290,10 @@ class Encomienda_model extends CI_Model
     {
 
         $parametros = $this->verificar_camposEntrada($data);
-        $this->db->select('encomienda.id_encomienda,encomienda.id_usuario, encomienda.ciudad_origen,encomienda.codigo_postal_origen, encomienda.fecha as fecha,encomienda.estado,total_cliente');
+        $this->db->select('encomienda.id_encomienda,encomienda.id_usuario, encomienda.ciudad_origen,encomienda.codigo_postal_origen, encomienda.fecha as fecha,encomienda.estado,total_cliente,nombre_municipio');
         $this->db->from('encomienda');
         $this->db->join('usuario', 'usuario.id_cliente=encomienda.id_usuario', 'inner');
+        $this->db->join('municipio_envio', 'id_municipio');
         $this->db->where($parametros);
         $this->db->order_by('id_encomienda', 'desc');
         $query = $this->db->get();
