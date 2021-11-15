@@ -66,6 +66,7 @@ class cotizarVuelo_model extends CI_Model
            $query=$this->db->get_where('cotizacion_vuelo',array('id_cotizacion'=>$this->id_cotizacion) );
            $cotizar=$query->row();
    
+           
                if (isset($cotizar)) {
                $respuesta=array(
                    'err'=>TRUE,
@@ -74,6 +75,14 @@ class cotizarVuelo_model extends CI_Model
                return $respuesta;
                }
             //insertar el registro
+
+           
+            if($this->ciudad_llegada==''){
+                $this->ciudad_llegada='Sin Especificar';
+                $this->HoraLlegada='--:--:--';
+            }
+            
+           
                $hecho=$this->db->insert('cotizacion_vuelo',$this);
    
                if ($hecho) {
@@ -84,8 +93,7 @@ class cotizarVuelo_model extends CI_Model
                        'cotizacion_id'=>$this->db->insert_id()
                    );              
                }else{
-                   //error
-   
+
                    $respuesta=array(
                        'err'=>TRUE,
                        'mensaje'=>'Error al insertar',
