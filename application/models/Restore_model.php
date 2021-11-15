@@ -28,7 +28,6 @@ class Restore_model extends CI_Model
       "detalle_tour",
       "tours_paquete",
       "cotizar_tourpaquete",
-      "cotizar_tourpaquete",
       "galeria_vehiculo",
       "cotizarvehiculo",
       "mantenimiento",

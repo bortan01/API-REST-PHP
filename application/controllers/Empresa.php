@@ -140,7 +140,7 @@ class Empresa extends REST_Controller
 
 		$connection = mysqli_connect('localhost', 'root', '', 'agencia');
 
-			$tables = [
+		$tables = [
 			"galeria",
 			"chat_record",
 			"detalle_servicio",
@@ -153,7 +153,7 @@ class Empresa extends REST_Controller
 			"reserva_tour",
 			"detalle_tour",
 			"tours_paquete",
-			"cotizar_tourPaquete",
+			"cotizar_tourpaquete",
 			"galeria_vehiculo",
 			"cotizarvehiculo",
 			"mantenimiento",
@@ -193,11 +193,12 @@ class Empresa extends REST_Controller
 			"tipo_clase",
 			"usuariorentacar",
 			"rentacar",
-			"usuario"];
+			"usuario"
+		];
 
 
 		$return = '';
-		foreach (array_reverse($tables)as $table) {
+		foreach (array_reverse($tables) as $table) {
 			$result = mysqli_query($connection, "SELECT * FROM " . $table);
 			$num_fields = mysqli_num_fields($result);
 
@@ -210,7 +211,10 @@ class Empresa extends REST_Controller
 					$return .= "INSERT INTO " . $table . " VALUES(";
 					for ($j = 0; $j < $num_fields; $j++) {
 						$row[$j] = addslashes($row[$j]);
-						if (isset($row[$j])) {
+						var_dump($row[$j]);
+						if ($row[$j] == '') {
+							$return .= "NULL";
+						} else if (isset($row[$j])) {
 							$return .= '"' . $row[$j] . '"';
 						} else {
 							$return .= '""';
@@ -225,16 +229,31 @@ class Empresa extends REST_Controller
 			$return .= "\n\n\n";
 		}
 
+		$order     = array('"');
+		$replace   = "'";
+		$newReturn = str_replace($order, $replace, $return);
+
+		$order     = array('"[\"');
+		$replace   = `'[\"`;
+		$newReturn = str_replace($order, $replace, $return);
+
+		$order     = array(`\']"`);
+		$replace   = `\"]'`;
+		$newReturn = str_replace($order, $replace, $return);
+
+	
+		
+		
 		//save file
 		$handle = fopen("backup.sql", "w+");
-		fwrite($handle, $return);
+		fwrite($handle, $newReturn);
 		fclose($handle);
 		echo "Successfully backed up";
 	}
 	public function restore_post()
 	{
 		$this->Restore_model->droptable();
-		
+
 		$connection = mysqli_connect('localhost', 'root', '', 'agencia');
 
 		$filename = 'backup.sql';
@@ -248,7 +267,7 @@ class Empresa extends REST_Controller
 				echo '<tr><td><br></td></tr>';
 				echo '<tr><td>' . $query . ' <b>SUCCESS</b></td></tr>';
 				echo '<tr><td><br></td></tr>';
-			}else{
+			} else {
 				echo '<br><tr><td> -->>>>' . $query . ' <b>FAIL</b></td></tr><br>';
 			}
 		}
