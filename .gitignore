@@ -40,3 +40,4 @@ push.json
 uploads.rar
 application/models/Conf_model.php
 application/config/database.php
+backup.sql

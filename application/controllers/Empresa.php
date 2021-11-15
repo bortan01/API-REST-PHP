@@ -24,8 +24,6 @@ class Empresa extends REST_Controller
 		$this->load->library('zip');
 		$this->load->database();
 		$this->load->dbforge();
-
-
 	}
 
 	public function municipios_get()
@@ -139,35 +137,122 @@ class Empresa extends REST_Controller
 	}
 	public function backup_get()
 	{
-		$this->load->dbutil();
-		$db_format = array('format' => 'zip', 'filename' => 'my_db_backup.sql');
-		$backup = $this->dbutil->backup($db_format);
-		$dbname = 'backup-on-' . date('Y-m-d') . '.zip';
-		$save = 'assets/db_backup/' . $dbname;
-		write_file($save, $backup);
-		force_download($dbname, $backup);
+
+		$connection = mysqli_connect('localhost', 'root', '', 'agencia');
+
+			$tables = [
+			"galeria",
+			"chat_record",
+			"detalle_servicio",
+			"servicios_adicionales",
+			"tipo_servicio",
+			"contacto",
+			"itinerario",
+			"sitio_turistico",
+			"tipo_sitio",
+			"reserva_tour",
+			"detalle_tour",
+			"tours_paquete",
+			"cotizar_tourPaquete",
+			"galeria_vehiculo",
+			"cotizarvehiculo",
+			"mantenimiento",
+			"reserva_vehiculo",
+			"detalle_serviciosvehiculo",
+			"detalle_vehiculo",
+			"vehiculo",
+			"modelo",
+			"transmisionvehiculo",
+			"usuarioRentaCar",
+			"rentaCar",
+			"categoria",
+			"marca_vehiculo",
+			"servicios_opc",
+			"bitacora",
+			"comision",
+			"detalle_encomienda",
+			"tarifa",
+			"unidades_medidas",
+			"producto",
+			"detalle_destino",
+			"detalle_envio",
+			"encomienda",
+			"municipio_envio",
+			"cita",
+			"opciones_respuestas",
+			"formulario_migratorio",
+			"pregunta",
+			"ramas_preguntas",
+			"info_adicional",
+			"general",
+			"cotizacion_vuelo",
+			"tipo_viaje",
+			"promocion_vuelo",
+			"aerolinea",
+			"alianza",
+			"tipo_clase",
+			"usuariorentacar",
+			"rentacar",
+			"usuario"];
+
+
+		$return = '';
+		foreach (array_reverse($tables)as $table) {
+			$result = mysqli_query($connection, "SELECT * FROM " . $table);
+			$num_fields = mysqli_num_fields($result);
+
+			$return .= 'DROP TABLE IF EXISTS ' . $table . ';';
+			$row2 = mysqli_fetch_row(mysqli_query($connection, "SHOW CREATE TABLE " . $table));
+			$return .= "\n\n" . $row2[1] . ";\n\n";
+
+			for ($i = 0; $i < $num_fields; $i++) {
+				while ($row = mysqli_fetch_row($result)) {
+					$return .= "INSERT INTO " . $table . " VALUES(";
+					for ($j = 0; $j < $num_fields; $j++) {
+						$row[$j] = addslashes($row[$j]);
+						if (isset($row[$j])) {
+							$return .= '"' . $row[$j] . '"';
+						} else {
+							$return .= '""';
+						}
+						if ($j < $num_fields - 1) {
+							$return .= ',';
+						}
+					}
+					$return .= ");\n";
+				}
+			}
+			$return .= "\n\n\n";
+		}
+
+		//save file
+		$handle = fopen("backup.sql", "w+");
+		fwrite($handle, $return);
+		fclose($handle);
+		echo "Successfully backed up";
 	}
 	public function restore_post()
 	{
-		$this->Restore_model->droptable();	
-		die();	
-		$fupload = $_FILES["datafile"];
-		$name = $_FILES["datafile"]["name"];
+		$this->Restore_model->droptable();
 		
-		if(isset($fupload)){
-			$local_file = $fupload["tmp_name"];
-			$directorio = "$name";
-			move_uploaded_file($local_file,"$directorio");
-			
-		}
-		$is_file = file_get_contents($directorio);
-		$string_query = trim($is_file, "\n;");
-		$array_query = explode(";", $string_query);
+		$connection = mysqli_connect('localhost', 'root', '', 'agencia');
 
-		foreach ($array_query as $query) {
-			$this->db->query($query);
+		$filename = 'backup.sql';
+		$handle = fopen($filename, "r+");
+		$contents = fread($handle, filesize($filename));
+
+		$sql = explode(';', $contents);
+		foreach ($sql as $query) {
+			$result = mysqli_query($connection, $query);
+			if ($result) {
+				echo '<tr><td><br></td></tr>';
+				echo '<tr><td>' . $query . ' <b>SUCCESS</b></td></tr>';
+				echo '<tr><td><br></td></tr>';
+			}else{
+				echo '<br><tr><td> -->>>>' . $query . ' <b>FAIL</b></td></tr><br>';
+			}
 		}
-		unlink($directorio);
-	
+		fclose($handle);
+		echo 'Successfully imported';
 	}
 }
