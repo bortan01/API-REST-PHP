@@ -108,7 +108,7 @@ $config = array(
 	'datos_put' => array(
 		array('field' => 'ciudad_partida'  , 'label' => 'Ciudad de Partida'      , 'rules' => 'trim|required|min_length[2]|max_length[255]'),
 		array('field' => 'fechaHoraPartida', 'label' => 'Fecha y Hora de Partida', 'rules' => 'trim|required|min_length[2]|max_length[255]'),
-	//	array('field' => 'ciudad_llegada'  , 'label' => 'Ciudad de Llegada'      , 'rules' => 'trim|required|min_length[2]|max_length[255]'),
+		//array('field' => 'ciudad_destino'  , 'label' => 'Ciudad de Destino'      , 'rules' => 'trim|required|min_length[2]|max_length[255]'),
 	//	array('field' => 'fechaHoraLlegada', 'label' => 'Fecha y Hora de Llegada', 'rules' => 'trim|required|min_length[2]|max_length[255]'),
 		array('field' => 'maletas'         , 'label' => 'Cantidad de Maletas'    , 'rules' => 'trim|required|min_length[2]|max_length[255]')
 	),

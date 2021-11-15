@@ -16,13 +16,15 @@ class cotizarVuelo_model extends CI_Model
     public $ciudad_llegada;
     public $fechaLlegada;
     public $HoraLlegada;
-    public $adultos;
-    public $ninos;
-    public $bebes;
-    public $maletas;
+    public $adultos=0;
+    public $ninos=0;
+    public $bebes=0;
+    public $maletas=0;
     public $detallePasajero;
+    public $respuesta="Sin respuesta";
     public $activo = TRUE;
-
+    public $ciudad_destino;
+    
     public function get_cotizar(array $data)
     {
 
