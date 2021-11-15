@@ -72,10 +72,12 @@ class cotizarVuelo extends REST_Controller
 				$query = $this->db->get();
 				foreach ($query->result() as $row)
 				{
-				 $cuerpo="<h2><h2>La cotización realizada con salida de: " . $data['ciudad_partida'] . "</h2><br>
-				<h4>con llegada a: " . $data['ciudad_llegada'] . " fue procesada con éxito por el cliente : ".$row->nombre.", pendiente de respuesta</h4>
-				<h4>Verificar Cotización: ".$this->Conf_model->SISTEMA."</h4>	
-				<br>Atte:<br>Martínez Travel & Tours";
+				 $cuerpo="<h2><h2>Han realizado una cotización de vuelo</h2><br>
+				 <h4>Cliente: ".$row->nombre."</h4><br>
+				 <h4>Punto de salida: " . $data['ciudad_partida'] . "</h4><br>
+				 <h4>Punto de llegada: " . $data['ciudad_llegada'] . " fue procesada con éxito, pendiente de respuesta</h4><br>
+				 <h4>Verificar Cotización: ".$this->Conf_model->SISTEMA."</h4>	
+				 <br>Atte:<br>Martínez Travel & Tours";
 				}
 				 
 				 $this->Mail_model->metEnviar('Cotización de vuelo','Cotización de Cliente',$cuerpo);
