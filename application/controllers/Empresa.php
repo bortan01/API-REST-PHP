@@ -211,7 +211,6 @@ class Empresa extends REST_Controller
 					$return .= "INSERT INTO " . $table . " VALUES(";
 					for ($j = 0; $j < $num_fields; $j++) {
 						$row[$j] = addslashes($row[$j]);
-						var_dump($row[$j]);
 						if ($row[$j] == '') {
 							$return .= "NULL";
 						} else if (isset($row[$j])) {
@@ -241,14 +240,21 @@ class Empresa extends REST_Controller
 		$replace   = `\"]'`;
 		$newReturn = str_replace($order, $replace, $return);
 
-	
-		
-		
+
+
+
 		//save file
-		$handle = fopen("backup.sql", "w+");
-		fwrite($handle, $newReturn);
-		fclose($handle);
-		echo "Successfully backed up";
+		// $handle = fopen("backup.sql", "w+");
+		// fwrite($handle, $newReturn);
+		// fclose($handle);
+		// echo "Successfully backed up";
+		date_default_timezone_set('America/El_Salvador');
+	   $nombreBase =	"backup-on-".date('Y-m-d-H-i-s').".sql";
+		force_download($nombreBase, $newReturn);
+
+
+	
+	
 	}
 	public function restore_post()
 	{
