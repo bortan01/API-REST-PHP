@@ -18,6 +18,7 @@ class Empresa extends REST_Controller
 		$this->load->database();
 		$this->load->model('Empresa_model');
 		$this->load->model('Restore_model');
+		$this->load->model('Conf_model');
 		$this->load->helper('url');
 		$this->load->helper('file');
 		$this->load->helper('download');
@@ -138,8 +139,14 @@ class Empresa extends REST_Controller
 	public function backup_get()
 	{
 
-		$connection = mysqli_connect('localhost', 'root', '', 'agencia');
+		$connection = mysqli_connect(
+			$this->Conf_model->HOST,
+			$this->Conf_model->USER,
+			$this->Conf_model->PASS,
+			$this->Conf_model->DBNM
+		);
 
+		// ORDEN INVERSO EN EL QUE SE ELIMINARN LAS TABLAS
 		$tables = [
 			"galeria",
 			"chat_record",
@@ -196,88 +203,91 @@ class Empresa extends REST_Controller
 			"usuario"
 		];
 
-
-		$return = '';
+		$sql = '';
 		foreach (array_reverse($tables) as $table) {
+			// OBTENEMOS TODA LA DATA DE LA TABLA ITERADA
 			$result = mysqli_query($connection, "SELECT * FROM " . $table);
 			$num_fields = mysqli_num_fields($result);
-
-			$return .= 'DROP TABLE IF EXISTS ' . $table . ';';
+			// EMPEZAMOS A CREAAR EL SQL
+			$sql .= 'DROP TABLE IF EXISTS ' . $table . ';';
 			$row2 = mysqli_fetch_row(mysqli_query($connection, "SHOW CREATE TABLE " . $table));
-			$return .= "\n\n" . $row2[1] . ";\n\n";
+			$sql .= "\n\n" . $row2[1] . ";\n\n";
 
 			for ($i = 0; $i < $num_fields; $i++) {
 				while ($row = mysqli_fetch_row($result)) {
-					$return .= "INSERT INTO " . $table . " VALUES(";
+					$sql .= "INSERT INTO " . $table . " VALUES(";
 					for ($j = 0; $j < $num_fields; $j++) {
 						$row[$j] = addslashes($row[$j]);
 						if ($row[$j] == '') {
-							$return .= "NULL";
+							// SI EL VALOR ESTA VACIO CONCATENAMOS UN NULL
+							$sql .= "NULL";
 						} else if (isset($row[$j])) {
-							$return .= '"' . $row[$j] . '"';
+							// CONCATENAMOS EL VALOR DEL CAMPO
+							$sql .= '"' . $row[$j] . '"';
 						} else {
-							$return .= '""';
+							$sql .= '""';
 						}
+						// AGREGAMOS UNA COMA SI ES EL ULTIMO CAMPO
 						if ($j < $num_fields - 1) {
-							$return .= ',';
+							$sql .= ',';
 						}
 					}
-					$return .= ");\n";
+					$sql .= ");\n";
 				}
 			}
-			$return .= "\n\n\n";
+			$sql .= "\n\n\n";
 		}
 
+		// CORREGIMOS NUESTRO SQL POR EL PROBLEMA DE COMILLAS
 		$order     = array('"');
 		$replace   = "'";
-		$newReturn = str_replace($order, $replace, $return);
+		$scriptSql = str_replace($order, $replace, $sql);
 
 		$order     = array('"[\"');
 		$replace   = `'[\"`;
-		$newReturn = str_replace($order, $replace, $return);
+		$scriptSql = str_replace($order, $replace, $sql);
 
 		$order     = array(`\']"`);
 		$replace   = `\"]'`;
-		$newReturn = str_replace($order, $replace, $return);
-
-
-
-
-		//save file
-		// $handle = fopen("backup.sql", "w+");
-		// fwrite($handle, $newReturn);
-		// fclose($handle);
-		// echo "Successfully backed up";
+		$scriptSql = str_replace($order, $replace, $sql);
+		// DEFINIMOS NUESTRA ZONA HORARIA
 		date_default_timezone_set('America/El_Salvador');
-	   $nombreBase =	"backup-on-".date('Y-m-d-H-i-s').".sql";
-		force_download($nombreBase, $newReturn);
-
-
-	
-	
+		$nombreBase =	"backup-on-" . date('Y-m-d-H-i-s') . ".sql";
+		force_download($nombreBase, $scriptSql);
 	}
+
 	public function restore_post()
 	{
 		$this->Restore_model->droptable();
 
-		$connection = mysqli_connect('localhost', 'root', '', 'agencia');
+		$connection = mysqli_connect(
+			$this->Conf_model->HOST,
+			$this->Conf_model->USER,
+			$this->Conf_model->PASS,
+			$this->Conf_model->DBNM
+		);
 
-		$filename = 'backup.sql';
-		$handle = fopen($filename, "r+");
-		$contents = fread($handle, filesize($filename));
 
-		$sql = explode(';', $contents);
-		foreach ($sql as $query) {
-			$result = mysqli_query($connection, $query);
-			if ($result) {
-				echo '<tr><td><br></td></tr>';
-				echo '<tr><td>' . $query . ' <b>SUCCESS</b></td></tr>';
-				echo '<tr><td><br></td></tr>';
-			} else {
-				echo '<br><tr><td> -->>>>' . $query . ' <b>FAIL</b></td></tr><br>';
+		if (isset($_FILES['sqlFile'])) {
+
+			$filename =   $_FILES['sqlFile']["tmp_name"];
+
+			$handle = fopen($filename, "r+");
+			$contents = fread($handle, filesize($filename));
+
+			$sql = explode(';', $contents);
+			foreach ($sql as $query) {
+				$result = mysqli_query($connection, $query);
+				if ($result) {
+					// echo '<tr><td><br></td></tr>';
+					// echo '<tr><td>' . $query . ' <b>SUCCESS</b></td></tr>';
+					// echo '<tr><td><br></td></tr>';
+				} else {
+					// echo '<br><tr><td> -->>>>' . $query . ' <b>FAIL</b></td></tr><br>';
+				}
 			}
+			fclose($handle);
+			$this->response(array('respuesta' => 'Restauración Exitosa'), REST_Controller::HTTP_OK);
 		}
-		fclose($handle);
-		echo 'Successfully imported';
 	}
 }
