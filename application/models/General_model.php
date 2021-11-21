@@ -7,6 +7,10 @@ class General_model extends CI_Model
     public $direccion_agencia;
     public $telefono_agencia;
     public $email_agencia;
+    public $semana_agencia;
+    public $finDe_agencia;
+    public $horaS_agencia;
+    public $horasF_agencia;
 
     public function get_general(array $data){
 
