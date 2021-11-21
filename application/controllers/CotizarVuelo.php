@@ -75,7 +75,7 @@ class cotizarVuelo extends REST_Controller
 				 $cuerpo="<h2><h2>Han realizado una cotización de vuelo</h2><br>
 				 <h4>Cliente: ".$row->nombre."</h4><br>
 				 <h4>Punto de salida: " . $data['ciudad_partida'] . "</h4><br>
-				 <h4>Punto de llegada: " . $data['ciudad_llegada'] ."</h4><br>
+				 <h4>Punto de llegada: " . $data['ciudad_destino'] ."</h4><br>
 				 <h4>Fue procesada con éxito, pendiente de respuesta</h4><br>
 				 <h4>Verificar Cotización: ".$this->Conf_model->SISTEMA."</h4>	
 				 <br>Atte:<br>Martínez Travel & Tours";
@@ -141,7 +141,7 @@ class cotizarVuelo extends REST_Controller
 					 {
 						 $id=$row->id_cliente;
 						 $cuerpo="<h2><h2>La cotización realizada con salida de: " . $row->ciudad_partida. "</h2><br>
-						 <h4>con llegada a: " . $row->ciudad_llegada . " fue procesada con éxito.
+						 <h4>con llegada a: " . $row->ciudad_destino . " fue procesada con éxito.
 						 Con un precio de: $" . $data['total'] . " con un descuento de: $" . $data['descuentos'] ."</h4>
 						 </h4><br><h4>Gracias por preferirnos, puedes verificar la respuesta a tu cotización nuestra página web: ".$this->Conf_model->PAGINA."
 						 </h4><br>También puedes descargar nuestra aplicación móvil<br>Atte:<br>Martínez Travel & Tours";

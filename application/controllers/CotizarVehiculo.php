@@ -78,7 +78,7 @@ class cotizarVehiculo extends REST_Controller
 			   foreach ($query->result() as $row)
 			   {
 				$cuerpo="<h2>Cotización de vehículo</h2><br>
-				<h4>Se realizó una Cotización de vehículo del cliente: ".$row->nombre.",
+				<h4>Se realizó una Cotización de vehículo del cliente: ".$row->nombre.",<br>
 				<h4>Características de servicio: ".$data['caracteristicas']."</h4><br>
 				<h4>Fecha de recogida: ".$recogida.", fecha de devolución: ".$devolucion."</h4><br>
 				<h4>Hora de recogida: ".$data['horaRecogida'].", Hora de devolución: ".$data['horaDevolucion']."</h4><br>
