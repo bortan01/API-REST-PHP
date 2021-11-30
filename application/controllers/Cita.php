@@ -40,12 +40,7 @@ class Cita extends REST_Controller
 
 
 		$respuesta = $this->Cita_model->existSioNo($data);
-		if ($respuesta['err']) {
-			# code...
-			$this->response($respuesta, REST_Controller::HTTP_BAD_REQUEST);
-		} else {
-			$this->response($respuesta, REST_Controller::HTTP_OK);
-		}
+		$this->response($respuesta, REST_Controller::HTTP_OK);
 	}
 	public function verCita_get()
 	{

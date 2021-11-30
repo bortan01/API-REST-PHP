@@ -614,7 +614,7 @@ class Cita_model extends CI_Model
 								#insertado
 								$respuesta = array(
 									'err' => FALSE,
-									'mensaje' => 'Registro insertado correctamente  1111111',
+									'mensaje' => '',
 									'cita_id' => $this->db->insert_id(),
 									'ver' => $this,
 									'row' => $row
@@ -814,6 +814,7 @@ class Cita_model extends CI_Model
 	{
 
 		$this->db->select('*');
+		$this->db->select('DATE_FORMAT(cita.fecha,"%d-%m-%Y") as fechaConver');
 		$this->db->from('cita');
 		$this->db->join('usuario', 'usuario.id_cliente=cita.id_cliente', 'inner');
 		// $this->db->where(array('fecha' => date("Y-m-d"), 'estado_cita' => 1));
