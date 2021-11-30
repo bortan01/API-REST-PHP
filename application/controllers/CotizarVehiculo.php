@@ -77,13 +77,15 @@ class cotizarVehiculo extends REST_Controller
 				$query = $this->db->get();
 			   foreach ($query->result() as $row)
 			   {
-				$cuerpo="<h2>Cotización de vehículo</h2><br>
-				<h4>Se realizó una Cotización de vehículo del cliente: ".$row->nombre.",<br>
-				<h4>Características de servicio: ".$data['caracteristicas']."</h4><br>
-				<h4>Fecha de recogida: ".$recogida.", fecha de devolución: ".$devolucion."</h4><br>
-				<h4>Hora de recogida: ".$data['horaRecogida'].", Hora de devolución: ".$data['horaDevolucion']."</h4><br>
-			    <h4>Dirección de recogida: ".$data['direccion_recogida']."</h4><br>
-			   <h4>Dirección de devolución: ".$data['direccion_devolucion']."</h4><br>
+				$cuerpo="<h2>Cotización de vehículo cliente: ".$row->nombre."</h2><br>
+				<h4>Características del vehículo: ".$data['caracteristicas']."</h4><br>
+				<h4>Fecha de recogida: ".$recogida."</h4><br>
+				<h4>Hora de recogida: ".$data['horaRecogida']."</h4><br>
+			    <h4>Dirección de recogida: ".$data['direccion_recogida']."</h4><br><br>
+				
+				<h4>Fecha de devolución: ".$devolucion."</h4><br>
+				<h4>Hora de devolución: ".$data['horaDevolucion']."</h4><br>
+				<h4>Dirección de devolución: ".$data['direccion_devolucion']."</h4><br>
 			   <h4>Verificar Cotización: ".$this->Conf_model->SISTEMA."</h4>	
 			   <br>Atte:<br>Martínez Travel & Tours";
 			   }
