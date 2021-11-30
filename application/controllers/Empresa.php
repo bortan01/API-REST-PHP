@@ -279,11 +279,11 @@ class Empresa extends REST_Controller
 			foreach ($sql as $query) {
 				$result = mysqli_query($connection, $query);
 				if ($result) {
-					// echo '<tr><td><br></td></tr>';
-					// echo '<tr><td>' . $query . ' <b>SUCCESS</b></td></tr>';
-					// echo '<tr><td><br></td></tr>';
+					echo '<tr><td><br></td></tr>';
+					echo '<tr><td>' . $query . ' <b>SUCCESS</b></td></tr>';
+					echo '<tr><td><br></td></tr>';
 				} else {
-					// echo '<br><tr><td> -->>>>' . $query . ' <b>FAIL</b></td></tr><br>';
+					echo '<br><tr><td> -->>>>' . $query . ' <b>FAIL</b></td></tr><br>';
 				}
 			}
 			fclose($handle);

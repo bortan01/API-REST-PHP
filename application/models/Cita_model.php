@@ -93,9 +93,9 @@ class Cita_model extends CI_Model
 
 		if (!isset($cita)) {
 			$respuesta = array(
-				'err' => TRUE,
+				'err' => FALSE,
 				'mensaje' => 'La cita no existe',
-				'existe' =>'NO'
+				'existe' => NULL
 			);
 			return $respuesta;
 		} else {
