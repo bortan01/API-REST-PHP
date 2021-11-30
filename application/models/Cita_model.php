@@ -723,7 +723,7 @@ class Cita_model extends CI_Model
 									#insertado
 									$respuesta = array(
 										'err' => FALSE,
-										'mensaje' => 'Registro insertado correctamente  1111111',
+										'mensaje' => 'Registro insertado correctamente',
 										'cita_id' => $this->db->insert_id(),
 										'ver' => $this,
 										'row' => $row
