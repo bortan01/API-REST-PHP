@@ -1,7 +1,7 @@
 ---
 deployment:
   tasks:
-    - export DEPLOYPATH=/home/a147409/admin/
+    - export DEPLOYPATH=/home/d170647/admin/
     - /bin/cp .editorconfig $DEPLOYPATH
     - /bin/cp contributing.md $DEPLOYPATH
     - /bin/cp codiniterIndex.php $DEPLOYPATH
@@ -11,11 +11,11 @@ deployment:
     - /bin/cp -r vendor $DEPLOYPATH
 
 
-    - /bin/cp .editorconfig /home/a147409/public_html/
-    - /bin/cp contributing.md /home/a147409/public_html/
-    - /bin/cp codiniterIndex.php /home/a147409/public_html/
+    - /bin/cp .editorconfig /home/d170647/public_html/
+    - /bin/cp contributing.md /home/d170647/public_html/
+    - /bin/cp codiniterIndex.php /home/d170647/public_html/
 
-    - /bin/cp -r application /home/a147409/public_html/
-    - /bin/cp -r system /home/a147409/public_html/
-    - /bin/cp -r vendor /home/a147409/public_html/
+    - /bin/cp -r application /home/d170647/public_html/
+    - /bin/cp -r system /home/d170647/public_html/
+    - /bin/cp -r vendor /home/d170647/public_html/
 
