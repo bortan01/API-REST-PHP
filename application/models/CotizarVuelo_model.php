@@ -24,6 +24,8 @@ class cotizarVuelo_model extends CI_Model
     public $respuesta="Sin respuesta";
     public $activo = TRUE;
     public $ciudad_destino;
+    public $maletaMano=0;
+    public $maletaBodega=0;
     
     public function get_cotizar(array $data)
     {
