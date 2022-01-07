@@ -217,6 +217,12 @@ class Tours_paquete_model extends CI_Model
         $tipo = isset($parametros['tipo']) ? $parametros['tipo'] : '';
         // echo $tipo;
         switch ($tipo) {
+            case 'aereos':
+                $this->db->where("(tipo='aereos')");
+                break;
+            case 'terrestres':
+                $this->db->where("(tipo='terrestres')");
+                break;
             case 'Allpaquete':
                 $this->db->where("(tipo='Paquete Nacional' OR tipo='Paquete Internacional' OR tipo='Paquete Privado')");
                 break;
