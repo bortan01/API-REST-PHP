@@ -27,6 +27,10 @@ class Hotel_model extends CI_Model
         $query = $this->db->get();
 
         $respuesta = $query->result();
+        
+        foreach ($respuesta as $opciones) {
+            $opciones->incluye =   explode(",", $opciones->incluye);
+        }
 
         foreach ($respuesta as $row) {
 
