@@ -297,5 +297,10 @@ $config = array(
 		array('field' => 'fecha_bitacora'    , 'label' => 'fecha'                , 'rules' => 'trim|required|min_length[2]|max_length[255]'),
 		array('field' => 'detalle_bitacora'  , 'label' => 'falta asignar detalle', 'rules' => 'trim|required|min_length[2]|max_length[255]'),
 	),
+	'insertarHotel_put' => array(
+		array('field' => 'nombreHotel'       , 'label' => 'Nombre Hotel'                 , 'rules' => 'trim|required|min_length[2]|max_length[500]'),
+		array('field' => 'nombrePais'        , 'label' => 'Nombre Pais'                  , 'rules' => 'trim|required|min_length[2]|max_length[500]'),
+		array('field' => 'precioNoche'       , 'label' => 'Precio por noche'             , 'rules' => 'trim|required|min_length[1]|max_length[255]'),
+	),
 	
 );
