@@ -215,12 +215,22 @@ class Tours_paquete_model extends CI_Model
         $parametros = $this->verificar_camposEntrada($data);
 
         $tipo = isset($parametros['tipo']) ? $parametros['tipo'] : '';
-        // echo $tipo;
+        date_default_timezone_set('America/El_Salvador');
+
+        //  echo date('Y-m-d');
         switch ($tipo) {
             case 'aereos':
                 $this->db->where("(tipo='aereos')");
+                $this->db->where('start >= ',   date('Y-m-d'));
                 break;
             case 'terrestres':
+                $this->db->where("(tipo='terrestres')");
+                $this->db->where('start >=',  date('Y-m-d'));
+                break;
+            case 'aereosAdmin':
+                $this->db->where("(tipo='aereos')");
+                break;
+            case 'terrestresAdmin':
                 $this->db->where("(tipo='terrestres')");
                 break;
             case 'Allpaquete':
@@ -251,7 +261,9 @@ class Tours_paquete_model extends CI_Model
         if (isset($parametros['tipo']))  unset($parametros['tipo']);
 
         $this->db->order_by('id_tours', 'DESC');
-        $this->db->where($parametros);
+        // $this->db->where($parametros);
+
+
 
         $query = $this->db->get($nombreTabla);
         $respuesta  = $query->result();
