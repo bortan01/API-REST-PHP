@@ -28,11 +28,10 @@ class Hotel_model extends CI_Model
 
         $respuesta = $query->result();
         
-        foreach ($respuesta as $opciones) {
-            $opciones->incluye =   explode(",", $opciones->incluye);
-        }
+       
 
         foreach ($respuesta as $row) {
+     //       $row->incluye =   explode(",", $row->incluye);
 
             $identificador = $row->idhotel;
             $respuestaFoto =   $this->Imagen_model->obtenerImagenUnica('hoteles', $identificador);
