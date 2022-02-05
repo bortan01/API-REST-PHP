@@ -55,7 +55,7 @@ class cotizarHotel extends REST_Controller
 		$this->load->library('form_validation');
 		$this->form_validation->set_data($data);
 
-		if ($this->form_validation->run('cotizacionh_put')) {
+		if ($this->form_validation->run('cotizarHotel_post')) {
 
 			$cotizar = $this->cotizarHotel_model->set_datos($data);
 
@@ -68,14 +68,14 @@ class cotizarHotel extends REST_Controller
 
 				$this->db->select('nombre');
 				$this->db->from('usuario');
-				$this->db->where('id_cliente',$data['id_cliente']);
+				$this->db->where('id_cliente',$data['idcliente']);
 				$query = $this->db->get();
 				foreach ($query->result() as $row)
 				{
 				 $cuerpo="<h2><h2>Han realizado una cotización de hotel</h2><br>
 				 <h4>Cliente: ".$row->nombre."</h4><br>
-				 <h4>Punto de salida: " . $data['ciudad_partida'] . "</h4><br>
-				 <h4>Punto de llegada: " . $data['ciudad_destino'] ."</h4><br>
+				 <h4>Habitaciones: " . $data['detalleHabitaciones'] . "</h4><br>
+				 <h4>Servicios Adicionales: " . $data['servicios_adicionales'] ."</h4><br>
 				 <h4>Fue procesada con éxito, pendiente de respuesta</h4><br>
 				 <h4>Verificar Cotización: ".$this->Conf_model->SISTEMA."</h4>	
 				 <br>Atte:<br>Martínez Travel & Tours";

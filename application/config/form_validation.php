@@ -303,4 +303,13 @@ $config = array(
 		array('field' => 'precioNoche'       , 'label' => 'Precio por noche'             , 'rules' => 'trim|required|min_length[1]|max_length[255]'),
 	),
 	
+	'cotizarHotel_post' => array(
+		array('field' => 'idhotel'              , 'label' => 'Id Hotel'             , 'rules' => 'trim|required|max_length[500]'),
+		array('field' => 'idcliente'            , 'label' => 'Id Cliente'           , 'rules' => 'trim|required|min_length[2]|max_length[500]'),
+		array('field' => 'fechaEntradaSalida'   , 'label' => 'Fecha Entrada Salida' , 'rules' => 'trim|required|min_length[1]|max_length[255]'),
+		array('field' => 'detalleHabitaciones'  , 'label' => 'Detalle Habitaciones' , 'rules' => 'trim|required|min_length[1]|max_length[255]'),
+		array('field' => 'servicios_adicionales', 'label' => 'Servicios Adicionales', 'rules' => 'trim|required|min_length[1]|max_length[255]'),
+		array('field' => 'total'                , 'label' => 'Total'                , 'rules' => 'trim|required|min_length[1]|max_length[255]'),
+		
+	),
 );
