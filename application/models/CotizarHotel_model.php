@@ -72,7 +72,7 @@ class CotizarHotel_model extends CI_Model
       $nombreTabla = "cotizacion_hotel";
 
       ///VAMOS A ACTUALIZAR UN REGISTRO
-      $campos = $this->CotizarHotel_model->verificar_camposEntrada($data);
+      $campos = $this->cotizarHotel_model->verificar_camposEntrada($data);
       $this->db->where('idcotizacion_hotel', $campos["idcotizacion_hotel"]);
 
       $hecho = $this->db->update($nombreTabla, $campos);
