@@ -18,13 +18,11 @@ class CotizarHotel_model extends CI_Model
       $parametros = $this->verificar_camposEntrada($data);
       $this->db->select('*');
       $this->db->from('cotizacion_hotel');
-      $this->db->join('usuario', 'cotizacion_hotel.id_usuario = usuario.id_cliente');
-      $this->db->join('modelo', 'cotizacion_hotel.modelo = modelo.idmodelo');
-      $this->db->select('DATE_FORMAT(cotizacion_hotel.fechaRecogida,"%d-%m-%Y") as fechaRecogida');
-      $this->db->select('DATE_FORMAT(cotizacion_hotel.fechaDevolucion,"%d-%m-%Y") as fechaDevolucion');
+      $this->db->join('hotel', 'cotizacion_hotel.idhotel = hotel.idhotel');
+      $this->db->join('usuario', 'cotizacion_hotel.idcliente = usuario.id_cliente');
+      
       $this->db->where($parametros);
-      $this->db->where_in('cotizacion_hotel.activo', 1);
-      $this->db->order_by('idcotizarVehiculo', 'desc');
+      $this->db->where_in('cotizacion_hotel.activo',1);
       $query = $this->db->get();
 
       $respuesta = $query->result();
@@ -75,7 +73,7 @@ class CotizarHotel_model extends CI_Model
 
       ///VAMOS A ACTUALIZAR UN REGISTRO
       $campos = $this->CotizarHotel_model->verificar_camposEntrada($data);
-      $this->db->where('idcotizarVehiculo', $campos["idcotizarVehiculo"]);
+      $this->db->where('idcotizacion_hotel', $campos["idcotizacion_hotel"]);
 
       $hecho = $this->db->update($nombreTabla, $campos);
       if ($hecho) {
@@ -117,7 +115,7 @@ class CotizarHotel_model extends CI_Model
    public function borrar($campos)
    {
       //ELIMINAR UN REGISTRO
-      $this->db->where('idcotizarVehiculo', $campos["idcotizarVehiculo"]);
+      $this->db->where('idcotizacion_hotel', $campos["idcotizacion_hotel"]);
       $hecho = $this->db->update('cotizacion_hotel', $campos);
       if ($hecho) {
          //ELIMINANDO REGISTRO
@@ -136,5 +134,30 @@ class CotizarHotel_model extends CI_Model
          );
          return $respuesta;
       }
+   }
+
+   public function get_mostrarCotizacion(array $data)
+   {
+
+       $parametros = $this->verificar_camposEntrada($data);
+      // $aux=$data['id_cliente'];
+
+       $this->db->select('*');
+       $this->db->from('cotizacion_hotel');
+       $this->db->join('hotel', 'cotizacion_hotel.idhotel = hotel.idhotel');
+       $this->db->join('usuario', 'cotizacion_hotel.idcliente = usuario.id_cliente');
+       
+       $this->db->where($parametros);
+       $this->db->where_in('cotizacion_hotel.activo',1);
+       $query=$this->db->get();
+
+       $respuesta = $query->result();
+     
+       
+       foreach ($respuesta as $opciones) {
+           $opciones->servicios_adicionales =   explode(",", $opciones->servicios_adicionales);
+       }
+
+           return $respuesta;
    }
 }

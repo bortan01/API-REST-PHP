@@ -119,11 +119,13 @@ class cotizarHotel extends REST_Controller
 					 foreach ($query->result() as $row)
 					 {
 						 $id=$row->id_cliente;
-						 $cuerpo="<h2><h2>La cotización realizada con salida de: " . $row->ciudad_partida. "</h2><br>
-						 <h4>con llegada a: " . $row->ciudad_destino . " fue procesada con éxito.
-						 Con un precio de: $" . $data['total'] . " con un descuento de: $" . $data['descuentos'] ."</h4>
-						 </h4><br><h4>Gracias por preferirnos, puedes verificar la respuesta a tu cotización nuestra página web: ".$this->Conf_model->PAGINA."
-						 </h4><br>También puedes descargar nuestra aplicación móvil<br>Atte:<br>Martínez Travel & Tours";
+						 $cuerpo="<h2><h2>Han realizado una cotización de hotel</h2><br>
+						 <h4>Cliente: ".$row->nombre."</h4><br>
+						 <h4>Habitaciones: " . $data['detalleHabitaciones'] . "</h4><br>
+						 <h4>Servicios Adicionales: " . $data['servicios_adicionales'] ."</h4><br>
+						 <h4>Fue procesada con éxito, pendiente de respuesta</h4><br>
+						 <h4>Verificar Cotización: ".$this->Conf_model->SISTEMA."</h4>	
+						 <br>Atte:<br>Martínez Travel & Tours";
 					 }
 					
 					  $this->Mail_model->metEnviarUno('Cotización de Hotel','','Respuesta Cotización de Vuelo',$cuerpo,$id);
