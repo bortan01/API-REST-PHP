@@ -220,17 +220,21 @@ class Tours_paquete_model extends CI_Model
         //  echo date('Y-m-d');
         switch ($tipo) {
             case 'aereos':
+				$this->db->where("(estado='1')");
                 $this->db->where("(tipo='aereos')");
                 $this->db->where('start >= ',   date('Y-m-d'));
                 break;
             case 'terrestres':
+				$this->db->where("(estado='1')");
                 $this->db->where("(tipo='terrestres')");
                 $this->db->where('start >=',  date('Y-m-d'));
                 break;
             case 'aereosAdmin':
+			    $this->db->where("(estado='1')");
                 $this->db->where("(tipo='aereos')");
                 break;
             case 'terrestresAdmin':
+				$this->db->where("(estado='1')");
                 $this->db->where("(tipo='terrestres')");
                 break;
             case 'Allpaquete':
