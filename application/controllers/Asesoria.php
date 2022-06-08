@@ -1,8 +1,8 @@
 <?php
 defined('BASEPATH') or exit('No direct script access allowed');
 $allowedOrigins = [
-	"https://admin.tesistours.com",
-	"https://tesistours.com"
+    "https://admin.martineztraveltours.com",
+    "https://martineztraveltours.com"
 ];
 if (isset($_SERVER["HTTP_ORIGIN"]) && in_array($_SERVER["HTTP_ORIGIN"], $allowedOrigins)) {
 	header("Access-Control-Allow-Origin: " . $_SERVER["HTTP_ORIGIN"]);
