@@ -1,6 +1,6 @@
 <?php
 defined('BASEPATH') or exit('No direct script access allowed');
-header('Access-Control-Allow-Origin: https://admin.tesistours.com');
+header('Access-Control-Allow-Origin: https://admin.martineztraveltours.com');
 
 class Welcome extends CI_Controller
 {
