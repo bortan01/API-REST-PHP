@@ -136,7 +136,7 @@ class hotel extends REST_Controller
 			$respuesta = array(
 				'err' => FALSE,
 				'mensaje' => 'Registro Cargado correctamente',
-				'hotel' => $hotelito
+				'hoteles' => $hotelito
 
 			);
 			$this->response($respuesta, REST_Controller::HTTP_OK);
@@ -144,7 +144,7 @@ class hotel extends REST_Controller
 			$respuesta = array(
 				'err' => TRUE,
 				'mensaje' => 'Error al cargar los datos.',
-				'hotel' => null
+				'hoteles' => null
 
 			);
 			$this->response($respuesta, REST_Controller::HTTP_NOT_FOUND);
