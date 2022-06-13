@@ -39,14 +39,14 @@ class Promocion_model extends CI_Model
         foreach ($respuesta as $row) {
 
             $identificador = $row->idpromocion_vuelo;
-            $respuestaFoto =   $this->Imagen_model->obtenerImagenUnica('promociones', $identificador);
+            $respuestaFoto =   $this->Imagen_model->obtenerGaleria('promociones', $identificador);
             if ($respuestaFoto == null) {
                 //por si no hay ninguna foto mandamos una por defecto
                 $row->foto = $this->Conf_model->URL_SERVIDOR . "uploads/viaje.png";
             } else {
                 $row->foto = $respuestaFoto;
             }
-            $respuestaGaleria =   $this->Imagen_model->obtenerGaleria('promociones', $identificador);
+            $respuestaGaleria =   $this->Imagen_model->obtenerGaleria('promocion_vuelo', $identificador);
             if ($respuestaGaleria == null) {
                 //por si no hay ninguna foto mandamos una por defecto
                 $row->galeria = [];
